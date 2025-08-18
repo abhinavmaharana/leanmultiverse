@@ -9,13 +9,10 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [videoProgress, setVideoProgress] = useState(0);
-  const [videoLoadTime, setVideoLoadTime] = useState(0);
+
   const [videoQuality, setVideoQuality] = useState('auto');
   const [isIOS, setIsIOS] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const loadStartTime = useRef<number>(Date.now());
 
   useEffect(() => {
     // Check if device is mobile and iOS
@@ -23,7 +20,7 @@ export default function Home() {
       setIsMobile(window.innerWidth < 768);
     };
 
-    const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const ua = navigator.userAgent || navigator.vendor || '';
     const isiOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     setIsIOS(isiOSDevice);
 
@@ -111,7 +108,6 @@ export default function Home() {
 
               if (video.readyState >= 2) {
                 await video.play();
-                setIsVideoPlaying(true);
                 console.log('Video autoplay successful');
               } else {
                 const canPlayHandler = async () => {
@@ -120,7 +116,6 @@ export default function Home() {
                       try { video.currentTime = 0.001; } catch {}
                     }
                     await video.play();
-                    setIsVideoPlaying(true);
                     console.log('Video autoplay successful after canplay');
                   } catch (e) {
                     console.log('Video play failed after canplay:', e);
@@ -157,11 +152,7 @@ export default function Home() {
       };
 
       // Add video event listeners for better control
-      const handleTimeUpdate = () => {
-        if (video.duration) {
-          setVideoProgress((video.currentTime / video.duration) * 100);
-        }
-      };
+
 
       const handleVideoEnded = () => {
         console.log('Video loop completed');
@@ -172,14 +163,12 @@ export default function Home() {
         video.load();
       };
 
-      video.addEventListener('timeupdate', handleTimeUpdate);
       video.addEventListener('ended', handleVideoEnded);
       video.addEventListener('stalled', handleVideoStalled);
 
       optimizeVideo();
 
       return () => {
-        video.removeEventListener('timeupdate', handleTimeUpdate);
         video.removeEventListener('ended', handleVideoEnded);
         video.removeEventListener('stalled', handleVideoStalled);
       };
@@ -187,22 +176,15 @@ export default function Home() {
   }, [isMobile, isIOS]);
 
   const handleVideoLoad = () => {
-    const loadTime = Date.now() - loadStartTime.current;
-    setVideoLoadTime(loadTime);
     setVideoLoaded(true);
     setVideoError(false);
-    console.log(`Video loaded successfully in ${loadTime}ms`);
-
-    if (loadTime > 3000) {
-      console.warn('Video took longer than 3 seconds to load, consider optimization');
-    }
+    console.log('Video loaded successfully');
   };
 
   const handleVideoError = (error: React.SyntheticEvent<HTMLVideoElement, Event> | unknown) => {
     console.error('Video error:', error);
     setVideoLoaded(false);
     setVideoError(true);
-    setIsVideoPlaying(false);
   };
 
   const handleSoundPermission = (enableSound: boolean) => {
@@ -284,8 +266,7 @@ export default function Home() {
           onLoadedData={handleVideoLoad}
           onError={handleVideoError}
           onCanPlay={handleVideoLoad}
-          onPlay={() => setIsVideoPlaying(true)}
-          onPause={() => setIsVideoPlaying(false)}
+
           webkit-playsinline="true"
           x5-playsinline="true"
           x5-video-player="true"
