@@ -1,103 +1,404 @@
-import Image from "next/image";
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [showSoundPrompt, setShowSoundPrompt] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [videoProgress, setVideoProgress] = useState(0);
+  const [videoLoadTime, setVideoLoadTime] = useState(0);
+  const [videoQuality, setVideoQuality] = useState('auto');
+  const [isIOS, setIsIOS] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const loadStartTime = useRef<number>(Date.now());
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    // Check if device is mobile and iOS
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    const ua = navigator.userAgent || navigator.vendor || (window as any).opera;
+    const isiOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    setIsIOS(isiOSDevice);
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    // Optimize for network conditions
+    optimizeForNetwork();
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+
+      // Enhanced video optimization for watermark removal and performance
+      const optimizeVideo = async () => {
+        try {
+          // Set video properties for optimal performance
+          video.preload = isIOS ? 'auto' : 'metadata';
+          video.muted = true;
+          video.volume = 0;
+          video.playbackRate = 1.0;
+          video.defaultPlaybackRate = 1.0;
+
+          // Ensure inline playback attributes on iOS
+          if (isIOS) {
+            video.setAttribute('playsinline', '');
+            video.setAttribute('muted', '');
+            video.setAttribute('autoplay', '');
+          }
+
+          // Mobile-specific optimizations
+          if (isMobile) {
+            video.muted = true;
+            video.volume = 0;
+            video.playsInline = true;
+            (video as HTMLVideoElement & {
+              webkitPlaysinline?: boolean;
+              x5Playsinline?: boolean;
+              x5VideoPlayer?: boolean;
+              x5VideoPlayerType?: string;
+              x5VideoPlayerFullscreen?: boolean;
+            }).webkitPlaysinline = true;
+            (video as HTMLVideoElement & {
+              webkitPlaysinline?: boolean;
+              x5Playsinline?: boolean;
+              x5VideoPlayer?: boolean;
+              x5VideoPlayerType?: string;
+              x5VideoPlayerFullscreen?: boolean;
+            }).x5Playsinline = true;
+            (video as HTMLVideoElement & {
+              webkitPlaysinline?: boolean;
+              x5Playsinline?: boolean;
+              x5VideoPlayer?: boolean;
+              x5VideoPlayerType?: string;
+              x5VideoPlayerFullscreen?: boolean;
+            }).x5VideoPlayer = true;
+            (video as HTMLVideoElement & {
+              webkitPlaysinline?: boolean;
+              x5Playsinline?: boolean;
+              x5VideoPlayer?: boolean;
+              x5VideoPlayerType?: string;
+              x5VideoPlayerFullscreen?: boolean;
+            }).x5VideoPlayerType = 'h5';
+            (video as HTMLVideoElement & {
+              webkitPlaysinline?: boolean;
+              x5Playsinline?: boolean;
+              x5VideoPlayer?: boolean;
+              x5VideoPlayerType?: string;
+              x5VideoPlayerFullscreen?: boolean;
+            }).x5VideoPlayerFullscreen = false;
+            console.log('Mobile video optimization complete');
+          }
+
+          const attemptAutoplay = async () => {
+            try {
+              if (isIOS) {
+                // iOS kickstart: nudge currentTime slightly after metadata
+                if (video.currentTime === 0) {
+                  try { video.currentTime = 0.001; } catch {}
+                }
+              }
+
+              if (video.readyState >= 2) {
+                await video.play();
+                setIsVideoPlaying(true);
+                console.log('Video autoplay successful');
+              } else {
+                const canPlayHandler = async () => {
+                  try {
+                    if (isIOS && video.currentTime === 0) {
+                      try { video.currentTime = 0.001; } catch {}
+                    }
+                    await video.play();
+                    setIsVideoPlaying(true);
+                    console.log('Video autoplay successful after canplay');
+                  } catch (e) {
+                    console.log('Video play failed after canplay:', e);
+                    handleVideoError(e);
+                  }
+                };
+                video.addEventListener('canplay', canPlayHandler, { once: true });
+                video.addEventListener('canplaythrough', canPlayHandler, { once: true });
+              }
+            } catch (error) {
+              console.log('Video autoplay failed:', error);
+              if (isMobile) {
+                video.muted = true;
+                video.play().catch(e => {
+                  console.log('Mobile video play failed:', e);
+                  handleVideoError(e);
+                });
+              }
+            }
+          };
+
+          // Wait for video metadata to load
+          if (video.readyState >= 1) {
+            await attemptAutoplay();
+          } else {
+            video.addEventListener('loadedmetadata', attemptAutoplay, { once: true });
+          }
+
+          // Avoid applying CSS filters/transforms on the <video> element itself on iOS
+        } catch (error) {
+          console.log('Video optimization failed:', error);
+          handleVideoError(error);
+        }
+      };
+
+      // Add video event listeners for better control
+      const handleTimeUpdate = () => {
+        if (video.duration) {
+          setVideoProgress((video.currentTime / video.duration) * 100);
+        }
+      };
+
+      const handleVideoEnded = () => {
+        console.log('Video loop completed');
+      };
+
+      const handleVideoStalled = () => {
+        console.log('Video playback stalled, attempting recovery...');
+        video.load();
+      };
+
+      video.addEventListener('timeupdate', handleTimeUpdate);
+      video.addEventListener('ended', handleVideoEnded);
+      video.addEventListener('stalled', handleVideoStalled);
+
+      optimizeVideo();
+
+      return () => {
+        video.removeEventListener('timeupdate', handleTimeUpdate);
+        video.removeEventListener('ended', handleVideoEnded);
+        video.removeEventListener('stalled', handleVideoStalled);
+      };
+    }
+  }, [isMobile, isIOS]);
+
+  const handleVideoLoad = () => {
+    const loadTime = Date.now() - loadStartTime.current;
+    setVideoLoadTime(loadTime);
+    setVideoLoaded(true);
+    setVideoError(false);
+    console.log(`Video loaded successfully in ${loadTime}ms`);
+
+    if (loadTime > 3000) {
+      console.warn('Video took longer than 3 seconds to load, consider optimization');
+    }
+  };
+
+  const handleVideoError = (error: React.SyntheticEvent<HTMLVideoElement, Event> | unknown) => {
+    console.error('Video error:', error);
+    setVideoLoaded(false);
+    setVideoError(true);
+    setIsVideoPlaying(false);
+  };
+
+  const handleSoundPermission = (enableSound: boolean) => {
+    setShowSoundPrompt(false);
+    
+    if (videoRef.current) {
+      if (enableSound) {
+        // Enable sound
+        videoRef.current.muted = false;
+        videoRef.current.volume = 0.5;
+      } else {
+        // Keep muted
+        videoRef.current.muted = true;
+        videoRef.current.volume = 0;
+      }
+    }
+  };
+
+  const retryVideo = () => {
+    if (videoRef.current) {
+      setVideoError(false);
+      videoRef.current.load();
+      videoRef.current.play().catch(handleVideoError);
+    }
+  };
+
+  const handleQualityChange = (quality: string) => {
+    setVideoQuality(quality);
+    if (videoRef.current) {
+      const video = videoRef.current;
+      
+      // Adjust video quality based on selection
+      switch (quality) {
+        case 'low':
+          video.playbackRate = 0.75;
+          break;
+        case 'medium':
+          video.playbackRate = 1.0;
+          break;
+        case 'high':
+          video.playbackRate = 1.25;
+          break;
+        default:
+          video.playbackRate = 1.0;
+      }
+      
+      console.log(`Video quality changed to: ${quality}`);
+    }
+  };
+
+  const optimizeForNetwork = () => {
+    // Detect network conditions and optimize accordingly
+    if ('connection' in navigator) {
+      const connection = (navigator as Navigator & {
+        connection?: {
+          effectiveType?: string;
+        };
+      }).connection;
+      if (connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g') {
+        setVideoQuality('low');
+        console.log('Slow network detected, switching to low quality');
+      }
+    }
+  };
+
+  return (
+    <main className="w-full h-screen relative overflow-hidden">
+      {/* Video Background with Enhanced Watermark Removal */}
+      <div className="absolute inset-0 overflow-hidden">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay 
+          loop 
+          muted 
+          controls={false}
+          playsInline 
+          preload="metadata"
+          onLoadedData={handleVideoLoad}
+          onError={handleVideoError}
+          onCanPlay={handleVideoLoad}
+          onPlay={() => setIsVideoPlaying(true)}
+          onPause={() => setIsVideoPlaying(false)}
+          webkit-playsinline="true"
+          x5-playsinline="true"
+          x5-video-player="true"
+          x5-video-player-type="h5"
+          x5-video-player-fullscreen="false"
+        >
+          <source src="/video/bg.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        
+        {/* Enhanced Watermark Removal Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-l from-black/10 via-transparent to-black/10 pointer-events-none"></div>
+        
+        {/* Video Loading Indicator */}
+        {!videoLoaded && !videoError && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
+            <div className="text-white text-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+              <p className="text-lg font-medium">Loading video...</p>
+              <p className="text-sm text-gray-300 mt-2">Please wait while we prepare your experience</p>
+            </div>
+          </div>
+        )}
+        
+        {/* Video Error State */}
+        {videoError && (
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 z-10 flex items-center justify-center">
+            <div className="text-white text-center max-w-md mx-auto px-4">
+              <div className="text-6xl mb-4">🎬</div>
+              <h2 className="text-2xl font-bold mb-2">Video Unavailable</h2>
+              <p className="text-gray-300 mb-6">We&apos;re having trouble loading the background video. This won&apos;t affect your experience.</p>
+              <Button
+                onClick={retryVideo}
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-700"
+              >
+                Try Again
+              </Button>
+            </div>
+          </div>
+        )}
+        
+        {/* Fallback Background for Video Issues */}
+        {(!videoLoaded || videoError) && (
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 z-10"></div>
+        )}
+      </div>
+
+      {/* Sound Permission Prompt */}
+      {showSoundPrompt && videoLoaded && !videoError && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-30">
+          <Card className="bg-white/10 backdrop-blur-xl border-white/20 max-w-md mx-4">
+            <CardHeader className="text-center">
+              <div className="text-6xl mb-4">🔊</div>
+              <CardTitle className="text-2xl text-white">Enable Sound?</CardTitle>
+              <CardDescription className="text-gray-300">
+                Would you like to enable sound for the background video? You can change this later.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {/* Video Quality Selector */}
+              <div className="mb-6">
+                <label className="block text-white text-sm font-medium mb-2">Video Quality:</label>
+                <div className="flex justify-center space-x-2">
+                  {['low', 'medium', 'high'].map((quality) => (
+                    <Button
+                      key={quality}
+                      variant={videoQuality === quality ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handleQualityChange(quality)}
+                      className={`${
+                        videoQuality === quality
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-white/20 text-white hover:bg-white/30 border-white/30'
+                      }`}
+                    >
+                      {quality.charAt(0).toUpperCase() + quality.slice(1)}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-center">
+                <Button
+                  onClick={() => handleSoundPermission(true)}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  Yes, Enable Sound
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => handleSoundPermission(false)}
+                  className="bg-gray-500 hover:bg-gray-600 border-gray-400 text-white"
+                >
+                  No, Keep Muted
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+
+      {/* Coming Soon Content */}
+      <div className="relative z-20 flex items-center justify-center h-full">
+        <div className="text-center text-white max-w-4xl mx-auto px-4">
+
+          
+
+        </div>
+      </div>
+    </main>
   );
 }
