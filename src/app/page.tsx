@@ -17,7 +17,7 @@ export default function Home() {
   useEffect(() => {
     // Check if device is mobile and iOS
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 640); // sm breakpoint for better mobile detection
     };
 
     const ua = navigator.userAgent || navigator.vendor || '';
@@ -251,7 +251,7 @@ export default function Home() {
   };
 
   return (
-    <main className="w-full h-screen relative overflow-hidden">
+    <main className="w-full h-screen sm:h-screen relative overflow-hidden">
       {/* Video Background with Enhanced Watermark Removal */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -266,12 +266,15 @@ export default function Home() {
           onLoadedData={handleVideoLoad}
           onError={handleVideoError}
           onCanPlay={handleVideoLoad}
-
           webkit-playsinline="true"
           x5-playsinline="true"
           x5-video-player="true"
           x5-video-player-type="h5"
           x5-video-player-fullscreen="false"
+          style={{
+            objectPosition: isMobile ? 'center center' : 'center center',
+            minHeight: isMobile ? '100vh' : '100vh'
+          }}
         >
           <source src="/video/bg.mp4" type="video/mp4" />
           Your browser does not support the video tag.
@@ -286,25 +289,25 @@ export default function Home() {
         
         {/* Video Loading Indicator */}
         {!videoLoaded && !videoError && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20">
-            <div className="text-white text-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
-              <p className="text-lg font-medium">Loading video...</p>
-              <p className="text-sm text-gray-300 mt-2">Please wait while we prepare your experience</p>
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20 p-4">
+            <div className="text-white text-center w-full max-w-sm sm:max-w-md">
+              <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-white mx-auto mb-3 sm:mb-4"></div>
+              <p className="text-base sm:text-lg font-medium mb-2">Loading video...</p>
+              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">Please wait while we prepare your experience</p>
             </div>
           </div>
         )}
         
         {/* Video Error State */}
         {videoError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 z-10 flex items-center justify-center">
-            <div className="text-white text-center max-w-md mx-auto px-4">
-              <div className="text-6xl mb-4">🎬</div>
-              <h2 className="text-2xl font-bold mb-2">Video Unavailable</h2>
-              <p className="text-gray-300 mb-6">We&apos;re having trouble loading the background video. This won&apos;t affect your experience.</p>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 z-10 flex items-center justify-center p-4">
+            <div className="text-white text-center w-full max-w-sm sm:max-w-md mx-auto">
+              <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🎬</div>
+              <h2 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">Video Unavailable</h2>
+              <p className="text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">We&apos;re having trouble loading the background video. This won&apos;t affect your experience.</p>
               <Button
                 onClick={retryVideo}
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 text-sm sm:text-base"
               >
                 Try Again
               </Button>
@@ -320,27 +323,27 @@ export default function Home() {
 
       {/* Sound Permission Prompt */}
       {showSoundPrompt && videoLoaded && !videoError && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-30">
-          <Card className="bg-white/10 backdrop-blur-xl border-white/20 max-w-md mx-4">
-            <CardHeader className="text-center">
-              <div className="text-6xl mb-4">🔊</div>
-              <CardTitle className="text-2xl text-white">Enable Sound?</CardTitle>
-              <CardDescription className="text-gray-300">
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-30 p-4">
+          <Card className="bg-white/10 backdrop-blur-xl border-white/20 w-full max-w-sm sm:max-w-md">
+            <CardHeader className="text-center px-4 sm:px-6 pt-6 pb-4">
+              <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🔊</div>
+              <CardTitle className="text-xl sm:text-2xl text-white leading-tight">Enable Sound?</CardTitle>
+              <CardDescription className="text-gray-300 text-sm sm:text-base leading-relaxed">
                 Would you like to enable sound for the background video? You can change this later.
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-6 pb-6">
               {/* Video Quality Selector */}
-              <div className="mb-6">
-                <label className="block text-white text-sm font-medium mb-2">Video Quality:</label>
-                <div className="flex justify-center space-x-2">
+              <div className="mb-4 sm:mb-6">
+                <label className="block text-white text-xs sm:text-sm font-medium mb-2">Video Quality:</label>
+                <div className="flex justify-center space-x-1 sm:space-x-2">
                   {['low', 'medium', 'high'].map((quality) => (
                     <Button
                       key={quality}
                       variant={videoQuality === quality ? "default" : "outline"}
                       size="sm"
                       onClick={() => handleQualityChange(quality)}
-                      className={`${
+                      className={`text-xs px-2 sm:px-3 py-1 sm:py-2 ${
                         videoQuality === quality
                           ? 'bg-blue-600 text-white'
                           : 'bg-white/20 text-white hover:bg-white/30 border-white/30'
@@ -352,17 +355,17 @@ export default function Home() {
                 </div>
               </div>
               
-              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-center">
+              <div className="flex flex-col space-y-3 justify-center">
                 <Button
                   onClick={() => handleSoundPermission(true)}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base py-2 sm:py-3"
                 >
                   Yes, Enable Sound
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => handleSoundPermission(false)}
-                  className="bg-gray-500 hover:bg-gray-600 border-gray-400 text-white"
+                  className="bg-gray-500 hover:bg-gray-600 border-gray-400 text-white text-sm sm:text-base py-2 sm:py-3"
                 >
                   No, Keep Muted
                 </Button>
