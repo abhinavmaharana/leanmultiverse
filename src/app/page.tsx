@@ -10,7 +10,7 @@ export default function Home() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  const [videoQuality, setVideoQuality] = useState('auto');
+  const [videoQuality, setVideoQuality] = useState('high');
   const [isIOS, setIsIOS] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -40,12 +40,25 @@ export default function Home() {
       // Enhanced video optimization for watermark removal and performance
       const optimizeVideo = async () => {
         try {
-          // Set video properties for optimal performance
-          video.preload = isIOS ? 'auto' : 'metadata';
+          // Set video properties for optimal performance and quality
+          video.preload = 'auto';
           video.muted = true;
           video.volume = 0;
           video.playbackRate = 1.0;
           video.defaultPlaybackRate = 1.0;
+          
+          // Optimize for high quality
+          video.setAttribute('playsinline', '');
+          video.setAttribute('webkit-playsinline', '');
+          video.setAttribute('x5-playsinline', '');
+          video.setAttribute('x5-video-player', 'true');
+          video.setAttribute('x5-video-player-type', 'h5');
+          
+          // Set high quality attributes
+          video.setAttribute('x5-video-player-fullscreen', 'false');
+          video.setAttribute('x5-video-orientation', 'landscape');
+          
+
 
           // Ensure inline playback attributes on iOS
           if (isIOS) {
@@ -219,13 +232,17 @@ export default function Home() {
       // Adjust video quality based on selection
       switch (quality) {
         case 'low':
-          video.playbackRate = 0.75;
+          video.playbackRate = 1.0;
+          // Lower quality settings for slower devices
           break;
         case 'medium':
           video.playbackRate = 1.0;
+          // Standard quality settings
           break;
         case 'high':
-          video.playbackRate = 1.25;
+          video.playbackRate = 1.0;
+          // High quality settings - ensure best possible playback
+          video.preload = 'auto';
           break;
         default:
           video.playbackRate = 1.0;
@@ -243,9 +260,15 @@ export default function Home() {
           effectiveType?: string;
         };
       }).connection;
-      if (connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g') {
+      if (connection?.effectiveType === 'slow-2g') {
         setVideoQuality('low');
-        console.log('Slow network detected, switching to low quality');
+        console.log('Very slow network detected, switching to low quality');
+      } else if (connection?.effectiveType === '2g') {
+        setVideoQuality('medium');
+        console.log('Slow network detected, switching to medium quality');
+      } else {
+        setVideoQuality('high');
+        console.log('Good network detected, using high quality');
       }
     }
   };
@@ -253,7 +276,7 @@ export default function Home() {
   return (
     <main className="w-full h-screen sm:h-screen relative overflow-hidden">
       {/* Video Background with Enhanced Watermark Removal */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden will-change-transform transform-gpu">
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover"
@@ -262,30 +285,23 @@ export default function Home() {
           muted 
           controls={false}
           playsInline 
-          preload="metadata"
+          preload="auto"
           onLoadedData={handleVideoLoad}
           onError={handleVideoError}
           onCanPlay={handleVideoLoad}
-          webkit-playsinline="true"
-          x5-playsinline="true"
-          x5-video-player="true"
-          x5-video-player-type="h5"
-          x5-video-player-fullscreen="false"
           style={{
-            objectPosition: isMobile ? 'center center' : 'center center',
-            minHeight: isMobile ? '100vh' : '100vh'
+            objectPosition: 'center center',
+            imageRendering: 'auto',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
           }}
         >
-          <source src="/video/bg.mp4" type="video/mp4" />
+          <source src="/video/bg2.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         
-        {/* Enhanced Watermark Removal Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/10 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10 pointer-events-none"></div>
-        <div className="absolute inset-0 bg-gradient-to-l from-black/10 via-transparent to-black/10 pointer-events-none"></div>
+        {/* Subtle Dark Overlay for Better Video Quality */}
+        <div className="absolute inset-0 bg-black/5 pointer-events-none"></div>
         
         {/* Video Loading Indicator */}
         {!videoLoaded && !videoError && (
