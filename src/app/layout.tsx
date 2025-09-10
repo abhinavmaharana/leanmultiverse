@@ -1,23 +1,29 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Raleway } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 
-const geist = Geist({
-  variable: "--font-geist-sans",
+// Load Raleway font
+const raleway = Raleway({
   subsets: ["latin"],
-})
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"], // include multiple weights
+  variable: "--font-raleway",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
-  title: "LeanMultiverse - Next.js + TypeScript + Tailwind CSS + shadcn/ui",
-  description: "A modern Next.js project built with TypeScript, Tailwind CSS, and shadcn/ui components. Ready for production with best practices and beautiful design.",
-  keywords: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "React", "Full Stack"],
+  title: "LeanMultiverse - Next.js + TypeScript + Tailwind v4 + shadcn/ui",
+  description:
+    "A modern Next.js project built with TypeScript, Tailwind CSS v4, and shadcn/ui components. Ready for production with best practices and beautiful design.",
+  keywords: [
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS v4",
+    "shadcn/ui",
+    "React",
+    "Full Stack",
+  ],
   authors: [{ name: "LeanMultiverse Team" }],
   creator: "LeanMultiverse",
   openGraph: {
@@ -25,26 +31,26 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://leanmultiverse.com",
     title: "LeanMultiverse - Modern Web Development",
-    description: "A modern Next.js project built with TypeScript, Tailwind CSS, and shadcn/ui components.",
+    description:
+      "A modern Next.js project built with TypeScript, Tailwind CSS v4, and shadcn/ui components.",
     siteName: "LeanMultiverse",
   },
   twitter: {
     card: "summary_large_image",
     title: "LeanMultiverse - Modern Web Development",
-    description: "A modern Next.js project built with TypeScript, Tailwind CSS, and shadcn/ui components.",
+    description:
+      "A modern Next.js project built with TypeScript, Tailwind CSS v4, and shadcn/ui components.",
   },
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${geist.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${raleway.variable} font-sans antialiased`}>
         {children}
         <Analytics />
         <SpeedInsights />
