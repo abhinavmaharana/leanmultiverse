@@ -2,10 +2,10 @@ export default function Hero() {
     return (
       <section
         id="home"
-        className="flex flex-col items-center justify-center text-center flex-1 -mt-[400px] lg:-mt-[520px]"
+        className="flex flex-col items-center justify-center text-center flex-1 -mt-[400px] lg:-mt-[500px]"
       >
         {/* Tagline */}
-        <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3">
+        <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium ">
           Master Enterprise Agility
         </p>
   

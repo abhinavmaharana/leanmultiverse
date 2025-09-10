@@ -36,7 +36,7 @@ export default function LandingPage() {
       <div className="relative flex flex-col min-h-screen">
         <Navbar />
         <Hero />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </main>
   )
