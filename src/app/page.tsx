@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Courses from '@/components/landing/Courses'
 import NewWayOfWorking from '@/components/landing/NewWayOfWorking'
 import Certification from '@/components/landing/Certication'
+import MemoryLane from '@/components/landing/MemoryLane'
 
 export default function LandingPage() {
   return (
@@ -47,6 +48,9 @@ export default function LandingPage() {
         </div>
         <div id="newwayofworking">
           <NewWayOfWorking />
+        </div>
+        <div id="gallery">
+          <MemoryLane />
         </div>
         <Footer />
       </div>
