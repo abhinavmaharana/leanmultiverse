@@ -15,10 +15,10 @@ export default function Certification() {
     <section className="relative py-20 bg-black">
       <div className="text-center">
         <p className="uppercase line-through decoration-red-600 tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3">
-            IT`&apos;`s Not Just A Process
+            IT&apos;s Not Just A Process
         </p>
         <h1 className="text-[30px] md:text-[46.13px] font-bold mb-6">
-            It`&apos;`s a New Way of Working
+            It&apos;s a New Way of Working
         </h1>
         <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
             <LogoLoop
