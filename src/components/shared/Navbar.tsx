@@ -12,7 +12,7 @@ export default function Navbar() {
       </div>
 
       {/* Center: Navigation links (desktop) */}
-      <div className="hidden md:flex space-x-8 text-sm font-medium px-6 py-2 rounded-full shadow-md hover:opacity-90 transition bg-gradient-to-r from-[#C69D44]/20 to-[#604C21]/20 backdrop-blur-md border border-white/20">
+      <div className="hidden md:flex md:w-[506px] md:h-[53px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[16px] rounded-full shadow-md hover:opacity-90 transition bg-gradient-to-r from-[#C69D44]/20 to-[#604C21]/20 backdrop-blur-md border border-white/20">
         <a href="#home" className="hover:opacity-90 transition text-white">Home</a>
         <a href="#courses" className="hover:opacity-90 transition text-white">Courses</a>
         <a href="#about" className="hover:opacity-90 transition text-white">About Us</a>
@@ -22,7 +22,7 @@ export default function Navbar() {
       {/* Right: CTA + Mobile menu button */}
       <div className="flex items-center gap-3">
         <Button
-          className="hidden sm:inline-flex rounded-full px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
+          className="hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[53px] bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
         >
           Free Course
         </Button>

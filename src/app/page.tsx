@@ -1,6 +1,6 @@
 'use client'
 
-import Galaxy from '../components/ui/Galaxy'
+// import Galaxy from '../components/ui/Galaxy'
 import Navbar from '../components/shared/Navbar'
 import Hero from '../components/landing/Hero'
 import Footer from '../components/shared/Footer'
@@ -8,18 +8,19 @@ import Image from 'next/image'
 import Courses from '@/components/landing/Courses'
 import NewWayOfWorking from '@/components/landing/NewWayOfWorking'
 import Certification from '@/components/landing/Certication'
-import MemoryLane from '@/components/landing/MemoryLane'
+// import MemoryLane from '@/components/landing/MemoryLane'
+import Stories from '@/components/landing/Stories'
 
 export default function LandingPage() {
   return (
     <main className="relative w-full min-h-screen text-white">
       {/* Background Galaxy */}
       <div className="fixed inset-0 -z-30 bg-black">
-        <Galaxy 
+        {/* <Galaxy 
           mouseRepulsion={true}
           mouseInteraction={true}
           density={1.5}
-        />
+        /> */}
       </div>
 
       {/* Background Image Layer */}
@@ -46,12 +47,15 @@ export default function LandingPage() {
         <div id='certification'>
           <Certification />
         </div>
+        <div id='stories'>
+          <Stories />
+        </div>
         <div id="newwayofworking">
           <NewWayOfWorking />
         </div>
-        <div id="gallery">
+        {/* <div id="gallery">
           <MemoryLane />
-        </div>
+        </div> */}
         <Footer />
       </div>
     </main>
