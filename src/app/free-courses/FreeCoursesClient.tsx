@@ -6,6 +6,7 @@ import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Navbar from '@/components/shared/Navbar'
+import Footer from '@/components/shared/Footer'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -203,6 +204,9 @@ export default function FreeCoursesClient() {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* Footer */}
+      <Footer />
     </motion.main>
   )
 }
