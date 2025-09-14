@@ -37,10 +37,10 @@ export default function LoadingProvider({ children }: LoadingProviderProps) {
     // Ensure we're on the client side
     setIsMounted(true)
     
-    // Simulate initial loading time
+    // Reduce loading time for better UX
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 4000) // 4 seconds loading time
+    }, 2000) // Reduced to 2 seconds
 
     return () => clearTimeout(timer)
   }, [])

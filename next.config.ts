@@ -31,6 +31,11 @@ const nextConfig: NextConfig = {
   // Compression
   compress: true,
   
+  // Performance optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
   // Bundle analyzer (uncomment to analyze bundle)
   // webpack: (config, { isServer }) => {
   //   if (!isServer) {

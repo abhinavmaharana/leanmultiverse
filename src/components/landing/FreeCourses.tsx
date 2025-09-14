@@ -117,36 +117,37 @@ export default function FreeCourses() {
 
       // Course cards staggered animation
       gsap.fromTo(".course-card", 
-        { y: 100, opacity: 0, scale: 0.8 },
+        { y: 50, opacity: 0 },
         { 
           y: 0, 
-          opacity: 1, 
-          scale: 1,
-          duration: 0.8,
+          opacity: 1,
+          duration: 0.6,
           ease: "power2.out",
-          stagger: 0.15,
+          stagger: 0.1,
           scrollTrigger: {
             trigger: gridRef.current,
             start: "top 85%",
             end: "bottom 15%",
-            toggleActions: "play none none reverse"
+            toggleActions: "play none none reverse",
+            once: true // Only animate once to prevent glitches
           }
         }
       )
 
       // CTA section animation
       gsap.fromTo(ctaRef.current, 
-        { y: 60, opacity: 0 },
+        { y: 30, opacity: 0 },
         { 
           y: 0, 
           opacity: 1, 
-          duration: 1,
+          duration: 0.6,
           ease: "power2.out",
           scrollTrigger: {
             trigger: ctaRef.current,
             start: "top 80%",
             end: "bottom 20%",
-            toggleActions: "play none none reverse"
+            toggleActions: "play none none reverse",
+            once: true // Only animate once to prevent glitches
           }
         }
       )

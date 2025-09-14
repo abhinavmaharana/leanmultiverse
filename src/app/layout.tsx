@@ -6,6 +6,7 @@ import ChatWidget from "@/components/ui/ChatWidget"
 import CustomCursor from "@/components/ui/CustomCursor"
 import LenisProvider from "@/components/providers/LenisProvider"
 import LoadingProvider from "@/components/providers/LoadingProvider"
+import ErrorBoundary from "@/components/ErrorBoundary"
 import "./globals.css"
 
 // Load Raleway font
@@ -131,15 +132,17 @@ export default function RootLayout({
         />
       </head>
       <body className={`${raleway.variable} font-sans antialiased`}>
-        <LoadingProvider>
-          <LenisProvider>
-            {children}
-            <CustomCursor />
-            <ChatWidget />
-            <Analytics />
-            <SpeedInsights />
-          </LenisProvider>
-        </LoadingProvider>
+        <ErrorBoundary>
+          <LoadingProvider>
+            <LenisProvider>
+              {children}
+              <CustomCursor />
+              <ChatWidget />
+              <Analytics />
+              <SpeedInsights />
+            </LenisProvider>
+          </LoadingProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

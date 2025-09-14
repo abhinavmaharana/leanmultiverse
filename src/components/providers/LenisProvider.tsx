@@ -20,16 +20,21 @@ export default function LenisProvider({ children }: LenisProviderProps) {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // Initialize Lenis
+    // Initialize Lenis with optimized settings
     lenisRef.current = new Lenis({
-      duration: 1.2,
+      duration: 1.0, // Reduced duration for snappier feel
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
     })
 
     // Connect Lenis with GSAP ScrollTrigger
     lenisRef.current.on('scroll', ScrollTrigger.update)
 
+    // Optimize GSAP ticker
     gsap.ticker.lagSmoothing(0)
+    gsap.ticker.fps(60) // Limit to 60fps for better performance
 
     // Store the ticker callback so it can be properly removed
     const tickerCallback = (time: number) => {

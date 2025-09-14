@@ -33,9 +33,10 @@ export default function Hero() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
+          start: "top 85%",
+          end: "bottom 15%",
+          toggleActions: "play none none reverse",
+          once: true // Only animate once to prevent glitches
         }
       })
 
@@ -44,7 +45,7 @@ export default function Hero() {
         { 
           y: 0, 
           opacity: 1, 
-          duration: 0.8,
+          duration: 0.6,
           ease: "power2.out"
         }
       )
@@ -52,23 +53,23 @@ export default function Hero() {
         { 
           y: 0, 
           opacity: 1, 
-          duration: 1,
+          duration: 0.8,
           ease: "power2.out"
-        }, "-=0.6"
+        }, "-=0.4"
       )
       .fromTo(subtitleRef.current, animationConfig.subtitle, 
         { 
           y: 0, 
           opacity: 1, 
-          duration: 0.8,
+          duration: 0.6,
           ease: "power2.out"
-        }, "-=0.4"
+        }, "-=0.3"
       )
       .fromTo(buttonsRef.current, animationConfig.buttons, 
         { 
           y: 0, 
           opacity: 1, 
-          duration: 0.8,
+          duration: 0.6,
           ease: "power2.out"
         }, "-=0.2"
       )
