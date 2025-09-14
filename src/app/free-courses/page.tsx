@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
-import Footer from '../../components/shared/Footer'
 import FreeCourses from '../../components/landing/FreeCourses'
 import FreeCoursesClient from './FreeCoursesClient'
+import Footer from '../../components/shared/Footer'
 
 export const metadata: Metadata = {
   title: "Free Courses - Master New Skills for Free",

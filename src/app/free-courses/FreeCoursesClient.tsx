@@ -6,7 +6,6 @@ import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Navbar from '@/components/shared/Navbar'
-import Footer from '@/components/shared/Footer'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -52,17 +51,18 @@ export default function FreeCoursesClient() {
   }, [])
 
   return (
-    <motion.main 
-      ref={mainRef}
-      className="relative w-full min-h-screen text-white overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
+    <>
       {/* Navbar */}
       <Navbar />
       
-      {/* Animated Background */}
+      <motion.main 
+        ref={mainRef}
+        className="relative w-full min-h-screen text-white overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {/* Animated Background */}
       <div className="fixed inset-0 -z-30 bg-black">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 via-transparent to-yellow-600/5" />
         
@@ -204,9 +204,7 @@ export default function FreeCoursesClient() {
           </motion.div>
         </div>
       </motion.section>
-
-      {/* Footer */}
-      <Footer />
-    </motion.main>
+      </motion.main>
+    </>
   )
 }
