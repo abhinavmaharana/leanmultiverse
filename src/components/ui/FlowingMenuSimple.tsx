@@ -87,7 +87,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
         
         {/* Content */}
         <div className="relative z-10 text-center">
-          <h3 className="text-white text-2xl md:text-3xl font-bold mb-2 group-hover:text-yellow-400 transition-colors duration-300">
+          <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 group-hover:text-yellow-400 transition-colors duration-300">
             {text}
           </h3>
           <div className="w-16 h-1 bg-yellow-400 mx-auto group-hover:w-24 transition-all duration-300" />

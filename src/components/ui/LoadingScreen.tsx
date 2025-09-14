@@ -117,7 +117,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <div className="relative w-32 h-32 mb-6">
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-6">
                 <Image
                   src="/logo.svg"
                   alt="LeanMultiverse Logo"
@@ -135,12 +135,12 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.3 }}
             >
-              <h2 className="text-3xl font-bold text-white mb-2">LeanMultiverse</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">LeanMultiverse</h2>
               <p className="text-gray-300 text-sm">{loadingText}</p>
             </motion.div>
 
             {/* Progress Bar */}
-            <div className="w-80 h-1 bg-gray-700 rounded-full overflow-hidden">
+            <div className="w-64 sm:w-80 h-1 bg-gray-700 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"
                 initial={{ scaleX: 0 }}
