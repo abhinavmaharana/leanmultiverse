@@ -17,33 +17,73 @@ const raleway = Raleway({
 })
 
 export const metadata: Metadata = {
-  title: "LeanMultiverse - Next.js + TypeScript + Tailwind v4 + shadcn/ui",
+  metadataBase: new URL('https://leanmultiverse.com'),
+  title: {
+    default: "LeanMultiverse - Enterprise Agility & Digital Transformation",
+    template: "%s | LeanMultiverse"
+  },
   description:
-    "A modern Next.js project built with TypeScript, Tailwind CSS v4, and shadcn/ui components. Ready for production with best practices and beautiful design.",
+    "Master enterprise agility and digital transformation with our comprehensive courses. Join 50,000+ professionals who transformed their careers with Lean Multiverse University.",
   keywords: [
-    "Next.js",
-    "TypeScript",
-    "Tailwind CSS v4",
-    "shadcn/ui",
-    "React",
-    "Full Stack",
+    "enterprise agility",
+    "digital transformation",
+    "lean six sigma",
+    "agile project management",
+    "leadership development",
+    "MBA programs",
+    "professional certification",
+    "business transformation",
+    "lean methodology",
+    "scrum master",
+    "kanban",
+    "SAFe",
+    "organizational change",
+    "strategic management",
+    "data-driven decisions"
   ],
   authors: [{ name: "LeanMultiverse Team" }],
   creator: "LeanMultiverse",
+  publisher: "LeanMultiverse University",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://leanmultiverse.com",
-    title: "LeanMultiverse - Modern Web Development",
+    title: "LeanMultiverse - Enterprise Agility & Digital Transformation",
     description:
-      "A modern Next.js project built with TypeScript, Tailwind CSS v4, and shadcn/ui components.",
+      "Master enterprise agility and digital transformation with our comprehensive courses. Join 50,000+ professionals who transformed their careers.",
     siteName: "LeanMultiverse",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "LeanMultiverse - Enterprise Agility & Digital Transformation",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "LeanMultiverse - Modern Web Development",
+    title: "LeanMultiverse - Enterprise Agility & Digital Transformation",
     description:
-      "A modern Next.js project built with TypeScript, Tailwind CSS v4, and shadcn/ui components.",
+      "Master enterprise agility and digital transformation with our comprehensive courses. Join 50,000+ professionals who transformed their careers.",
+    images: ["/og-image.jpg"],
+  },
+  alternates: {
+    canonical: "https://leanmultiverse.com",
+  },
+  verification: {
+    google: "your-google-verification-code",
   },
 }
 
@@ -52,8 +92,44 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "LeanMultiverse University",
+    "description": "Master enterprise agility and digital transformation with our comprehensive courses. Join 50,000+ professionals who transformed their careers.",
+    "url": "https://leanmultiverse.com",
+    "logo": "https://leanmultiverse.com/logo.svg",
+    "sameAs": [
+      "https://linkedin.com/company/leanmultiverse",
+      "https://twitter.com/leanmultiverse"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "US"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-240-719-6120",
+      "contactType": "customer service",
+      "availableLanguage": "English"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "offerCount": "25+",
+      "lowPrice": "0",
+      "highPrice": "15999",
+      "priceCurrency": "USD"
+    }
+  }
+
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </head>
       <body className={`${raleway.variable} font-sans antialiased`}>
         <LoadingProvider>
           <LenisProvider>

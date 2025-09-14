@@ -1,52 +1,61 @@
-'use client'
-
-import { Suspense, lazy } from 'react'
-import Image from 'next/image'
+import { Metadata } from 'next'
+import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
+import LandingPageClient from './LandingPageClient'
 
 // Critical components loaded immediately
 import Navbar from '../components/shared/Navbar'
 import Hero from '../components/landing/Hero'
 
-// Lazy load heavy components (unused - using dynamic imports instead)
-const Courses = lazy(() => import('@/components/landing/Courses'))
-const SuccessStories = lazy(() => import('@/components/landing/SuccessStories'))
-const ContactSupport = lazy(() => import('@/components/landing/ContactSupport'))
-// const NewWayOfWorking = lazy(() => import('@/components/landing/NewWayOfWorking'))
-const Certification = lazy(() => import('@/components/landing/Certication'))
-const FlowingMenu = lazy(() => import('@/components/ui/FlowingMenu'))
-const Footer = lazy(() => import('../components/shared/Footer'))
-
-// Dynamic imports with loading states
-const DynamicGalaxy = dynamic(() => import('../components/ui/Galaxy'), {
-  ssr: false,
-  loading: () => <div className="fixed inset-0 -z-30 bg-black" />
+// Lazy load heavy components
+const Courses = dynamic(() => import('@/components/landing/Courses'), {
+  ssr: true,
+  loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
-const DynamicGradientMesh = dynamic(() => import('../components/ui/GradientMesh'), {
-  ssr: false,
-  loading: () => <div />
+const SuccessStories = dynamic(() => import('@/components/landing/SuccessStories'), {
+  ssr: true,
+  loading: () => <div className="h-96 bg-black animate-pulse" />
 })
+
+const ContactSupport = dynamic(() => import('@/components/landing/ContactSupport'), {
+  ssr: true,
+  loading: () => <div className="h-96 bg-black animate-pulse" />
+})
+
+const Certification = dynamic(() => import('@/components/landing/Certication'), {
+  ssr: true,
+  loading: () => <div className="h-96 bg-black animate-pulse" />
+})
+
+
+const Footer = dynamic(() => import('../components/shared/Footer'), {
+  ssr: true,
+  loading: () => <div className="h-32 bg-black animate-pulse" />
+})
+
+export const metadata: Metadata = {
+  title: "Master Enterprise Agility & Digital Transformation",
+  description: "Join 50,000+ professionals who transformed their careers with our comprehensive courses in enterprise agility, digital transformation, and modern leadership practices.",
+  keywords: [
+    "enterprise agility",
+    "digital transformation",
+    "lean six sigma",
+    "agile project management",
+    "leadership development",
+    "MBA programs",
+    "professional certification",
+    "business transformation"
+  ],
+  openGraph: {
+    title: "Master Enterprise Agility & Digital Transformation",
+    description: "Join 50,000+ professionals who transformed their careers with our comprehensive courses in enterprise agility, digital transformation, and modern leadership practices.",
+    type: "website",
+    url: "https://leanmultiverse.com",
+  },
+}
 
 export default function LandingPage() {
-
-  const demoItems = [
-    {
-      link: "/case-studies/netflix",
-      text: "Netflix",
-      image: "https://images.unsplash.com/photo-1574375927938-c5a4422a05f6?w=800&h=600&fit=crop"
-    },
-    {
-      link: "/case-studies/nasa",
-      text: "NASA",
-      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=800&h=600&fit=crop"
-    },
-    {
-      link: "/case-studies/porsche",
-      text: "Porsche",
-      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop"
-    }
-  ];
 
   return (
     <main className="relative w-full min-h-screen text-white">
@@ -55,34 +64,8 @@ export default function LandingPage() {
         <Navbar />
         <Hero />
         
-        {/* Background effects load after hero */}
-        <div className="fixed inset-0 -z-30 bg-black pointer-events-none">
-          <Suspense fallback={<div className="fixed inset-0 -z-30 bg-black" />}>
-            <DynamicGalaxy 
-              mouseRepulsion={true}
-              mouseInteraction={true}
-              density={0.8}
-            />
-          </Suspense>
-        </div>
-
-        {/* Gradient Mesh Background - Lazy loaded */}
-        <Suspense fallback={<div />}>
-          <DynamicGradientMesh />
-        </Suspense>
-
-        {/* Background Image Layer - Optimized */}
-        <div className="fixed inset-0 -z-10 flex items-center justify-center pointer-events-none">
-          <Image 
-            src="/bg.png" 
-            alt="Background Design" 
-            fill 
-            className="object-contain opacity-50"
-            priority={false}
-            quality={60}
-            sizes="100vw"
-          />
-        </div>
+        {/* Background effects - Client component */}
+        <LandingPageClient />
         
         {/* Lazy loaded sections with intersection observer */}
         <div id='certification'>
@@ -111,9 +94,9 @@ export default function LandingPage() {
               </p>
             </div>
             <div className='bg-black' style={{ height: '600px', position: 'relative' }}>
-              <Suspense fallback={<div className="h-full bg-gray-900 animate-pulse" />}>
-                <FlowingMenu items={demoItems} />
-              </Suspense>
+              <div className="h-full bg-gray-900 flex items-center justify-center">
+                <p className="text-white">Success Stories Component Loading...</p>
+              </div>
             </div>
           </section>
         </div>
@@ -123,12 +106,6 @@ export default function LandingPage() {
             <SuccessStories />
           </Suspense>
         </div>
-        
-        {/* <div id="newwayofworking">
-          <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
-            <NewWayOfWorking />
-          </Suspense>
-        </div> */}
         
         <div id="contact">
           <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
