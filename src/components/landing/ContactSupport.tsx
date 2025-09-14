@@ -1,0 +1,609 @@
+"use client"
+
+import { useState, useRef, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
+
+const contactMethods = [
+  {
+    id: "phone",
+    icon: (
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+      </svg>
+    ),
+    title: "Phone Support",
+    description: "Speak with our education consultants",
+    contact: "+1 (240) 719-6120",
+    hours: "Monday - Saturday | 24 Hours",
+    action: "Call Now",
+    gradient: "from-yellow-400 to-yellow-500",
+    bgGradient: "from-yellow-400/10 to-yellow-500/10"
+  },
+  {
+    id: "whatsapp",
+    icon: (
+      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+      </svg>
+    ),
+    title: "WhatsApp Chat",
+    description: "Quick support via WhatsApp",
+    contact: "+1 (240) 719-6120",
+    hours: "Available 24/7",
+    action: "Chat on WhatsApp",
+    gradient: "from-yellow-400/80 to-yellow-600/80",
+    bgGradient: "from-yellow-400/10 to-yellow-600/10"
+  },
+  {
+    id: "ai",
+    icon: (
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+    ),
+    title: "AI Chatbot",
+    description: "Instant answers with our AI assistant",
+    contact: "Available 24/7",
+    hours: "Instant response",
+    action: "Start Chat",
+    gradient: "from-yellow-400/60 to-yellow-500/60",
+    bgGradient: "from-yellow-400/10 to-yellow-500/10"
+  }
+]
+
+export default function ContactSupport() {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  
+  const sectionRef = useRef<HTMLElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const cardsRef = useRef<HTMLDivElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
+
+  const handleContactAction = (action: string) => {
+    if (action === "Call Now") {
+      window.open("tel:+12407196120", "_self")
+    } else if (action === "Chat on WhatsApp") {
+      const phoneNumber = "12407196120"
+      const message = "Hi! I'm interested in learning more about your courses."
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+      window.open(url, '_blank')
+    } else if (action === "Start Chat") {
+      // This will trigger the chat widget
+      const chatButton = document.querySelector('[data-chat-button]') as HTMLElement
+      if (chatButton) {
+        chatButton.click()
+      }
+    }
+  }
+
+  // GSAP Animations
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const ctx = gsap.context(() => {
+      // Animate header
+      gsap.fromTo(headerRef.current, 
+        { y: 100, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 1.5,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      )
+
+      // Animate cards with stagger
+      if (cardsRef.current?.children) {
+        gsap.fromTo(cardsRef.current.children, 
+          { y: 120, opacity: 0, scale: 0.8 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+            stagger: 0.3,
+            delay: 0.4,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 70%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        )
+      }
+
+      // Animate CTA section
+      gsap.fromTo(ctaRef.current, 
+        { y: 80, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 1.2,
+          ease: "power3.out",
+          delay: 1.2,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      )
+
+      // Floating animation for icons
+      gsap.to(".contact-icon", {
+        y: -10,
+        duration: 2,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: -1,
+        stagger: 0.5
+      })
+
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
+  return (
+    <motion.section 
+      ref={sectionRef}
+      className="py-20 bg-black relative overflow-hidden"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-100px" }}
+    >
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 1.3, 1],
+            opacity: [0.3, 0.6, 0.3],
+            x: [0, 50, 0],
+            y: [0, -30, 0]
+          }}
+          transition={{ 
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-yellow-400/3 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.4, 0.7, 0.4],
+            x: [0, -40, 0],
+            y: [0, 40, 0]
+          }}
+          transition={{ 
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-64 h-64 bg-yellow-400/4 rounded-full blur-3xl"
+          animate={{ 
+            scale: [1, 1.4, 1],
+            opacity: [0.2, 0.5, 0.2],
+            x: [0, 30, 0],
+            y: [0, -50, 0]
+          }}
+          transition={{ 
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* Enhanced Header */}
+        <motion.div 
+          ref={headerRef}
+          className="text-center mb-20"
+          initial={{ y: 100, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <motion.div
+            className="inline-block mb-6"
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 backdrop-blur-xl border border-yellow-400/30 rounded-full px-8 py-4">
+              <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium">
+                Get Support
+              </p>
+            </div>
+          </motion.div>
+          
+          <motion.h2 
+            className="text-[30px] md:text-[46.13px] font-bold mb-8 text-white"
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut", delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            We&apos;re Here to Help
+          </motion.h2>
+          
+          <motion.p 
+            className="text-gray-300 text-lg max-w-3xl mx-auto leading-relaxed"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
+            viewport={{ once: true }}
+          >
+            Our dedicated support team is available 24/7 to help you with any questions 
+            about our courses, admissions, or career guidance.
+          </motion.p>
+        </motion.div>
+
+        {/* Enhanced Contact Methods Grid */}
+        <motion.div 
+          ref={cardsRef}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {contactMethods.map((method, index) => (
+            <motion.div
+              key={method.id}
+              className="group relative"
+              initial={{ y: 120, opacity: 0, scale: 0.8 }}
+              whileInView={{ y: 0, opacity: 1, scale: 1 }}
+              transition={{ 
+                duration: 1.2, 
+                ease: "easeOut", 
+                delay: 0.4 + index * 0.3 
+              }}
+              viewport={{ once: true, margin: "-50px" }}
+              whileHover={{ 
+                y: -20,
+                scale: 1.05,
+                transition: { duration: 0.3 }
+              }}
+              onHoverStart={() => setHoveredCard(method.id)}
+              onHoverEnd={() => setHoveredCard(null)}
+            >
+              {/* Animated background glow */}
+              <motion.div
+                className={`absolute inset-0 bg-gradient-to-br ${method.bgGradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                animate={{ 
+                  scale: hoveredCard === method.id ? [1, 1.1, 1] : 1,
+                  opacity: hoveredCard === method.id ? [0, 0.3, 0] : 0
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+
+              <motion.div
+                className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 h-full overflow-hidden"
+                whileHover={{ 
+                  borderColor: "rgba(255, 255, 255, 0.4)",
+                  backgroundColor: "rgba(255, 255, 255, 0.08)"
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Floating particles effect */}
+                <div className="absolute inset-0 overflow-hidden">
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className={`absolute w-2 h-2 bg-gradient-to-r ${method.gradient} rounded-full opacity-20`}
+                      style={{
+                        left: `${20 + i * 15}%`,
+                        top: `${30 + i * 10}%`,
+                      }}
+                      animate={{
+                        y: [0, -20, 0],
+                        opacity: [0.2, 0.6, 0.2],
+                        scale: [1, 1.5, 1]
+                      }}
+                      transition={{
+                        duration: 3 + i * 0.5,
+                        repeat: Infinity,
+                        delay: i * 0.3
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <div className="relative z-10">
+                  {/* Icon with enhanced animation */}
+                  <motion.div 
+                    className="flex justify-center mb-6"
+                    initial={{ scale: 0, rotate: -180 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 + index * 0.3 }}
+                    viewport={{ once: true }}
+                  >
+                    <motion.div
+                      className={`w-20 h-20 bg-gradient-to-br ${method.gradient} rounded-2xl flex items-center justify-center text-white shadow-2xl contact-icon`}
+                      whileHover={{ 
+                        scale: 1.1, 
+                        rotate: 5,
+                        boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {method.icon}
+                    </motion.div>
+                  </motion.div>
+
+                  {/* Content */}
+                  <div className="text-center">
+                    <motion.h3 
+                      className="text-2xl font-bold text-white mb-4"
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.6, delay: 0.8 + index * 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      {method.title}
+                    </motion.h3>
+                    
+                    <motion.p 
+                      className="text-gray-300 mb-6 leading-relaxed"
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.6, delay: 1 + index * 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      {method.description}
+                    </motion.p>
+
+                    <motion.div 
+                      className="space-y-2 mb-8"
+                      initial={{ y: 20, opacity: 0 }}
+                      whileInView={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.6, delay: 1.2 + index * 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="text-white font-semibold text-lg">
+                        {method.contact}
+                      </div>
+                      <div className="text-gray-400 text-sm">
+                        {method.hours}
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      whileHover={{ 
+                        scale: 1.05, 
+                        y: -3,
+                        transition: { duration: 0.2 }
+                      }}
+                      whileTap={{ 
+                        scale: 0.95,
+                        y: 0
+                      }}
+                      className="relative group"
+                    >
+                      <motion.div
+                        className={`absolute inset-0 bg-gradient-to-r ${method.gradient} rounded-2xl blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-300`}
+                        animate={{
+                          scale: [1, 1.1, 1],
+                          opacity: [0, 0.2, 0]
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                      <Button 
+                        onClick={() => handleContactAction(method.action)}
+                        className={`relative w-full bg-gradient-to-r ${method.gradient} text-white hover:opacity-90 rounded-2xl py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/20`}
+                        data-cursor-hover
+                      >
+                        <motion.span
+                          className="relative z-10"
+                          whileHover={{ y: -1 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          {method.action}
+                        </motion.span>
+                      </Button>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Enhanced CTA Section */}
+        <motion.div 
+          ref={ctaRef}
+          className="text-center mt-20 relative"
+          initial={{ y: 80, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: 1.2 }}
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {/* Background glow effect */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/5 rounded-3xl blur-3xl"
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3]
+            }}
+            transition={{ 
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+
+          <div className="relative z-10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-12">
+            <motion.h3 
+              className="text-3xl md:text-4xl font-bold text-white mb-6"
+              initial={{ y: 30, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.4 }}
+              viewport={{ once: true }}
+            >
+              Still Have Questions?
+            </motion.h3>
+            
+            <motion.p 
+              className="text-gray-300 mb-10 max-w-2xl mx-auto text-lg leading-relaxed"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.6 }}
+              viewport={{ once: true }}
+            >
+              Our education consultants are here to help you choose the right program 
+              and answer any questions about your learning journey.
+            </motion.p>
+            
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-6 justify-center"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 1.8 }}
+              viewport={{ once: true }}
+            >
+              <motion.div
+                whileHover={{ 
+                  scale: 1.05, 
+                  y: -5,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ 
+                  scale: 0.95,
+                  y: 0
+                }}
+                className="relative group"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-yellow-400/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0, 0.3, 0]
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+                <Button 
+                  className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-2xl px-10 py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 border border-yellow-400/20"
+                  data-cursor-hover
+                >
+                  <motion.span
+                    className="relative z-10"
+                    whileHover={{ y: -1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Schedule a Call
+                  </motion.span>
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                whileHover={{ 
+                  scale: 1.05, 
+                  y: -5,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ 
+                  scale: 0.95,
+                  y: 0
+                }}
+                className="relative group"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-white/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0, 0.2, 0]
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.5
+                  }}
+                />
+                <Button 
+                  className="relative bg-white/10 text-white hover:bg-white/20 rounded-2xl px-10 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300 hover:shadow-xl"
+                  data-cursor-hover
+                >
+                  <motion.span
+                    className="relative z-10"
+                    whileHover={{ y: -1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Download Brochure
+                  </motion.span>
+                </Button>
+              </motion.div>
+            </motion.div>
+
+            {/* Additional info */}
+            <motion.div 
+              className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-gray-400"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 2 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-2">
+                <motion.div
+                  className="w-2 h-2 bg-yellow-400 rounded-full"
+                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <span>24/7 Support Available</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <motion.div
+                  className="w-2 h-2 bg-yellow-400/80 rounded-full"
+                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                />
+                <span>Instant Response</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <motion.div
+                  className="w-2 h-2 bg-yellow-400/60 rounded-full"
+                  animate={{ scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                />
+                <span>Expert Guidance</span>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.section>
+  )
+}

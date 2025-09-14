@@ -2,6 +2,10 @@ import type { Metadata } from "next"
 import { Raleway } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import ChatWidget from "@/components/ui/ChatWidget"
+import CustomCursor from "@/components/ui/CustomCursor"
+import PerformanceMonitor from "@/components/PerformanceMonitor"
+import LenisProvider from "@/components/providers/LenisProvider"
 import "./globals.css"
 
 // Load Raleway font
@@ -51,9 +55,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${raleway.variable} font-sans antialiased`}>
-        {children}
-        <Analytics />
-        <SpeedInsights />
+        <LenisProvider>
+          {children}
+          <CustomCursor />
+          <ChatWidget />
+          <PerformanceMonitor />
+          <Analytics />
+          <SpeedInsights />
+        </LenisProvider>
       </body>
     </html>
   )

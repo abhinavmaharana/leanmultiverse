@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export type LogoItem =
   | {
@@ -50,28 +51,29 @@ const useResizeObserver = (
   elements: Array<React.RefObject<Element | null>>,
   dependencies: React.DependencyList
 ) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedCallback = useCallback(callback, [callback]);
+  
   useEffect(() => {
     if (!window.ResizeObserver) {
-      const handleResize = () => callback();
+      const handleResize = () => memoizedCallback();
       window.addEventListener('resize', handleResize);
-      callback();
+      memoizedCallback();
       return () => window.removeEventListener('resize', handleResize);
     }
 
     const observers = elements.map(ref => {
       if (!ref.current) return null;
-      const observer = new ResizeObserver(callback);
+      const observer = new ResizeObserver(memoizedCallback);
       observer.observe(ref.current);
       return observer;
     });
 
-    callback();
+    memoizedCallback();
 
     return () => {
       observers.forEach(observer => observer?.disconnect());
     };
-  }, dependencies);
+  }, [memoizedCallback, elements, dependencies]);
 };
 
 const useImageLoader = (
@@ -79,12 +81,13 @@ const useImageLoader = (
   onLoad: () => void,
   dependencies: React.DependencyList
 ) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const memoizedOnLoad = useCallback(onLoad, [onLoad]);
+  
   useEffect(() => {
     const images = seqRef.current?.querySelectorAll('img') ?? [];
 
     if (images.length === 0) {
-      onLoad();
+      memoizedOnLoad();
       return;
     }
 
@@ -92,7 +95,7 @@ const useImageLoader = (
     const handleImageLoad = () => {
       remainingImages -= 1;
       if (remainingImages === 0) {
-        onLoad();
+        memoizedOnLoad();
       }
     };
 
@@ -112,7 +115,7 @@ const useImageLoader = (
         img.removeEventListener('error', handleImageLoad);
       });
     };
-  }, [seqRef, onLoad, ...dependencies]);
+  }, [seqRef, memoizedOnLoad, dependencies]);
 };
 
 const useAnimationLoop = (
@@ -282,7 +285,11 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             {(item as { node: React.ReactNode }).node}
           </span>
         ) : (
-          <img
+          <Image
+            src={item.src}
+            alt={item.alt || "Logo"}
+            width={100}
+            height={40}
             className={cx(
               'h-[var(--logoloop-logoHeight)] w-auto block object-contain',
               '[-webkit-user-drag:none] pointer-events-none',
@@ -291,12 +298,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
               scaleOnHover &&
                 'transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover/item:scale-120'
             )}
-            src={(item as { src: string }).src}
-            srcSet={(item as { srcSet?: string }).srcSet}
-            sizes={(item as { sizes?: string }).sizes}
-            width={(item as { width?: number }).width}
-            height={(item as { height?: number }).height}
-            alt={(item as { alt?: string }).alt ?? ''}
             title={(item as { title?: string }).title}
             loading="lazy"
             decoding="async"
