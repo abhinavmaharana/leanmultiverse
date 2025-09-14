@@ -90,7 +90,9 @@ export default function Navbar() {
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
       >
-        <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-11 w-auto" />
+        <Link href="/" className="cursor-pointer hover:opacity-80 transition-opacity duration-300">
+          <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-11 w-auto" />
+        </Link>
       </motion.div>
 
       {/* Center: Navigation links (desktop) */}

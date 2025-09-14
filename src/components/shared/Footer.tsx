@@ -1,6 +1,7 @@
 'use client'
 
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
@@ -91,7 +92,9 @@ export default function Footer() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
               viewport={{ once: true }}
             >
-              <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-11 w-auto mb-6" />
+              <Link href="/" className="cursor-pointer hover:opacity-80 transition-opacity duration-300">
+                <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-11 w-auto mb-6" />
+              </Link>
             </motion.div>
             <motion.p 
               className="text-gray-300 mb-6 leading-relaxed"
