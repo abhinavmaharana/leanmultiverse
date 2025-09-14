@@ -145,14 +145,35 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             {/* Gradient Mesh */}
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 via-transparent to-yellow-600/10" />
             
-            {/* Floating Particles */}
-            {[...Array(20)].map((_, i) => (
+            {/* Floating Particles - Fixed positions to avoid hydration mismatch */}
+            {[
+              { left: 10, top: 20 },
+              { left: 25, top: 15 },
+              { left: 40, top: 30 },
+              { left: 60, top: 25 },
+              { left: 80, top: 35 },
+              { left: 15, top: 50 },
+              { left: 35, top: 45 },
+              { left: 55, top: 60 },
+              { left: 75, top: 55 },
+              { left: 90, top: 70 },
+              { left: 20, top: 75 },
+              { left: 45, top: 80 },
+              { left: 65, top: 85 },
+              { left: 85, top: 90 },
+              { left: 5, top: 40 },
+              { left: 30, top: 65 },
+              { left: 50, top: 10 },
+              { left: 70, top: 15 },
+              { left: 95, top: 25 },
+              { left: 12, top: 85 }
+            ].map((position, i) => (
               <motion.div
                 key={i}
                 className="loading-particle absolute w-2 h-2 bg-yellow-400/30 rounded-full"
                 style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
+                  left: `${position.left}%`,
+                  top: `${position.top}%`,
                 }}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ 
