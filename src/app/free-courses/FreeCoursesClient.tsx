@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import Navbar from '@/components/shared/Navbar'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -57,6 +58,9 @@ export default function FreeCoursesClient() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
+      {/* Navbar */}
+      <Navbar />
+      
       {/* Animated Background */}
       <div className="fixed inset-0 -z-30 bg-black">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 via-transparent to-yellow-600/5" />
