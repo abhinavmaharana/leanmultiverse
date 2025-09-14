@@ -151,15 +151,6 @@ export default function FreeCourses() {
         }
       )
 
-      // Floating animation for course cards
-      gsap.to(".course-card", {
-        y: -10,
-        duration: 2,
-        ease: "power1.inOut",
-        yoyo: true,
-        repeat: -1,
-        stagger: 0.3
-      })
 
     }, sectionRef)
 

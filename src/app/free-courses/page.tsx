@@ -47,15 +47,6 @@ export default function FreeCoursesPage() {
         }
       })
 
-      // Floating particles animation
-      gsap.to(".floating-particle", {
-        y: -20,
-        duration: 3,
-        ease: "power1.inOut",
-        yoyo: true,
-        repeat: -1,
-        stagger: 0.5
-      })
 
     }, mainRef)
 
