@@ -28,6 +28,12 @@ const Certification = dynamic(() => import('@/components/landing/Certication'), 
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
+const FlowingMenuWrapper = dynamic(() => import('@/components/ui/FlowingMenuWrapper'), {
+  ssr: true,
+  loading: () => <div className="h-full bg-gray-900 animate-pulse flex items-center justify-center">
+    <p className="text-white">Loading Success Stories...</p>
+  </div>
+})
 
 const Footer = dynamic(() => import('../components/shared/Footer'), {
   ssr: true,
@@ -56,6 +62,23 @@ export const metadata: Metadata = {
 }
 
 export default function LandingPage() {
+  const demoItems = [
+    {
+      link: "/case-studies/netflix",
+      text: "Netflix",
+      image: "https://images.unsplash.com/photo-1574375927938-c5a4422a05f6?w=800&h=600&fit=crop"
+    },
+    {
+      link: "/case-studies/nasa",
+      text: "NASA",
+      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=800&h=600&fit=crop"
+    },
+    {
+      link: "/case-studies/porsche",
+      text: "Porsche",
+      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop"
+    }
+  ]
 
   return (
     <main className="relative w-full min-h-screen text-white">
@@ -94,9 +117,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div className='bg-black' style={{ height: '600px', position: 'relative' }}>
-              <div className="h-full bg-gray-900 flex items-center justify-center">
-                <p className="text-white">Success Stories Component Loading...</p>
-              </div>
+              <FlowingMenuWrapper items={demoItems} />
             </div>
           </section>
         </div>

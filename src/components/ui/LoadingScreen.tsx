@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
+import Image from 'next/image'
 
 interface LoadingScreenProps {
   onComplete: () => void
@@ -116,8 +117,14 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl font-bold text-black">LM</span>
+              <div className="relative w-24 h-24 mb-4">
+                <Image
+                  src="/logo.svg"
+                  alt="LeanMultiverse Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </motion.div>
 

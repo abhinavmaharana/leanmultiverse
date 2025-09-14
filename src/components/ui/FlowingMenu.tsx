@@ -52,7 +52,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
     const rect = itemRef.current.getBoundingClientRect();
     const edge = findClosestEdge(ev.clientX - rect.left, ev.clientY - rect.top, rect.width, rect.height);
 
-    const tl = gsap.timeline({ defaults: animationDefaults }) as TimelineMax;
+    const tl = gsap.timeline({ defaults: animationDefaults });
     tl.to(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }).to(marqueeInnerRef.current, {
       y: edge === 'top' ? '101%' : '-101%'
     });
