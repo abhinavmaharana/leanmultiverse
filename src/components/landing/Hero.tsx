@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useMemo } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -17,81 +17,66 @@ export default function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const buttonsRef = useRef<HTMLDivElement>(null)
 
+  // Memoize animation configuration to prevent recreation
+  const animationConfig = useMemo(() => ({
+    tagline: { y: 50, opacity: 0 },
+    title: { y: 80, opacity: 0 },
+    subtitle: { y: 60, opacity: 0 },
+    buttons: { y: 40, opacity: 0 }
+  }), [])
+
   useEffect(() => {
     if (typeof window === 'undefined') return
 
     const ctx = gsap.context(() => {
-      // Animate elements on scroll
-      gsap.fromTo(taglineRef.current, 
-        { y: 50, opacity: 0 },
+      // Create a single timeline for better performance
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse"
+        }
+      })
+
+      // Batch animations in timeline for better performance
+      tl.fromTo(taglineRef.current, animationConfig.tagline, 
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 0.8,
+          ease: "power2.out"
+        }
+      )
+      .fromTo(titleRef.current, animationConfig.title, 
         { 
           y: 0, 
           opacity: 1, 
           duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
+          ease: "power2.out"
+        }, "-=0.6"
       )
-
-      gsap.fromTo(titleRef.current, 
-        { y: 80, opacity: 0 },
+      .fromTo(subtitleRef.current, animationConfig.subtitle, 
         { 
           y: 0, 
           opacity: 1, 
-          duration: 1.2,
-          ease: "power3.out",
-          delay: 0.2,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
+          duration: 0.8,
+          ease: "power2.out"
+        }, "-=0.4"
       )
-
-      gsap.fromTo(subtitleRef.current, 
-        { y: 60, opacity: 0 },
+      .fromTo(buttonsRef.current, animationConfig.buttons, 
         { 
           y: 0, 
           opacity: 1, 
-          duration: 1,
-          ease: "power3.out",
-          delay: 0.4,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
+          duration: 0.8,
+          ease: "power2.out"
+        }, "-=0.2"
       )
 
-      gsap.fromTo(buttonsRef.current, 
-        { y: 40, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1,
-          ease: "power3.out",
-          delay: 0.6,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      )
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [animationConfig])
 
   return (
     <section
@@ -102,126 +87,83 @@ export default function Hero() {
       {/* Content Container */}
       <div className="max-w-6xl mx-auto w-full">
         {/* Tagline */}
-        <motion.p 
+        <p 
           ref={taglineRef}
           className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
         >
           Transform Your Career
-        </motion.p>
+        </p>
 
         {/* Title */}
-        <motion.h1 
+        <h1 
           ref={titleRef}
           className="text-[30px] md:text-[46.13px] lg:text-[56px] font-bold mb-6 text-white leading-tight"
-          initial={{ y: 80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
         >
           Master Enterprise Agility &<br />
           <span className="text-yellow-400">Digital Transformation</span>
-        </motion.h1>
+        </h1>
 
         {/* Subtitle */}
-        <motion.p 
+        <p 
           ref={subtitleRef}
           className="text-gray-300 text-lg md:text-xl mb-8 max-w-4xl mx-auto leading-relaxed"
-          initial={{ y: 60, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
         >
           Join 50,000+ professionals who have transformed their careers with our 
           comprehensive courses in enterprise agility, digital transformation, 
           and modern leadership practices.
-        </motion.p>
+        </p>
 
         {/* CTA Buttons */}
-        <motion.div 
+        <div 
           ref={buttonsRef}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
         >
           <motion.div
             whileHover={{ 
-              scale: 1.05,
-              y: -2,
-              transition: { duration: 0.2 }
+              scale: 1.02,
+              y: -1,
+              transition: { duration: 0.2, ease: "easeOut" }
             }}
             whileTap={{ 
-              scale: 0.95,
+              scale: 0.98,
               y: 0
             }}
             className="relative group"
           >
-            <motion.div
-              className="absolute inset-0 bg-yellow-400/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0, 0.3, 0]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
+            <div className="absolute inset-0 bg-yellow-400/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <Button 
               className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 border border-yellow-400/20"
               data-cursor-hover
             >
-              <motion.span
-                className="relative z-10"
-                whileHover={{ y: -1 }}
-                transition={{ duration: 0.2 }}
-              >
+              <span className="relative z-10">
                 Explore Courses
-              </motion.span>
+              </span>
             </Button>
           </motion.div>
           
           <motion.div
             whileHover={{ 
-              scale: 1.05,
-              y: -2,
-              transition: { duration: 0.2 }
+              scale: 1.02,
+              y: -1,
+              transition: { duration: 0.2, ease: "easeOut" }
             }}
             whileTap={{ 
-              scale: 0.95,
+              scale: 0.98,
               y: 0
             }}
             className="relative group"
           >
-            <motion.div
-              className="absolute inset-0 bg-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0, 0.2, 0]
-              }}
-              transition={{
-                duration: 2.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 0.5
-              }}
-            />
+            <div className="absolute inset-0 bg-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <Button 
               className="relative bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300 hover:shadow-xl"
               data-cursor-hover
             >
-              <motion.span
-                className="relative z-10"
-                whileHover={{ y: -1 }}
-                transition={{ duration: 0.2 }}
-              >
+              <span className="relative z-10">
                 <a href="/free-courses">Free Courses</a>
-              </motion.span>
+              </span>
             </Button>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

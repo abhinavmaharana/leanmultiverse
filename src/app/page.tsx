@@ -50,39 +50,39 @@ export default function LandingPage() {
 
   return (
     <main className="relative w-full min-h-screen text-white">
-      {/* Background Galaxy - Lazy loaded */}
-      <div className="fixed inset-0 -z-30 bg-black">
-        <Suspense fallback={<div className="fixed inset-0 -z-30 bg-black" />}>
-          <DynamicGalaxy 
-            mouseRepulsion={true}
-            mouseInteraction={true}
-            density={0.8}
-          />
-        </Suspense>
-      </div>
-
-      {/* Gradient Mesh Background - Lazy loaded */}
-      <Suspense fallback={<div />}>
-        <DynamicGradientMesh />
-      </Suspense>
-
-      {/* Background Image Layer - Optimized */}
-      <div className="fixed inset-0 -z-10 flex items-center justify-center">
-        <Image 
-          src="/bg.png" 
-          alt="Background Design" 
-          fill 
-          className="object-contain opacity-50"
-          priority
-          quality={75}
-          sizes="100vw"
-        />
-      </div>
-
-      {/* Content */}
+      {/* Critical content loads first */}
       <div className="relative flex flex-col min-h-screen">
         <Navbar />
         <Hero />
+        
+        {/* Background effects load after hero */}
+        <div className="fixed inset-0 -z-30 bg-black pointer-events-none">
+          <Suspense fallback={<div className="fixed inset-0 -z-30 bg-black" />}>
+            <DynamicGalaxy 
+              mouseRepulsion={true}
+              mouseInteraction={true}
+              density={0.8}
+            />
+          </Suspense>
+        </div>
+
+        {/* Gradient Mesh Background - Lazy loaded */}
+        <Suspense fallback={<div />}>
+          <DynamicGradientMesh />
+        </Suspense>
+
+        {/* Background Image Layer - Optimized */}
+        <div className="fixed inset-0 -z-10 flex items-center justify-center pointer-events-none">
+          <Image 
+            src="/bg.png" 
+            alt="Background Design" 
+            fill 
+            className="object-contain opacity-50"
+            priority={false}
+            quality={60}
+            sizes="100vw"
+          />
+        </div>
         
         {/* Lazy loaded sections with intersection observer */}
         <div id='certification'>
