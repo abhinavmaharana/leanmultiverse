@@ -77,7 +77,7 @@ export default function Footer() {
         transition={{ duration: 1.2, ease: "easeOut" }}
         viewport={{ once: true, margin: "-100px" }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Company Info */}
           <motion.div 
             className="lg:col-span-1"
@@ -93,11 +93,11 @@ export default function Footer() {
               viewport={{ once: true }}
             >
               <Link href="/" className="cursor-pointer hover:opacity-80 transition-opacity duration-300">
-                <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-11 w-auto mb-6" />
+                <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-8 sm:h-10 md:h-11 w-auto mb-4 sm:mb-6" />
               </Link>
             </motion.div>
             <motion.p 
-              className="text-gray-300 mb-6 leading-relaxed"
+              className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base"
               initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}

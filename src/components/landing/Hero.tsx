@@ -82,14 +82,14 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="home"
-      className="flex flex-col items-center justify-center text-center min-h-screen px-6 py-20"
+      className="flex flex-col items-center justify-center text-center min-h-screen px-4 sm:px-6 py-16 sm:py-20"
     >
       {/* Content Container */}
       <div className="max-w-6xl mx-auto w-full">
         {/* Tagline */}
         <p 
           ref={taglineRef}
-          className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3"
+          className="uppercase tracking-[4px] sm:tracking-[6px] text-yellow-400 text-sm sm:text-base lg:text-[20px] font-medium mb-3"
         >
           Transform Your Career
         </p>
@@ -97,16 +97,16 @@ export default function Hero() {
         {/* Title */}
         <h1 
           ref={titleRef}
-          className="text-[30px] md:text-[46.13px] lg:text-[56px] font-bold mb-6 text-white leading-tight"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[56px] font-bold mb-4 sm:mb-6 text-white leading-tight px-2"
         >
-          Master Enterprise Agility &<br />
-          <span className="text-yellow-400">Digital Transformation</span>
+          Master Enterprise Agility &<br className="hidden sm:block" />
+          <span className="block sm:inline sm:ml-1">Digital Transformation</span>
         </h1>
 
         {/* Subtitle */}
         <p 
           ref={subtitleRef}
-          className="text-gray-300 text-lg md:text-xl mb-8 max-w-4xl mx-auto leading-relaxed"
+          className="text-gray-300 text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2"
         >
           Join 50,000+ professionals who have transformed their careers with our 
           comprehensive courses in enterprise agility, digital transformation, 
@@ -116,7 +116,7 @@ export default function Hero() {
         {/* CTA Buttons */}
         <div 
           ref={buttonsRef}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full max-w-md sm:max-w-none mx-auto px-4"
         >
           <motion.div
             whileHover={{ 
@@ -128,11 +128,11 @@ export default function Hero() {
               scale: 0.98,
               y: 0
             }}
-            className="relative group"
+            className="relative group w-full sm:w-auto"
           >
             <div className="absolute inset-0 bg-yellow-400/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <Button 
-              className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 border border-yellow-400/20"
+              className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 border border-yellow-400/20 w-full sm:w-auto"
               data-cursor-hover
             >
               <span className="relative z-10">
@@ -151,11 +151,11 @@ export default function Hero() {
               scale: 0.98,
               y: 0
             }}
-            className="relative group"
+            className="relative group w-full sm:w-auto"
           >
             <div className="absolute inset-0 bg-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <Button 
-              className="relative bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300 hover:shadow-xl"
+              className="relative bg-white/10 text-white hover:bg-white/20 rounded-full px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300 hover:shadow-xl w-full sm:w-auto"
               data-cursor-hover
             >
               <span className="relative z-10">

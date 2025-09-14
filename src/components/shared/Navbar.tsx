@@ -77,7 +77,7 @@ export default function Navbar() {
   return (
     <motion.nav 
       ref={navRef}
-      className="relative flex items-center justify-between px-6 md:px-8 py-3 mt-6"
+      className="relative flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 mt-4 sm:mt-6"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, ease: "easeOut" }}
@@ -91,7 +91,13 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
       >
         <Link href="/" className="cursor-pointer hover:opacity-80 transition-opacity duration-300">
-          <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-11 w-auto" />
+          <Image 
+            src="/logo.svg" 
+            alt="Lean Multiverse Logo" 
+            width={160} 
+            height={44} 
+            className="h-8 sm:h-10 md:h-11 w-auto" 
+          />
         </Link>
       </motion.div>
 
@@ -243,14 +249,14 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div 
-            className="absolute left-0 right-0 top-full mt-3 px-6 md:hidden"
+            className="absolute left-0 right-0 top-full mt-3 px-4 sm:px-6 md:hidden z-40"
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <motion.div 
-              className="flex flex-col gap-2 text-sm font-medium rounded-2xl shadow-lg bg-gradient-to-b from-[#0b0b0b]/90 to-[#1a1a1a]/90 backdrop-blur-md border border-white/10 p-4"
+              className="flex flex-col gap-2 text-sm sm:text-base font-medium rounded-2xl shadow-lg bg-gradient-to-b from-[#0b0b0b]/90 to-[#1a1a1a]/90 backdrop-blur-md border border-white/10 p-4 sm:p-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, delay: 0.1 }}
@@ -258,7 +264,7 @@ export default function Navbar() {
               <motion.a 
                 onClick={() => setOpen(false)} 
                 href="#home" 
-                className="px-3 py-2 rounded-lg hover:bg-white/5 text-white"
+                className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -267,7 +273,7 @@ export default function Navbar() {
               <motion.a 
                 onClick={() => setOpen(false)} 
                 href="#courses" 
-                className="px-3 py-2 rounded-lg hover:bg-white/5 text-white"
+                className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -276,7 +282,7 @@ export default function Navbar() {
               <motion.a 
                 onClick={() => setOpen(false)} 
                 href="#partners" 
-                className="px-3 py-2 rounded-lg hover:bg-white/5 text-white"
+                className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -285,7 +291,7 @@ export default function Navbar() {
               <motion.a 
                 onClick={() => setOpen(false)} 
                 href="#stories" 
-                className="px-3 py-2 rounded-lg hover:bg-white/5 text-white"
+                className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
