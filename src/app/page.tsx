@@ -12,7 +12,7 @@ import Hero from '../components/landing/Hero'
 const Courses = lazy(() => import('@/components/landing/Courses'))
 const SuccessStories = lazy(() => import('@/components/landing/SuccessStories'))
 const ContactSupport = lazy(() => import('@/components/landing/ContactSupport'))
-const NewWayOfWorking = lazy(() => import('@/components/landing/NewWayOfWorking'))
+// const NewWayOfWorking = lazy(() => import('@/components/landing/NewWayOfWorking'))
 const Certification = lazy(() => import('@/components/landing/Certication'))
 const FlowingMenu = lazy(() => import('@/components/ui/FlowingMenu'))
 const Footer = lazy(() => import('../components/shared/Footer'))
@@ -124,11 +124,11 @@ export default function LandingPage() {
           </Suspense>
         </div>
         
-        <div id="newwayofworking">
+        {/* <div id="newwayofworking">
           <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
             <NewWayOfWorking />
           </Suspense>
-        </div>
+        </div> */}
         
         <div id="contact">
           <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>

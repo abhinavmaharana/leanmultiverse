@@ -3,6 +3,14 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"
+import { motion } from "framer-motion"
+import { useRef, useEffect } from "react"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 interface FreeCourse {
   id: string
@@ -81,117 +89,311 @@ const freeCourses: FreeCourse[] = [
 ]
 
 export default function FreeCourses() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
+  const ctaRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const ctx = gsap.context(() => {
+      // Header animation
+      gsap.fromTo(headerRef.current, 
+        { y: 80, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 1.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      )
+
+      // Course cards staggered animation
+      gsap.fromTo(".course-card", 
+        { y: 100, opacity: 0, scale: 0.8 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          scale: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 85%",
+            end: "bottom 15%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      )
+
+      // CTA section animation
+      gsap.fromTo(ctaRef.current, 
+        { y: 60, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ctaRef.current,
+            start: "top 80%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      )
+
+      // Floating animation for course cards
+      gsap.to(".course-card", {
+        y: -10,
+        duration: 2,
+        ease: "power1.inOut",
+        yoyo: true,
+        repeat: -1,
+        stagger: 0.3
+      })
+
+    }, sectionRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <section className="py-20 bg-black min-h-screen">
-      <div className="max-w-7xl mx-auto px-6">
+    <section ref={sectionRef} className="relative py-20 min-h-screen">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/40" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
-          <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3">
-            Free Learning
-          </p>
-          <h2 className="text-[30px] md:text-[46.13px] font-bold mb-6 text-white">
-            Start Learning for Free
-          </h2>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-            Explore our collection of free courses and get a taste of our world-class 
+        <motion.div 
+          ref={headerRef}
+          className="text-center mb-20"
+          initial={{ y: 80, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <motion.div
+            className="inline-block mb-6"
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.68, -0.55, 0.265, 1.55] }}
+          >
+            <span className="inline-block bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-3 rounded-full text-sm sm:text-base font-bold uppercase tracking-wider shadow-lg">
+              🎓 Free Learning
+            </span>
+          </motion.div>
+
+          <motion.h2 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight"
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+          >
+            <span className="block">Start Learning</span>
+            <span className="block bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+              For Free
+            </span>
+          </motion.h2>
+
+          <motion.p 
+            className="text-lg sm:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.4 }}
+          >
+            Explore our collection of premium-quality free courses and get a taste of our world-class 
             education. No commitment required - start learning today!
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Course Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {freeCourses.map((course) => (
-            <Card key={course.id} className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 transition-all duration-300 group">
-              <div className="relative">
-                <Image
-                  src={course.image}
-                  alt={course.title}
-                  width={400}
-                  height={250}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-4 left-4 flex gap-2">
-                  <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    FREE
-                  </span>
-                  {course.isNew && (
-                    <span className="bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-semibold">
-                      New
-                    </span>
-                  )}
-                </div>
-                <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
-                  <span className="text-yellow-400 text-sm font-semibold">★ {course.rating}</span>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="mb-3">
-                  <span className="text-yellow-400 text-sm font-medium">{course.duration}</span>
-                  <span className="text-gray-400 text-sm ml-2">• Free Course</span>
-                </div>
-
-                <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">
-                  {course.title}
-                </h3>
-
-                <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                  {course.description}
-                </p>
-
-                <div className="mb-4">
-                  <div className="flex flex-wrap gap-1">
-                    {course.skills.slice(0, 3).map((skill, index) => (
-                      <span
-                        key={index}
-                        className="bg-white/10 text-white text-xs px-2 py-1 rounded-full"
+        <motion.div 
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          {freeCourses.map((course, index) => (
+            <motion.div
+              key={course.id}
+              className="course-card group"
+              initial={{ y: 100, opacity: 0, scale: 0.8 }}
+              whileInView={{ y: 0, opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+            >
+              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:bg-white/10 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-yellow-500/10 h-full">
+                <div className="relative overflow-hidden">
+                  <Image
+                    src={course.image}
+                    alt={course.title}
+                    width={400}
+                    height={250}
+                    className="w-full h-48 sm:h-56 object-cover group-hover:scale-110 transition-transform duration-700"
+                    loading="lazy"
+                  />
+                  
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  
+                  {/* Badges */}
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    <motion.span 
+                      className="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      FREE
+                    </motion.span>
+                    {course.isNew && (
+                      <motion.span 
+                        className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-4 py-2 rounded-full text-sm font-bold shadow-lg"
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        {skill}
-                      </span>
-                    ))}
-                    {course.skills.length > 3 && (
-                      <span className="bg-white/10 text-white text-xs px-2 py-1 rounded-full">
-                        +{course.skills.length - 3} more
-                      </span>
+                        New
+                      </motion.span>
                     )}
                   </div>
-                </div>
-
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center text-sm text-gray-400">
-                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {course.learners.toLocaleString()}+ learners
+                  
+                  {/* Rating */}
+                  <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm px-3 py-2 rounded-full">
+                    <span className="text-yellow-400 text-sm font-bold flex items-center gap-1">
+                      <span>★</span> {course.rating}
+                    </span>
                   </div>
                 </div>
 
-                <Button className="w-full bg-yellow-400 text-black hover:bg-yellow-500 rounded-full font-semibold">
-                  Enroll for Free
-                </Button>
-              </div>
-            </Card>
+                <div className="p-6 sm:p-8">
+                  {/* Duration */}
+                  <div className="mb-4">
+                    <span className="text-yellow-400 text-sm font-semibold bg-yellow-400/10 px-3 py-1 rounded-full">
+                      {course.duration}
+                    </span>
+                    <span className="text-gray-400 text-sm ml-2">• Free Course</span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 line-clamp-2 group-hover:text-yellow-400 transition-colors duration-300">
+                    {course.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-gray-300 text-sm sm:text-base mb-6 line-clamp-2 leading-relaxed">
+                    {course.description}
+                  </p>
+
+                  {/* Skills */}
+                  <div className="mb-6">
+                    <div className="flex flex-wrap gap-2">
+                      {course.skills.slice(0, 3).map((skill, skillIndex) => (
+                        <motion.span
+                          key={skillIndex}
+                          className="bg-white/10 text-white text-xs px-3 py-1 rounded-full border border-white/20 hover:bg-white/20 transition-colors duration-300"
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          {skill}
+                        </motion.span>
+                      ))}
+                      {course.skills.length > 3 && (
+                        <span className="bg-white/10 text-white text-xs px-3 py-1 rounded-full border border-white/20">
+                          +{course.skills.length - 3} more
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Learners Count */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center text-sm text-gray-400">
+                      <svg className="w-4 h-4 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="font-medium">{course.learners.toLocaleString()}+ learners</span>
+                    </div>
+                  </div>
+
+                  {/* Enroll Button */}
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black hover:from-yellow-500 hover:to-yellow-700 rounded-2xl font-bold py-3 text-base shadow-lg hover:shadow-yellow-500/25 transition-all duration-300">
+                      Enroll for Free
+                    </Button>
+                  </motion.div>
+                </div>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* CTA Section */}
-        <div className="text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">
+        <motion.div 
+          ref={ctaRef}
+          className="text-center bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-white/10"
+          initial={{ y: 60, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          <motion.h3 
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             Ready for More Advanced Learning?
-          </h3>
-          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+          </motion.h3>
+          
+          <motion.p 
+            className="text-gray-300 mb-8 max-w-3xl mx-auto text-lg leading-relaxed"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
             Explore our comprehensive paid programs for deeper learning and 
             industry-recognized certifications.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-yellow-400 text-black hover:bg-yellow-500 rounded-full px-8 py-3 text-lg font-semibold">
-              View All Courses
-            </Button>
-            <Button className="bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-3 text-lg font-semibold border border-white/20">
-              Get Career Guidance
-            </Button>
-          </div>
-        </div>
+          </motion.p>
+          
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ y: 30, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black hover:from-yellow-500 hover:to-yellow-700 rounded-2xl px-8 py-4 text-lg font-bold shadow-xl hover:shadow-yellow-500/25 transition-all duration-300">
+                View All Courses
+              </Button>
+            </motion.div>
+            
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button className="bg-white/10 text-white hover:bg-white/20 rounded-2xl px-8 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md transition-all duration-300">
+                Get Career Guidance
+              </Button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
