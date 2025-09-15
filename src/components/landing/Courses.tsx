@@ -269,7 +269,7 @@ export default function Courses() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
       {/* Header */}
-        <motion.div 
+        {/* <motion.div 
           ref={headerRef}
           className="text-center mb-10"
           initial={{ y: 80, opacity: 0 }}
@@ -295,10 +295,10 @@ export default function Courses() {
           >
             It&apos;s a New Way of Working
           </motion.h1>
-        </motion.div>
+        </motion.div> */}
 
-        {/* Apple Cards Carousel Section */}
-        <motion.div
+        {/* Apple Cards Carousel Section - COMMENTED OUT */}
+        {/* <motion.div
           ref={carouselRef}
           initial={{ y: 100, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -306,7 +306,7 @@ export default function Courses() {
           viewport={{ once: true, margin: "-50px" }}
         >
           <AppleCardsCarouselDemo />
-        </motion.div>
+        </motion.div> */}
 
         {/* Modern Course Catalog Section */}
         <motion.div 
