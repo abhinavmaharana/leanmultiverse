@@ -66,17 +66,17 @@ export default function LandingPage() {
     {
       link: "/case-studies/netflix",
       text: "Netflix",
-      image: "https://images.unsplash.com/photo-1574375927938-c5a4422a05f6?w=800&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2000&auto=format&fit=crop&crop=center"
     },
     {
       link: "/case-studies/nasa",
       text: "NASA",
-      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=800&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?q=80&w=2000&auto=format&fit=crop&crop=center"
     },
     {
       link: "/case-studies/porsche",
       text: "Porsche",
-      image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop&crop=center"
     }
   ]
 

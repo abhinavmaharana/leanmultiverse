@@ -21,7 +21,7 @@ const caseStudies = [
     ],
     duration: "18 months",
     teamSize: "500+ employees",
-    image: "https://images.unsplash.com/photo-1574375927938-c5a4422a05f6?w=800&h=600&fit=crop&crop=center"
+    image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2000&auto=format&fit=crop&crop=center"
   },
   {
     id: 2,
@@ -55,7 +55,7 @@ const caseStudies = [
     ],
     duration: "30 months",
     teamSize: "800+ employees",
-    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&h=600&fit=crop&crop=center"
+    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop&crop=center"
   }
 ]
 

@@ -16,8 +16,8 @@ export interface CaseStudy {
       id: "nasa",
       company: "NASA",
       industry: "Aerospace",
-      logo: "/logos/nasa.svg",
-      image: "/images/nasa-case.jpg",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg",
+      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?q=80&w=2000&auto=format&fit=crop",
       challenge: "NASA needed a robust simulation platform for mission-critical training.",
       solution: "We built a real-time 3D simulation with AI-driven scenarios.",
       results: [
@@ -32,8 +32,8 @@ export interface CaseStudy {
       id: "netflix",
       company: "Netflix",
       industry: "Entertainment",
-      logo: "/logos/netflix.svg",
-      image: "/images/netflix-case.jpg",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/77/Netflix_2015_logo.svg",
+      image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2000&auto=format&fit=crop&crop=center",
       challenge: "Scaling personalized recommendations globally.",
       solution: "Implemented a hybrid ML + rules-based recommendation engine.",
       results: [
@@ -43,6 +43,22 @@ export interface CaseStudy {
       ],
       duration: "9 months",
       teamSize: "6 engineers"
+    },
+    {
+      id: "porsche",
+      company: "Porsche",
+      industry: "Automotive",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/1/50/Porsche_logo.svg",
+      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop&crop=center",
+      challenge: "Optimizing manufacturing processes for electric vehicle production.",
+      solution: "Implemented lean manufacturing principles with AI-driven quality control.",
+      results: [
+        "25% reduction in production time",
+        "40% improvement in quality metrics",
+        "Zero defect rate achieved"
+      ],
+      duration: "18 months",
+      teamSize: "12 engineers"
     }
     // ➕ add more studies here
   ]
