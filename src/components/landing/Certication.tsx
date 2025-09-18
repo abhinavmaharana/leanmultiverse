@@ -1,13 +1,39 @@
 "use client"
 
-import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss } from 'react-icons/si';
+import Image from 'next/image';
 import LogoLoop from '../ui/LogoLoop';
 
-const techLogos = [
-    { node: <SiReact />, title: "React", href: "https://react.dev" },
-    { node: <SiNextdotjs />, title: "Next.js", href: "https://nextjs.org" },
-    { node: <SiTypescript />, title: "TypeScript", href: "https://www.typescriptlang.org" },
-    { node: <SiTailwindcss />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
+const certLogos = [
+    { 
+        node: <Image src="/cert/Cert Mark-SA-150.png" alt="SAFe 6 Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+        title: "SAFe 6 Certification", 
+        href: "https://www.scaledagile.com" 
+    },
+    { 
+        node: <Image src="/cert/Cert Mark-SA-300.png" alt="SAFe 6 Advanced Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+        title: "SAFe 6 Advanced Certification", 
+        href: "https://www.scaledagile.com" 
+    },
+    { 
+        node: <Image src="/cert/Cert Mark-SA.svg" alt="SAFe Certification Mark" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+        title: "SAFe Certification Mark", 
+        href: "https://www.scaledagile.com" 
+    },
+    { 
+        node: <Image src="/cert/Cert Mark-SA-150.png" alt="SAFe 6 Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+        title: "SAFe 6 Certification", 
+        href: "https://www.scaledagile.com" 
+    },
+    { 
+        node: <Image src="/cert/Cert Mark-SA-300.png" alt="SAFe 6 Advanced Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+        title: "SAFe 6 Advanced Certification", 
+        href: "https://www.scaledagile.com" 
+    },
+    { 
+        node: <Image src="/cert/Cert Mark-SA.svg" alt="SAFe Certification Mark" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+        title: "SAFe Certification Mark", 
+        href: "https://www.scaledagile.com" 
+    },
 ];
 
 export default function Certification() {
@@ -22,16 +48,16 @@ export default function Certification() {
         </h1>
         <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
             <LogoLoop
-                logos={techLogos}
+                logos={certLogos}
                 speed={120}
                 direction="left"
-                logoHeight={108}
-                gap={40}
+                logoHeight={120}
+                gap={60}
                 pauseOnHover
                 scaleOnHover
                 fadeOut
                 fadeOutColor="#000000"
-                ariaLabel="Technology partners"
+                ariaLabel="SAFe Certifications"
             />
         </div>
       </div>
