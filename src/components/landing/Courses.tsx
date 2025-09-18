@@ -125,7 +125,6 @@ export default function Courses() {
   
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
-  const carouselRef = useRef<HTMLDivElement>(null)
   const searchRef = useRef<HTMLDivElement>(null)
   const filtersRef = useRef<HTMLDivElement>(null)
   const coursesRef = useRef<HTMLDivElement>(null)
@@ -776,16 +775,4 @@ const data = [
   },
 ]
 
-// ✅ Standalone carousel demo
-function AppleCardsCarouselDemo() {
-  const cards = data.map((card, index) => (
-    <Card key={card.src} card={card} index={index} />
-  ))
-
-  return (
-    <div className="w-full h-full py-10">
-      <Carousel items={cards} />
-    </div>
-  )
-}
 

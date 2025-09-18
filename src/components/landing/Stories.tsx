@@ -2,7 +2,7 @@
 "use client"
 
 import { useRef } from 'react'
-import FlowingMenu from '../ui/FlowingMenu';
+import FlowingMenuWrapper from '../ui/FlowingMenuWrapper';
 
 export default function Stories() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -26,7 +26,7 @@ export default function Stories() {
         </h1>
       </div>
       <div style={{ height: '600px', position: 'relative' }}>
-        <FlowingMenu items={demoItems} />
+        <FlowingMenuWrapper items={demoItems} />
       </div>
     </section>
   )
