@@ -56,6 +56,8 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  category: 'Education',
+  classification: 'Educational Technology',
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -84,7 +86,10 @@ export const metadata: Metadata = {
     canonical: "https://leanmultiverse.com",
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "your-google-verification-code-here",
+    other: {
+      "google-site-verification": "your-google-verification-code-here",
+    },
   },
 }
 

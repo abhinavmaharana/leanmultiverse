@@ -25,8 +25,8 @@ const courses = [
     level: "Graduate",
     rating: 4.8,
     learners: 2500,
-    price: 12999,
-    originalPrice: 15999,
+    price: 129999,
+    originalPrice: 159999,
     isPopular: true,
     skills: ["Agile Leadership", "Strategic Management", "Digital Transformation", "Change Management"],
     university: "Lean Multiverse University"
@@ -41,8 +41,8 @@ const courses = [
     level: "Professional",
     rating: 4.7,
     learners: 1800,
-    price: 8999,
-    originalPrice: null,
+    price: 89999,
+    originalPrice: 109999,
     isPopular: false,
     skills: ["Scrum Master", "Kanban", "SAFe", "Agile Methodologies"],
     university: "Lean Multiverse University"
@@ -57,8 +57,8 @@ const courses = [
     level: "Professional",
     rating: 4.9,
     learners: 1200,
-    price: 4999,
-    originalPrice: null,
+    price: 49999,
+    originalPrice: 59999,
     isNew: true,
     isPopular: false,
     skills: ["Agile Coaching", "Team Facilitation", "Organizational Change", "Leadership Development"],
@@ -74,8 +74,8 @@ const courses = [
     level: "Executive",
     rating: 4.6,
     learners: 950,
-    price: 6999,
-    originalPrice: null,
+    price: 69999,
+    originalPrice: 84999,
     isPopular: false,
     skills: ["Digital Strategy", "Technology Integration", "Change Management", "Innovation"],
     university: "Lean Multiverse University"
@@ -90,8 +90,8 @@ const courses = [
     level: "Professional",
     rating: 4.8,
     learners: 2100,
-    price: 5999,
-    originalPrice: null,
+    price: 59999,
+    originalPrice: 74999,
     isPopular: false,
     skills: ["Process Improvement", "Statistical Analysis", "Lean Methodology", "Quality Management"],
     university: "Lean Multiverse University"
@@ -106,8 +106,8 @@ const courses = [
     level: "Executive",
     rating: 4.7,
     learners: 750,
-    price: 9999,
-    originalPrice: null,
+    price: 99999,
+    originalPrice: 119999,
     isPopular: false,
     skills: ["Agile Leadership", "Team Building", "Strategic Thinking", "Organizational Development"],
     university: "Lean Multiverse University"
@@ -486,7 +486,7 @@ export default function Courses() {
                 />
 
                 <motion.div
-                  className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 h-full overflow-hidden"
+                  className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 h-[520px] overflow-hidden flex flex-col"
                   whileHover={{ 
                     borderColor: "rgba(251, 191, 36, 0.4)",
                     backgroundColor: "rgba(255, 255, 255, 0.08)"
@@ -517,7 +517,7 @@ export default function Courses() {
                     ))}
                   </div>
 
-                  <div className="relative z-10">
+                  <div className="relative z-10 flex flex-col h-full">
                     {/* Badges */}
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex gap-2">
@@ -554,113 +554,117 @@ export default function Courses() {
                     </div>
 
                     {/* Course Info */}
-                    <div className="mb-4">
-                      <motion.div
-                        className="text-yellow-400 text-sm font-medium mb-2"
-                        initial={{ x: -20, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                      >
-                        {course.category} • {course.duration}
-                      </motion.div>
-                      <motion.h3
-                        className="text-xl font-bold text-white mb-3 line-clamp-2"
-                        initial={{ y: 20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.6 }}
-                      >
-                        {course.title}
-                      </motion.h3>
-                      <motion.p
-                        className="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3"
-                        initial={{ y: 20, opacity: 0 }}
-                        whileInView={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.7 }}
-                      >
-                        {course.description}
-                      </motion.p>
-                    </div>
-
-                    {/* Skills */}
-                    <motion.div
-                      className="mb-6"
-                      initial={{ y: 20, opacity: 0 }}
-                      whileInView={{ y: 0, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.8 }}
-                    >
-                      <div className="flex flex-wrap gap-2">
-                        {course.skills.slice(0, 3).map((skill, skillIndex) => (
-                          <motion.span
-                            key={skill}
-                            className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
-                            initial={{ scale: 0 }}
-                            whileInView={{ scale: 1 }}
-                            transition={{ duration: 0.3, delay: 0.9 + skillIndex * 0.1 }}
-                          >
-                            {skill}
-                          </motion.span>
-                        ))}
-                        {course.skills.length > 3 && (
-                          <motion.span
-                            className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
-                            initial={{ scale: 0 }}
-                            whileInView={{ scale: 1 }}
-                            transition={{ duration: 0.3, delay: 1.2 }}
-                          >
-                            +{course.skills.length - 3} more
-                          </motion.span>
-                        )}
-                      </div>
-                    </motion.div>
-
-                    {/* Stats and Price */}
-                    <div className="flex justify-between items-center mb-6">
-                      <motion.div
-                        className="text-gray-400 text-sm"
-                        initial={{ x: -20, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 1 }}
-                      >
-                        {course.learners.toLocaleString()}+ learners
-                      </motion.div>
-                      <motion.div
-                        className="text-gray-400 text-sm"
-                        initial={{ x: 20, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 1.1 }}
-                      >
-                        {course.university}
-                      </motion.div>
-                    </div>
-
-                    <div className="flex justify-between items-center mb-6">
+                    <div className="flex-grow flex flex-col justify-between">
                       <div>
                         <motion.div
-                          className="text-2xl font-bold text-white"
-                          initial={{ scale: 0 }}
-                          whileInView={{ scale: 1 }}
-                          transition={{ duration: 0.5, delay: 1.2 }}
+                          className="text-yellow-400 text-sm font-medium mb-2"
+                          initial={{ x: -20, opacity: 0 }}
+                          whileInView={{ x: 0, opacity: 1 }}
+                          transition={{ duration: 0.5, delay: 0.5 }}
                         >
-                          ${course.price.toLocaleString()}
+                          {course.category} • {course.duration}
                         </motion.div>
-                        {course.originalPrice && (
+                        <motion.h3
+                          className="text-lg font-bold text-white mb-3 line-clamp-2 min-h-[2.5rem]"
+                          initial={{ y: 20, opacity: 0 }}
+                          whileInView={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.5, delay: 0.6 }}
+                        >
+                          {course.title}
+                        </motion.h3>
+                        <motion.p
+                          className="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3 min-h-[3.5rem]"
+                          initial={{ y: 20, opacity: 0 }}
+                          whileInView={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.5, delay: 0.7 }}
+                        >
+                          {course.description}
+                        </motion.p>
+
+                        {/* Skills */}
+                        <motion.div
+                          className="mb-6"
+                          initial={{ y: 20, opacity: 0 }}
+                          whileInView={{ y: 0, opacity: 1 }}
+                          transition={{ duration: 0.5, delay: 0.8 }}
+                        >
+                          <div className="flex flex-wrap gap-2">
+                            {course.skills.slice(0, 3).map((skill, skillIndex) => (
+                              <motion.span
+                                key={skill}
+                                className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
+                                initial={{ scale: 0 }}
+                                whileInView={{ scale: 1 }}
+                                transition={{ duration: 0.3, delay: 0.9 + skillIndex * 0.1 }}
+                              >
+                                {skill}
+                              </motion.span>
+                            ))}
+                            {course.skills.length > 3 && (
+                              <motion.span
+                                className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
+                                initial={{ scale: 0 }}
+                                whileInView={{ scale: 1 }}
+                                transition={{ duration: 0.3, delay: 1.2 }}
+                              >
+                                +{course.skills.length - 3} more
+                              </motion.span>
+                            )}
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      {/* Stats and Price - Fixed at bottom */}
+                      <div className="mt-auto">
+                        <div className="flex justify-between items-center mb-4">
                           <motion.div
-                            className="text-gray-400 text-sm line-through"
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 1.3 }}
+                            className="text-gray-400 text-sm"
+                            initial={{ x: -20, opacity: 0 }}
+                            whileInView={{ x: 0, opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 1 }}
                           >
-                            ${course.originalPrice.toLocaleString()}
+                            {course.learners.toLocaleString()}+ learners
                           </motion.div>
-                        )}
+                          <motion.div
+                            className="text-gray-400 text-sm"
+                            initial={{ x: 20, opacity: 0 }}
+                            whileInView={{ x: 0, opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 1.1 }}
+                          >
+                            {course.university}
+                          </motion.div>
+                        </div>
+
+                        <div className="flex justify-between items-center mb-6">
+                          <div>
+                            <motion.div
+                              className="text-2xl font-bold text-white"
+                              initial={{ scale: 0 }}
+                              whileInView={{ scale: 1 }}
+                              transition={{ duration: 0.5, delay: 1.2 }}
+                            >
+                              ₹{course.price.toLocaleString('en-IN')}
+                            </motion.div>
+                            {course.originalPrice && (
+                              <motion.div
+                                className="text-gray-400 text-sm line-through"
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                transition={{ duration: 0.5, delay: 1.3 }}
+                              >
+                                ₹{course.originalPrice.toLocaleString('en-IN')}
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Enroll Button */}
+                    {/* Enroll Button - Always at bottom */}
                     <motion.div
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
-                      className="relative group"
+                      className="relative group mt-auto"
                     >
                       <motion.div
                         className="absolute inset-0 bg-yellow-400/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
