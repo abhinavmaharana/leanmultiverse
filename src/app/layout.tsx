@@ -136,7 +136,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={`${raleway.variable} font-sans antialiased`}>
+      <body className={`${raleway.variable} font-sans antialiased bg-black`}>
         <ErrorBoundary>
           <LoadingProvider>
             <LenisProvider>

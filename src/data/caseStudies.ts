@@ -13,36 +13,20 @@ export interface CaseStudy {
   
   export const caseStudies: CaseStudy[] = [
     {
-      id: "nasa",
-      company: "NASA",
-      industry: "Aerospace",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg",
-      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?q=80&w=2000&auto=format&fit=crop",
-      challenge: "NASA needed a robust simulation platform for mission-critical training.",
-      solution: "We built a real-time 3D simulation with AI-driven scenarios.",
-      results: [
-        "Cut astronaut training time by 30%",
-        "Improved mission accuracy by 22%",
-        "Reduced costs by $5M annually"
-      ],
-      duration: "12 months",
-      teamSize: "8 engineers"
-    },
-    {
       id: "netflix",
       company: "Netflix",
-      industry: "Entertainment",
+      industry: "Streaming",
       logo: "https://upload.wikimedia.org/wikipedia/commons/7/77/Netflix_2015_logo.svg",
       image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2000&auto=format&fit=crop&crop=center",
-      challenge: "Scaling personalized recommendations globally.",
-      solution: "Implemented a hybrid ML + rules-based recommendation engine.",
+      challenge: "Accelerate feature releases and keep pace with shifting audience expectations while delivering robust digital experiences at scale.",
+      solution: "Netflix harnesses SAFe to accelerate feature releases, keep pace with shifting audience expectations, and deliver robust digital experiences at scale. By applying SAFe's Lean-agile principles, Netflix boosts team alignment for faster decisions, streamlines content delivery pipelines, and stays responsive to market demands.",
       results: [
-        "10% increase in user engagement",
-        "15% reduction in churn",
-        "Global rollout in under 6 months"
+        "Accelerates go-to-market for new features",
+        "Increases cross-team collaboration for platform development",
+        "Facilitates rapid response to content trends"
       ],
-      duration: "9 months",
-      teamSize: "6 engineers"
+      duration: "Ongoing",
+      teamSize: "Global Teams"
     },
     {
       id: "porsche",
@@ -50,16 +34,47 @@ export interface CaseStudy {
       industry: "Automotive",
       logo: "https://upload.wikimedia.org/wikipedia/commons/1/50/Porsche_logo.svg",
       image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop&crop=center",
-      challenge: "Optimizing manufacturing processes for electric vehicle production.",
-      solution: "Implemented lean manufacturing principles with AI-driven quality control.",
+      challenge: "Move beyond traditional automotive manufacturing toward agile software development and electric mobility while adapting to technological disruptions.",
+      solution: "Porsche utilises SAFe to move beyond traditional automotive manufacturing toward agile software development and electric mobility. The framework empowers Porsche to adapt swiftly to technological disruptions—such as in-vehicle connectivity and autonomous driving—by enabling iterative product development, reducing time-to-market, and fostering collaboration across engineering, supply chain, and customer teams.",
       results: [
-        "25% reduction in production time",
-        "40% improvement in quality metrics",
-        "Zero defect rate achieved"
+        "Speeds up product launches for vehicles and interfaces",
+        "Aligns hardware/software teams on innovation cycles",
+        "Enables responsive and stable automotive engineering"
       ],
-      duration: "18 months",
-      teamSize: "12 engineers"
+      duration: "Ongoing",
+      teamSize: "Cross-functional Teams"
+    },
+    {
+      id: "nasa",
+      company: "NASA",
+      industry: "Aerospace",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg",
+      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?q=80&w=2000&auto=format&fit=crop",
+      challenge: "Drive purposeful innovation in space missions and research while managing dependencies and reacting quickly to new scientific challenges.",
+      solution: "NASA applies SAFe principles to drive purposeful innovation in space missions and research. SAFe's organization-wide alignment helps NASA teams efficiently manage dependencies, automate processes, and react quickly to new scientific challenges and opportunities. This agility ensures NASA's mission work remains both cutting-edge and reliably executed.",
+      results: [
+        "Streamlines collaboration across diverse project teams",
+        "Supports rapid prototyping and testing for research",
+        "Enhances adaptability to mission goals and external events"
+      ],
+      duration: "Ongoing",
+      teamSize: "Mission Teams"
+    },
+    {
+      id: "philips",
+      company: "Philips",
+      industry: "Healthcare",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Philips_logo.svg",
+      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?q=80&w=2000&auto=format&fit=crop",
+      challenge: "Develop patient-focused solutions more efficiently while maintaining regulatory compliance and high product standards in healthcare technology.",
+      solution: "Philips uses the SAFe framework to develop patient-focused solutions more efficiently while maintaining regulatory compliance and high product standards. By building agility into its R&D and operational teams, Philips is able to deliver new health technologies, optimize workflows, and respond quickly to healthcare market shifts.",
+      results: [
+        "Accelerates development of medical devices and software",
+        "Enables better alignment between clinical and business functions",
+        "Improves speed and quality in regulatory processes"
+      ],
+      duration: "Ongoing",
+      teamSize: "Healthcare Teams"
     }
-    // ➕ add more studies here
   ]
   

@@ -83,7 +83,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="home"
-      className="flex flex-col items-center justify-center text-center min-h-screen px-4 sm:px-6 py-16 sm:py-20"
+      className="flex flex-col items-center justify-center text-center h-screen px-4 sm:px-6 py-16 sm:py-20"
     >
       {/* Content Container */}
       <div className="max-w-6xl mx-auto w-full">
@@ -92,7 +92,7 @@ export default function Hero() {
           ref={taglineRef}
           className="uppercase tracking-[4px] sm:tracking-[6px] text-yellow-400 text-sm sm:text-base lg:text-[20px] font-medium mb-3"
         >
-          Transform Your Career
+          Unlock Collaborative Innovation Across Realities
         </p>
 
         {/* Title */}
@@ -100,8 +100,7 @@ export default function Hero() {
           ref={titleRef}
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[56px] font-bold mb-4 sm:mb-6 text-white leading-tight px-2"
         >
-          Master Enterprise Agility &<br className="hidden sm:block" />
-          <span className="block sm:inline sm:ml-1">Digital Transformation</span>
+          Build in the <span className="block sm:inline sm:ml-1 text-yellow-400">Multiverse</span>
         </h1>
 
         {/* Subtitle */}
@@ -109,9 +108,9 @@ export default function Hero() {
           ref={subtitleRef}
           className="text-gray-300 text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-2"
         >
-          Join 50,000+ professionals who have transformed their careers with our 
-          comprehensive courses in enterprise agility, digital transformation, 
-          and modern leadership practices.
+          Empowering Boundless Creation - Catalysts for Your Success. 
+          Transforming ambitious teams and professionals into industry leaders 
+          with innovative, impactful learning.
         </p>
 
         {/* CTA Buttons */}

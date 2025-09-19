@@ -2,8 +2,6 @@
 "use client"
 
 import { useRef, useEffect, useState } from "react"
-import Image from "next/image"
-import { Carousel, Card } from "@/components/ui/apple-cards-carousel"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { gsap } from "gsap"
@@ -13,109 +11,199 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Course data
+// SAFe Course data
 const courses = [
   {
     id: 1,
-    title: "Master of Business Administration in Enterprise Agility",
-    shortTitle: "MBA in Enterprise Agility",
-    description: "Comprehensive MBA program focused on enterprise agility, digital transformation, and modern leadership practices.",
-    category: "MBA",
-    duration: "18 Months",
-    level: "Graduate",
-    rating: 4.8,
-    learners: 2500,
-    price: 129999,
-    originalPrice: 159999,
+    title: "Leading SAFe®",
+    shortTitle: "Leading SAFe",
+    description: "Step confidently into a leadership role that transforms organizations. Become the driving force behind business agility and innovation.",
+    category: "Leadership",
+    duration: "2 Days",
+    level: "Executive",
+    rating: 4.9,
+    learners: 1800,
+    price: 24999,
+    originalPrice: 34999,
     isPopular: true,
-    skills: ["Agile Leadership", "Strategic Management", "Digital Transformation", "Change Management"],
-    university: "Lean Multiverse University"
+    isNew: false,
+    skills: ["Lean-Agile Leadership", "PI Planning", "Strategic Alignment", "Business Agility", "Stakeholder Engagement"],
+    university: "Lean Multiverse"
   },
   {
     id: 2,
-    title: "Executive Diploma in Agile Project Management",
-    shortTitle: "Executive Diploma in Agile Project Management",
-    description: "Advanced project management techniques for agile environments and digital transformation initiatives.",
-    category: "Management",
-    duration: "12 Months",
+    title: "SAFe® for Teams",
+    shortTitle: "SAFe for Teams",
+    description: "Become an essential part of an empowered Agile Release Train. Learn the teamwork skills that produce seamless, high-value delivery.",
+    category: "Certification",
+    duration: "2 Days",
     level: "Professional",
     rating: 4.7,
-    learners: 1800,
-    price: 89999,
-    originalPrice: 109999,
-    isPopular: false,
-    skills: ["Scrum Master", "Kanban", "SAFe", "Agile Methodologies"],
-    university: "Lean Multiverse University"
+    learners: 1500,
+    price: 22999,
+    originalPrice: 32999,
+    isPopular: true,
+    isNew: false,
+    skills: ["Team Collaboration", "Sprint Planning", "Agile Events", "Value Delivery", "Cross-team Communication"],
+    university: "Lean Multiverse"
   },
   {
     id: 3,
-    title: "Certified Enterprise Agility Coach",
-    shortTitle: "Certified Enterprise Agility Coach",
-    description: "Become a certified enterprise agility coach and help organizations transform their ways of working.",
+    title: "SAFe® Scrum Master",
+    shortTitle: "SAFe Scrum Master",
+    description: "Unleash your servant leadership to enable teams to excel. Guide Agile ceremonies and clear impediments to boost team performance.",
     category: "Certification",
-    duration: "6 Months",
+    duration: "2 Days",
     level: "Professional",
-    rating: 4.9,
-    learners: 1200,
-    price: 49999,
-    originalPrice: 59999,
-    isNew: true,
+    rating: 4.6,
+    learners: 1100,
+    price: 24999,
+    originalPrice: 34999,
     isPopular: false,
-    skills: ["Agile Coaching", "Team Facilitation", "Organizational Change", "Leadership Development"],
-    university: "Lean Multiverse University"
+    isNew: false,
+    skills: ["Servant Leadership", "Agile Events", "Obstacle Removal", "Team Collaboration", "Continuous Improvement"],
+    university: "Lean Multiverse"
   },
   {
     id: 4,
-    title: "Digital Transformation Strategy",
-    shortTitle: "Digital Transformation Strategy",
-    description: "Strategic approach to digital transformation in modern enterprises.",
-    category: "Strategy",
-    duration: "9 Months",
-    level: "Executive",
-    rating: 4.6,
-    learners: 950,
-    price: 69999,
-    originalPrice: 84999,
+    title: "SAFe® PO/PM",
+    shortTitle: "SAFe PO/PM",
+    description: "Take charge of product value delivery and customer satisfaction. Champion product vision and strategy with a Lean mindset.",
+    category: "Certification",
+    duration: "2 Days",
+    level: "Professional",
+    rating: 4.8,
+    learners: 1300,
+    price: 25999,
+    originalPrice: 35999,
     isPopular: false,
-    skills: ["Digital Strategy", "Technology Integration", "Change Management", "Innovation"],
-    university: "Lean Multiverse University"
+    isNew: false,
+    skills: ["Backlog Prioritization", "Product Vision", "Customer-centric Management", "Lean Economics", "Stakeholder Management"],
+    university: "Lean Multiverse"
   },
   {
     id: 5,
-    title: "Lean Six Sigma Black Belt",
-    shortTitle: "Lean Six Sigma Black Belt",
-    description: "Master lean six sigma methodologies for process improvement and operational excellence.",
+    title: "SAFe® for DevOps",
+    shortTitle: "SAFe DevOps",
+    description: "Be the key to faster, reliable product releases. Bridge development and operations with streamlined workflows and automation.",
     category: "Certification",
-    duration: "8 Months",
+    duration: "2 Days",
     level: "Professional",
-    rating: 4.8,
-    learners: 2100,
-    price: 59999,
-    originalPrice: 74999,
+    rating: 4.7,
+    learners: 900,
+    price: 26999,
+    originalPrice: 36999,
     isPopular: false,
-    skills: ["Process Improvement", "Statistical Analysis", "Lean Methodology", "Quality Management"],
-    university: "Lean Multiverse University"
+    isNew: false,
+    skills: ["Continuous Delivery", "CI/CD Automation", "DevOps Collaboration", "Flow Optimization", "Quality Management"],
+    university: "Lean Multiverse"
   },
   {
     id: 6,
-    title: "Executive Leadership in Agile Organizations",
-    shortTitle: "Executive Leadership in Agile Organizations",
-    description: "Develop leadership skills for agile and adaptive organizations.",
-    category: "Leadership",
-    duration: "10 Months",
-    level: "Executive",
-    rating: 4.7,
-    learners: 750,
-    price: 99999,
-    originalPrice: 119999,
+    title: "SAFe® for Hardware",
+    shortTitle: "SAFe Hardware",
+    description: "Lead innovative physical product development with Agile principles. Balance speed, quality, and iterative feedback in complex environments.",
+    category: "Certification",
+    duration: "2 Days",
+    level: "Professional",
+    rating: 4.5,
+    learners: 700,
+    price: 27999,
+    originalPrice: 37999,
     isPopular: false,
-    skills: ["Agile Leadership", "Team Building", "Strategic Thinking", "Organizational Development"],
-    university: "Lean Multiverse University"
+    isNew: false,
+    skills: ["Hardware-Software Integration", "Rapid Prototyping", "Quality Management", "Continuous Improvement", "Customer-aligned Delivery"],
+    university: "Lean Multiverse"
+  },
+  {
+    id: 7,
+    title: "Agile Software Engineering",
+    shortTitle: "Agile Engineering",
+    description: "Elevate your technical skills for robust Agile software delivery. Build quality and scalability into every step of the development lifecycle.",
+    category: "Certification",
+    duration: "3 Days",
+    level: "Professional",
+    rating: 4.8,
+    learners: 1200,
+    price: 29999,
+    originalPrice: 39999,
+    isPopular: false,
+    isNew: false,
+    skills: ["Continuous Integration", "TDD", "Automated Testing", "Scalable Architecture", "Agile Engineering"],
+    university: "Lean Multiverse"
+  },
+  {
+    id: 8,
+    title: "SAFe® for Architects",
+    shortTitle: "SAFe Architects",
+    description: "Lead with vision to drive technical excellence and business value. Shape architecture that supports continuous delivery and innovation at scale.",
+    category: "Leadership",
+    duration: "3 Days",
+    level: "Executive",
+    rating: 4.9,
+    learners: 800,
+    price: 34999,
+    originalPrice: 44999,
+    isPopular: false,
+    isNew: false,
+    skills: ["Agile Architecture", "Solution Architecture", "Technical Strategy", "Roadmap Planning", "Cross-team Collaboration"],
+    university: "Lean Multiverse"
+  },
+  {
+    id: 9,
+    title: "Lean Portfolio Management",
+    shortTitle: "Lean Portfolio",
+    description: "Take control of strategic investment and execution. Manage portfolios with Lean practices that focus on value and business outcomes.",
+    category: "Strategy",
+    duration: "3 Days",
+    level: "Executive",
+    rating: 4.8,
+    learners: 600,
+    price: 32999,
+    originalPrice: 42999,
+    isPopular: false,
+    isNew: false,
+    skills: ["Lean Budgeting", "Portfolio Kanban", "Strategy Alignment", "Performance Metrics", "Agile Portfolio Operations"],
+    university: "Lean Multiverse"
+  },
+  {
+    id: 10,
+    title: "Agile Product Management",
+    shortTitle: "Agile Product",
+    description: "Become a champion of innovation and market success. Master techniques to build products users love and that drive business growth.",
+    category: "Certification",
+    duration: "2 Days",
+    level: "Professional",
+    rating: 4.7,
+    learners: 1400,
+    price: 24999,
+    originalPrice: 34999,
+    isPopular: false,
+    isNew: false,
+    skills: ["Customer Insight", "Design Thinking", "Product Strategy", "MVP Development", "Stakeholder Collaboration"],
+    university: "Lean Multiverse"
+  },
+  {
+    id: 11,
+    title: "Implementing SAFe®",
+    shortTitle: "Implementing SAFe",
+    description: "Be the trusted guide for enterprise Agile transformations. Build skills to launch Agile Release Trains and coach leaders and teams through change.",
+    category: "Leadership",
+    duration: "3 Days",
+    level: "Executive",
+    rating: 4.9,
+    learners: 500,
+    price: 37999,
+    originalPrice: 47999,
+    isPopular: false,
+    isNew: false,
+    skills: ["SAFe Transformation", "ART Launching", "Change Management", "Coaching Skills", "Agile Adoption"],
+    university: "Lean Multiverse"
   }
 ]
 
-const categories = ["All", "MBA", "Management", "Certification", "Strategy", "Leadership"]
-const levels = ["All", "Graduate", "Professional", "Executive"]
+const categories = ["All", "Certification", "Leadership", "Strategy"]
+const levels = ["All", "Professional", "Executive"]
 
 export default function Courses() {
   const [selectedCategory, setSelectedCategory] = useState("All")
@@ -332,7 +420,7 @@ export default function Courses() {
             >
               <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 backdrop-blur-xl border border-yellow-400/30 rounded-full px-8 py-4">
                 <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium">
-                  Comprehensive Learning
+                  Elevate Your Expertise
                 </p>
               </div>
             </motion.div>
@@ -344,7 +432,7 @@ export default function Courses() {
               transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
               viewport={{ once: true }}
             >
-              Master Enterprise Agility
+              Training That Transforms
             </motion.h2>
             
             <motion.p 
@@ -354,8 +442,8 @@ export default function Courses() {
               transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
               viewport={{ once: true }}
             >
-              Transform your career with our comprehensive courses in enterprise agility, 
-              digital transformation, and modern leadership practices.
+              Step confidently into leadership roles that transform organizations. 
+              Become the driving force behind business agility and innovation.
             </motion.p>
           </motion.div>
 
@@ -702,77 +790,5 @@ export default function Courses() {
   )
 }
 
-// ✅ DummyContent with next/image
-const DummyContent = () => {
-  return (
-    <>
-      {[...new Array(3).fill(1)].map((_, index) => {
-        return (
-          <div
-            key={"dummy-content" + index}
-            className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
-          >
-            <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-              <span className="font-bold text-neutral-700 dark:text-neutral-200">
-                The first rule of Apple club is that you boast about Apple club.
-              </span>{" "}
-              Keep a journal, quickly jot down a grocery list, and take amazing
-              class notes. Want to convert those notes to text? No problem.
-              Langotiya jeetu ka mara hua yaar is ready to capture every thought.
-            </p>
-
-            <Image
-              src="https://assets.aceternity.com/macbook.png"
-              alt="Macbook mockup from Aceternity UI"
-              height={500}
-              width={500}
-              className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
-            />
-          </div>
-        )
-      })}
-    </>
-  )
-}
-
-// ✅ Data array with DummyContent
-const data = [
-  {
-    category: "Artificial Intelligence",
-    title: "You can do more with AI.",
-    src: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=3556&auto=format&fit=crop",
-    content: <DummyContent />,
-  },
-  {
-    category: "Productivity",
-    title: "Enhance your productivity.",
-    src: "https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?q=80&w=3387&auto=format&fit=crop",
-    content: <DummyContent />,
-  },
-  {
-    category: "Product",
-    title: "Launching the new Apple Vision Pro.",
-    src: "https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop",
-    content: <DummyContent />,
-  },
-  {
-    category: "Product",
-    title: "Maps for your iPhone 15 Pro Max.",
-    src: "https://images.unsplash.com/photo-1599202860130-f600f4948364?q=80&w=2515&auto=format&fit=crop",
-    content: <DummyContent />,
-  },
-  {
-    category: "iOS",
-    title: "Photography just got better.",
-    src: "https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop",
-    content: <DummyContent />,
-  },
-  {
-    category: "Hiring",
-    title: "Hiring for a Staff Software Engineer",
-    src: "https://images.unsplash.com/photo-1511984804822-e16ba72f5848?q=80&w=2048&auto=format&fit=crop",
-    content: <DummyContent />,
-  },
-]
 
 

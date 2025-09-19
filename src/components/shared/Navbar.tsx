@@ -77,7 +77,7 @@ export default function Navbar() {
   return (
     <motion.nav 
       ref={navRef}
-      className="relative flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 mt-4 sm:mt-6"
+      className="relative flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 mt-4 sm:mt-6 bg-black"
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, ease: "easeOut" }}
@@ -116,6 +116,15 @@ export default function Navbar() {
           whileTap={{ scale: 0.95 }}
         >
           Home
+        </motion.a>
+        
+        <motion.a 
+          href="/about" 
+          className="hover:opacity-90 transition text-white"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          About
         </motion.a>
         
         {/* Courses Dropdown */}
@@ -269,6 +278,15 @@ export default function Navbar() {
                 whileTap={{ scale: 0.95 }}
               >
                 Home
+              </motion.a>
+              <motion.a 
+                onClick={() => setOpen(false)} 
+                href="/about" 
+                className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
+                whileHover={{ x: 5 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                About
               </motion.a>
               <motion.a 
                 onClick={() => setOpen(false)} 

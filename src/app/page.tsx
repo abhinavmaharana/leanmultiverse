@@ -41,8 +41,8 @@ const Footer = dynamic(() => import('../components/shared/Footer'), {
 })
 
 export const metadata: Metadata = {
-  title: "Master Enterprise Agility & Digital Transformation",
-  description: "Join 50,000+ professionals who transformed their careers with our comprehensive courses in enterprise agility, digital transformation, and modern leadership practices.",
+  title: "Build in the Multiverse - Unlock Collaborative Innovation",
+  description: "Empowering Boundless Creation - Catalysts for Your Success. Transform ambitious teams and professionals into industry leaders with innovative, impactful learning.",
   keywords: [
     "enterprise agility",
     "digital transformation",

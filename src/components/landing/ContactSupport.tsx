@@ -45,7 +45,6 @@ const contactMethods = [
 
 export default function ContactSupport() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
-  const [isVisible, setIsVisible] = useState(false)
   
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -161,7 +160,7 @@ export default function ContactSupport() {
         )
 
         // Add hover animations for cards
-        Array.from(cardsRef.current.children).forEach((card: Element, index: number) => {
+        Array.from(cardsRef.current.children).forEach((card: Element) => {
           const cardElement = card as HTMLElement
           
           cardElement.addEventListener('mouseenter', () => {
