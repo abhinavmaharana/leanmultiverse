@@ -165,8 +165,8 @@ export const courses: Course[] = [
     level: "Executive",
     rating: 4.8,
     learners: 600,
-    price: 31000,
-    originalPrice: 34500,
+    price: 100000,
+    originalPrice: 120000,
     isPopular: false,
     isNew: false,
     skills: ["Lean Budgeting", "Portfolio Kanban", "Strategy Alignment", "Performance Metrics", "Agile Portfolio Operations"],
@@ -204,6 +204,23 @@ export const courses: Course[] = [
     isPopular: false,
     isNew: false,
     skills: ["SAFe Transformation", "ART Launching", "Change Management", "Coaching Skills", "Agile Adoption"],
+    university: "Lean Multiverse"
+  },
+  {
+    id: 12,
+    title: "SAFe® Release Train Engineer",
+    shortTitle: "SAFe RTE",
+    description: "Lead the Agile Release Train to deliver value at enterprise scale. Master the art of facilitating ART events and removing impediments for optimal team performance.",
+    category: "Leadership",
+    duration: "3 Days",
+    level: "Executive",
+    rating: 4.9,
+    learners: 400,
+    price: 100000,
+    originalPrice: 120000,
+    isPopular: false,
+    isNew: false,
+    skills: ["ART Facilitation", "Program Increment Planning", "Release Management", "Team Coaching", "Impediment Resolution"],
     university: "Lean Multiverse"
   }
 ]
