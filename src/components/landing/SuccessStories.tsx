@@ -341,11 +341,11 @@ export default function SuccessStories() {
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Image
-                    src={testimonials[selectedTestimonial].image}
-                    alt={testimonials[selectedTestimonial].name}
-                    width={120}
-                    height={120}
+              <Image
+                src={testimonials[selectedTestimonial].image}
+                alt={testimonials[selectedTestimonial].name}
+                width={120}
+                height={120}
                     className="rounded-full object-cover border-4 border-yellow-400/30"
                   />
                   <motion.div
@@ -360,24 +360,24 @@ export default function SuccessStories() {
                 </motion.div>
               </motion.div>
 
-              <div className="flex-1 text-center lg:text-left">
+            <div className="flex-1 text-center lg:text-left">
                 <motion.div 
                   className="flex justify-center lg:justify-start mb-4"
                   initial={{ x: -30, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
                 >
-                  {[...Array(5)].map((_, i) => (
+                {[...Array(5)].map((_, i) => (
                     <motion.svg
-                      key={i}
-                      className="w-5 h-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                    key={i}
+                    className="w-5 h-5 text-yellow-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                       initial={{ scale: 0, rotate: -180 }}
                       animate={{ scale: 1, rotate: 0 }}
                       transition={{ duration: 0.3, delay: 0.6 + i * 0.1 }}
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </motion.svg>
                   ))}
                 </motion.div>
@@ -388,7 +388,7 @@ export default function SuccessStories() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
                 >
-                  &ldquo;{testimonials[selectedTestimonial].quote}&rdquo;
+                &ldquo;{testimonials[selectedTestimonial].quote}&rdquo;
                 </motion.blockquote>
 
                 <motion.div 
@@ -397,14 +397,14 @@ export default function SuccessStories() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut", delay: 1 }}
                 >
-                  <div>
+                <div>
                     <motion.h4 
                       className="text-xl font-bold text-white"
                       initial={{ x: -20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ duration: 0.5, delay: 1.2 }}
                     >
-                      {testimonials[selectedTestimonial].name}
+                    {testimonials[selectedTestimonial].name}
                     </motion.h4>
                     <motion.p 
                       className="text-gray-300"
@@ -412,7 +412,7 @@ export default function SuccessStories() {
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ duration: 0.5, delay: 1.3 }}
                     >
-                      {testimonials[selectedTestimonial].role}
+                    {testimonials[selectedTestimonial].role}
                     </motion.p>
                     <motion.p 
                       className="text-yellow-400 font-semibold"
@@ -420,7 +420,7 @@ export default function SuccessStories() {
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ duration: 0.5, delay: 1.4 }}
                     >
-                      {testimonials[selectedTestimonial].company}
+                    {testimonials[selectedTestimonial].company}
                     </motion.p>
                   </div>
                   <motion.div 
@@ -441,7 +441,7 @@ export default function SuccessStories() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.3, delay: 1.6 }}
                     >
-                      {testimonials[selectedTestimonial].course}
+                    {testimonials[selectedTestimonial].course}
                     </motion.div>
                   </motion.div>
                 </motion.div>
@@ -460,28 +460,28 @@ export default function SuccessStories() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <Button
-                onClick={prevTestimonial}
+            <Button
+              onClick={prevTestimonial}
                 className="bg-white/10 text-white hover:bg-white/20 rounded-full w-12 h-12 p-0 border border-white/20 backdrop-blur-md"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </Button>
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </Button>
             </motion.div>
             
             <motion.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <Button
-                onClick={nextTestimonial}
+            <Button
+              onClick={nextTestimonial}
                 className="bg-white/10 text-white hover:bg-white/20 rounded-full w-12 h-12 p-0 border border-white/20 backdrop-blur-md"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Button>
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Button>
             </motion.div>
 
             <motion.div
@@ -581,15 +581,15 @@ export default function SuccessStories() {
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <Image
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      width={50}
-                      height={50}
+                <Image
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  width={50}
+                  height={50}
                       className="rounded-full object-cover mr-4 border-2 border-yellow-400/30"
-                    />
+                />
                   </motion.div>
-                  <div>
+                <div>
                     <motion.h4 
                       className="text-white font-semibold"
                       initial={{ x: -20, opacity: 0 }}
@@ -608,7 +608,7 @@ export default function SuccessStories() {
                     >
                       {testimonial.role}
                     </motion.p>
-                  </div>
+                </div>
                 </motion.div>
 
                 <motion.div 
@@ -618,18 +618,18 @@ export default function SuccessStories() {
                   transition={{ duration: 0.5, delay: 1.2 + index * 0.2 }}
                   viewport={{ once: true }}
                 >
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                {[...Array(testimonial.rating)].map((_, i) => (
                     <motion.svg
-                      key={i}
-                      className="w-4 h-4 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
+                    key={i}
+                    className="w-4 h-4 text-yellow-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                       initial={{ scale: 0, rotate: -180 }}
                       whileInView={{ scale: 1, rotate: 0 }}
                       transition={{ duration: 0.3, delay: 1.3 + index * 0.2 + i * 0.1 }}
                       viewport={{ once: true }}
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </motion.svg>
                   ))}
                 </motion.div>
@@ -641,7 +641,7 @@ export default function SuccessStories() {
                   transition={{ duration: 0.6, delay: 1.4 + index * 0.2 }}
                   viewport={{ once: true }}
                 >
-                  &ldquo;{testimonial.quote}&rdquo;
+                &ldquo;{testimonial.quote}&rdquo;
                 </motion.p>
 
                 <motion.div 
@@ -655,7 +655,7 @@ export default function SuccessStories() {
                     className="achievement-badge text-yellow-400 font-semibold text-sm bg-yellow-400/10 px-3 py-1 rounded-full inline-block mb-2"
                     whileHover={{ scale: 1.05 }}
                   >
-                    {testimonial.achievement}
+                  {testimonial.achievement}
                   </motion.div>
                   <motion.div 
                     className="text-gray-400 text-xs"
@@ -664,7 +664,7 @@ export default function SuccessStories() {
                     transition={{ duration: 0.3, delay: 1.6 + index * 0.2 }}
                     viewport={{ once: true }}
                   >
-                    {testimonial.course}
+                  {testimonial.course}
                   </motion.div>
                 </motion.div>
               </div>
@@ -703,7 +703,7 @@ export default function SuccessStories() {
               transition={{ duration: 0.8, delay: 1.4 }}
               viewport={{ once: true }}
             >
-              Ready to Transform Your Career?
+            Ready to Transform Your Career?
             </motion.h3>
             <motion.p 
               className="text-gray-300 mb-8 max-w-2xl mx-auto text-lg"
@@ -712,8 +712,8 @@ export default function SuccessStories() {
               transition={{ duration: 0.8, delay: 1.6 }}
               viewport={{ once: true }}
             >
-              Join thousands of successful professionals who have advanced their careers 
-              through our comprehensive learning programs.
+            Join thousands of successful professionals who have advanced their careers 
+            through our comprehensive learning programs.
             </motion.p>
             <motion.div 
               className="flex flex-col sm:flex-row gap-6 justify-center"
@@ -727,16 +727,16 @@ export default function SuccessStories() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                  Start Your Journey
-                </Button>
+              Start Your Journey
+            </Button>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <Button className="bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300">
-                  View All Courses
-                </Button>
+              View All Courses
+            </Button>
               </motion.div>
             </motion.div>
           </div>

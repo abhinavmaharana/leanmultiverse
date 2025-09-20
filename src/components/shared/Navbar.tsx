@@ -14,6 +14,7 @@ if (typeof window !== 'undefined') {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const [isTransparent, setIsTransparent] = useState(true)
   const navRef = useRef<HTMLElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
   const navLinksRef = useRef<HTMLDivElement>(null)
@@ -21,6 +22,16 @@ export default function Navbar() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
+
+    // Scroll detection for transparent navbar
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const heroHeight = window.innerHeight * 0.8 // 80% of viewport height
+      setIsTransparent(scrollY < heroHeight)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Initial check
 
     const ctx = gsap.context(() => {
       // Animate navbar on load
@@ -71,13 +82,20 @@ export default function Navbar() {
       )
     }, navRef)
 
-    return () => ctx.revert()
+    return () => {
+      ctx.revert()
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [])
 
   return (
     <motion.nav 
       ref={navRef}
-      className="relative flex items-center justify-between px-4 sm:px-6 md:px-8 py-3 mt-4 sm:mt-6 bg-black"
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 md:px-8 py-6 transition-all duration-300 ${
+        isTransparent 
+          ? 'bg-transparent backdrop-blur-none' 
+          : 'bg-black/95 backdrop-blur-md'
+      }`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, ease: "easeOut" }}
@@ -96,7 +114,7 @@ export default function Navbar() {
             alt="Lean Multiverse Logo" 
             width={160} 
             height={44} 
-            className="h-8 sm:h-10 md:h-11 w-auto" 
+            className="h-10 sm:h-12 md:h-14 w-auto" 
           />
         </Link>
       </motion.div>
@@ -104,7 +122,11 @@ export default function Navbar() {
       {/* Center: Navigation links (desktop) */}
       <motion.div 
         ref={navLinksRef}
-        className="hidden md:flex md:w-auto md:h-[53px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[16px] rounded-full shadow-md hover:opacity-90 transition bg-gradient-to-r from-[#C69D44]/20 to-[#604C21]/20 backdrop-blur-md border border-white/20"
+        className={`hidden md:flex md:w-auto md:h-[65px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[20px] rounded-full shadow-md hover:opacity-90 transition ${
+          isTransparent 
+            ? 'bg-gradient-to-r from-[#C69D44]/30 to-[#604C21]/30 backdrop-blur-sm border border-white/30' 
+            : 'bg-gradient-to-r from-[#C69D44]/20 to-[#604C21]/20 backdrop-blur-md border border-white/20'
+        }`}
         initial={{ y: -30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
@@ -223,7 +245,11 @@ export default function Navbar() {
           whileTap={{ scale: 0.95 }}
         >
           <Button
-            className="hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[53px] bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
+            className={`hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[65px] text-white shadow-md hover:opacity-90 transition ${
+              isTransparent 
+                ? 'bg-white/20 backdrop-blur-sm border border-white/30' 
+                : 'bg-white/10 backdrop-blur-md border border-white/20'
+            }`}
           >
             <Link href="/free-courses">Free Course</Link>
           </Button>
@@ -233,7 +259,11 @@ export default function Navbar() {
           aria-label="Toggle menu"
           aria-expanded={open}
           onClick={() => setOpen(v => !v)}
-          className="inline-flex md:hidden items-center justify-center h-10 w-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/15 transition"
+          className={`inline-flex md:hidden items-center justify-center h-12 w-12 rounded-full text-white hover:bg-white/15 transition ${
+            isTransparent 
+              ? 'border border-white/30 bg-white/20' 
+              : 'border border-white/20 bg-white/10'
+          }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -265,7 +295,11 @@ export default function Navbar() {
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <motion.div 
-              className="flex flex-col gap-2 text-sm sm:text-base font-medium rounded-2xl shadow-lg bg-gradient-to-b from-[#0b0b0b]/90 to-[#1a1a1a]/90 backdrop-blur-md border border-white/10 p-4 sm:p-6"
+              className={`flex flex-col gap-2 text-sm sm:text-base font-medium rounded-2xl shadow-lg backdrop-blur-md p-4 sm:p-6 ${
+                isTransparent 
+                  ? 'bg-gradient-to-b from-[#0b0b0b]/95 to-[#1a1a1a]/95 border border-white/20' 
+                  : 'bg-gradient-to-b from-[#0b0b0b]/90 to-[#1a1a1a]/90 border border-white/10'
+              }`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, delay: 0.1 }}

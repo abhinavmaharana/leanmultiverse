@@ -24,7 +24,7 @@ export default function LandingPageClient() {
           <DynamicGalaxy 
             mouseRepulsion={true}
             mouseInteraction={true}
-            density={0.8}
+            density={0.4}
           />
         </Suspense>
       </div>

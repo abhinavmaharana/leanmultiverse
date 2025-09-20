@@ -2,10 +2,10 @@ import type { Metadata } from "next"
 import { Raleway } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import ChatWidget from "@/components/ui/ChatWidget"
+import PerfectChatbot from "@/components/ui/PerfectChatbot"
 import CustomCursor from "@/components/ui/CustomCursor"
 import LenisProvider from "@/components/providers/LenisProvider"
-import LoadingProvider from "@/components/providers/LoadingProvider"
+// import LoadingProvider from "@/components/providers/LoadingProvider"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import "./globals.css"
 
@@ -138,15 +138,15 @@ export default function RootLayout({
       </head>
       <body className={`${raleway.variable} font-sans antialiased bg-black`}>
         <ErrorBoundary>
-          <LoadingProvider>
+          {/* <LoadingProvider> */}
             <LenisProvider>
               {children}
               <CustomCursor />
-              <ChatWidget />
+              <PerfectChatbot />
               <Analytics />
               <SpeedInsights />
             </LenisProvider>
-          </LoadingProvider>
+          {/* </LoadingProvider> */}
         </ErrorBoundary>
       </body>
     </html>

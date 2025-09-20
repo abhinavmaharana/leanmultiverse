@@ -82,9 +82,11 @@ export default function LandingPage() {
 
   return (
     <main className="relative w-full min-h-screen text-white">
+      {/* Fixed Navbar */}
+      <Navbar />
+      
       {/* Critical content loads first */}
-      <div className="relative flex flex-col min-h-screen">
-        <Navbar />
+      <div className="relative flex flex-col min-h-screen pt-24">
         <Hero />
         
         {/* Background effects - Client component */}

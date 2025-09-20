@@ -6,204 +6,13 @@ import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { courses, categories, levels } from "@/data/courses"
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// SAFe Course data
-const courses = [
-  {
-    id: 1,
-    title: "Leading SAFe®",
-    shortTitle: "Leading SAFe",
-    description: "Step confidently into a leadership role that transforms organizations. Become the driving force behind business agility and innovation.",
-    category: "Leadership",
-    duration: "2 Days",
-    level: "Executive",
-    rating: 4.9,
-    learners: 1800,
-    price: 24999,
-    originalPrice: 34999,
-    isPopular: true,
-    isNew: false,
-    skills: ["Lean-Agile Leadership", "PI Planning", "Strategic Alignment", "Business Agility", "Stakeholder Engagement"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 2,
-    title: "SAFe® for Teams",
-    shortTitle: "SAFe for Teams",
-    description: "Become an essential part of an empowered Agile Release Train. Learn the teamwork skills that produce seamless, high-value delivery.",
-    category: "Certification",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.7,
-    learners: 1500,
-    price: 22999,
-    originalPrice: 32999,
-    isPopular: true,
-    isNew: false,
-    skills: ["Team Collaboration", "Sprint Planning", "Agile Events", "Value Delivery", "Cross-team Communication"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 3,
-    title: "SAFe® Scrum Master",
-    shortTitle: "SAFe Scrum Master",
-    description: "Unleash your servant leadership to enable teams to excel. Guide Agile ceremonies and clear impediments to boost team performance.",
-    category: "Certification",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.6,
-    learners: 1100,
-    price: 24999,
-    originalPrice: 34999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Servant Leadership", "Agile Events", "Obstacle Removal", "Team Collaboration", "Continuous Improvement"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 4,
-    title: "SAFe® PO/PM",
-    shortTitle: "SAFe PO/PM",
-    description: "Take charge of product value delivery and customer satisfaction. Champion product vision and strategy with a Lean mindset.",
-    category: "Certification",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.8,
-    learners: 1300,
-    price: 25999,
-    originalPrice: 35999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Backlog Prioritization", "Product Vision", "Customer-centric Management", "Lean Economics", "Stakeholder Management"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 5,
-    title: "SAFe® for DevOps",
-    shortTitle: "SAFe DevOps",
-    description: "Be the key to faster, reliable product releases. Bridge development and operations with streamlined workflows and automation.",
-    category: "Certification",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.7,
-    learners: 900,
-    price: 26999,
-    originalPrice: 36999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Continuous Delivery", "CI/CD Automation", "DevOps Collaboration", "Flow Optimization", "Quality Management"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 6,
-    title: "SAFe® for Hardware",
-    shortTitle: "SAFe Hardware",
-    description: "Lead innovative physical product development with Agile principles. Balance speed, quality, and iterative feedback in complex environments.",
-    category: "Certification",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.5,
-    learners: 700,
-    price: 27999,
-    originalPrice: 37999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Hardware-Software Integration", "Rapid Prototyping", "Quality Management", "Continuous Improvement", "Customer-aligned Delivery"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 7,
-    title: "Agile Software Engineering",
-    shortTitle: "Agile Engineering",
-    description: "Elevate your technical skills for robust Agile software delivery. Build quality and scalability into every step of the development lifecycle.",
-    category: "Certification",
-    duration: "3 Days",
-    level: "Professional",
-    rating: 4.8,
-    learners: 1200,
-    price: 29999,
-    originalPrice: 39999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Continuous Integration", "TDD", "Automated Testing", "Scalable Architecture", "Agile Engineering"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 8,
-    title: "SAFe® for Architects",
-    shortTitle: "SAFe Architects",
-    description: "Lead with vision to drive technical excellence and business value. Shape architecture that supports continuous delivery and innovation at scale.",
-    category: "Leadership",
-    duration: "3 Days",
-    level: "Executive",
-    rating: 4.9,
-    learners: 800,
-    price: 34999,
-    originalPrice: 44999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Agile Architecture", "Solution Architecture", "Technical Strategy", "Roadmap Planning", "Cross-team Collaboration"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 9,
-    title: "Lean Portfolio Management",
-    shortTitle: "Lean Portfolio",
-    description: "Take control of strategic investment and execution. Manage portfolios with Lean practices that focus on value and business outcomes.",
-    category: "Strategy",
-    duration: "3 Days",
-    level: "Executive",
-    rating: 4.8,
-    learners: 600,
-    price: 32999,
-    originalPrice: 42999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Lean Budgeting", "Portfolio Kanban", "Strategy Alignment", "Performance Metrics", "Agile Portfolio Operations"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 10,
-    title: "Agile Product Management",
-    shortTitle: "Agile Product",
-    description: "Become a champion of innovation and market success. Master techniques to build products users love and that drive business growth.",
-    category: "Certification",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.7,
-    learners: 1400,
-    price: 24999,
-    originalPrice: 34999,
-    isPopular: false,
-    isNew: false,
-    skills: ["Customer Insight", "Design Thinking", "Product Strategy", "MVP Development", "Stakeholder Collaboration"],
-    university: "Lean Multiverse"
-  },
-  {
-    id: 11,
-    title: "Implementing SAFe®",
-    shortTitle: "Implementing SAFe",
-    description: "Be the trusted guide for enterprise Agile transformations. Build skills to launch Agile Release Trains and coach leaders and teams through change.",
-    category: "Leadership",
-    duration: "3 Days",
-    level: "Executive",
-    rating: 4.9,
-    learners: 500,
-    price: 37999,
-    originalPrice: 47999,
-    isPopular: false,
-    isNew: false,
-    skills: ["SAFe Transformation", "ART Launching", "Change Management", "Coaching Skills", "Agile Adoption"],
-    university: "Lean Multiverse"
-  }
-]
-
-const categories = ["All", "Certification", "Leadership", "Strategy"]
-const levels = ["All", "Professional", "Executive"]
+// SAFe Course data - now imported from data/courses.ts
 
 export default function Courses() {
   const [selectedCategory, setSelectedCategory] = useState("All")
@@ -747,37 +556,82 @@ export default function Courses() {
                       </div>
                     </div>
 
-                    {/* Enroll Button - Always at bottom */}
-                    <motion.div
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="relative group mt-auto"
-                    >
+                    {/* Action Buttons - Always at bottom */}
+                    <div className="mt-auto flex gap-3">
+                      {/* Get More Details Button */}
                       <motion.div
-                        className="absolute inset-0 bg-yellow-400/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        animate={{
-                          scale: [1, 1.1, 1],
-                          opacity: [0, 0.2, 0]
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-                      <Button 
-                        className="relative w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-2xl py-3 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 border border-yellow-400/20"
-                        data-cursor-hover
+                        whileHover={{ scale: 1.02, y: -1 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="relative group flex-1"
                       >
-                        <motion.span
-                          className="relative z-10"
-                          whileHover={{ y: -1 }}
-                          transition={{ duration: 0.2 }}
+                        <motion.div
+                          className="absolute inset-0 bg-yellow-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          animate={{
+                            scale: [1, 1.1, 1],
+                            opacity: [0, 0.2, 0]
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+                        <Button 
+                          className="relative w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-yellow-400/20"
+                          data-cursor-hover
+                          onClick={() => window.open(`/course-details/${course.id}`, '_blank')}
                         >
-                          Enroll Now
-                        </motion.span>
-                      </Button>
-                    </motion.div>
+                          <motion.span
+                            className="relative z-10 flex items-center justify-center gap-1"
+                            whileHover={{ y: -0.5 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span className="hidden sm:inline">Get More Details</span>
+                            <span className="sm:hidden">Details</span>
+                          </motion.span>
+                        </Button>
+                      </motion.div>
+
+                      {/* Talk to Expert Button */}
+                      <motion.div
+                        whileHover={{ scale: 1.02, y: -1 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="relative group flex-1"
+                      >
+                        <motion.div
+                          className="absolute inset-0 bg-orange-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          animate={{
+                            scale: [1, 1.1, 1],
+                            opacity: [0, 0.2, 0]
+                          }}
+                          transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+                        <Button 
+                          className="relative w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white hover:from-orange-500 hover:to-orange-600 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-orange-400/20"
+                          data-cursor-hover
+                          onClick={() => window.open(`https://wa.me/919876543210?text=Hi, I'm interested in the ${course.title} course. Can you provide more details?`, '_blank')}
+                        >
+                          <motion.span
+                            className="relative z-10 flex items-center justify-center gap-1"
+                            whileHover={{ y: -0.5 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                            </svg>
+                            <span className="hidden sm:inline">Talk to Expert</span>
+                            <span className="sm:hidden">Expert</span>
+                          </motion.span>
+                        </Button>
+                      </motion.div>
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>
@@ -785,7 +639,7 @@ export default function Courses() {
           </AnimatePresence>
         </motion.div>
         </motion.div>
-      </div>
+    </div>
     </motion.section>
   )
 }

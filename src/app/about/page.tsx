@@ -49,11 +49,10 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="relative w-full min-h-screen text-white bg-black">
-      <div className="relative flex flex-col min-h-screen bg-black">
-        <div className="bg-black">
-          <Navbar />
-        </div>
-        
+      {/* Fixed Navbar */}
+      <Navbar />
+      
+      <div className="relative flex flex-col min-h-screen bg-black pt-24">
         <div id="about">
           <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
             <About />

@@ -57,7 +57,7 @@ export default function FreeCoursesClient() {
       
       <motion.main 
         ref={mainRef}
-        className="relative w-full min-h-screen text-white overflow-hidden"
+        className="relative w-full min-h-screen text-white overflow-hidden pt-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
