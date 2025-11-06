@@ -14,12 +14,18 @@ export async function generateCalendarInvite(
   booking: CalendarInviteData
 ): Promise<string> {
   // Parse date and time in IST
-  const dateStr = booking.selected_date
-  const timeStr = booking.selected_time
+  const dateStr = booking.selected_date // Format: YYYY-MM-DD
+  const timeStr = booking.selected_time // Format: HH:MM (24-hour)
   
-  // Combine date and time
-  const dateTimeStr = `${dateStr}T${timeStr}:00`
+  // Combine date and time with IST timezone (+05:30)
+  // Format: YYYY-MM-DDTHH:MM:00+05:30
+  const dateTimeStr = `${dateStr}T${timeStr}:00+05:30`
   const startDate = parseISO(dateTimeStr)
+  
+  // Validate the date
+  if (isNaN(startDate.getTime())) {
+    throw new Error(`Invalid date/time: ${dateStr} ${timeStr}. Please ensure date is in YYYY-MM-DD format and time is in HH:MM format.`)
+  }
   
   // Webinar duration: 1 hour
   const endDate = addHours(startDate, 1)
