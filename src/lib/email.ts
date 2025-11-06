@@ -1,21 +1,35 @@
 import nodemailer from 'nodemailer'
 import { format, parseISO } from 'date-fns'
 
-// Create reusable transporter for SendGrid
+// Create reusable transporter for Outlook/Office365 SMTP (free)
 const createTransporter = () => {
-  if (!process.env.SENDGRID_API_KEY) {
-    throw new Error('SENDGRID_API_KEY is not configured. Please add it to your environment variables.')
+  // Use Outlook SMTP if credentials are provided
+  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+    return nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp-mail.outlook.com',
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    })
   }
 
-  return nodemailer.createTransport({
-    host: 'smtp.sendgrid.net',
-    port: 587,
-    secure: false,
-    auth: {
-      user: 'apikey',
-      pass: process.env.SENDGRID_API_KEY,
-    },
-  })
+  // Fallback: Try to use generic SMTP configuration
+  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+    return nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    })
+  }
+
+  throw new Error('SMTP credentials are not configured. Please add SMTP_USER and SMTP_PASS (or SMTP_HOST, SMTP_USER, SMTP_PASS) to your environment variables.')
 }
 
 export interface EmailData {
@@ -40,7 +54,7 @@ export async function sendCalendarInviteEmail(data: EmailData) {
     // Convert calendar invite to buffer for attachment
     const calendarBuffer = Buffer.from(data.calendarInvite, 'utf-8')
 
-    const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'Lean Multiverse <webinar@leanmultiverse.com>'
+    const fromEmail = process.env.FROM_EMAIL || process.env.SMTP_USER || 'Lean Multiverse <webinar@leanmultiverse.com>'
     
     console.log('Sending email:', {
       to: data.to,
@@ -160,8 +174,9 @@ export async function sendCalendarInviteEmail(data: EmailData) {
       message: errorMessage,
       details: errorDetails,
       to: data.to,
-      sendgridApiKey: process.env.SENDGRID_API_KEY ? '✅ Configured' : '❌ Missing',
-      fromEmail: process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'Using default',
+      smtpUser: process.env.SMTP_USER ? '✅ Configured' : '❌ Missing',
+      smtpPass: process.env.SMTP_PASS ? '✅ Configured' : '❌ Missing',
+      fromEmail: process.env.FROM_EMAIL || process.env.SMTP_USER || 'Using default',
     })
     
     throw new Error(`Failed to send email: ${errorMessage}`)

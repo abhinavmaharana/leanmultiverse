@@ -13,29 +13,29 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if SendGrid API key is configured
-    if (!process.env.SENDGRID_API_KEY) {
+    // Check if SMTP credentials are configured
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
       return NextResponse.json(
         { 
-          error: 'SENDGRID_API_KEY is not configured',
-          message: 'Please add SENDGRID_API_KEY to your environment variables'
+          error: 'SMTP credentials are not configured',
+          message: 'Please add SMTP_USER and SMTP_PASS to your environment variables. For Outlook, use your Outlook email address and password.'
         },
         { status: 500 }
       )
     }
 
-    // Create SendGrid transporter
+    // Create SMTP transporter (Outlook or generic SMTP)
     const transporter = nodemailer.createTransport({
-      host: 'smtp.sendgrid.net',
-      port: 587,
-      secure: false,
+      host: process.env.SMTP_HOST || 'smtp-mail.outlook.com',
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
-        user: 'apikey',
-        pass: process.env.SENDGRID_API_KEY,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
       },
     })
 
-    const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'onboarding@resend.dev'
+    const fromEmail = process.env.FROM_EMAIL || process.env.SMTP_USER || 'Lean Multiverse <webinar@leanmultiverse.com>'
 
     // Send a test email
     const result = await transporter.sendMail({
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
               
               <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; font-size: 14px; color: #666;">
                 <p style="margin: 0;">
-                  If you received this email, your Resend configuration is correct and emails should be sent automatically for webinar bookings.
+                  If you received this email, your SMTP configuration is correct and emails should be sent automatically for webinar bookings.
                 </p>
               </div>
             </div>
@@ -109,8 +109,9 @@ export async function POST(request: NextRequest) {
       {
         error: errorMessage,
         details: process.env.NODE_ENV === 'development' ? errorDetails : undefined,
-        sendgridApiKey: process.env.SENDGRID_API_KEY ? '✅ Configured' : '❌ Missing',
-        fromEmail: process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'Using default',
+        smtpUser: process.env.SMTP_USER ? '✅ Configured' : '❌ Missing',
+        smtpPass: process.env.SMTP_PASS ? '✅ Configured' : '❌ Missing',
+        fromEmail: process.env.FROM_EMAIL || process.env.SMTP_USER || 'Using default',
       },
       { status: 500 }
     )

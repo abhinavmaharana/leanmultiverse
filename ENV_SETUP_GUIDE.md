@@ -61,23 +61,44 @@ Copy the template from `.env.local.example` and fill in the values below.
 
 ---
 
-## Email Service (SendGrid)
+## Email Service (Outlook/Office365 SMTP - Free)
 
-### SENDGRID_API_KEY
-1. Go to https://sendgrid.com
-2. Sign in or create an account (free tier available: 100 emails/day)
-3. Go to **Settings** → **API Keys**
-4. Click **Create API Key**
-5. Give it a name (e.g., "Lean Multiverse")
-6. Select **Full Access** or **Restricted Access** (with Mail Send permission)
-7. Copy the API key (starts with `SG.`)
-8. ⚠️ **KEEP THIS SECRET** - Never expose this in client-side code
+### SMTP_USER
+- Your Outlook/Office365 email address (e.g., `your-email@outlook.com` or `your-email@office365.com`)
+- This will be used to authenticate with Outlook SMTP server
 
-### SENDGRID_FROM_EMAIL
-- Your email address with name (e.g., `Your Name <your-email@yourdomain.com>`)
-- This email will be the sender for all webinar booking emails
-- For free tier, you can use any email address (no domain verification required)
-- For better deliverability, verify your domain in SendGrid dashboard
+### SMTP_PASS
+- Your Outlook/Office365 **password** (your regular account password)
+- For Outlook.com accounts: Use your regular password
+- For Office365/Work accounts: Use your regular work password
+- ⚠️ **KEEP THIS SECRET** - Never expose this in client-side code
+- Note: If you have 2-factor authentication enabled, you may need to use an App Password (see below)
+
+### SMTP_HOST (Optional)
+- Default: `smtp-mail.outlook.com` (for Outlook.com accounts)
+- Alternative: `smtp.office365.com` (for Office365/Work accounts)
+- Only change if using a different SMTP server
+
+### SMTP_PORT (Optional)
+- Default: `587` (TLS)
+- Alternative: `465` (SSL) - requires `SMTP_SECURE=true`
+
+### SMTP_SECURE (Optional)
+- Default: `false` (for port 587 with TLS)
+- Set to `true` for port 465 (SSL)
+
+### FROM_EMAIL (Optional)
+- Your email address with name (e.g., `Your Name <your-email@outlook.com>`)
+- If not set, will use `SMTP_USER` as the sender
+
+### App Password (If 2FA is enabled)
+If you have 2-factor authentication enabled on your Outlook account:
+1. Go to https://account.microsoft.com/security
+2. Click **Security** → **Advanced security options**
+3. Under **App passwords**, click **Create a new app password**
+4. Enter a name (e.g., "Lean Multiverse")
+5. Copy the generated password
+6. Use this App Password as `SMTP_PASS` instead of your regular password
 
 ---
 
@@ -125,9 +146,16 @@ RAZORPAY_KEY_SECRET=abcdefghijklmnopqrstuvwxyz123456
 NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_1234567890
 RAZORPAY_WEBHOOK_SECRET=webhook_secret_123456
 
-# Email (SendGrid)
-SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-SENDGRID_FROM_EMAIL=Your Name <your-email@yourdomain.com>
+# Email (Outlook/Office365 SMTP - Free)
+SMTP_USER=your-email@outlook.com
+SMTP_PASS=your_outlook_password
+FROM_EMAIL=Your Name <your-email@outlook.com>
+# Optional: Only if using a different SMTP server
+# For Outlook.com: smtp-mail.outlook.com
+# For Office365/Work: smtp.office365.com
+# SMTP_HOST=smtp-mail.outlook.com
+# SMTP_PORT=587
+# SMTP_SECURE=false
 
 # Webinar
 WEBINAR_ORGANIZER_EMAIL=webinar@yourdomain.com
@@ -151,7 +179,7 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 1. **Never commit `.env.local` to Git** - It's already in `.gitignore`
 2. **Use test keys for development** - Razorpay test keys start with `rzp_test_`
-3. **Verify your domain in Resend** - Required for sending emails
+3. **Use your regular Outlook password** - No App Password needed unless 2FA is enabled
 4. **Set up webhook in Razorpay** - Required for production payment verification
 5. **Restart your dev server** after adding/changing environment variables
 
@@ -172,5 +200,5 @@ After setting up all variables:
 
 - Supabase: https://supabase.com/docs
 - Razorpay: https://razorpay.com/docs
-- Resend: https://resend.com/docs
+- Outlook SMTP Settings: https://support.microsoft.com/en-us/office/pop-imap-and-smtp-settings-8361e398-8af4-4e97-b147-6c6c4ac95353
 

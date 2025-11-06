@@ -205,7 +205,7 @@ export default function Hero() {
         {/* Right Side: Image with enhanced styling */}
         <div 
           ref={imageRef}
-          className="relative w-full h-[400px] sm:h-[500px] lg:h-[650px] order-1 lg:order-2"
+          className="relative w-full h-[500px] sm:h-[600px] lg:h-[750px] xl:h-[850px] order-1 lg:order-2"
         >
           {/* Decorative background glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-yellow-400/5 to-transparent rounded-3xl blur-3xl -z-10 animate-pulse" />
@@ -218,7 +218,7 @@ export default function Hero() {
             
             <div className="relative w-full h-full rounded-2xl overflow-hidden">
               <Image
-                src="/nitesh-prasad.png"
+                src="/nitesh-prasad-1.png"
                 alt="Nitesh Prasad - Lean Multiverse"
                 fill
                 className="object-cover rounded-2xl scale-105 hover:scale-100 transition-transform duration-700"
