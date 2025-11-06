@@ -210,7 +210,7 @@ export default function Hero() {
           {/* Clean image container */}
           <div className="relative w-full h-full rounded-3xl overflow-hidden">
             <Image
-              src="/nitesh-prasad-1.png"
+              src="/nitesh-prasad-3.png"
               alt="Nitesh Prasad - Lean Multiverse"
               fill
               className="object-contain rounded-3xl"
