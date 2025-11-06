@@ -87,6 +87,8 @@ export async function POST(request: NextRequest) {
       emailId: result.data?.id,
       to: to,
       from: fromEmail,
+      note: 'Check your spam/junk folder if you don\'t see it in your inbox. Also check Resend dashboard for delivery status.',
+      resendDashboard: 'https://resend.com/emails',
     })
   } catch (error) {
     console.error('Error sending test email:', error)
