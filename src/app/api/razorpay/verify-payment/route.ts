@@ -46,7 +46,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Update booking with payment details
-    const meetLink = await generateMeetLink(booking)
+    let meetLink: string
+    try {
+      meetLink = await generateMeetLink(booking)
+    } catch (error) {
+      console.error('Error generating meet link:', error)
+      // Use fallback meeting URL if Zoom API fails
+      meetLink = process.env.ZOOM_MEETING_URL || 'https://zoom.us/j/YOUR_MEETING_ID'
+    }
     
     await updateBookingByOrderId(razorpay_order_id, {
       razorpay_payment_id,
@@ -55,29 +62,42 @@ export async function POST(request: NextRequest) {
     })
 
     // Generate calendar invite
-    const calendarInvite = await generateCalendarInvite({
-      id: booking.id,
-      user_name: booking.user_name,
-      user_email: booking.user_email,
-      selected_date: booking.selected_date,
-      selected_time: booking.selected_time,
-      meet_link: meetLink,
-    })
+    let calendarInvite: string
+    try {
+      calendarInvite = await generateCalendarInvite({
+        id: booking.id,
+        user_name: booking.user_name,
+        user_email: booking.user_email,
+        selected_date: booking.selected_date,
+        selected_time: booking.selected_time,
+        meet_link: meetLink,
+      })
+    } catch (error) {
+      console.error('Error generating calendar invite:', error)
+      throw new Error(`Failed to generate calendar invite: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    }
 
     // Send email with calendar invite
-    await sendCalendarInviteEmail({
-      to: booking.user_email,
-      name: booking.user_name,
-      date: booking.selected_date,
-      time: booking.selected_time,
-      meetLink: meetLink,
-      calendarInvite: calendarInvite,
-    })
-
-    // Mark calendar invite as sent
-    await updateBookingByOrderId(razorpay_order_id, {
-      calendar_invite_sent: true,
-    })
+    try {
+      await sendCalendarInviteEmail({
+        to: booking.user_email,
+        name: booking.user_name,
+        date: booking.selected_date,
+        time: booking.selected_time,
+        meetLink: meetLink,
+        calendarInvite: calendarInvite,
+      })
+      
+      // Mark calendar invite as sent
+      await updateBookingByOrderId(razorpay_order_id, {
+        calendar_invite_sent: true,
+      })
+    } catch (error) {
+      console.error('Error sending email:', error)
+      // Don't fail the payment verification if email fails
+      // Payment is already verified, email can be sent later
+      console.warn('Payment verified but email sending failed. Booking is still confirmed.')
+    }
 
     return NextResponse.json({
       success: true,
@@ -86,8 +106,20 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error verifying payment:', error)
     const errorMessage = error instanceof Error ? error.message : 'Failed to verify payment'
+    const errorStack = error instanceof Error ? error.stack : undefined
+    
+    // Log detailed error for debugging
+    console.error('Payment verification error details:', {
+      message: errorMessage,
+      stack: errorStack,
+      timestamp: new Date().toISOString(),
+    })
+    
     return NextResponse.json(
-      { error: errorMessage },
+      { 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? errorStack : undefined
+      },
       { status: 500 }
     )
   }
