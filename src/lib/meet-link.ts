@@ -1,6 +1,5 @@
 import { WebinarBooking } from './db'
 import { parseISO } from 'date-fns'
-import jwt from 'jsonwebtoken'
 
 /**
  * Generate a Zoom meeting link
@@ -8,8 +7,8 @@ import jwt from 'jsonwebtoken'
  * Option 2: Use a pre-configured Zoom meeting link
  */
 export async function generateMeetLink(booking: WebinarBooking): Promise<string> {
-  // Check if Zoom API credentials are configured
-  if (process.env.ZOOM_API_KEY && process.env.ZOOM_API_SECRET) {
+  // Check if Zoom OAuth credentials are configured (Server-to-Server OAuth)
+  if (process.env.ZOOM_CLIENT_ID && process.env.ZOOM_CLIENT_SECRET && process.env.ZOOM_ACCOUNT_ID) {
     try {
       return await createZoomMeeting(booking)
     } catch (error) {
@@ -27,20 +26,24 @@ export async function generateMeetLink(booking: WebinarBooking): Promise<string>
   
   // If no Zoom configuration, return a placeholder
   // In production, you should always configure either Zoom API or a default meeting URL
-  console.warn('No Zoom configuration found. Please set ZOOM_API_KEY and ZOOM_API_SECRET, or ZOOM_MEETING_URL')
+  console.warn('No Zoom configuration found. Please set ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET, and ZOOM_ACCOUNT_ID, or ZOOM_MEETING_URL')
   return 'https://zoom.us/j/YOUR_MEETING_ID'
 }
 
 /**
- * Create a Zoom meeting using Zoom API (JWT)
- * Requires: ZOOM_API_KEY and ZOOM_API_SECRET
- * Get these from: https://marketplace.zoom.us/develop/create (create a JWT app)
+ * Create a Zoom meeting using Zoom API (Server-to-Server OAuth)
+ * Requires: ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET, and ZOOM_ACCOUNT_ID
+ * Get these from: https://marketplace.zoom.us/develop/create (create a Server-to-Server OAuth app)
  */
 async function createZoomMeeting(booking: WebinarBooking): Promise<string> {
-  if (!process.env.ZOOM_API_KEY || !process.env.ZOOM_API_SECRET) {
+  if (!process.env.ZOOM_CLIENT_ID || !process.env.ZOOM_CLIENT_SECRET || !process.env.ZOOM_ACCOUNT_ID) {
     throw new Error('Zoom API credentials not configured')
   }
   
+  // Step 1: Get OAuth access token
+  const token = await getZoomAccessToken()
+  
+  // Step 2: Create the meeting
   // Combine date and time
   const dateTimeStr = `${booking.selected_date}T${booking.selected_time}:00`
   const startDate = parseISO(dateTimeStr)
@@ -48,14 +51,6 @@ async function createZoomMeeting(booking: WebinarBooking): Promise<string> {
   // Format for Zoom API (ISO 8601 format)
   const startTime = startDate.toISOString()
   const duration = 60 // 1 hour in minutes
-  
-  // Generate JWT token for Zoom API
-  const payload = {
-    iss: process.env.ZOOM_API_KEY,
-    exp: Math.floor(Date.now() / 1000) + 3600, // 1 hour expiry
-  }
-  
-  const token = jwt.sign(payload, process.env.ZOOM_API_SECRET)
   
   // Create Zoom meeting
   const response = await fetch('https://api.zoom.us/v2/users/me/meetings', {
@@ -91,5 +86,39 @@ async function createZoomMeeting(booking: WebinarBooking): Promise<string> {
   
   // Return the join URL (participants use this) or start URL (host uses this)
   return data.join_url || data.start_url || ''
+}
+
+/**
+ * Get OAuth access token for Server-to-Server OAuth
+ * This exchanges the Client ID and Secret for an access token
+ */
+async function getZoomAccessToken(): Promise<string> {
+  const accountId = process.env.ZOOM_ACCOUNT_ID
+  const clientId = process.env.ZOOM_CLIENT_ID
+  const clientSecret = process.env.ZOOM_CLIENT_SECRET
+  
+  if (!accountId || !clientId || !clientSecret) {
+    throw new Error('Zoom OAuth credentials not configured')
+  }
+  
+  // Create Basic Auth token (base64 encoded clientId:clientSecret)
+  const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
+  
+  // Request access token
+  const response = await fetch(`https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${accountId}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${credentials}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  })
+  
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}))
+    throw new Error(`Failed to get Zoom access token: ${response.statusText} - ${JSON.stringify(errorData)}`)
+  }
+  
+  const data = await response.json()
+  return data.access_token
 }
 

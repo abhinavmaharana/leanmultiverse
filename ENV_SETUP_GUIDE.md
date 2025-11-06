@@ -89,10 +89,11 @@ Copy the template from `.env.local.example` and fill in the values below.
 
 ### ZOOM Configuration (Choose one option)
 
-**Option 1: Use Zoom API (Recommended for production)**
-- `ZOOM_API_KEY` - Your Zoom API Key (JWT App)
-- `ZOOM_API_SECRET` - Your Zoom API Secret (JWT App)
-- Get these from: https://marketplace.zoom.us/develop/create
+**Option 1: Use Zoom API (Server-to-Server OAuth - Recommended for production)**
+- `ZOOM_ACCOUNT_ID` - Your Zoom Account ID
+- `ZOOM_CLIENT_ID` - Your Zoom Client ID
+- `ZOOM_CLIENT_SECRET` - Your Zoom Client Secret
+- Get these from: https://marketplace.zoom.us/develop/create (create a Server-to-Server OAuth app)
 
 **Option 2: Use a pre-configured Zoom meeting**
 - `ZOOM_MEETING_URL` - Your Zoom meeting URL (e.g., `https://zoom.us/j/123456789`)
@@ -131,9 +132,10 @@ RESEND_FROM_EMAIL=webinar@yourdomain.com
 WEBINAR_ORGANIZER_EMAIL=webinar@yourdomain.com
 
 # Zoom (Choose one option)
-# Option 1: Use Zoom API to create meetings automatically
-ZOOM_API_KEY=your_zoom_api_key
-ZOOM_API_SECRET=your_zoom_api_secret
+# Option 1: Use Zoom API (Server-to-Server OAuth) to create meetings automatically
+ZOOM_ACCOUNT_ID=your_zoom_account_id
+ZOOM_CLIENT_ID=your_zoom_client_id
+ZOOM_CLIENT_SECRET=your_zoom_client_secret
 
 # Option 2: Use a pre-configured Zoom meeting URL
 # ZOOM_MEETING_URL=https://zoom.us/j/YOUR_MEETING_ID
