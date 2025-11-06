@@ -119,9 +119,10 @@ export async function sendCalendarInviteEmail(data: EmailData) {
     })
 
     return emailContent
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error sending email:', error)
-    throw new Error(`Failed to send email: ${error.message}`)
+    const errorMessage = error instanceof Error ? error.message : 'Failed to send email'
+    throw new Error(errorMessage)
   }
 }
 

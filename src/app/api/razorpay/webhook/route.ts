@@ -66,8 +66,11 @@ export async function POST(request: NextRequest) {
 
       // Generate calendar invite
       const calendarInvite = await generateCalendarInvite({
-        ...booking,
-        razorpay_payment_id: payment.id,
+        id: booking.id,
+        user_name: booking.user_name,
+        user_email: booking.user_email,
+        selected_date: booking.selected_date,
+        selected_time: booking.selected_time,
         meet_link: meetLink,
       })
 
@@ -105,10 +108,11 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, message: 'Event not handled' })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Webhook error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Webhook processing failed'
     return NextResponse.json(
-      { error: error.message || 'Webhook processing failed' },
+      { error: errorMessage },
       { status: 500 }
     )
   }

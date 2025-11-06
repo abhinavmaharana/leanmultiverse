@@ -62,20 +62,14 @@ We look forward to seeing you there!`,
         name: booking.user_name,
         email: booking.user_email,
         rsvp: true,
-        status: 'ACCEPTED',
       },
     ],
-    method: 'REQUEST',
-    status: 'CONFIRMED',
-    busystatus: 'BUSY',
     alarms: [
       {
-        type: 'display',
         trigger: 15 * 60, // 15 minutes before
         description: 'Webinar starts in 15 minutes',
       },
       {
-        type: 'display',
         trigger: 24 * 60 * 60, // 1 day before
         description: 'Webinar reminder - Tomorrow',
       },

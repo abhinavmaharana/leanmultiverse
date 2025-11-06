@@ -28,12 +28,13 @@ const Certification = dynamic(() => import('@/components/landing/Certication'), 
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
-const FlowingMenuWrapper = dynamic(() => import('@/components/ui/FlowingMenuWrapper'), {
-  ssr: true,
-  loading: () => <div className="h-full bg-gray-900 animate-pulse flex items-center justify-center">
-    <p className="text-white">Loading Success Stories...</p>
-  </div>
-})
+// FlowingMenuWrapper commented out - not currently used
+// const FlowingMenuWrapper = dynamic(() => import('@/components/ui/FlowingMenuWrapper'), {
+//   ssr: true,
+//   loading: () => <div className="h-full bg-gray-900 animate-pulse flex items-center justify-center">
+//     <p className="text-white">Loading Success Stories...</p>
+//   </div>
+// })
 
 const Footer = dynamic(() => import('../components/shared/Footer'), {
   ssr: true,
@@ -62,23 +63,24 @@ export const metadata: Metadata = {
 }
 
 export default function LandingPage() {
-  const demoItems = [
-    {
-      link: "/case-studies/netflix",
-      text: "Netflix",
-      image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2000&auto=format&fit=crop&crop=center"
-    },
-    {
-      link: "/case-studies/nasa",
-      text: "NASA",
-      image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?q=80&w=2000&auto=format&fit=crop&crop=center"
-    },
-    {
-      link: "/case-studies/porsche",
-      text: "Porsche",
-      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop&crop=center"
-    }
-  ]
+  // demoItems commented out - not currently used
+  // const demoItems = [
+  //   {
+  //     link: "/case-studies/netflix",
+  //     text: "Netflix",
+  //     image: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2000&auto=format&fit=crop&crop=center"
+  //   },
+  //   {
+  //     link: "/case-studies/nasa",
+  //     text: "NASA",
+  //     image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?q=80&w=2000&auto=format&fit=crop&crop=center"
+  //   },
+  //   {
+  //     link: "/case-studies/porsche",
+  //     text: "Porsche",
+  //     image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop&crop=center"
+  //   }
+  // ]
 
   return (
     <main className="relative w-full min-h-screen text-white">

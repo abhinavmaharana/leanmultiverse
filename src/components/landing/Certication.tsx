@@ -1,40 +1,41 @@
 "use client"
 
-import Image from 'next/image';
-import LogoLoop from '../ui/LogoLoop';
+// LogoLoop and certLogos commented out - not currently used
+// import Image from 'next/image';
+// import LogoLoop from '../ui/LogoLoop';
 
-const certLogos = [
-    { 
-        node: <Image src="/cert/Cert Mark-SA-150.png" alt="SAFe 6 Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
-        title: "SAFe 6 Certification", 
-        href: "https://www.scaledagile.com" 
-    },
-    { 
-        node: <Image src="/cert/Cert Mark-SA-300.png" alt="SAFe 6 Advanced Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
-        title: "SAFe 6 Advanced Certification", 
-        href: "https://www.scaledagile.com" 
-    },
-    { 
-        node: <Image src="/cert/Cert Mark-SA.svg" alt="SAFe Certification Mark" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
-        title: "SAFe Certification Mark", 
-        href: "https://www.scaledagile.com" 
-    },
-    { 
-        node: <Image src="/cert/Cert Mark-SA-150.png" alt="SAFe 6 Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
-        title: "SAFe 6 Certification", 
-        href: "https://www.scaledagile.com" 
-    },
-    { 
-        node: <Image src="/cert/Cert Mark-SA-300.png" alt="SAFe 6 Advanced Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
-        title: "SAFe 6 Advanced Certification", 
-        href: "https://www.scaledagile.com" 
-    },
-    { 
-        node: <Image src="/cert/Cert Mark-SA.svg" alt="SAFe Certification Mark" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
-        title: "SAFe Certification Mark", 
-        href: "https://www.scaledagile.com" 
-    },
-];
+// const certLogos = [
+//     { 
+//         node: <Image src="/cert/Cert Mark-SA-150.png" alt="SAFe 6 Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+//         title: "SAFe 6 Certification", 
+//         href: "https://www.scaledagile.com" 
+//     },
+//     { 
+//         node: <Image src="/cert/Cert Mark-SA-300.png" alt="SAFe 6 Advanced Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+//         title: "SAFe 6 Advanced Certification", 
+//         href: "https://www.scaledagile.com" 
+//     },
+//     { 
+//         node: <Image src="/cert/Cert Mark-SA.svg" alt="SAFe Certification Mark" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+//         title: "SAFe Certification Mark", 
+//         href: "https://www.scaledagile.com" 
+//     },
+//     { 
+//         node: <Image src="/cert/Cert Mark-SA-150.png" alt="SAFe 6 Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+//         title: "SAFe 6 Certification", 
+//         href: "https://www.scaledagile.com" 
+//     },
+//     { 
+//         node: <Image src="/cert/Cert Mark-SA-300.png" alt="SAFe 6 Advanced Certification" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+//         title: "SAFe 6 Advanced Certification", 
+//         href: "https://www.scaledagile.com" 
+//     },
+//     { 
+//         node: <Image src="/cert/Cert Mark-SA.svg" alt="SAFe Certification Mark" width={120} height={120} className="object-contain w-[120px] h-[120px]" />, 
+//         title: "SAFe Certification Mark", 
+//         href: "https://www.scaledagile.com" 
+//     },
+// ];
 
 export default function Certification() {
   return null

@@ -1,5 +1,5 @@
 import { WebinarBooking } from './db'
-import { parseISO, addHours } from 'date-fns'
+import { parseISO } from 'date-fns'
 import jwt from 'jsonwebtoken'
 
 /**

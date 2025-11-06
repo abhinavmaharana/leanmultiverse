@@ -39,7 +39,7 @@ export default function BookingSuccessPage() {
           </div>
 
           <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mb-8">
-            <h2 className="text-2xl font-semibold mb-4 text-white">What's Next?</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-white">What&apos;s Next?</h2>
             <ul className="text-left space-y-3 text-gray-300">
               <li className="flex items-start">
                 <span className="text-yellow-400 mr-3">✓</span>

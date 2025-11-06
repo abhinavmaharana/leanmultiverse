@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { addWeeks, startOfWeek, addDays, format, isSaturday, isSunday, parseISO } from 'date-fns'
+import { addWeeks, startOfWeek, addDays, format } from 'date-fns'
 import Navbar from '@/components/shared/Navbar'
 
 // Form validation schema
@@ -105,7 +105,11 @@ export default function BookWebinarClient() {
           name: 'Lean Multiverse',
           description: 'Webinar Booking',
           order_id: orderId,
-          handler: async function (response: any) {
+          handler: async function (response: {
+            razorpay_order_id: string
+            razorpay_payment_id: string
+            razorpay_signature: string
+          }) {
             // Payment successful - verify on server
             try {
               const verifyResponse = await fetch('/api/razorpay/verify-payment', {
@@ -126,7 +130,7 @@ export default function BookWebinarClient() {
               } else {
                 throw new Error('Payment verification failed')
               }
-            } catch (err) {
+            } catch {
               setError('Payment verification failed. Please contact support.')
               setIsSubmitting(false)
             }
@@ -146,12 +150,13 @@ export default function BookWebinarClient() {
           },
         }
 
-        const razorpay = new (window as any).Razorpay(options)
+        const razorpay = new (window as typeof window & { Razorpay: new (options: unknown) => { open: () => void } }).Razorpay(options)
         razorpay.open()
       }
       document.body.appendChild(script)
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again.')
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Something went wrong. Please try again.'
+      setError(errorMessage)
       setIsSubmitting(false)
     }
   }
@@ -330,7 +335,7 @@ export default function BookWebinarClient() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <p>
-              After payment, you'll receive a calendar invite and meeting link via email.
+              After payment, you&apos;ll receive a calendar invite and meeting link via email.
             </p>
             <p className="mt-2">
               All times are in IST (Indian Standard Time). Webinars are held on weekends only.

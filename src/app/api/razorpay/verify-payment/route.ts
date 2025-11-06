@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
-      booking_id,
     } = body
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
@@ -57,8 +56,11 @@ export async function POST(request: NextRequest) {
 
     // Generate calendar invite
     const calendarInvite = await generateCalendarInvite({
-      ...booking,
-      razorpay_payment_id,
+      id: booking.id,
+      user_name: booking.user_name,
+      user_email: booking.user_email,
+      selected_date: booking.selected_date,
+      selected_time: booking.selected_time,
       meet_link: meetLink,
     })
 
@@ -81,10 +83,11 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Payment verified and booking confirmed',
     })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error verifying payment:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Failed to verify payment'
     return NextResponse.json(
-      { error: error.message || 'Failed to verify payment' },
+      { error: errorMessage },
       { status: 500 }
     )
   }
