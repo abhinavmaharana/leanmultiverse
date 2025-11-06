@@ -382,7 +382,7 @@ export default function Courses() {
                 />
 
                 <motion.div
-                  className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 h-[520px] overflow-hidden flex flex-col"
+                  className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 min-h-[600px] overflow-hidden flex flex-col"
                   whileHover={{ 
                     borderColor: "rgba(251, 191, 36, 0.4)",
                     backgroundColor: "rgba(255, 255, 255, 0.08)"
@@ -452,16 +452,52 @@ export default function Courses() {
                     {/* Course Info */}
                     <div className="flex-grow flex flex-col justify-between">
                       <div>
+                        {/* Subheading */}
                         <motion.div
                           className="text-yellow-400 text-sm font-medium mb-2"
                           initial={{ x: -20, opacity: 0 }}
                           whileInView={{ x: 0, opacity: 1 }}
                           transition={{ duration: 0.5, delay: 0.5 }}
                         >
-                          {course.category} • {course.duration}
+                          {course.subheading || `${course.category} • ${course.duration}`}
                         </motion.div>
+                        
+                        {/* Limited Seats Badge */}
+                        {course.limitedSeats && (
+                          <motion.div
+                            className="mb-2"
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ duration: 0.3, delay: 0.55 }}
+                          >
+                            <span className="inline-flex items-center gap-1 bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-semibold border border-red-500/30">
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                              </svg>
+                              Limited Seats • Live Interactive Session
+                            </span>
+                          </motion.div>
+                        )}
+                        
+                        {/* Discount Badge */}
+                        {course.discount && (
+                          <motion.div
+                            className="mb-2"
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            transition={{ duration: 0.3, delay: 0.55 }}
+                          >
+                            <span className="inline-flex items-center gap-1 bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-xs font-semibold border border-green-500/30">
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                              </svg>
+                              {course.discount}
+                            </span>
+                          </motion.div>
+                        )}
+                        
                         <motion.h3
-                          className="text-lg font-bold text-white mb-3 line-clamp-2 min-h-[2.5rem]"
+                          className="text-lg font-bold text-white mb-3 line-clamp-3 min-h-[3.5rem]"
                           initial={{ y: 20, opacity: 0 }}
                           whileInView={{ y: 0, opacity: 1 }}
                           transition={{ duration: 0.5, delay: 0.6 }}
@@ -477,37 +513,76 @@ export default function Courses() {
                           {course.description}
                         </motion.p>
 
-                        {/* Skills */}
-                        <motion.div
-                          className="mb-6"
-                          initial={{ y: 20, opacity: 0 }}
-                          whileInView={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 0.5, delay: 0.8 }}
-                        >
-                          <div className="flex flex-wrap gap-2">
-                            {course.skills.slice(0, 3).map((skill, skillIndex) => (
-                              <motion.span
-                                key={skill}
-                                className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
-                                initial={{ scale: 0 }}
-                                whileInView={{ scale: 1 }}
-                                transition={{ duration: 0.3, delay: 0.9 + skillIndex * 0.1 }}
-                              >
-                                {skill}
-                              </motion.span>
-                            ))}
-                            {course.skills.length > 3 && (
-                              <motion.span
-                                className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
-                                initial={{ scale: 0 }}
-                                whileInView={{ scale: 1 }}
-                                transition={{ duration: 0.3, delay: 1.2 }}
-                              >
-                                +{course.skills.length - 3} more
-                              </motion.span>
-                            )}
-                          </div>
-                        </motion.div>
+                        {/* Highlights */}
+                        {course.highlights && course.highlights.length > 0 && (
+                          <motion.div
+                            className="mb-6"
+                            initial={{ y: 20, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                          >
+                            <div className="space-y-2">
+                              {course.highlights.slice(0, 3).map((highlight, highlightIndex) => (
+                                <motion.div
+                                  key={highlightIndex}
+                                  className="flex items-start gap-2 text-xs text-gray-300"
+                                  initial={{ x: -10, opacity: 0 }}
+                                  whileInView={{ x: 0, opacity: 1 }}
+                                  transition={{ duration: 0.3, delay: 0.9 + highlightIndex * 0.1 }}
+                                >
+                                  <svg className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                  </svg>
+                                  <span className="leading-relaxed">{highlight}</span>
+                                </motion.div>
+                              ))}
+                              {course.highlights.length > 3 && (
+                                <motion.div
+                                  className="text-yellow-400 text-xs font-medium"
+                                  initial={{ opacity: 0 }}
+                                  whileInView={{ opacity: 1 }}
+                                  transition={{ duration: 0.3, delay: 1.2 }}
+                                >
+                                  +{course.highlights.length - 3} more highlights
+                                </motion.div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+
+                        {/* Skills (fallback if no highlights) */}
+                        {(!course.highlights || course.highlights.length === 0) && (
+                          <motion.div
+                            className="mb-6"
+                            initial={{ y: 20, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                          >
+                            <div className="flex flex-wrap gap-2">
+                              {course.skills.slice(0, 3).map((skill, skillIndex) => (
+                                <motion.span
+                                  key={skill}
+                                  className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
+                                  initial={{ scale: 0 }}
+                                  whileInView={{ scale: 1 }}
+                                  transition={{ duration: 0.3, delay: 0.9 + skillIndex * 0.1 }}
+                                >
+                                  {skill}
+                                </motion.span>
+                              ))}
+                              {course.skills.length > 3 && (
+                                <motion.span
+                                  className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
+                                  initial={{ scale: 0 }}
+                                  whileInView={{ scale: 1 }}
+                                  transition={{ duration: 0.3, delay: 1.2 }}
+                                >
+                                  +{course.skills.length - 3} more
+                                </motion.span>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
                       </div>
 
                       {/* Stats and Price - Fixed at bottom */}
@@ -540,6 +615,11 @@ export default function Courses() {
                               transition={{ duration: 0.5, delay: 1.2 }}
                             >
                               ₹{course.price.toLocaleString('en-IN')}
+                              {course.priceWithGST && (
+                                <span className="text-sm font-normal text-gray-400 ml-1">
+                                  {course.priceWithGST.replace(`₹${course.price.toLocaleString('en-IN')}`, '')}
+                                </span>
+                              )}
                             </motion.div>
                             {course.originalPrice && (
                               <motion.div
@@ -551,18 +631,28 @@ export default function Courses() {
                                 ₹{course.originalPrice.toLocaleString('en-IN')}
                               </motion.div>
                             )}
+                            {!course.priceWithGST && course.originalPrice && (
+                              <motion.div
+                                className="text-gray-400 text-xs mt-1"
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                transition={{ duration: 0.5, delay: 1.4 }}
+                              >
+                                + 18% GST
+                              </motion.div>
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
 
                     {/* Action Buttons - Always at bottom */}
-                    <div className="mt-auto flex gap-3">
-                      {/* Get More Details Button */}
+                    <div className={`mt-auto flex gap-3 ${course.buttons.secondary ? '' : 'flex-col'}`}>
+                      {/* Primary Button */}
                       <motion.div
                         whileHover={{ scale: 1.02, y: -1 }}
                         whileTap={{ scale: 0.98 }}
-                        className="relative group flex-1"
+                        className={`relative group ${course.buttons.secondary ? 'flex-1' : 'w-full'}`}
                       >
                         <motion.div
                           className="absolute inset-0 bg-yellow-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -579,58 +669,70 @@ export default function Courses() {
                         <Button 
                           className="relative w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-yellow-400/20"
                           data-cursor-hover
-                          onClick={() => window.open(`/course-details/${course.id}`, '_blank')}
+                          onClick={() => {
+                            if (course.id === 1) {
+                              // Webinar course - link to booking page
+                              window.location.href = '/book-webinar'
+                            } else {
+                              window.open(`/course-details/${course.id}`, '_blank')
+                            }
+                          }}
                         >
                           <motion.span
                             className="relative z-10 flex items-center justify-center gap-1"
                             whileHover={{ y: -0.5 }}
                             transition={{ duration: 0.2 }}
                           >
+                            {course.buttons.primary}
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
-                            <span className="hidden sm:inline">Get More Details</span>
-                            <span className="sm:hidden">Details</span>
                           </motion.span>
                         </Button>
                       </motion.div>
 
-                      {/* Talk to Expert Button */}
-                      <motion.div
-                        whileHover={{ scale: 1.02, y: -1 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="relative group flex-1"
-                      >
+                      {/* Secondary Button */}
+                      {course.buttons.secondary && (
                         <motion.div
-                          className="absolute inset-0 bg-orange-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          animate={{
-                            scale: [1, 1.1, 1],
-                            opacity: [0, 0.2, 0]
-                          }}
-                          transition={{
-                            duration: 3,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                        />
-                        <Button 
-                          className="relative w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white hover:from-orange-500 hover:to-orange-600 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-orange-400/20"
-                          data-cursor-hover
-                          onClick={() => window.open(`https://wa.me/919876543210?text=Hi, I'm interested in the ${course.title} course. Can you provide more details?`, '_blank')}
+                          whileHover={{ scale: 1.02, y: -1 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="relative group flex-1"
                         >
-                          <motion.span
-                            className="relative z-10 flex items-center justify-center gap-1"
-                            whileHover={{ y: -0.5 }}
-                            transition={{ duration: 0.2 }}
+                          <motion.div
+                            className="absolute inset-0 bg-white/10 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            animate={{
+                              scale: [1, 1.1, 1],
+                              opacity: [0, 0.2, 0]
+                            }}
+                            transition={{
+                              duration: 3,
+                              repeat: Infinity,
+                              ease: "easeInOut"
+                            }}
+                          />
+                          <Button 
+                            className="relative w-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 hover:border-white/40"
+                            data-cursor-hover
+                            onClick={() => {
+                              if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert')) {
+                                window.open(`https://wa.me/919876543210?text=Hi, I'm interested in the ${course.title} course. Can you provide more details?`, '_blank')
+                              } else if (course.buttons.secondary?.includes('Pay Now')) {
+                                window.location.href = '/book-webinar'
+                              } else {
+                                window.open(`/course-details/${course.id}`, '_blank')
+                              }
+                            }}
                           >
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                            </svg>
-                            <span className="hidden sm:inline">Talk to Expert</span>
-                            <span className="sm:hidden">Expert</span>
-                          </motion.span>
-                        </Button>
-                      </motion.div>
+                            <motion.span
+                              className="relative z-10 flex items-center justify-center gap-1"
+                              whileHover={{ y: -0.5 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              {course.buttons.secondary}
+                            </motion.span>
+                          </Button>
+                        </motion.div>
+                      )}
                     </div>
                   </div>
                 </motion.div>

@@ -93,104 +93,155 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="home"
-      className="flex items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20"
+      className="relative flex items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 overflow-hidden"
     >
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Gradient orbs */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+      </div>
+
       {/* Container with side-by-side layout */}
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="relative max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center z-10">
         {/* Left Side: Content */}
         <div className="text-left order-2 lg:order-1">
-          {/* Tagline */}
-          <p 
-            ref={taglineRef}
-            className="uppercase tracking-[4px] sm:tracking-[6px] text-yellow-400 text-sm sm:text-base lg:text-[20px] font-medium mb-3"
-          >
-            Unlock Collaborative Innovation Across Realities
-          </p>
+          {/* Tagline with decorative element */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-px w-12 bg-gradient-to-r from-yellow-400 to-transparent" />
+            <p 
+              ref={taglineRef}
+              className="uppercase tracking-[4px] sm:tracking-[6px] text-yellow-400 text-sm sm:text-base lg:text-[20px] font-medium"
+            >
+              Unlock Collaborative Innovation Across Realities
+            </p>
+          </div>
 
-          {/* Title */}
+          {/* Title with gradient effect */}
           <h1 
             ref={titleRef}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[56px] font-bold mb-4 sm:mb-6 text-white leading-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[72px] font-bold mb-6 sm:mb-8 text-white leading-tight"
           >
-            Build in the <span className="text-yellow-400">Multiverse</span>
+            Build in the{' '}
+            <span className="relative inline-block">
+              <span className="relative z-10 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient_3s_ease_infinite]">
+                Multiverse
+              </span>
+              <span className="absolute bottom-2 left-0 right-0 h-3 bg-yellow-400/20 blur-xl -z-0" />
+            </span>
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle with enhanced styling */}
           <p 
             ref={subtitleRef}
-            className="text-gray-300 text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-2xl leading-relaxed"
+            className="text-gray-300 text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 max-w-2xl leading-relaxed"
           >
-            Empowering Boundless Creation - Catalysts for Your Success. 
-            Transforming ambitious teams and professionals into industry leaders 
-            with innovative, impactful learning.
+            Empowering Boundless Creation - Catalysts for Your Success.{' '}
+            <span className="text-white/90">Transforming ambitious teams and professionals into industry leaders with innovative, impactful learning.</span>
           </p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons with enhanced styling */}
           <div 
             ref={buttonsRef}
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center"
           >
             <motion.div
               whileHover={{ 
-                scale: 1.02,
-                y: -1,
+                scale: 1.05,
+                y: -2,
                 transition: { duration: 0.2, ease: "easeOut" }
               }}
               whileTap={{ 
-                scale: 0.98,
+                scale: 0.95,
                 y: 0
               }}
               className="relative group w-full sm:w-auto"
             >
-              <div className="absolute inset-0 bg-yellow-400/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
               <Button 
-                className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 border border-yellow-400/20 w-full sm:w-auto"
+                className="relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg font-bold shadow-2xl hover:shadow-yellow-400/50 transition-all duration-300 border-2 border-yellow-400/30 w-full sm:w-auto"
                 data-cursor-hover
               >
-                <span className="relative z-10">
+                <span className="relative z-10 flex items-center gap-2">
                   Explore Courses
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
                 </span>
               </Button>
             </motion.div>
             
             <motion.div
               whileHover={{ 
-                scale: 1.02,
-                y: -1,
+                scale: 1.05,
+                y: -2,
                 transition: { duration: 0.2, ease: "easeOut" }
               }}
               whileTap={{ 
-                scale: 0.98,
+                scale: 0.95,
                 y: 0
               }}
               className="relative group w-full sm:w-auto"
             >
-              <div className="absolute inset-0 bg-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute -inset-1 bg-white/20 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <Button 
-                className="relative bg-white/10 text-white hover:bg-white/20 rounded-full px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300 hover:shadow-xl w-full sm:w-auto"
+                className="relative bg-white/10 backdrop-blur-md text-white hover:bg-white/20 rounded-full px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg font-bold border-2 border-white/30 hover:border-white/50 transition-all duration-300 hover:shadow-2xl hover:shadow-white/20 w-full sm:w-auto"
                 data-cursor-hover
               >
-                <span className="relative z-10">
+                <span className="relative z-10 flex items-center gap-2">
                   <a href="/book-webinar">Book Webinar</a>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
                 </span>
               </Button>
             </motion.div>
           </div>
         </div>
 
-        {/* Right Side: Image */}
+        {/* Right Side: Image with enhanced styling */}
         <div 
           ref={imageRef}
-          className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px] order-1 lg:order-2"
+          className="relative w-full h-[400px] sm:h-[500px] lg:h-[650px] order-1 lg:order-2"
         >
-          <Image
-            src="/bg.png"
-            alt="Build in the Multiverse"
-            fill
-            className="object-contain"
-            priority
-            quality={90}
-          />
+          {/* Decorative background glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-yellow-400/5 to-transparent rounded-3xl blur-3xl -z-10 animate-pulse" />
+          <div className="absolute -inset-4 bg-gradient-to-tr from-yellow-400/10 via-transparent to-transparent rounded-3xl blur-2xl -z-10" />
+          
+          {/* Image container with premium frame effect */}
+          <div className="relative w-full h-full rounded-3xl overflow-hidden border-2 border-white/20 backdrop-blur-md bg-gradient-to-br from-white/10 via-white/5 to-transparent shadow-2xl shadow-black/50 p-3">
+            {/* Inner glow border */}
+            <div className="absolute inset-0 rounded-2xl border border-yellow-400/20 pointer-events-none" />
+            
+            <div className="relative w-full h-full rounded-2xl overflow-hidden">
+              <Image
+                src="/nitesh-prasad.png"
+                alt="Nitesh Prasad - Lean Multiverse"
+                fill
+                className="object-cover rounded-2xl scale-105 hover:scale-100 transition-transform duration-700"
+                priority
+                quality={95}
+              />
+              
+              {/* Overlay gradients for depth and focus */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-yellow-400/5 pointer-events-none" />
+              
+              {/* Subtle vignette effect */}
+              <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_100px_rgba(0,0,0,0.3)] pointer-events-none" />
+            </div>
+          </div>
+          
+          {/* Floating decorative elements with animation */}
+          <div className="absolute -top-6 -right-6 w-32 h-32 bg-yellow-400/15 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+          
+          {/* Corner accent elements */}
+          <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-yellow-400/30 rounded-tr-3xl" />
+          <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-yellow-400/30 rounded-bl-3xl" />
         </div>
       </div>
     </section>

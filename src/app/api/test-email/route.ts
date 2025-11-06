@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,22 +13,32 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if Resend API key is configured
-    if (!process.env.RESEND_API_KEY) {
+    // Check if SendGrid API key is configured
+    if (!process.env.SENDGRID_API_KEY) {
       return NextResponse.json(
         { 
-          error: 'RESEND_API_KEY is not configured',
-          message: 'Please add RESEND_API_KEY to your environment variables'
+          error: 'SENDGRID_API_KEY is not configured',
+          message: 'Please add SENDGRID_API_KEY to your environment variables'
         },
         { status: 500 }
       )
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
+    // Create SendGrid transporter
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.sendgrid.net',
+      port: 587,
+      secure: false,
+      auth: {
+        user: 'apikey',
+        pass: process.env.SENDGRID_API_KEY,
+      },
+    })
+
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'onboarding@resend.dev'
 
     // Send a test email
-    const result = await resend.emails.send({
+    const result = await transporter.sendMail({
       from: fromEmail,
       to: to,
       subject: 'Test Email from Lean Multiverse',
@@ -84,11 +94,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Test email sent successfully',
-      emailId: result.data?.id,
+      messageId: result.messageId,
       to: to,
       from: fromEmail,
-      note: 'Check your spam/junk folder if you don\'t see it in your inbox. Also check Resend dashboard for delivery status.',
-      resendDashboard: 'https://resend.com/emails',
+      response: result.response,
+      note: 'Check your spam/junk folder if you don\'t see it in your inbox.',
     })
   } catch (error) {
     console.error('Error sending test email:', error)
@@ -99,8 +109,8 @@ export async function POST(request: NextRequest) {
       {
         error: errorMessage,
         details: process.env.NODE_ENV === 'development' ? errorDetails : undefined,
-        resendApiKey: process.env.RESEND_API_KEY ? '✅ Configured' : '❌ Missing',
-        fromEmail: process.env.RESEND_FROM_EMAIL || 'Using default',
+        sendgridApiKey: process.env.SENDGRID_API_KEY ? '✅ Configured' : '❌ Missing',
+        fromEmail: process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'Using default',
       },
       { status: 500 }
     )

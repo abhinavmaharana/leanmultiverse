@@ -61,29 +61,30 @@ Copy the template from `.env.local.example` and fill in the values below.
 
 ---
 
-## Email Service (Resend)
+## Email Service (SendGrid)
 
-### RESEND_API_KEY
-1. Go to https://resend.com
-2. Sign in or create an account
-3. Go to **API Keys** section
+### SENDGRID_API_KEY
+1. Go to https://sendgrid.com
+2. Sign in or create an account (free tier available: 100 emails/day)
+3. Go to **Settings** → **API Keys**
 4. Click **Create API Key**
-5. Give it a name (e.g., "Webinar Booking")
-6. Copy the API key (starts with `re_`)
+5. Give it a name (e.g., "Lean Multiverse")
+6. Select **Full Access** or **Restricted Access** (with Mail Send permission)
+7. Copy the API key (starts with `SG.`)
+8. ⚠️ **KEEP THIS SECRET** - Never expose this in client-side code
 
-### RESEND_FROM_EMAIL
-1. In Resend dashboard, go to **Domains**
-2. Add and verify your domain (e.g., `yourdomain.com`)
-   - Or use Resend's test domain for development
-3. Use format: `webinar@yourdomain.com`
-4. This email will be the sender for all webinar booking emails
+### SENDGRID_FROM_EMAIL
+- Your email address with name (e.g., `Your Name <your-email@yourdomain.com>`)
+- This email will be the sender for all webinar booking emails
+- For free tier, you can use any email address (no domain verification required)
+- For better deliverability, verify your domain in SendGrid dashboard
 
 ---
 
 ## Webinar Configuration
 
 ### WEBINAR_ORGANIZER_EMAIL
-- Use the same email as `RESEND_FROM_EMAIL` or your business email
+- Use the same email as `SENDGRID_FROM_EMAIL` or your business email
 - This appears in calendar invites as the organizer
 - Example: `webinar@yourdomain.com`
 
@@ -124,9 +125,9 @@ RAZORPAY_KEY_SECRET=abcdefghijklmnopqrstuvwxyz123456
 NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_1234567890
 RAZORPAY_WEBHOOK_SECRET=webhook_secret_123456
 
-# Email
-RESEND_API_KEY=re_1234567890abcdefghijklmnop
-RESEND_FROM_EMAIL=webinar@yourdomain.com
+# Email (SendGrid)
+SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+SENDGRID_FROM_EMAIL=Your Name <your-email@yourdomain.com>
 
 # Webinar
 WEBINAR_ORGANIZER_EMAIL=webinar@yourdomain.com

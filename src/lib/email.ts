@@ -1,7 +1,22 @@
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import { format, parseISO } from 'date-fns'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Create reusable transporter for SendGrid
+const createTransporter = () => {
+  if (!process.env.SENDGRID_API_KEY) {
+    throw new Error('SENDGRID_API_KEY is not configured. Please add it to your environment variables.')
+  }
+
+  return nodemailer.createTransport({
+    host: 'smtp.sendgrid.net',
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'apikey',
+      pass: process.env.SENDGRID_API_KEY,
+    },
+  })
+}
 
 export interface EmailData {
   to: string
@@ -14,10 +29,8 @@ export interface EmailData {
 
 export async function sendCalendarInviteEmail(data: EmailData) {
   try {
-    // Check if Resend API key is configured
-    if (!process.env.RESEND_API_KEY) {
-      throw new Error('RESEND_API_KEY is not configured. Please add it to your environment variables.')
-    }
+    // Create transporter
+    const transporter = createTransporter()
 
     // Format date and time for display
     const dateObj = parseISO(data.date)
@@ -27,7 +40,7 @@ export async function sendCalendarInviteEmail(data: EmailData) {
     // Convert calendar invite to buffer for attachment
     const calendarBuffer = Buffer.from(data.calendarInvite, 'utf-8')
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'Lean Multiverse <webinar@leanmultiverse.com>'
+    const fromEmail = process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'Lean Multiverse <webinar@leanmultiverse.com>'
     
     console.log('Sending email:', {
       to: data.to,
@@ -35,7 +48,7 @@ export async function sendCalendarInviteEmail(data: EmailData) {
       subject: `Your Webinar Booking Confirmation - ${formattedDate}`,
     })
 
-    const emailContent = await resend.emails.send({
+    const emailContent = await transporter.sendMail({
       from: fromEmail,
       to: data.to,
       subject: `Your Webinar Booking Confirmation - ${formattedDate}`,
@@ -132,8 +145,9 @@ export async function sendCalendarInviteEmail(data: EmailData) {
     })
 
     console.log('Email sent successfully:', {
-      id: emailContent.data?.id,
+      messageId: emailContent.messageId,
       to: data.to,
+      response: emailContent.response,
     })
 
     return emailContent
@@ -146,8 +160,8 @@ export async function sendCalendarInviteEmail(data: EmailData) {
       message: errorMessage,
       details: errorDetails,
       to: data.to,
-      resendApiKey: process.env.RESEND_API_KEY ? '✅ Configured' : '❌ Missing',
-      fromEmail: process.env.RESEND_FROM_EMAIL || 'Using default',
+      sendgridApiKey: process.env.SENDGRID_API_KEY ? '✅ Configured' : '❌ Missing',
+      fromEmail: process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL || 'Using default',
     })
     
     throw new Error(`Failed to send email: ${errorMessage}`)

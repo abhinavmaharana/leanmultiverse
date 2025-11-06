@@ -12,8 +12,8 @@ export async function GET() {
       webhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET ? '✅ Configured' : '❌ Missing',
     },
     email: {
-      resendKey: process.env.RESEND_API_KEY ? '✅ Configured' : '❌ Missing',
-      fromEmail: process.env.RESEND_FROM_EMAIL ? '✅ Configured' : '❌ Missing',
+      sendgridApiKey: process.env.SENDGRID_API_KEY ? '✅ Configured' : '❌ Missing',
+      fromEmail: process.env.SENDGRID_FROM_EMAIL || process.env.FROM_EMAIL ? '✅ Configured' : '❌ Missing',
     },
     zoom: {
       accountId: process.env.ZOOM_ACCOUNT_ID ? '✅ Configured' : '❌ Missing',

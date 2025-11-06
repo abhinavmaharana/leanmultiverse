@@ -11,6 +11,21 @@
   animation: marquee 15s linear infinite;
 }
 
+/* Gradient text animation */
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient 3s ease infinite;
+}
+
 /* Mobile-specific optimizations */
 @media (max-width: 640px) {
   /* Improve touch targets */
