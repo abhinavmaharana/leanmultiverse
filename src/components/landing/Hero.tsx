@@ -171,7 +171,7 @@ export default function Hero() {
                 data-cursor-hover
               >
                 <span className="relative z-10">
-                  <a href="/free-courses">Book Webinar</a>
+                  <a href="/book-webinar">Book Webinar</a>
                 </span>
               </Button>
             </motion.div>
