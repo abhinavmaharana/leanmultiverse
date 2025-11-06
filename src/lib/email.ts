@@ -14,6 +14,11 @@ export interface EmailData {
 
 export async function sendCalendarInviteEmail(data: EmailData) {
   try {
+    // Check if Resend API key is configured
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY is not configured. Please add it to your environment variables.')
+    }
+
     // Format date and time for display
     const dateObj = parseISO(data.date)
     const formattedDate = format(dateObj, 'EEEE, MMMM d, yyyy')
@@ -22,8 +27,16 @@ export async function sendCalendarInviteEmail(data: EmailData) {
     // Convert calendar invite to buffer for attachment
     const calendarBuffer = Buffer.from(data.calendarInvite, 'utf-8')
 
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'Lean Multiverse <webinar@leanmultiverse.com>'
+    
+    console.log('Sending email:', {
+      to: data.to,
+      from: fromEmail,
+      subject: `Your Webinar Booking Confirmation - ${formattedDate}`,
+    })
+
     const emailContent = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'Lean Multiverse <webinar@leanmultiverse.com>',
+      from: fromEmail,
       to: data.to,
       subject: `Your Webinar Booking Confirmation - ${formattedDate}`,
       html: `
@@ -118,11 +131,26 @@ export async function sendCalendarInviteEmail(data: EmailData) {
       ],
     })
 
+    console.log('Email sent successfully:', {
+      id: emailContent.data?.id,
+      to: data.to,
+    })
+
     return emailContent
   } catch (error) {
     console.error('Error sending email:', error)
     const errorMessage = error instanceof Error ? error.message : 'Failed to send email'
-    throw new Error(errorMessage)
+    const errorDetails = error instanceof Error ? error.stack : JSON.stringify(error)
+    
+    console.error('Email error details:', {
+      message: errorMessage,
+      details: errorDetails,
+      to: data.to,
+      resendApiKey: process.env.RESEND_API_KEY ? '✅ Configured' : '❌ Missing',
+      fromEmail: process.env.RESEND_FROM_EMAIL || 'Using default',
+    })
+    
+    throw new Error(`Failed to send email: ${errorMessage}`)
   }
 }
 

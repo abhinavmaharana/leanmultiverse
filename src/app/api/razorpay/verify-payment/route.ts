@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
+import Razorpay from 'razorpay'
 import { getBookingByOrderId, updateBookingByOrderId } from '@/lib/db-helpers'
 import { generateCalendarInvite } from '@/lib/calendar'
 import { generateMeetLink } from '@/lib/meet-link'
 import { sendCalendarInviteEmail } from '@/lib/email'
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID || '',
+  key_secret: process.env.RAZORPAY_KEY_SECRET || '',
+})
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,6 +39,22 @@ export async function POST(request: NextRequest) {
         { error: 'Invalid payment signature' },
         { status: 400 }
       )
+    }
+
+    // Capture the payment (if not already captured)
+    try {
+      const payment = await razorpay.payments.fetch(razorpay_payment_id)
+      if (payment.status === 'authorized') {
+        // Payment is authorized but not captured, capture it now
+        await razorpay.payments.capture(razorpay_payment_id, payment.amount)
+        console.log('Payment captured successfully:', razorpay_payment_id)
+      } else if (payment.status === 'captured') {
+        console.log('Payment already captured:', razorpay_payment_id)
+      }
+    } catch (error) {
+      console.error('Error capturing payment:', error)
+      // Don't fail if capture fails, payment might already be captured
+      // Continue with the verification process
     }
 
     // Get booking from database
@@ -79,6 +101,7 @@ export async function POST(request: NextRequest) {
 
     // Send email with calendar invite
     try {
+      console.log('Attempting to send email to:', booking.user_email)
       await sendCalendarInviteEmail({
         to: booking.user_email,
         name: booking.user_name,
@@ -92,11 +115,24 @@ export async function POST(request: NextRequest) {
       await updateBookingByOrderId(razorpay_order_id, {
         calendar_invite_sent: true,
       })
+      console.log('Email sent successfully and marked as sent in database')
     } catch (error) {
       console.error('Error sending email:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      const errorStack = error instanceof Error ? error.stack : undefined
+      
+      // Log detailed error for debugging
+      console.error('Email sending error details:', {
+        message: errorMessage,
+        stack: errorStack,
+        email: booking.user_email,
+        timestamp: new Date().toISOString(),
+      })
+      
       // Don't fail the payment verification if email fails
       // Payment is already verified, email can be sent later
       console.warn('Payment verified but email sending failed. Booking is still confirmed.')
+      console.warn('You can manually send the email later or check Resend dashboard for details.')
     }
 
     return NextResponse.json({
