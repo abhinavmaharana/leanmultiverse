@@ -314,23 +314,29 @@ export default function Footer() {
               viewport={{ once: true }}
             >
               {[
-                { href: "#", text: "Privacy Policy" },
-                { href: "#", text: "Terms of Service" },
-                { href: "#", text: "Cookie Policy" }
+                { href: "/privacy-policy", text: "Privacy Policy" },
+                { href: "/terms-of-service", text: "Terms of Service" },
+                { href: "/cookie-policy", text: "Cookie Policy" }
               ].map((link, index) => (
-                <motion.a 
+                <motion.div
                   key={index}
-                  href={link.href} 
-                  className="text-gray-400 hover:text-yellow-400 transition-colors"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
                   initial={{ y: 20, opacity: 0 }}
                   whileInView={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.6, ease: "easeOut", delay: 0.9 + index * 0.1 }}
                   viewport={{ once: true }}
                 >
-                  {link.text}
-                </motion.a>
+                  <Link 
+                    href={link.href} 
+                    className="text-gray-400 hover:text-yellow-400 transition-colors"
+                  >
+                    <motion.span
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {link.text}
+                    </motion.span>
+                  </Link>
+                </motion.div>
               ))}
             </motion.div>
           </div>
