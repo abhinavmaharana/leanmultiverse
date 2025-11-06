@@ -234,7 +234,7 @@ export default function Navbar() {
                 : 'bg-white/10 backdrop-blur-md border border-white/20'
             }`}
           >
-            <Link href="/book-webinar">Join Webinar</Link>
+            <Link href="/book-webinar">Book Webinar</Link>
           </Button>
         </motion.div>
         <motion.button
@@ -331,7 +331,7 @@ export default function Navbar() {
                   className="mt-2 w-full rounded-full px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
                   onClick={() => setOpen(false)}
                 >
-                  <Link href="/book-webinar">Join Webinar</Link>
+                  <Link href="/book-webinar">Book Webinar</Link>
                 </Button>
               </motion.div>
             </motion.div>
