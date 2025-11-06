@@ -35,7 +35,7 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-2xl font-bold text-white mb-4">1. Introduction</h2>
               <p className="text-gray-300 leading-relaxed mb-4">
-                Welcome to Lean Multiverse ("we," "our," or "us"). We are committed to protecting your privacy and ensuring you have a positive experience on our website and in using our products and services. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.
+                Welcome to Lean Multiverse (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). We are committed to protecting your privacy and ensuring you have a positive experience on our website and in using our products and services. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.
               </p>
             </section>
 
@@ -126,7 +126,7 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">9. Children's Privacy</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">9. Children&apos;s Privacy</h2>
               <p className="text-gray-300 leading-relaxed mb-4">
                 Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If you become aware that a child has provided us with personal information, please contact us, and we will take steps to delete such information.
               </p>
@@ -135,7 +135,7 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-2xl font-bold text-white mb-4">10. Changes to This Privacy Policy</h2>
               <p className="text-gray-300 leading-relaxed mb-4">
-                We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date. You are advised to review this Privacy Policy periodically for any changes.
+                We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date. You are advised to review this Privacy Policy periodically for any changes.
               </p>
             </section>
 
