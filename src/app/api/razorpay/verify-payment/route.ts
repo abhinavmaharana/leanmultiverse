@@ -46,7 +46,8 @@ export async function POST(request: NextRequest) {
       const payment = await razorpay.payments.fetch(razorpay_payment_id)
       if (payment.status === 'authorized') {
         // Payment is authorized but not captured, capture it now
-        await razorpay.payments.capture(razorpay_payment_id, payment.amount)
+        // Razorpay capture requires: payment_id, amount, currency
+        await razorpay.payments.capture(razorpay_payment_id, payment.amount, payment.currency || 'INR')
         console.log('Payment captured successfully:', razorpay_payment_id)
       } else if (payment.status === 'captured') {
         console.log('Payment already captured:', razorpay_payment_id)
