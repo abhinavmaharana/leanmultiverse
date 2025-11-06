@@ -37,30 +37,32 @@ const certLogos = [
 ];
 
 export default function Certification() {
-  return (
-    <section className="relative py-20 bg-black">
-      <div className="text-center">
-        <p className="uppercase line-through decoration-red-600 tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3">
-            IT&apos;s Not Just A Process
-        </p>
-        <h1 className="text-[30px] md:text-[46.13px] font-bold mb-6">
-            It&apos;s a New Way of Working
-        </h1>
-        <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
-            <LogoLoop
-                logos={certLogos}
-                speed={120}
-                direction="left"
-                logoHeight={120}
-                gap={60}
-                pauseOnHover
-                scaleOnHover
-                fadeOut
-                fadeOutColor="#000000"
-                ariaLabel="SAFe Certifications"
-            />
-        </div>
-      </div>
-    </section>
-  )
+  return null
+  // Hidden section - "IT's Not Just A Process" / "It's a New Way of Working" with certification logo loop
+  // return (
+  //   <section className="relative py-20 bg-black">
+  //     <div className="text-center">
+  //       <p className="uppercase line-through decoration-red-600 tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3">
+  //           IT&apos;s Not Just A Process
+  //       </p>
+  //       <h1 className="text-[30px] md:text-[46.13px] font-bold mb-6">
+  //           It&apos;s a New Way of Working
+  //       </h1>
+  //       <div style={{ height: '200px', position: 'relative', overflow: 'hidden'}}>
+  //           <LogoLoop
+  //               logos={certLogos}
+  //               speed={120}
+  //               direction="left"
+  //               logoHeight={120}
+  //               gap={60}
+  //               pauseOnHover
+  //               scaleOnHover
+  //               fadeOut
+  //               fadeOutColor="#000000"
+  //               ariaLabel="SAFe Certifications"
+  //           />
+  //       </div>
+  //     </div>
+  //   </section>
+  // )
 }

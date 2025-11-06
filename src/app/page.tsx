@@ -99,13 +99,14 @@ export default function LandingPage() {
           </Suspense>
         </div>
         
+        {/* Courses section hidden - will add new courses later */}
         <div id="courses">
           <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
             <Courses />
           </Suspense>
         </div>
         
-        <div id="partners">
+        {/* <div id="partners">
           <section className='bg-black'>
             <div className="text-center mb-16 bg-black">
               <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3">
@@ -122,7 +123,7 @@ export default function LandingPage() {
               <FlowingMenuWrapper items={demoItems} />
             </div>
           </section>
-        </div>
+        </div> */}
         
         <div id='stories'>
           <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>

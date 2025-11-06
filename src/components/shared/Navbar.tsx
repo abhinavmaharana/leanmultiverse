@@ -140,15 +140,6 @@ export default function Navbar() {
           Home
         </motion.a>
         
-        <motion.a 
-          href="/about" 
-          className="hover:opacity-90 transition text-white"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          About
-        </motion.a>
-        
         {/* Courses Dropdown */}
         <div className="relative group">
           <motion.button 
@@ -207,14 +198,6 @@ export default function Navbar() {
         </div>
 
         <motion.a 
-          href="#partners" 
-          className="hover:opacity-90 transition text-white"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Case Studies
-        </motion.a>
-        <motion.a 
           href="#stories" 
           className="hover:opacity-90 transition text-white"
           whileHover={{ scale: 1.05 }}
@@ -251,7 +234,7 @@ export default function Navbar() {
                 : 'bg-white/10 backdrop-blur-md border border-white/20'
             }`}
           >
-            <Link href="/free-courses">Free Course</Link>
+            <Link href="/free-courses">Join Webinar</Link>
           </Button>
         </motion.div>
         <motion.button
@@ -315,30 +298,12 @@ export default function Navbar() {
               </motion.a>
               <motion.a 
                 onClick={() => setOpen(false)} 
-                href="/about" 
-                className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
-                whileHover={{ x: 5 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                About
-              </motion.a>
-              <motion.a 
-                onClick={() => setOpen(false)} 
                 href="#courses" 
                 className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
                 whileHover={{ x: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
                 Courses
-              </motion.a>
-              <motion.a 
-                onClick={() => setOpen(false)} 
-                href="#partners" 
-                className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
-                whileHover={{ x: 5 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Case Studies
               </motion.a>
               <motion.a 
                 onClick={() => setOpen(false)} 
@@ -366,7 +331,7 @@ export default function Navbar() {
                   className="mt-2 w-full rounded-full px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
                   onClick={() => setOpen(false)}
                 >
-                  <Link href="/free-courses">Free Course</Link>
+                  <Link href="/free-courses">Join Webinar</Link>
                 </Button>
               </motion.div>
             </motion.div>
