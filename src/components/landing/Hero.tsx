@@ -116,7 +116,7 @@ export default function Hero() {
               ref={taglineRef}
               className="uppercase tracking-[4px] sm:tracking-[6px] text-yellow-400 text-sm sm:text-base lg:text-[20px] font-medium"
             >
-              Unlock Collaborative Innovation Across Realities
+              Master the Skills Corporates Actually Hire For
             </p>
           </div>
 
@@ -125,13 +125,14 @@ export default function Hero() {
             ref={titleRef}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[72px] font-bold mb-6 sm:mb-8 text-white leading-tight"
           >
-            Build in the{' '}
+            Build the{' '}
             <span className="relative inline-block">
               <span className="relative z-10 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient_3s_ease_infinite]">
-                Multiverse
+                Professional
               </span>
               <span className="absolute bottom-2 left-0 right-0 h-3 bg-yellow-400/20 blur-xl -z-0" />
             </span>
+            {' '}You Want to Be
           </h1>
 
           {/* Subtitle with enhanced styling */}
@@ -139,8 +140,7 @@ export default function Hero() {
             ref={subtitleRef}
             className="text-gray-300 text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 max-w-2xl leading-relaxed"
           >
-            Empowering Boundless Creation - Catalysts for Your Success.{' '}
-            <span className="text-white/90">Transforming ambitious teams and professionals into industry leaders with innovative, impactful learning.</span>
+            Empowering Professionals With Real Industry Skills That Create Tangible Career Growth & Higher Corporate Value.
           </p>
 
           {/* CTA Buttons with enhanced styling */}
@@ -202,46 +202,23 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right Side: Image with enhanced styling */}
+        {/* Right Side: Image with clean styling */}
         <div 
           ref={imageRef}
-          className="relative w-full h-[500px] sm:h-[600px] lg:h-[750px] xl:h-[850px] order-1 lg:order-2"
+          className="relative w-full h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[800px] order-1 lg:order-2 flex items-center justify-center"
         >
-          {/* Decorative background glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-yellow-400/5 to-transparent rounded-3xl blur-3xl -z-10 animate-pulse" />
-          <div className="absolute -inset-4 bg-gradient-to-tr from-yellow-400/10 via-transparent to-transparent rounded-3xl blur-2xl -z-10" />
-          
-          {/* Image container with premium frame effect */}
-          <div className="relative w-full h-full rounded-3xl overflow-hidden border-2 border-white/20 backdrop-blur-md bg-gradient-to-br from-white/10 via-white/5 to-transparent shadow-2xl shadow-black/50 p-3">
-            {/* Inner glow border */}
-            <div className="absolute inset-0 rounded-2xl border border-yellow-400/20 pointer-events-none" />
-            
-            <div className="relative w-full h-full rounded-2xl overflow-hidden">
-              <Image
-                src="/nitesh-prasad-1.png"
-                alt="Nitesh Prasad - Lean Multiverse"
-                fill
-                className="object-cover rounded-2xl scale-105 hover:scale-100 transition-transform duration-700"
-                priority
-                quality={95}
-              />
-              
-              {/* Overlay gradients for depth and focus */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-yellow-400/5 pointer-events-none" />
-              
-              {/* Subtle vignette effect */}
-              <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_100px_rgba(0,0,0,0.3)] pointer-events-none" />
-            </div>
+          {/* Clean image container */}
+          <div className="relative w-full h-full rounded-3xl overflow-hidden">
+            <Image
+              src="/nitesh-prasad-1.png"
+              alt="Nitesh Prasad - Lean Multiverse"
+              fill
+              className="object-contain rounded-3xl"
+              priority
+              quality={95}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+            />
           </div>
-          
-          {/* Floating decorative elements with animation */}
-          <div className="absolute -top-6 -right-6 w-32 h-32 bg-yellow-400/15 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
-          
-          {/* Corner accent elements */}
-          <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-yellow-400/30 rounded-tr-3xl" />
-          <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-yellow-400/30 rounded-bl-3xl" />
         </div>
       </div>
     </section>
