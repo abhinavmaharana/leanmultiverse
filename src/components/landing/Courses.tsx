@@ -343,7 +343,7 @@ export default function Courses() {
         {/* Courses Grid */}
         <motion.div 
           ref={coursesRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.7 }}
@@ -353,7 +353,7 @@ export default function Courses() {
             {filteredCourses.map((course, index) => (
               <motion.div
                 key={course.id}
-                className="course-card group relative"
+                className="course-card group relative h-full flex"
                 initial={{ y: 120, opacity: 0, scale: 0.8 }}
                 whileInView={{ y: 0, opacity: 1, scale: 1 }}
                 transition={{ 
@@ -382,7 +382,7 @@ export default function Courses() {
                 />
 
                 <motion.div
-                  className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 min-h-[600px] overflow-hidden flex flex-col"
+                  className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 h-full w-full overflow-hidden flex flex-col"
                   whileHover={{ 
                     borderColor: "rgba(251, 191, 36, 0.4)",
                     backgroundColor: "rgba(255, 255, 255, 0.08)"
@@ -615,11 +615,6 @@ export default function Courses() {
                               transition={{ duration: 0.5, delay: 1.2 }}
                             >
                               ₹{course.price.toLocaleString('en-IN')}
-                              {course.priceWithGST && (
-                                <span className="text-sm font-normal text-gray-400 ml-1">
-                                  {course.priceWithGST.replace(`₹${course.price.toLocaleString('en-IN')}`, '')}
-                                </span>
-                              )}
                             </motion.div>
                             {course.originalPrice && (
                               <motion.div
@@ -629,16 +624,6 @@ export default function Courses() {
                                 transition={{ duration: 0.5, delay: 1.3 }}
                               >
                                 ₹{course.originalPrice.toLocaleString('en-IN')}
-                              </motion.div>
-                            )}
-                            {!course.priceWithGST && course.originalPrice && (
-                              <motion.div
-                                className="text-gray-400 text-xs mt-1"
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                transition={{ duration: 0.5, delay: 1.4 }}
-                              >
-                                + 18% GST
                               </motion.div>
                             )}
                           </div>

@@ -208,7 +208,7 @@ export default function Hero() {
           className="relative w-full h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[800px] order-1 lg:order-2 flex items-center justify-center"
         >
           {/* Clean image container */}
-          <div className="relative w-full h-full rounded-3xl overflow-hidden border-2 border-white/20">
+          <div className="relative w-full h-full rounded-3xl overflow-hidden">
             <Image
               src="/nitesh-prasad-1.png"
               alt="Nitesh Prasad - Lean Multiverse"
