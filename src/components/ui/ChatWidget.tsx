@@ -79,7 +79,7 @@ export default function ChatWidget() {
   }
 
   const openWhatsApp = () => {
-    const phoneNumber = "12407196120" // Your WhatsApp number
+    const phoneNumber = "918062177938" // Business WhatsApp number
     const message = "Hi! I'm interested in learning more about your courses."
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
     window.open(url, '_blank')

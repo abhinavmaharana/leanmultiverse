@@ -115,7 +115,7 @@ export default function RootLayout({
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+1-240-719-6120",
+      "telephone": "+91-8062177938",
       "contactType": "customer service",
       "availableLanguage": "English"
     },

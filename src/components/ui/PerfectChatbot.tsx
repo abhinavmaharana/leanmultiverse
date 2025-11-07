@@ -472,7 +472,7 @@ export default function PerfectChatbot() {
                   {/* Quick action buttons */}
                   <div className="flex items-center justify-center space-x-3 mt-3 relative z-10">
                     <motion.button 
-                      onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+                      onClick={() => window.open('https://wa.me/918062177938', '_blank')}
                       className="text-xs text-gray-600 hover:text-green-600 transition-colors flex items-center space-x-1 px-3 py-1.5 rounded-full hover:bg-green-50"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -482,7 +482,7 @@ export default function PerfectChatbot() {
                     </motion.button>
                     <span className="text-gray-300">•</span>
                     <motion.button 
-                      onClick={() => window.open('tel:+911112345678', '_blank')}
+                      onClick={() => window.open('tel:+918062177938', '_blank')}
                       className="text-xs text-gray-600 hover:text-blue-600 transition-colors flex items-center space-x-1 px-3 py-1.5 rounded-full hover:bg-blue-50"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

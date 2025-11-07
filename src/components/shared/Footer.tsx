@@ -106,6 +106,31 @@ export default function Footer() {
               Transforming careers through enterprise agility and digital transformation education. 
               Join 6,00,000+ professionals who have advanced their careers with us.
             </motion.p>
+            <motion.div
+              className="space-y-1 text-sm sm:text-base"
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
+              viewport={{ once: true }}
+            >
+              <motion.a
+                href="tel:+918062177938"
+                className="text-yellow-400 hover:text-yellow-300 transition-colors inline-block"
+                whileHover={{ x: 4 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                Call: 080 6217 7938
+              </motion.a>
+              <br />
+              <motion.a
+                href="mailto:support@leanmultiverse.com"
+                className="text-gray-300 hover:text-yellow-400 transition-colors inline-block"
+                whileHover={{ x: 4 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                Email: support@leanmultiverse.com
+              </motion.a>
+            </motion.div>
             <motion.div 
               className="flex space-x-4"
               initial={{ y: 20, opacity: 0 }}

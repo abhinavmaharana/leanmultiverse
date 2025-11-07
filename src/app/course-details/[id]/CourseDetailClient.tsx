@@ -73,7 +73,7 @@ export default function CourseDetailClient({ course }: CourseDetailClientProps) 
 
   const handleWhatsAppClick = () => {
     const message = `Hi, I'm interested in the ${course.title} course. Can you provide more details about enrollment and pricing?`
-    window.open(`https://wa.me/919876543210?text=${encodeURIComponent(message)}`, '_blank')
+    window.open(`https://wa.me/918062177938?text=${encodeURIComponent(message)}`, '_blank')
   }
 
   const handleBackClick = () => {

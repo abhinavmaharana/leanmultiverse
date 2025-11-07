@@ -10,6 +10,9 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
+const BUSINESS_PHONE_DISPLAY = "080 6217 7938"
+const BUSINESS_PHONE_E164 = "+918062177938"
+
 const contactMethods = [
   {
     id: "whatsapp",
@@ -25,6 +28,21 @@ const contactMethods = [
     action: "Chat on WhatsApp",
     gradient: "from-yellow-400/80 to-yellow-600/80",
     bgGradient: "from-yellow-400/10 to-yellow-600/10"
+  },
+  {
+    id: "phone",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 5a2 2 0 012-2h2.3a1 1 0 01.96.72l1.12 3.91a1 1 0 01-.54 1.18l-1.7.85a12.05 12.05 0 005.62 5.62l.85-1.7a1 1 0 011.18-.54l3.91 1.12a1 1 0 01.72.96V19a2 2 0 01-2 2h-1c-8.284 0-15-6.716-15-15V5z" />
+      </svg>
+    ),
+    title: "Call Our Team",
+    description: "Speak directly with a course advisor",
+    contact: BUSINESS_PHONE_DISPLAY,
+    hours: "Available 9 AM – 9 PM IST",
+    action: "Call Now",
+    gradient: "from-yellow-500/80 to-yellow-600/80",
+    bgGradient: "from-yellow-500/10 to-yellow-600/10"
   },
   {
     id: "ai",
@@ -52,12 +70,14 @@ export default function ContactSupport() {
   const ctaRef = useRef<HTMLDivElement>(null)
   const particlesRef = useRef<HTMLDivElement>(null)
 
-  const handleContactAction = (action: string) => {
+const handleContactAction = (action: string) => {
     if (action === "Chat on WhatsApp") {
-      const phoneNumber = "12407196120"
+    const phoneNumber = BUSINESS_PHONE_E164.replace('+', '')
       const message = "Hi! I'm interested in learning more about your courses."
       const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
       window.open(url, '_blank')
+  } else if (action === "Call Now") {
+    window.location.href = `tel:${BUSINESS_PHONE_E164}`
     } else if (action === "Start Chat") {
       // This will trigger the chat widget
       const chatButton = document.querySelector('[data-chat-button]') as HTMLElement
@@ -631,6 +651,10 @@ export default function ContactSupport() {
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
                   <span>24/7 Support Available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                  <span>Call us at {BUSINESS_PHONE_DISPLAY}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import { useRef, useEffect, useMemo } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -18,6 +18,7 @@ export default function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const buttonsRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef<HTMLDivElement>(null)
+  const prefersReducedMotion = useReducedMotion()
 
   // Memoize animation configuration to prevent recreation
   const animationConfig = useMemo(() => ({
@@ -93,13 +94,18 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="home"
-      className="relative flex items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 overflow-hidden"
+      className="relative flex items-start justify-center lg:justify-start min-h-[calc(100vh-80px)] mt-[-32px] px-4 sm:px-6 md:px-8 lg:px-12 pt-8 sm:pt-10 lg:pt-14 pb-10 sm:pb-14 overflow-hidden"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Gradient orbs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div
+          className={`absolute top-0 right-0 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl ${prefersReducedMotion ? '' : 'animate-pulse'}`}
+        />
+        <div
+          className={`absolute bottom-0 left-0 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl ${prefersReducedMotion ? '' : 'animate-pulse'}`}
+          style={prefersReducedMotion ? undefined : { animationDelay: '1s' }}
+        />
         
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -127,7 +133,9 @@ export default function Hero() {
           >
             Build the{' '}
             <span className="relative inline-block">
-              <span className="relative z-10 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-[gradient_3s_ease_infinite]">
+              <span
+                className={`relative z-10 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent ${prefersReducedMotion ? '' : 'bg-[length:200%_auto] animate-[gradient_3s_ease_infinite]'}`}
+              >
                 Professional
               </span>
               <span className="absolute bottom-2 left-0 right-0 h-3 bg-yellow-400/20 blur-xl -z-0" />
