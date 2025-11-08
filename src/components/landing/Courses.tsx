@@ -136,10 +136,10 @@ export default function Courses() {
     <motion.section 
       ref={sectionRef}
       className="relative py-20 bg-black min-h-screen overflow-hidden"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ duration: 1, ease: "easeOut" }}
-      viewport={{ once: true, margin: "-100px" }}
+      initial={shouldReduceMotion ? false : { opacity: 0 }}
+      whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
+      transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut" }}
+      viewport={shouldReduceMotion ? undefined : { once: true, margin: "-100px" }}
     >
       {/* Animated Background */}
       {!shouldReduceMotion && (
@@ -226,19 +226,19 @@ export default function Courses() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* Section Header */}
-          <motion.div 
+        <motion.div 
             className="text-center mb-16"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            viewport={{ once: true }}
+          initial={shouldReduceMotion ? false : { y: 50, opacity: 0 }}
+          whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
+          transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut" }}
+          viewport={shouldReduceMotion ? undefined : { once: true }}
           >
             <motion.div
               className="inline-block mb-6"
-              initial={{ scale: 0, rotate: -180 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-              viewport={{ once: true }}
+              initial={shouldReduceMotion ? false : { scale: 0, rotate: -180 }}
+              whileInView={shouldReduceMotion ? undefined : { scale: 1, rotate: 0 }}
+              transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.2 }}
+              viewport={shouldReduceMotion ? undefined : { once: true }}
             >
               <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 backdrop-blur-xl border border-yellow-400/30 rounded-full px-8 py-4">
                 <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium">
@@ -249,20 +249,20 @@ export default function Courses() {
             
             <motion.h2 
               className="text-[30px] md:text-[46.13px] lg:text-[56px] font-bold mb-8 text-white"
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-              viewport={{ once: true }}
+              initial={shouldReduceMotion ? false : { y: 30, opacity: 0 }}
+              whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
+              transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.4 }}
+              viewport={shouldReduceMotion ? undefined : { once: true }}
             >
               Training That Transforms
             </motion.h2>
             
             <motion.p 
               className="text-gray-300 text-lg max-w-4xl mx-auto leading-relaxed"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
-              viewport={{ once: true }}
+              initial={shouldReduceMotion ? false : { y: 20, opacity: 0 }}
+              whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
+              transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.6 }}
+              viewport={shouldReduceMotion ? undefined : { once: true }}
             >
               Step confidently into leadership roles that transform organizations. 
               Become the driving force behind business agility and innovation.
@@ -315,10 +315,10 @@ export default function Courses() {
         <motion.div 
           ref={filtersRef}
           className="flex flex-col md:flex-row gap-6 mb-16"
-          initial={{ y: 60, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.5 }}
-          viewport={{ once: true, margin: "-100px" }}
+          initial={shouldReduceMotion ? false : { y: 60, opacity: 0 }}
+          whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
+          transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.5 }}
+          viewport={shouldReduceMotion ? undefined : { once: true, margin: "-100px" }}
         >
           <div className="flex-1">
             <h3 className="text-white font-semibold mb-4">Categories:</h3>
@@ -369,10 +369,10 @@ export default function Courses() {
         <motion.div 
           ref={coursesRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.7 }}
-          viewport={{ once: true, margin: "-100px" }}
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
+          transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.7 }}
+          viewport={shouldReduceMotion ? undefined : { once: true, margin: "-100px" }}
         >
           <AnimatePresence>
             {filteredCourses.map((course, index) => {
@@ -390,14 +390,14 @@ export default function Courses() {
                 <motion.div
                   key={course.id}
                   className="course-card group relative h-full flex"
-                  initial={{ y: 120, opacity: 0, scale: 0.8 }}
-                  whileInView={{ y: 0, opacity: 1, scale: 1 }}
-                  transition={{
+                  initial={shouldReduceMotion ? false : { y: 120, opacity: 0, scale: 0.8 }}
+                  whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1, scale: 1 }}
+                  transition={shouldReduceMotion ? undefined : {
                     duration: 1.2,
                     ease: "easeOut",
                     delay: 0.7 + index * 0.2
                   }}
-                  viewport={{ once: true, margin: "-50px" }}
+                  viewport={shouldReduceMotion ? undefined : { once: true, margin: "-50px" }}
                   whileHover={isMobile ? undefined : {
                     y: -10,
                     scale: 1.02,
