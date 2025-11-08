@@ -123,12 +123,12 @@ export default function Footer() {
               </motion.a>
               <br />
               <motion.a
-                href="mailto:support@leanmultiverse.com"
+                href="mailto:operations@leanmultiverse.com"
                 className="text-gray-300 hover:text-yellow-400 transition-colors inline-block"
                 whileHover={{ x: 4 }}
                 whileTap={{ scale: 0.96 }}
               >
-                Email: support@leanmultiverse.com
+                Email: operations@leanmultiverse.com
               </motion.a>
             </motion.div>
             <motion.div 

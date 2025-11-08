@@ -159,7 +159,7 @@ export default function AdvancedChatbot() {
     if (input.includes('contact') || input.includes('support') || input.includes('help')) {
       return {
         id: Date.now().toString(),
-        text: "🆘 **How can we help you?**\n\n• **WhatsApp**: +91-9876543210\n• **Email**: support@leanmultiverse.com\n• **Phone**: +91-11-1234-5678\n• **Live Chat**: Available 24/7\n• **Office Hours**: Mon-Fri 9AM-6PM IST\n\nWhat's your preferred way to connect?",
+        text: "🆘 **How can we help you?**\n\n• **WhatsApp**: +91-9876543210\n• **Email**: operations@leanmultiverse.com\n• **Phone**: +91-11-1234-5678\n• **Live Chat**: Available 24/7\n• **Office Hours**: Mon-Fri 9AM-6PM IST\n\nWhat's your preferred way to connect?",
         sender: 'bot',
         timestamp: new Date(),
         quickReplies: ["WhatsApp", "Email", "Phone Call", "Live Chat", "Visit Office"]

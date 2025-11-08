@@ -33,7 +33,7 @@ const contactMethods = [
     id: "phone",
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 5a2 2 0 012-2h2.3a1 1 0 01.96.72l1.12 3.91a1 1 0 01-.54 1.18l-1.7.85a12.05 12.05 0 005.62 5.62l.85-1.7a1 1 0 011.18-.54l3.91 1.12a1 1 0 01.72.96V19a2 2 0 01-2 2h-1c-8.284 0-15-6.716-15-15V5z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 5a2 2 0 012-2h1.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.72 2.07l-.92.77a16.001 16.001 0 007.18 7.18l.77-.92a2 2 0 012.07-.72l2.48.62A2 2 0 0121 17.72V19a2 2 0 01-2 2h-1C10.163 21 3 13.837 3 4V5z" />
       </svg>
     ),
     title: "Call Our Team",
@@ -43,21 +43,6 @@ const contactMethods = [
     action: "Call Now",
     gradient: "from-yellow-500/80 to-yellow-600/80",
     bgGradient: "from-yellow-500/10 to-yellow-600/10"
-  },
-  {
-    id: "ai",
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-      </svg>
-    ),
-    title: "AI Chatbot",
-    description: "Instant answers with our AI assistant",
-    contact: "Available 24/7",
-    hours: "Instant response",
-    action: "Start Chat",
-    gradient: "from-yellow-400/60 to-yellow-500/60",
-    bgGradient: "from-yellow-400/10 to-yellow-500/10"
   }
 ]
 

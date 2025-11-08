@@ -256,7 +256,94 @@ export const courses: Course[] = [
     },
     discount: "₹5,000 OFF"
   },
+  {
+    id: 9,
+    title: "Product Management + Job Switch Mastery",
+    shortTitle: "Product Management + Job Switch",
+    subheading: "Dual Program • 2 Days",
+    description: "Get the best of both worlds, learn product management concepts with real-world application and master how to switch or advance your career with confidence.",
+    category: "Dual Program",
+    duration: "2 Days",
+    level: "Professional",
+    rating: 4.9,
+    learners: 0,
+    price: 8000,
+    originalPrice: 20000,
+    isPopular: true,
+    isNew: true,
+    skills: ["Product Management", "Career Transition", "Interview Preparation"],
+    highlights: [
+      "Product Management foundation aligned with SAFe® reference",
+      "Resume & LinkedIn optimization training",
+      "100+ interview Q&A discussion",
+      "Career guidance from industry mentors"
+    ],
+    university: "Lean Multiverse",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Talk to Expert"
+    },
+    discount: "₹12,000 OFF"
+  },
+  {
+    id: 10,
+    title: "Project Management + Job Switch Mastery",
+    shortTitle: "Project Management + Job Switch",
+    subheading: "Dual Program • 2 Days",
+    description: "Upskill with PMI-aligned project management practices while learning how to build a powerful professional profile and confidently switch jobs.",
+    category: "Dual Program",
+    duration: "2 Days",
+    level: "Professional",
+    rating: 4.8,
+    learners: 0,
+    price: 8000,
+    originalPrice: 20000,
+    isPopular: true,
+    isNew: true,
+    skills: ["Project Management", "Career Transition", "Interview Preparation"],
+    highlights: [
+      "Project Management basics aligned with PMI® framework",
+      "Resume & Naukri profile optimization",
+      "100+ interview Q&A preparation",
+      "Career transition roadmap guidance"
+    ],
+    university: "Lean Multiverse",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Talk to Expert"
+    },
+    discount: "₹12,000 OFF"
+  },
+  {
+    id: 11,
+    title: "Business Analyst + Job Switch Mastery",
+    shortTitle: "Business Analyst + Job Switch",
+    subheading: "Dual Program • 2 Days",
+    description: "Combine practical business analysis skills with career growth strategies. Learn IIBA-aligned BA fundamentals and job-switching techniques that get results.",
+    category: "Dual Program",
+    duration: "2 Days",
+    level: "Professional",
+    rating: 4.9,
+    learners: 0,
+    price: 8000,
+    originalPrice: 20000,
+    isPopular: true,
+    isNew: true,
+    skills: ["Business Analysis", "Career Transition", "Interview Preparation"],
+    highlights: [
+      "Business Analysis concepts aligned with IIBA® standards",
+      "Resume & LinkedIn enhancement workshop",
+      "100+ interview preparation questions",
+      "Career mentoring and guidance"
+    ],
+    university: "Lean Multiverse",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Talk to Expert"
+    },
+    discount: "₹12,000 OFF"
+  }
 ]
 
-export const categories = ["All", "Webinar", "Foundation Course", "Professional Course", "Career Accelerator"]
+export const categories = ["All", "Webinar", "Foundation Course", "Professional Course", "Career Accelerator", "Dual Program"]
 export const levels = ["All", "All Levels", "Beginner", "Professional"]
