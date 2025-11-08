@@ -12,10 +12,10 @@ export async function GET() {
       webhookSecret: process.env.RAZORPAY_WEBHOOK_SECRET ? '✅ Configured' : '❌ Missing',
     },
     email: {
-      smtpUser: process.env.SMTP_USER ? '✅ Configured' : '❌ Missing',
-      smtpPass: process.env.SMTP_PASS ? '✅ Configured' : '❌ Missing',
-      smtpHost: process.env.SMTP_HOST || 'smtp-mail.outlook.com (default)',
-      fromEmail: process.env.FROM_EMAIL || process.env.SMTP_USER ? '✅ Configured' : '❌ Missing',
+      emailJsService: process.env.EMAILJS_SERVICE_ID ? '✅ Configured' : '❌ Missing',
+      emailJsTemplate: process.env.EMAILJS_TEMPLATE_ID ? '✅ Configured' : '❌ Missing',
+      emailJsPublicKey: process.env.EMAILJS_PUBLIC_KEY ? '✅ Configured' : '❌ Missing',
+      emailJsPrivateKey: process.env.EMAILJS_PRIVATE_KEY ? '✅ Configured' : '❌ Missing',
     },
     zoom: {
       accountId: process.env.ZOOM_ACCOUNT_ID ? '✅ Configured' : '❌ Missing',

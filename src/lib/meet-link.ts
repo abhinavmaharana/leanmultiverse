@@ -1,5 +1,5 @@
 import { WebinarBooking } from './db'
-import { parseISO } from 'date-fns'
+import { normalizeDateTime } from './date-utils'
 
 /**
  * Generate a Zoom meeting link
@@ -45,8 +45,7 @@ async function createZoomMeeting(booking: WebinarBooking): Promise<string> {
   
   // Step 2: Create the meeting
   // Combine date and time
-  const dateTimeStr = `${booking.selected_date}T${booking.selected_time}:00`
-  const startDate = parseISO(dateTimeStr)
+  const { startDate } = normalizeDateTime(booking.selected_date, booking.selected_time)
   
   // Format for Zoom API (ISO 8601 format)
   const startTime = startDate.toISOString()

@@ -24,9 +24,7 @@ type BookingFormData = z.infer<typeof bookingSchema>
 
 // Available time slots in IST
 const TIME_SLOTS = [
-  { value: '10:00', label: '10:00 AM IST' },
-  { value: '14:00', label: '2:00 PM IST' },
-  { value: '18:00', label: '6:00 PM IST' },
+  { value: '20:00', label: '8:00 PM IST' },
 ]
 
 // Get next 4 weekends (Saturdays and Sundays)
@@ -230,7 +228,7 @@ export default function BookWebinarClient() {
                 <Label htmlFor="time" className="text-white mb-3 block text-lg font-semibold">
                   Select Time (IST)
                 </Label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {TIME_SLOTS.map((slot) => (
                     <button
                       key={slot.value}
