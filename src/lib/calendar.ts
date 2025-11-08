@@ -14,7 +14,7 @@ export interface CalendarInviteData {
 export async function generateCalendarInvite(
   booking: CalendarInviteData
 ): Promise<string> {
-  const { dateStr, timeStr, isoWithOffset, startDate } = normalizeDateTime(
+  const { startDate } = normalizeDateTime(
     booking.selected_date,
     booking.selected_time
   )

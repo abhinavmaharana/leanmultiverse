@@ -17,19 +17,19 @@ export function useIsMobile(maxWidth = 768) {
     // Initial value
     handleChange(mediaQuery)
 
-    if (typeof mediaQuery.addEventListener === 'function') {
+    const supportsAddEventListener = typeof mediaQuery.addEventListener === 'function'
+    const supportsAddListener = typeof mediaQuery.addListener === 'function'
+
+    if (supportsAddEventListener) {
       mediaQuery.addEventListener('change', handleChange)
-    } else {
-      // Fallback for older browsers
-      // @ts-expect-error addListener is deprecated but still present in some browsers
+    } else if (supportsAddListener) {
       mediaQuery.addListener(handleChange)
     }
 
     return () => {
-      if (typeof mediaQuery.removeEventListener === 'function') {
+      if (supportsAddEventListener) {
         mediaQuery.removeEventListener('change', handleChange)
-      } else {
-        // @ts-expect-error removeListener is deprecated but still present in some browsers
+      } else if (supportsAddListener) {
         mediaQuery.removeListener(handleChange)
       }
     }

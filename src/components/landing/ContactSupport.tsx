@@ -237,10 +237,12 @@ const handleContactAction = (action: string) => {
 
     }, sectionRef)
 
+    const currentParticles = particlesRef.current
+
     return () => {
       ctx.revert()
-      if (particlesRef.current) {
-        particlesRef.current.innerHTML = ''
+      if (currentParticles) {
+        currentParticles.innerHTML = ''
       }
     }
   }, [shouldAnimate])
