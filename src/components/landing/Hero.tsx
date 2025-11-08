@@ -94,7 +94,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="home"
-      className="relative flex items-start justify-center lg:justify-start min-h-[calc(100vh-80px)] mt-[-32px] px-4 sm:px-6 md:px-8 lg:px-12 pt-8 sm:pt-10 lg:pt-14 pb-10 sm:pb-14 overflow-hidden"
+      className="relative flex items-start justify-center lg:justify-start min-h-[calc(100vh-120px)] mt-[-72px] sm:mt-[-88px] px-4 sm:px-6 md:px-8 lg:px-12 pt-6 sm:pt-8 lg:pt-12 pb-10 sm:pb-14 overflow-hidden"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
