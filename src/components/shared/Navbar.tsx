@@ -163,35 +163,35 @@ export default function Navbar() {
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg transition"
                 whileHover={{ x: 5 }}
               >
-                All Courses
+                Webinar
               </motion.a>
               <motion.a 
                 href="#courses" 
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg transition"
                 whileHover={{ x: 5 }}
               >
-                MBA Programs
+                Foundation Courses
               </motion.a>
               <motion.a 
                 href="#courses" 
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg transition"
                 whileHover={{ x: 5 }}
               >
-                Certifications
+                Professional Courses
               </motion.a>
               <motion.a 
                 href="#courses" 
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg transition"
                 whileHover={{ x: 5 }}
               >
-                Executive Education
+                Career Accelerator
               </motion.a>
               <motion.a 
                 href="/free-courses" 
                 className="block px-4 py-2 text-white hover:bg-white/10 rounded-lg transition"
                 whileHover={{ x: 5 }}
               >
-                Free Courses
+                Dual Programs
               </motion.a>
             </div>
           </motion.div>

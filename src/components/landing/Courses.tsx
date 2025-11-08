@@ -8,6 +8,7 @@ import type { Transition } from "framer-motion"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { courses, categories, levels } from "@/data/courses"
+import { useIsMobile } from "@/hooks/useIsMobile"
 
 const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
 const TALK_TO_EXPERT_TEL = "+918062177938"
@@ -24,6 +25,8 @@ export default function Courses() {
   const [searchQuery, setSearchQuery] = useState("")
   const [hoveredCourse, setHoveredCourse] = useState<number | null>(null)
   const prefersReducedMotion = useReducedMotion()
+  const isMobile = useIsMobile()
+  const shouldReduceMotion = prefersReducedMotion || isMobile
   
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -44,7 +47,7 @@ export default function Courses() {
   }, [selectedCategory, selectedLevel, searchQuery])
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || shouldReduceMotion) return
 
     const ctx = gsap.context(() => {
       // Animate header
@@ -127,7 +130,7 @@ export default function Courses() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [shouldReduceMotion])
 
   return (
     <motion.section 
@@ -139,7 +142,7 @@ export default function Courses() {
       viewport={{ once: true, margin: "-100px" }}
     >
       {/* Animated Background */}
-      {!prefersReducedMotion && (
+      {!shouldReduceMotion && (
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"
@@ -290,8 +293,8 @@ export default function Courses() {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
-                animate={prefersReducedMotion ? undefined : { rotate: [0, 10, -10, 0] }}
-                transition={prefersReducedMotion ? undefined : { duration: 2, repeat: Infinity, delay: 1 }}
+                animate={shouldReduceMotion ? undefined : { rotate: [0, 10, -10, 0] }}
+                transition={shouldReduceMotion ? undefined : { duration: 2, repeat: Infinity, delay: 1 }}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </motion.svg>
@@ -320,8 +323,8 @@ export default function Courses() {
                       ? "bg-yellow-400 text-black"
                       : "bg-white/10 text-white hover:bg-white/20"
                   }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={isMobile ? undefined : { scale: 1.05 }}
+                  whileTap={isMobile ? undefined : { scale: 0.95 }}
                   data-cursor-hover
                 >
                   {category}
@@ -342,8 +345,8 @@ export default function Courses() {
                       ? "bg-yellow-400 text-black"
                       : "bg-white/10 text-white hover:bg-white/20"
                   }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={isMobile ? undefined : { scale: 1.05 }}
+                  whileTap={isMobile ? undefined : { scale: 0.95 }}
                   data-cursor-hover
                 >
                   {level}
@@ -364,13 +367,13 @@ export default function Courses() {
         >
           <AnimatePresence>
             {filteredCourses.map((course, index) => {
-              const isHovered = hoveredCourse === course.id
-              const glowAnimate = prefersReducedMotion
+              const isHovered = !isMobile && hoveredCourse === course.id
+              const glowAnimate = shouldReduceMotion
                 ? { opacity: isHovered ? 0.25 : 0 }
                 : isHovered
                   ? { scale: [1, 1.05, 1], opacity: [0, 0.3, 0] }
                   : { opacity: 0, scale: 1 }
-              const glowTransition: Transition = prefersReducedMotion
+              const glowTransition: Transition = shouldReduceMotion
                 ? { duration: 0.3 }
                 : { duration: 2, repeat: isHovered ? Infinity : 0, ease: [0.42, 0, 0.58, 1] }
 
@@ -386,13 +389,13 @@ export default function Courses() {
                     delay: 0.7 + index * 0.2
                   }}
                   viewport={{ once: true, margin: "-50px" }}
-                  whileHover={{
+                  whileHover={isMobile ? undefined : {
                     y: -10,
                     scale: 1.02,
                     transition: { duration: 0.3 }
                   }}
-                  onHoverStart={() => setHoveredCourse(course.id)}
-                  onHoverEnd={() => setHoveredCourse(null)}
+                  onHoverStart={() => !isMobile && setHoveredCourse(course.id)}
+                  onHoverEnd={() => !isMobile && setHoveredCourse(null)}
                   exit={{ opacity: 0, scale: 0.8 }}
                 >
                   {/* Animated background glow */}
@@ -404,14 +407,14 @@ export default function Courses() {
 
                   <motion.div
                     className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 h-full w-full overflow-hidden flex flex-col"
-                    whileHover={{
+                    whileHover={isMobile ? undefined : {
                       borderColor: "rgba(251, 191, 36, 0.4)",
                       backgroundColor: "rgba(255, 255, 255, 0.08)"
                     }}
                     transition={{ duration: 0.3 }}
                   >
                     {/* Floating particles effect */}
-                    {!prefersReducedMotion && (
+                    {!shouldReduceMotion && (
                       <div className="absolute inset-0 overflow-hidden">
                         {[...Array(4)].map((_, i) => (
                           <motion.div
@@ -650,17 +653,17 @@ export default function Courses() {
 
                       <div className={`mt-auto flex gap-3 ${course.buttons.secondary ? '' : 'flex-col'}`}>
                         <motion.div
-                          whileHover={{ scale: 1.02, y: -1 }}
-                          whileTap={{ scale: 0.98 }}
+                          whileHover={isMobile ? undefined : { scale: 1.02, y: -1 }}
+                          whileTap={isMobile ? undefined : { scale: 0.98 }}
                           className={`relative group ${course.buttons.secondary ? 'flex-1' : 'w-full'}`}
                         >
                           <motion.div
                             className="absolute inset-0 bg-yellow-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            animate={prefersReducedMotion ? undefined : { scale: [1, 1.05, 1], opacity: [0, 0.2, 0] }}
-                            transition={prefersReducedMotion ? undefined : { duration: 3, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
+                            animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1], opacity: [0, 0.2, 0] }}
+                            transition={shouldReduceMotion ? undefined : { duration: 3, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
                           />
                           <Button
-                            className="relative w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-yellow-400/20"
+                            className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-yellow-400/20 ${isMobile ? 'bg-yellow-400 text-black shadow-md' : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 shadow-lg hover:shadow-xl'}`}
                             data-cursor-hover
                             onClick={() => {
                               if (course.id === 1) {
@@ -672,7 +675,7 @@ export default function Courses() {
                           >
                             <motion.span
                               className="relative z-10 flex items-center justify-center gap-1"
-                              whileHover={{ y: -0.5 }}
+                              whileHover={isMobile ? undefined : { y: -0.5 }}
                               transition={{ duration: 0.2 }}
                             >
                               {course.buttons.primary}
@@ -685,17 +688,17 @@ export default function Courses() {
 
                         {course.buttons.secondary && (
                           <motion.div
-                            whileHover={{ scale: 1.02, y: -1 }}
-                            whileTap={{ scale: 0.98 }}
+                            whileHover={isMobile ? undefined : { scale: 1.02, y: -1 }}
+                            whileTap={isMobile ? undefined : { scale: 0.98 }}
                             className="relative group flex-1"
                           >
                             <motion.div
                               className="absolute inset-0 bg-white/10 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              animate={prefersReducedMotion ? undefined : { scale: [1, 1.05, 1], opacity: [0, 0.2, 0] }}
-                              transition={prefersReducedMotion ? undefined : { duration: 3, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
+                              animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1], opacity: [0, 0.2, 0] }}
+                              transition={shouldReduceMotion ? undefined : { duration: 3, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
                             />
                             <Button 
-                              className="relative w-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 hover:border-white/40"
+                              className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-white/20 ${isMobile ? 'bg-white/15 text-white' : 'bg-white/10 backdrop-blur-md text-white hover:bg-white/20 shadow-lg hover:shadow-xl hover:border-white/40'}`}
                               data-cursor-hover
                               onClick={() => {
                                 if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert')) {
@@ -707,7 +710,7 @@ export default function Courses() {
                             >
                               <motion.span
                                 className="relative z-10 flex flex-col items-center justify-center gap-0 leading-tight"
-                                whileHover={{ y: -0.5 }}
+                                whileHover={isMobile ? undefined : { y: -0.5 }}
                                 transition={{ duration: 0.2 }}
                               >
                                 <span>{course.buttons.secondary}</span>
@@ -726,9 +729,9 @@ export default function Courses() {
             })}
           </AnimatePresence>
         </motion.div>
-        </motion.div>
+      </motion.div>
     </div>
-    </motion.section>
+  </motion.section>
   )
 }
 
