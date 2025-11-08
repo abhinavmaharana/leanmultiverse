@@ -51,7 +51,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Book Your Slot",
-      secondary: "Pay Now"
+      secondary: "Talk to Expert"
     },
     limitedSeats: true
   },
@@ -66,8 +66,8 @@ export const courses: Course[] = [
     level: "Beginner",
     rating: 4.8,
     learners: 0,
-    price: 2100,
-    originalPrice: 2499,
+    price: 2500,
+    originalPrice: 5000,
     isPopular: true,
     isNew: false,
     skills: ["Product Strategy", "Roadmap Planning", "Team Collaboration"],
@@ -80,9 +80,9 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Get ₹5,000 OFF Later"
+      secondary: "Claim ₹2,500 Discount"
     },
-    discount: "₹5,000 OFF"
+    discount: "₹2,500 OFF"
   },
   {
     id: 3,
@@ -95,8 +95,8 @@ export const courses: Course[] = [
     level: "Beginner",
     rating: 4.7,
     learners: 0,
-    price: 2100,
-    originalPrice: 2499,
+    price: 2500,
+    originalPrice: 5000,
     isPopular: true,
     isNew: false,
     skills: ["Agile", "Waterfall", "Hybrid", "MS Project", "Jira", "Asana"],
@@ -109,9 +109,9 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹5,000 Discount"
+      secondary: "Claim ₹2,500 Discount"
     },
-    discount: "₹5,000 OFF"
+    discount: "₹2,500 OFF"
   },
   {
     id: 4,
@@ -124,8 +124,8 @@ export const courses: Course[] = [
     level: "Beginner",
     rating: 4.8,
     learners: 0,
-    price: 2100,
-    originalPrice: 2499,
+    price: 2500,
+    originalPrice: 5000,
     isPopular: true,
     isNew: false,
     skills: ["Requirement Gathering", "User Stories", "Stakeholder Communication", "Jira", "Confluence", "Lucidchart"],
@@ -139,9 +139,9 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Get ₹5,000 OFF Later"
+      secondary: "Claim ₹2,500 Discount"
     },
-    discount: "₹5,000 OFF"
+    discount: "₹2,500 OFF"
   },
   {
     id: 5,
@@ -154,8 +154,8 @@ export const courses: Course[] = [
     level: "Professional",
     rating: 4.9,
     learners: 0,
-    price: 4100,
-    originalPrice: 4999,
+    price: 5000,
+    originalPrice: 10000,
     isPopular: true,
     isNew: true,
     skills: ["Resume Building", "LinkedIn Optimization", "Interview Preparation", "Profile Optimization"],
@@ -167,9 +167,10 @@ export const courses: Course[] = [
     ],
     university: "Lean Multiverse",
     buttons: {
-      primary: "Join Now",
-      secondary: "Get Started"
-    }
+      primary: "Enroll Now",
+      secondary: "Claim ₹5000 Discount"
+    },
+    discount: "₹5,000 OFF"
   },
   {
     id: 6,
@@ -182,8 +183,8 @@ export const courses: Course[] = [
     level: "Professional",
     rating: 4.9,
     learners: 0,
-    price: 4999,
-    originalPrice: 5999,
+    price: 5000,
+    originalPrice: 10000,
     isPopular: true,
     isNew: false,
     skills: ["SAFe®", "Scrum Alliance", "Scrum org", "Roadmap Planning", "Backlog Prioritization", "Release Management"],
@@ -194,9 +195,10 @@ export const courses: Course[] = [
     ],
     university: "Lean Multiverse",
     buttons: {
-      primary: "Enroll Today",
-      secondary: "Talk to Expert"
-    }
+      primary: "Enroll Now",
+      secondary: "Claim ₹5000 Discount"
+    },
+    discount: "₹5,000 OFF"
   },
   {
     id: 7,
@@ -209,8 +211,8 @@ export const courses: Course[] = [
     level: "Professional",
     rating: 4.8,
     learners: 0,
-    price: 4999,
-    originalPrice: 5999,
+    price: 5000,
+    originalPrice: 10000,
     isPopular: true,
     isNew: false,
     skills: ["PMI®", "Project Planning", "Risk Control", "Stakeholder Communication", "Execution"],
@@ -221,9 +223,10 @@ export const courses: Course[] = [
     ],
     university: "Lean Multiverse",
     buttons: {
-      primary: "Enroll Today",
-      secondary: "Talk to Expert"
-    }
+      primary: "Enroll Now",
+      secondary: "Claim ₹5000 Discount"
+    },
+    discount: "₹5,000 OFF"
   },
   {
     id: 8,
@@ -236,8 +239,8 @@ export const courses: Course[] = [
     level: "Professional",
     rating: 4.9,
     learners: 0,
-    price: 4999,
-    originalPrice: 5999,
+    price: 5000,
+    originalPrice: 10000,
     isPopular: true,
     isNew: false,
     skills: ["IIBA®", "Requirement Documentation", "Stakeholder Mapping", "Business Process Improvement"],
@@ -248,9 +251,10 @@ export const courses: Course[] = [
     ],
     university: "Lean Multiverse",
     buttons: {
-      primary: "Enroll Today",
-      secondary: "Talk to Expert"
-    }
+      primary: "Enroll Now",
+      secondary: "Claim ₹5000 Discount"
+    },
+    discount: "₹5,000 OFF"
   },
 ]
 

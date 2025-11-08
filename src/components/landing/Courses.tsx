@@ -9,6 +9,9 @@ import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { courses, categories, levels } from "@/data/courses"
 
+const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
+const TALK_TO_EXPERT_TEL = "+918062177938"
+
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
@@ -691,25 +694,26 @@ export default function Courses() {
                               animate={prefersReducedMotion ? undefined : { scale: [1, 1.05, 1], opacity: [0, 0.2, 0] }}
                               transition={prefersReducedMotion ? undefined : { duration: 3, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
                             />
-                            <Button
+                            <Button 
                               className="relative w-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 rounded-xl py-2.5 text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 hover:border-white/40"
                               data-cursor-hover
                               onClick={() => {
-                              if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert')) {
-                                window.open(`https://wa.me/918062177938?text=Hi, I'm interested in the ${course.title} course. Can you provide more details?`, '_blank')
-                                } else if (course.buttons.secondary?.includes('Pay Now')) {
-                                  window.location.href = '/book-webinar'
+                                if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert')) {
+                                  window.location.href = `tel:${TALK_TO_EXPERT_TEL}`
                                 } else {
                                   window.open(`/course-details/${course.id}`, '_blank')
                                 }
                               }}
                             >
                               <motion.span
-                                className="relative z-10 flex items-center justify-center gap-1"
+                                className="relative z-10 flex flex-col items-center justify-center gap-0 leading-tight"
                                 whileHover={{ y: -0.5 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                {course.buttons.secondary}
+                                <span>{course.buttons.secondary}</span>
+                                {course.buttons.secondary?.includes('Talk to Expert') && (
+                                  <span className="text-xs font-normal text-yellow-300">{TALK_TO_EXPERT_DISPLAY}</span>
+                                )}
                               </motion.span>
                             </Button>
                           </motion.div>
