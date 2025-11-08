@@ -156,7 +156,7 @@ export default function Footer() {
               Join 6,00,000+ professionals who have advanced their careers with us.
             </motion.p>
             <motion.div
-              className="space-y-1 text-sm sm:text-base"
+              className="flex flex-col gap-2 text-sm sm:text-base"
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
@@ -181,7 +181,7 @@ export default function Footer() {
               </motion.a>
             </motion.div>
             <motion.div 
-              className="flex space-x-4"
+              className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4"
               initial={{ y: 20, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
