@@ -171,6 +171,25 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@media (max-width: 768px) {
+  body {
+    scroll-behavior: auto;
+  }
+
+  body [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  body [class*="shadow"] {
+    box-shadow: none !important;
+  }
+
+  body [class*="blur-"] {
+    filter: none !important;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useShouldAnimate } from "@/hooks/useShouldAnimate"
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -95,6 +96,7 @@ const testimonials: Testimonial[] = [
 export default function SuccessStories() {
   const [selectedTestimonial, setSelectedTestimonial] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const shouldAnimate = useShouldAnimate()
   
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -121,9 +123,13 @@ export default function SuccessStories() {
     return () => clearInterval(interval)
   }, [isAutoPlaying])
 
+  useEffect(() => {
+    setIsAutoPlaying(shouldAnimate)
+  }, [shouldAnimate])
+
   // GSAP Animations
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || !shouldAnimate) return
 
     const ctx = gsap.context(() => {
       // Animate header
@@ -215,7 +221,7 @@ export default function SuccessStories() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [shouldAnimate])
 
   return (
     <motion.section 

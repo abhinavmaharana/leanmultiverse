@@ -272,7 +272,7 @@ export default function Courses() {
         {/* Search Bar */}
         <motion.div 
           ref={searchRef}
-          className="max-w-2xl mx-auto mb-12"
+          className="max-w-3xl mx-auto mb-10 flex flex-col gap-4"
           initial={{ y: 80, opacity: 0, scale: 0.9 }}
           whileInView={{ y: 0, opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
@@ -300,6 +300,15 @@ export default function Courses() {
               </motion.svg>
             </div>
           </div>
+          <motion.p
+            className="text-center text-sm text-gray-400"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            All prices shown below are inclusive of GST.
+          </motion.p>
         </motion.div>
 
         {/* Filters */}

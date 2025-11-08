@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useShouldAnimate } from "@/hooks/useShouldAnimate"
 
 const SOCIAL_LINKS = [
   {
@@ -62,9 +63,10 @@ export default function Footer() {
   const footerRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const shouldAnimate = useShouldAnimate()
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || !shouldAnimate) return
 
     const ctx = gsap.context(() => {
       // Animate footer content on scroll
@@ -104,7 +106,7 @@ export default function Footer() {
     }, footerRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [shouldAnimate])
 
   return (
     <motion.footer 

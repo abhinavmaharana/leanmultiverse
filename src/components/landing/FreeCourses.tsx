@@ -7,6 +7,7 @@ import { motion } from "framer-motion"
 import { useRef, useEffect } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useShouldAnimate } from "@/hooks/useShouldAnimate"
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -93,9 +94,10 @@ export default function FreeCourses() {
   const headerRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+  const shouldAnimate = useShouldAnimate()
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || !shouldAnimate) return
 
     const ctx = gsap.context(() => {
       // Header animation
@@ -156,7 +158,7 @@ export default function FreeCourses() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [shouldAnimate])
 
   return (
     <section ref={sectionRef} className="relative py-20 min-h-screen">

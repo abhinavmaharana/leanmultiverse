@@ -7,6 +7,7 @@ import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useShouldAnimate } from "@/hooks/useShouldAnimate"
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -19,6 +20,7 @@ export default function Navbar() {
   const logoRef = useRef<HTMLDivElement>(null)
   const navLinksRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+  const shouldAnimate = useShouldAnimate()
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -33,60 +35,64 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll)
     handleScroll() // Initial check
 
-    const ctx = gsap.context(() => {
-      // Animate navbar on load
-      gsap.fromTo(navRef.current, 
-        { y: -100, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1,
-          ease: "power3.out"
-        }
-      )
+    let ctx: gsap.Context | undefined
 
-      // Animate logo
-      gsap.fromTo(logoRef.current, 
-        { x: -50, opacity: 0 },
-        { 
-          x: 0, 
-          opacity: 1, 
-          duration: 0.8,
-          ease: "power3.out",
-          delay: 0.2
-        }
-      )
+    if (shouldAnimate) {
+      ctx = gsap.context(() => {
+        // Animate navbar on load
+        gsap.fromTo(navRef.current, 
+          { y: -100, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            duration: 1,
+            ease: "power3.out"
+          }
+        )
 
-      // Animate nav links
-      gsap.fromTo(navLinksRef.current, 
-        { y: -30, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 0.8,
-          ease: "power3.out",
-          delay: 0.4
-        }
-      )
+        // Animate logo
+        gsap.fromTo(logoRef.current, 
+          { x: -50, opacity: 0 },
+          { 
+            x: 0, 
+            opacity: 1, 
+            duration: 0.8,
+            ease: "power3.out",
+            delay: 0.2
+          }
+        )
 
-      // Animate CTA
-      gsap.fromTo(ctaRef.current, 
-        { x: 50, opacity: 0 },
-        { 
-          x: 0, 
-          opacity: 1, 
-          duration: 0.8,
-          ease: "power3.out",
-          delay: 0.6
-        }
-      )
-    }, navRef)
+        // Animate nav links
+        gsap.fromTo(navLinksRef.current, 
+          { y: -30, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            duration: 0.8,
+            ease: "power3.out",
+            delay: 0.4
+          }
+        )
+
+        // Animate CTA
+        gsap.fromTo(ctaRef.current, 
+          { x: 50, opacity: 0 },
+          { 
+            x: 0, 
+            opacity: 1, 
+            duration: 0.8,
+            ease: "power3.out",
+            delay: 0.6
+          }
+        )
+      }, navRef)
+    }
 
     return () => {
-      ctx.revert()
+      ctx?.revert()
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [shouldAnimate])
 
   return (
     <motion.nav 

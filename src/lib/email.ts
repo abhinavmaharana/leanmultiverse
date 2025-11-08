@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import { normalizeDateTime } from './date-utils'
 
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID
@@ -26,8 +25,19 @@ export async function sendCalendarInviteEmail(data: EmailData) {
     }
 
     const { startDate, dateStr, timeStr } = normalizeDateTime(data.date, data.time)
-    const formattedDate = format(startDate, 'EEEE, MMMM d, yyyy')
-    const formattedTime = format(startDate, 'h:mm a') + ' IST'
+    const formattedDate = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    }).format(startDate)
+    const formattedTime = `${new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }).format(startDate)} IST`
 
     const base64Calendar = Buffer.from(data.calendarInvite, 'utf-8').toString('base64')
 

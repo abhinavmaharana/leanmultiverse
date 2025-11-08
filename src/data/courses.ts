@@ -80,7 +80,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹2,500 Discount"
+      secondary: "Talk to Expert"
     },
     discount: "₹2,500 OFF"
   },
@@ -109,7 +109,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹2,500 Discount"
+      secondary: "Talk to Expert"
     },
     discount: "₹2,500 OFF"
   },
@@ -139,7 +139,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹2,500 Discount"
+      secondary: "Talk to Expert"
     },
     discount: "₹2,500 OFF"
   },
@@ -168,7 +168,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹5000 Discount"
+      secondary: "Talk to Expert"
     },
     discount: "₹5,000 OFF"
   },
@@ -196,7 +196,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹5000 Discount"
+      secondary: "Talk to Expert"
     },
     discount: "₹5,000 OFF"
   },
@@ -224,7 +224,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹5000 Discount"
+      secondary: "Talk to Expert"
     },
     discount: "₹5,000 OFF"
   },
@@ -252,7 +252,7 @@ export const courses: Course[] = [
     university: "Lean Multiverse",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Claim ₹5000 Discount"
+      secondary: "Talk to Expert"
     },
     discount: "₹5,000 OFF"
   },

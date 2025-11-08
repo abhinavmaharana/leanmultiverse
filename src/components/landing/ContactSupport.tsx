@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useShouldAnimate } from "@/hooks/useShouldAnimate"
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -48,6 +49,7 @@ const contactMethods = [
 
 export default function ContactSupport() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const shouldAnimate = useShouldAnimate()
   
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
@@ -74,7 +76,7 @@ const handleContactAction = (action: string) => {
 
   // GSAP Animations
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || !shouldAnimate) return
 
     const ctx = gsap.context(() => {
       // Create floating particles
@@ -235,8 +237,13 @@ const handleContactAction = (action: string) => {
 
     }, sectionRef)
 
-    return () => ctx.revert()
-  }, [])
+    return () => {
+      ctx.revert()
+      if (particlesRef.current) {
+        particlesRef.current.innerHTML = ''
+      }
+    }
+  }, [shouldAnimate])
 
   return (
     <motion.section 
