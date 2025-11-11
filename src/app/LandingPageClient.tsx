@@ -3,6 +3,8 @@
 import { Suspense } from 'react'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
+import { useShouldAnimate } from '@/hooks/useShouldAnimate'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 // Dynamic imports with loading states (client-side only)
 const DynamicGalaxy = dynamic(() => import('../components/ui/Galaxy'), {
@@ -16,23 +18,32 @@ const DynamicGradientMesh = dynamic(() => import('../components/ui/GradientMesh'
 })
 
 export default function LandingPageClient() {
+  const shouldAnimate = useShouldAnimate()
+  const isMobile = useIsMobile()
+
   return (
     <>
       {/* Background effects load after hero */}
       <div className="fixed inset-0 -z-30 bg-black pointer-events-none">
-        <Suspense fallback={<div className="fixed inset-0 -z-30 bg-black" />}>
-          <DynamicGalaxy 
-            mouseRepulsion={true}
-            mouseInteraction={true}
-            density={0.4}
-          />
-        </Suspense>
+        {shouldAnimate ? (
+          <Suspense fallback={<div className="fixed inset-0 -z-30 bg-black" />}>
+            <DynamicGalaxy 
+              mouseRepulsion={true}
+              mouseInteraction={true}
+              density={isMobile ? 0.2 : 0.4}
+            />
+          </Suspense>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+        )}
       </div>
 
       {/* Gradient Mesh Background - Lazy loaded */}
-      <Suspense fallback={<div />}>
-        <DynamicGradientMesh />
-      </Suspense>
+      {shouldAnimate && (
+        <Suspense fallback={<div />}>
+          <DynamicGradientMesh />
+        </Suspense>
+      )}
 
       {/* Background Image Layer - Optimized */}
       <div className="fixed inset-0 -z-10 flex items-center justify-center pointer-events-none">

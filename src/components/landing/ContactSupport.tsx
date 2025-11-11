@@ -24,7 +24,7 @@ const contactMethods = [
     ),
     title: "WhatsApp Chat",
     description: "Quick support via WhatsApp",
-    contact: "Click to start chat",
+    contact: BUSINESS_PHONE_DISPLAY,
     hours: "Available 24/7",
     action: "Chat on WhatsApp",
     gradient: "from-yellow-400/80 to-yellow-600/80",

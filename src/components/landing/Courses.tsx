@@ -5,17 +5,11 @@ import { useRef, useEffect, useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import type { Transition } from "framer-motion"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { courses, categories, levels } from "@/data/courses"
 import { useIsMobile } from "@/hooks/useIsMobile"
 
 const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
 const TALK_TO_EXPERT_TEL = "+918062177938"
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 // SAFe Course data - now imported from data/courses.ts
 
@@ -49,87 +43,100 @@ export default function Courses() {
   useEffect(() => {
     if (typeof window === 'undefined' || shouldReduceMotion) return
 
-    const ctx = gsap.context(() => {
-      // Animate header
-      gsap.fromTo(headerRef.current, 
-        { y: 100, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1.5,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      )
+    let ctx: { revert: () => void } | undefined
+    let isMounted = true
 
-      // Animate search bar
-      gsap.fromTo(searchRef.current, 
-        { y: 80, opacity: 0, scale: 0.9 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          scale: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          delay: 0.3,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      )
+    ;(async () => {
+      const gsapModule = await import("gsap")
+      const scrollTriggerModule = await import("gsap/ScrollTrigger")
+      if (!isMounted) return
 
-      // Animate filters
-      gsap.fromTo(filtersRef.current, 
-        { y: 60, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1,
-          ease: "power3.out",
-          delay: 0.5,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      )
+      const gsapInstance = gsapModule.gsap || gsapModule.default || gsapModule
+      const ScrollTrigger = scrollTriggerModule.ScrollTrigger || scrollTriggerModule.default
 
-      // Animate courses grid
-      if (coursesRef.current?.children) {
-        gsap.fromTo(coursesRef.current.children, 
-          { y: 120, opacity: 0, scale: 0.8 },
+      if (!gsapInstance || !ScrollTrigger) return
+
+      gsapInstance.registerPlugin(ScrollTrigger)
+
+      ctx = gsapInstance.context(() => {
+        gsapInstance.fromTo(headerRef.current, 
+          { y: 100, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            duration: 1.5,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        )
+
+        gsapInstance.fromTo(searchRef.current, 
+          { y: 80, opacity: 0, scale: 0.9 },
           { 
             y: 0, 
             opacity: 1, 
             scale: 1,
             duration: 1.2,
             ease: "power3.out",
-            stagger: 0.2,
-            delay: 0.7,
+            delay: 0.3,
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: "top 60%",
+              start: "top 70%",
               end: "bottom 20%",
               toggleActions: "play none none reverse"
             }
           }
         )
-      }
 
+        gsapInstance.fromTo(filtersRef.current, 
+          { y: 60, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            duration: 1,
+            ease: "power3.out",
+            delay: 0.5,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 70%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        )
 
-    }, sectionRef)
+        if (coursesRef.current?.children) {
+          gsapInstance.fromTo(coursesRef.current.children, 
+            { y: 120, opacity: 0, scale: 0.8 },
+            { 
+              y: 0, 
+              opacity: 1, 
+              scale: 1,
+              duration: 1.2,
+              ease: "power3.out",
+              stagger: 0.2,
+              delay: 0.7,
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top 60%",
+                end: "bottom 20%",
+                toggleActions: "play none none reverse"
+              }
+            }
+          )
+        }
+      }, sectionRef)
+    })()
 
-    return () => ctx.revert()
+    return () => {
+      isMounted = false
+      ctx?.revert()
+    }
   }, [shouldReduceMotion])
 
   return (

@@ -3,14 +3,8 @@
 import { Button } from "@/components/ui/button"
 import { motion, useReducedMotion } from "framer-motion"
 import { useRef, useEffect, useMemo } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Image from "next/image"
 import { useIsMobile } from "@/hooks/useIsMobile"
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -33,61 +27,79 @@ export default function Hero() {
   useEffect(() => {
     if (typeof window === 'undefined' || shouldReduceMotion) return
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 85%",
-          end: "bottom 15%",
-          toggleActions: "play none none reverse",
-          once: true
-        }
-      })
+    let ctx: { revert: () => void } | undefined
+    let isMounted = true
 
-      tl.fromTo(taglineRef.current, animationConfig.tagline,
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: "power2.out"
-        }
-      )
-        .fromTo(titleRef.current, animationConfig.title,
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power2.out"
-          }, "-=0.4"
-        )
-        .fromTo(subtitleRef.current, animationConfig.subtitle,
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: "power2.out"
-          }, "-=0.3"
-        )
-        .fromTo(buttonsRef.current, animationConfig.buttons,
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            ease: "power2.out"
-          }, "-=0.2"
-        )
-        .fromTo(imageRef.current, { x: 50, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power2.out"
-          }, "-=0.4"
-        )
+    ;(async () => {
+      const gsapModule = await import("gsap")
+      const scrollTriggerModule = await import("gsap/ScrollTrigger")
+      if (!isMounted) return
 
-    }, sectionRef)
+      const gsapInstance = gsapModule.gsap || gsapModule.default || gsapModule
+      const ScrollTrigger = scrollTriggerModule.ScrollTrigger || scrollTriggerModule.default
 
-    return () => ctx.revert()
+      if (gsapInstance && ScrollTrigger) {
+        gsapInstance.registerPlugin(ScrollTrigger)
+
+        ctx = gsapInstance.context(() => {
+          const tl = gsapInstance.timeline({
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              end: "bottom 15%",
+              toggleActions: "play none none reverse",
+              once: true
+            }
+          })
+
+          tl.fromTo(taglineRef.current, animationConfig.tagline,
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              ease: "power2.out"
+            }
+          )
+            .fromTo(titleRef.current, animationConfig.title,
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out"
+              }, "-=0.4"
+            )
+            .fromTo(subtitleRef.current, animationConfig.subtitle,
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power2.out"
+              }, "-=0.3"
+            )
+            .fromTo(buttonsRef.current, animationConfig.buttons,
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power2.out"
+              }, "-=0.2"
+            )
+            .fromTo(imageRef.current, { x: 50, opacity: 0 },
+              {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.out"
+              }, "-=0.4"
+            )
+        }, sectionRef)
+      }
+    })()
+
+    return () => {
+      isMounted = false
+      ctx?.revert()
+    }
   }, [animationConfig, shouldReduceMotion])
 
   return (
