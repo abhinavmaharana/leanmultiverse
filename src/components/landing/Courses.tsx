@@ -30,6 +30,10 @@ export default function Courses() {
 
   const filteredCourses = useMemo(() => {
     return courses.filter(course => {
+      // Temporarily hide the webinar card until further notice.
+      if (course.id === 1) {
+        return false
+      }
       const matchesCategory = selectedCategory === "All" || course.category === selectedCategory
       const matchesLevel = selectedLevel === "All" || course.level === selectedLevel
       const query = searchQuery.trim().toLowerCase()
@@ -683,7 +687,7 @@ export default function Courses() {
                             data-cursor-hover
                             onClick={() => {
                               if (course.id === 1) {
-                                window.location.href = '/book-webinar'
+                                return
                               } else {
                                 window.open(`/course-details/${course.id}`, '_blank')
                               }

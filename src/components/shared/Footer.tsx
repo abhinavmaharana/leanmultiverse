@@ -41,7 +41,7 @@ const QUICK_LINKS = [
   { href: "#courses", text: "Courses" },
   { href: "#stories", text: "Success Stories" },
   { href: "#contact", text: "Contact" },
-  { href: "/book-webinar", text: "Book Webinar" }
+  { href: "/book-webinar", text: "Book Webinar", disabled: true }
 ]
 
 const PROGRAM_LINKS = [
@@ -234,7 +234,11 @@ export default function Footer() {
                   transition={{ duration: 0.6, ease: "easeOut", delay: 0.8 + index * 0.1 }}
                   viewport={{ once: true }}
                 >
-                  {link.href.startsWith('/') ? (
+                  {link.disabled ? (
+                    <motion.span whileHover={{ x: 5 }} whileTap={{ scale: 0.95 }} className="text-gray-500 cursor-default select-none">
+                      {link.text}
+                    </motion.span>
+                  ) : link.href.startsWith('/') ? (
                     <Link
                       href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"

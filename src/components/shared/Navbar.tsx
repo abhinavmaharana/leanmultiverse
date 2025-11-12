@@ -21,6 +21,7 @@ export default function Navbar() {
   const navLinksRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const shouldAnimate = useShouldAnimate()
+  const SHOW_WEBINAR_CTA = true
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -229,20 +230,22 @@ export default function Navbar() {
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
       >
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Button
-            className={`hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[65px] text-white shadow-md hover:opacity-90 transition ${
-              isTransparent 
-                ? 'bg-white/20 backdrop-blur-sm border border-white/30' 
-                : 'bg-white/10 backdrop-blur-md border border-white/20'
-            }`}
+        {SHOW_WEBINAR_CTA && (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <Link href="/book-webinar">Book Webinar</Link>
-          </Button>
-        </motion.div>
+            <Button
+              className={`hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[65px] text-white shadow-md hover:opacity-90 transition ${
+                isTransparent 
+                  ? 'bg-white/20 backdrop-blur-sm border border-white/30' 
+                  : 'bg-white/10 backdrop-blur-md border border-white/20'
+              }`}
+            >
+              <span>Book Webinar</span>
+            </Button>
+          </motion.div>
+        )}
         <motion.button
           type="button"
           aria-label="Toggle menu"
@@ -329,17 +332,19 @@ export default function Navbar() {
               >
                 Contact
               </motion.a>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Button
-                  className="mt-2 w-full rounded-full px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
-                  onClick={() => setOpen(false)}
+              {SHOW_WEBINAR_CTA && (
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <Link href="/book-webinar">Book Webinar</Link>
-                </Button>
-              </motion.div>
+                  <Button
+                    className="mt-2 w-full rounded-full px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
+                    onClick={() => setOpen(false)}
+                  >
+                    <span>Book Webinar</span>
+                  </Button>
+                </motion.div>
+              )}
             </motion.div>
           </motion.div>
         )}
