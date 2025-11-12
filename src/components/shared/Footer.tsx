@@ -2,11 +2,6 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
-import { useRef, useEffect } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useShouldAnimate } from "@/hooks/useShouldAnimate"
 
 const SOCIAL_LINKS = [
   {
@@ -60,305 +55,142 @@ const SUPPORT_LINKS = [
   { href: "/cookie-policy", text: "Cookie Policy" }
 ]
 
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger)
-}
-
 export default function Footer() {
-  const footerRef = useRef<HTMLElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const bottomRef = useRef<HTMLDivElement>(null)
-  const shouldAnimate = useShouldAnimate()
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !shouldAnimate) return
-
-    const ctx = gsap.context(() => {
-      // Animate footer content on scroll
-      gsap.fromTo(contentRef.current, 
-        { y: 80, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: footerRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      )
-
-      // Animate bottom bar
-      gsap.fromTo(bottomRef.current, 
-        { y: 40, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1,
-          ease: "power3.out",
-          delay: 0.3,
-          scrollTrigger: {
-            trigger: footerRef.current,
-            start: "top 70%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      )
-    }, footerRef)
-
-    return () => ctx.revert()
-  }, [shouldAnimate])
 
   return (
-    <motion.footer 
-      ref={footerRef}
-      className="bg-black mt-auto"
-      initial={{ y: 100, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
-      viewport={{ once: true, margin: "-100px" }}
-    >
+    <footer className="bg-black mt-auto">
       {/* Main Footer Content */}
-      <motion.div 
-        ref={contentRef}
-        className="max-w-7xl mx-auto px-6 py-16"
-        initial={{ y: 80, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
+      <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Company Info */}
-          <motion.div 
-            className="lg:col-span-1"
-            initial={{ x: -50, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-              viewport={{ once: true }}
-            >
+          <div className="lg:col-span-1">
+            <div>
               <Link href="/" className="cursor-pointer hover:opacity-80 transition-opacity duration-300">
                 <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-8 sm:h-10 md:h-11 w-auto mb-4 sm:mb-6" />
               </Link>
-            </motion.div>
-            <motion.p 
-              className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base"
-              initial={{ y: 30, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-              viewport={{ once: true }}
-            >
+            </div>
+            <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
               Transforming careers through enterprise agility and digital transformation education. 
               Join 6,00,000+ professionals who have advanced their careers with us.
-            </motion.p>
-            <motion.div
-              className="flex flex-col gap-2 text-sm sm:text-base"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
-              viewport={{ once: true }}
-            >
-              <motion.a
+            </p>
+            <div className="flex flex-col gap-2 text-sm sm:text-base">
+              <a
                 href="tel:+918062177938"
                 className="text-yellow-400 hover:text-yellow-300 transition-colors inline-block"
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.96 }}
               >
                 Call: 080 6217 7938
-              </motion.a>
+              </a>
               <br />
-              <motion.a
+              <a
                 href="mailto:operations@leanmultiverse.com"
                 className="text-gray-300 hover:text-yellow-400 transition-colors inline-block"
-                whileHover={{ x: 4 }}
-                whileTap={{ scale: 0.96 }}
               >
                 Email: operations@leanmultiverse.com
-              </motion.a>
-            </motion.div>
-            <motion.div 
-              className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
-              viewport={{ once: true }}
-            >
+              </a>
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4">
               {SOCIAL_LINKS.map((social, index) => (
-                <motion.a 
+                <a 
                   key={index}
                   href={social.href} 
                   className="text-gray-400 hover:text-yellow-400 transition-colors"
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
                   aria-label={social.name}
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d={social.path}/>
                   </svg>
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Quick Links */}
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <motion.h3 
-              className="text-white font-semibold text-lg mb-6"
-              initial={{ x: -30, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-              viewport={{ once: true }}
-            >
+          <div>
+            <h3 className="text-white font-semibold text-lg mb-6">
               Quick Links
-            </motion.h3>
+            </h3>
             <ul className="space-y-3">
               {QUICK_LINKS.map((link, index) => (
-                <motion.li 
-                  key={index}
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.8 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
+                <li key={index}>
                   {link.disabled ? (
-                    <motion.span whileHover={{ x: 5 }} whileTap={{ scale: 0.95 }} className="text-gray-500 cursor-default select-none">
+                    <span className="text-gray-500 cursor-default select-none">
                       {link.text}
-                    </motion.span>
+                    </span>
                   ) : link.href.startsWith('/') ? (
                     <Link
                       href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
                     >
-                      <motion.span whileHover={{ x: 5 }} whileTap={{ scale: 0.95 }}>
-                        {link.text}
-                      </motion.span>
+                      {link.text}
                     </Link>
                   ) : (
-                    <motion.a 
+                    <a 
                       href={link.href} 
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.95 }}
                     >
                       {link.text}
-                    </motion.a>
+                    </a>
                   )}
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* Programs */}
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <motion.h3 
-              className="text-white font-semibold text-lg mb-6"
-              initial={{ x: -30, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
-              viewport={{ once: true }}
-            >
+          <div>
+            <h3 className="text-white font-semibold text-lg mb-6">
               Programs
-            </motion.h3>
+            </h3>
             <ul className="space-y-3">
               {PROGRAM_LINKS.map((link, index) => (
-                <motion.li 
-                  key={index}
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 1 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
+                <li key={index}>
                   {link.href.startsWith('/') ? (
                     <Link
                       href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
                     >
-                      <motion.span whileHover={{ x: 5 }} whileTap={{ scale: 0.95 }}>
-                        {link.text}
-                      </motion.span>
+                      {link.text}
                     </Link>
                   ) : (
-                    <motion.a 
+                    <a 
                       href={link.href} 
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.95 }}
                     >
                       {link.text}
-                    </motion.a>
+                    </a>
                   )}
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
           {/* Support */}
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <motion.h3 
-              className="text-white font-semibold text-lg mb-6"
-              initial={{ x: -30, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 1 }}
-              viewport={{ once: true }}
-            >
+          <div>
+            <h3 className="text-white font-semibold text-lg mb-6">
               Support
-            </motion.h3>
+            </h3>
             <ul className="space-y-3">
               {SUPPORT_LINKS.map((link, index) => (
-                <motion.li 
-                  key={index}
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 1.2 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
+                <li key={index}>
                   {link.href.startsWith('/') ? (
                     <Link
                       href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
                     >
-                      <motion.span whileHover={{ x: 5 }} whileTap={{ scale: 0.95 }}>
-                        {link.text}
-                      </motion.span>
+                      {link.text}
                     </Link>
                   ) : (
-                    <motion.a 
+                    <a 
                       href={link.href} 
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.95 }}
                     >
                       {link.text}
-                    </motion.a>
+                    </a>
                   )}
-                </motion.li>
+                </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
         </div>
 
         {/* Newsletter Signup */}
@@ -382,57 +214,27 @@ export default function Footer() {
         </div> */}
 
         {/* Bottom Bar */}
-        <motion.div 
-          ref={bottomRef}
-          className="border-t border-white/10 pt-8"
-          initial={{ y: 40, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
+        <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <motion.div 
-              className="text-gray-400 text-sm mb-4 md:mb-0"
-              initial={{ x: -30, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-              viewport={{ once: true }}
-            >
+            <div className="text-gray-400 text-sm mb-4 md:mb-0">
               © {new Date().getFullYear()} Lean Multiverse Consultancy Pvt Ltd. All Rights Reserved.
-            </motion.div>
-            <motion.div 
-              className="flex space-x-6 text-sm"
-              initial={{ x: 30, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
-              viewport={{ once: true }}
-            >
+            </div>
+            <div className="flex space-x-6 text-sm">
               {["/privacy-policy", "/terms-of-service", "/cookie-policy"].map((href, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ y: 20, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.9 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
+                <div key={index}>
                   <Link 
                     href={href} 
                     className="text-gray-400 hover:text-yellow-400 transition-colors"
                   >
-                    <motion.span
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {href === "/privacy-policy" ? "Privacy Policy" : href === "/terms-of-service" ? "Terms of Service" : "Cookie Policy"}
-                    </motion.span>
+                    {href === "/privacy-policy" ? "Privacy Policy" : href === "/terms-of-service" ? "Terms of Service" : "Cookie Policy"}
                   </Link>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
-      </motion.div>
-    </motion.footer>
+        </div>
+      </div>
+    </footer>
   )
 }
   

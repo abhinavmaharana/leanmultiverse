@@ -1,32 +1,17 @@
 // components/landing/Courses.tsx
 "use client"
 
-import { useRef, useEffect, useState, useMemo } from "react"
+import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import type { Transition } from "framer-motion"
 import { courses, categories, levels } from "@/data/courses"
-import { useIsMobile } from "@/hooks/useIsMobile"
 
 const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
 const TALK_TO_EXPERT_TEL = "+918062177938"
-
-// SAFe Course data - now imported from data/courses.ts
 
 export default function Courses() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedLevel, setSelectedLevel] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
-  const [hoveredCourse, setHoveredCourse] = useState<number | null>(null)
-  const prefersReducedMotion = useReducedMotion()
-  const isMobile = useIsMobile()
-  const shouldReduceMotion = prefersReducedMotion || isMobile
-  
-  const sectionRef = useRef<HTMLElement>(null)
-  const headerRef = useRef<HTMLDivElement>(null)
-  const searchRef = useRef<HTMLDivElement>(null)
-  const filtersRef = useRef<HTMLDivElement>(null)
-  const coursesRef = useRef<HTMLDivElement>(null)
 
   const filteredCourses = useMemo(() => {
     return courses.filter(course => {
@@ -44,716 +29,291 @@ export default function Courses() {
     })
   }, [selectedCategory, selectedLevel, searchQuery])
 
-  useEffect(() => {
-    if (typeof window === 'undefined' || shouldReduceMotion) return
-
-    let ctx: { revert: () => void } | undefined
-    let isMounted = true
-
-    ;(async () => {
-      const gsapModule = await import("gsap")
-      const scrollTriggerModule = await import("gsap/ScrollTrigger")
-      if (!isMounted) return
-
-      const gsapInstance = gsapModule.gsap || gsapModule.default || gsapModule
-      const ScrollTrigger = scrollTriggerModule.ScrollTrigger || scrollTriggerModule.default
-
-      if (!gsapInstance || !ScrollTrigger) return
-
-      gsapInstance.registerPlugin(ScrollTrigger)
-
-      ctx = gsapInstance.context(() => {
-        gsapInstance.fromTo(headerRef.current, 
-          { y: 100, opacity: 0 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            duration: 1.5,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 80%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        )
-
-        gsapInstance.fromTo(searchRef.current, 
-          { y: 80, opacity: 0, scale: 0.9 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            scale: 1,
-            duration: 1.2,
-            ease: "power3.out",
-            delay: 0.3,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 70%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        )
-
-        gsapInstance.fromTo(filtersRef.current, 
-          { y: 60, opacity: 0 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            duration: 1,
-            ease: "power3.out",
-            delay: 0.5,
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 70%",
-              end: "bottom 20%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        )
-
-        if (coursesRef.current?.children) {
-          gsapInstance.fromTo(coursesRef.current.children, 
-            { y: 120, opacity: 0, scale: 0.8 },
-            { 
-              y: 0, 
-              opacity: 1, 
-              scale: 1,
-              duration: 1.2,
-              ease: "power3.out",
-              stagger: 0.2,
-              delay: 0.7,
-              scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top 60%",
-                end: "bottom 20%",
-                toggleActions: "play none none reverse"
-              }
-            }
-          )
-        }
-      }, sectionRef)
-    })()
-
-    return () => {
-      isMounted = false
-      ctx?.revert()
-    }
-  }, [shouldReduceMotion])
-
   return (
-    <motion.section 
-      ref={sectionRef}
-      className="relative py-20 bg-black min-h-screen overflow-hidden"
-      initial={shouldReduceMotion ? false : { opacity: 0 }}
-      whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
-      transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut" }}
-      viewport={shouldReduceMotion ? undefined : { once: true, margin: "-100px" }}
-    >
-      {/* Animated Background */}
-      {!shouldReduceMotion && (
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"
-            animate={{ 
-              scale: [1, 1.3, 1],
-              opacity: [0.3, 0.6, 0.3],
-              x: [0, 50, 0],
-              y: [0, -30, 0]
-            }}
-            transition={{ 
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-yellow-400/3 rounded-full blur-3xl"
-            animate={{ 
-              scale: [1.2, 1, 1.2],
-              opacity: [0.4, 0.7, 0.4],
-              x: [0, -40, 0],
-              y: [0, 40, 0]
-            }}
-            transition={{ 
-              duration: 10,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
-            }}
-          />
-        </div>
-      )}
-
+    <section className="relative py-20 bg-black min-h-screen overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-      {/* Header */}
-        {/* <motion.div 
-          ref={headerRef}
-          className="text-center mb-10"
-          initial={{ y: 80, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.p 
-            className="uppercase line-through decoration-red-600 tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3"
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-          IT&apos;s Not Just A Process
-          </motion.p>
-          <motion.h1 
-            className="text-[30px] md:text-[46.13px] font-bold mb-6 text-white"
-            initial={{ y: 40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            It&apos;s a New Way of Working
-          </motion.h1>
-        </motion.div> */}
-
-        {/* Apple Cards Carousel Section - COMMENTED OUT */}
-        {/* <motion.div
-          ref={carouselRef}
-          initial={{ y: 100, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          <AppleCardsCarouselDemo />
-        </motion.div> */}
-
         {/* Modern Course Catalog Section */}
-        <motion.div 
-          className="mt-20"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
+        <div className="mt-20">
           {/* Section Header */}
-        <motion.div 
-            className="text-center mb-16"
-          initial={shouldReduceMotion ? false : { y: 50, opacity: 0 }}
-          whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
-          transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut" }}
-          viewport={shouldReduceMotion ? undefined : { once: true }}
-          >
-            <motion.div
-              className="inline-block mb-6"
-              initial={shouldReduceMotion ? false : { scale: 0, rotate: -180 }}
-              whileInView={shouldReduceMotion ? undefined : { scale: 1, rotate: 0 }}
-              transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.2 }}
-              viewport={shouldReduceMotion ? undefined : { once: true }}
-            >
+          <div className="text-center mb-16">
+            <div className="inline-block mb-6">
               <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 backdrop-blur-xl border border-yellow-400/30 rounded-full px-8 py-4">
                 <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium">
                   Elevate Your Expertise
                 </p>
               </div>
-            </motion.div>
+            </div>
             
-            <motion.h2 
-              className="text-[30px] md:text-[46.13px] lg:text-[56px] font-bold mb-8 text-white"
-              initial={shouldReduceMotion ? false : { y: 30, opacity: 0 }}
-              whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
-              transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.4 }}
-              viewport={shouldReduceMotion ? undefined : { once: true }}
-            >
+            <h2 className="text-[30px] md:text-[46.13px] lg:text-[56px] font-bold mb-8 text-white">
               Training That Transforms
-            </motion.h2>
+            </h2>
             
-            <motion.p 
-              className="text-gray-300 text-lg max-w-4xl mx-auto leading-relaxed"
-              initial={shouldReduceMotion ? false : { y: 20, opacity: 0 }}
-              whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
-              transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.6 }}
-              viewport={shouldReduceMotion ? undefined : { once: true }}
-            >
+            <p className="text-gray-300 text-lg max-w-4xl mx-auto leading-relaxed">
               Step confidently into leadership roles that transform organizations. 
               Become the driving force behind business agility and innovation.
-            </motion.p>
-          </motion.div>
-
-        {/* Search Bar */}
-        <motion.div 
-          ref={searchRef}
-          className="max-w-3xl mx-auto mb-10 flex flex-col gap-4"
-          initial={{ y: 80, opacity: 0, scale: 0.9 }}
-          whileInView={{ y: 0, opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <div className="relative">
-            <motion.input
-              type="text"
-              placeholder="Search courses, skills, or topics..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400/50 focus:bg-white/15 transition-all duration-300"
-              whileFocus={{ scale: 1.02 }}
-            />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2">
-              <motion.svg
-                className="w-6 h-6 text-yellow-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                animate={shouldReduceMotion ? undefined : { rotate: [0, 10, -10, 0] }}
-                transition={shouldReduceMotion ? undefined : { duration: 2, repeat: Infinity, delay: 1 }}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </motion.svg>
-            </div>
+            </p>
           </div>
-          <motion.p
-            className="text-center text-sm text-gray-400"
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            All prices shown below are inclusive of GST.
-          </motion.p>
-        </motion.div>
 
-        {/* Filters */}
-        <motion.div 
-          ref={filtersRef}
-          className="flex flex-col md:flex-row gap-6 mb-16"
-          initial={shouldReduceMotion ? false : { y: 60, opacity: 0 }}
-          whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
-          transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.5 }}
-          viewport={shouldReduceMotion ? undefined : { once: true, margin: "-100px" }}
-        >
-          <div className="flex-1">
-            <h3 className="text-white font-semibold mb-4">Categories:</h3>
-            <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
-                <motion.button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    selectedCategory === category
-                      ? "bg-yellow-400 text-black"
-                      : "bg-white/10 text-white hover:bg-white/20"
-                  }`}
-                  whileHover={isMobile ? undefined : { scale: 1.05 }}
-                  whileTap={isMobile ? undefined : { scale: 0.95 }}
-                  data-cursor-hover
+          {/* Search Bar */}
+          <div className="max-w-3xl mx-auto mb-10 flex flex-col gap-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search courses, skills, or topics..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-400/50 focus:bg-white/15 transition-all duration-300"
+              />
+              <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                <svg
+                  className="w-6 h-6 text-yellow-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  {category}
-                </motion.button>
-              ))}
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
             </div>
+            <p className="text-center text-sm text-gray-400">
+              All prices shown below are inclusive of GST.
+            </p>
           </div>
-          
-          <div className="flex-1">
-            <h3 className="text-white font-semibold mb-4">Level:</h3>
-            <div className="flex flex-wrap gap-3">
-              {levels.map((level) => (
-                <motion.button
-                  key={level}
-                  onClick={() => setSelectedLevel(level)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    selectedLevel === level
-                      ? "bg-yellow-400 text-black"
-                      : "bg-white/10 text-white hover:bg-white/20"
-                  }`}
-                  whileHover={isMobile ? undefined : { scale: 1.05 }}
-                  whileTap={isMobile ? undefined : { scale: 0.95 }}
-                  data-cursor-hover
-                >
-                  {level}
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </motion.div>
 
-        {/* Courses Grid */}
-        <motion.div 
-          ref={coursesRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
-          initial={shouldReduceMotion ? false : { opacity: 0 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
-          transition={shouldReduceMotion ? undefined : { duration: 1, ease: "easeOut", delay: 0.7 }}
-          viewport={shouldReduceMotion ? undefined : { once: true, margin: "-100px" }}
-        >
-          <AnimatePresence>
-            {filteredCourses.map((course, index) => {
-              const isHovered = !isMobile && hoveredCourse === course.id
-              const glowAnimate = shouldReduceMotion
-                ? { opacity: isHovered ? 0.25 : 0 }
-                : isHovered
-                  ? { scale: [1, 1.05, 1], opacity: [0, 0.3, 0] }
-                  : { opacity: 0, scale: 1 }
-              const glowTransition: Transition = shouldReduceMotion
-                ? { duration: 0.3 }
-                : { duration: 2, repeat: isHovered ? Infinity : 0, ease: [0.42, 0, 0.58, 1] }
-
-              return (
-                <motion.div
-                  key={course.id}
-                  className="course-card group relative h-full flex"
-                  initial={shouldReduceMotion ? false : { y: 120, opacity: 0, scale: 0.8 }}
-                  whileInView={shouldReduceMotion ? undefined : { y: 0, opacity: 1, scale: 1 }}
-                  transition={shouldReduceMotion ? undefined : {
-                    duration: 1.2,
-                    ease: "easeOut",
-                    delay: 0.7 + index * 0.2
-                  }}
-                  viewport={shouldReduceMotion ? undefined : { once: true, margin: "-50px" }}
-                  whileHover={isMobile ? undefined : {
-                    y: -10,
-                    scale: 1.02,
-                    transition: { duration: 0.3 }
-                  }}
-                  onHoverStart={() => !isMobile && setHoveredCourse(course.id)}
-                  onHoverEnd={() => !isMobile && setHoveredCourse(null)}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                >
-                  {/* Animated background glow */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-yellow-600/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-80 transition-opacity duration-400"
-                    animate={glowAnimate}
-                    transition={glowTransition}
-                  />
-
-                  <motion.div
-                    className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 h-full w-full overflow-hidden flex flex-col"
-                    whileHover={isMobile ? undefined : {
-                      borderColor: "rgba(251, 191, 36, 0.4)",
-                      backgroundColor: "rgba(255, 255, 255, 0.08)"
-                    }}
-                    transition={{ duration: 0.3 }}
+          {/* Filters */}
+          <div className="flex flex-col md:flex-row gap-6 mb-16">
+            <div className="flex-1">
+              <h3 className="text-white font-semibold mb-4">Categories:</h3>
+              <div className="flex flex-wrap gap-3">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      selectedCategory === category
+                        ? "bg-yellow-400 text-black"
+                        : "bg-white/10 text-white hover:bg-white/20"
+                    }`}
+                    data-cursor-hover
                   >
-                    {/* Floating particles effect */}
-                    {!shouldReduceMotion && (
-                      <div className="absolute inset-0 overflow-hidden">
-                        {[...Array(4)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="absolute w-2 h-2 bg-yellow-400/30 rounded-full"
-                            style={{
-                              left: `${20 + i * 20}%`,
-                              top: `${30 + i * 15}%`,
-                            }}
-                            animate={{
-                              y: [0, -20, 0],
-                              opacity: [0.3, 0.8, 0.3],
-                              scale: [1, 1.5, 1]
-                            }}
-                            transition={{
-                              duration: 3 + i * 0.5,
-                              repeat: Infinity,
-                              delay: i * 0.3
-                            }}
-                          />
-                        ))}
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex-1">
+              <h3 className="text-white font-semibold mb-4">Level:</h3>
+              <div className="flex flex-wrap gap-3">
+                {levels.map((level) => (
+                  <button
+                    key={level}
+                    onClick={() => setSelectedLevel(level)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      selectedLevel === level
+                        ? "bg-yellow-400 text-black"
+                        : "bg-white/10 text-white hover:bg-white/20"
+                    }`}
+                    data-cursor-hover
+                  >
+                    {level}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Courses Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            {filteredCourses.map((course) => (
+              <div
+                key={course.id}
+                className="course-card group relative h-full flex"
+              >
+                {/* Background glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-yellow-600/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-80 transition-opacity duration-400" />
+
+                <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 h-full w-full overflow-hidden flex flex-col group-hover:border-yellow-400/40 group-hover:bg-white/8 transition-all duration-300">
+                  <div className="relative z-10 flex flex-col h-full">
+                    {/* Badges */}
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex gap-2">
+                        {course.isPopular && (
+                          <span className="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-semibold">
+                            Popular
+                          </span>
+                        )}
+                        {course.isNew && (
+                          <span className="bg-green-400 text-black px-3 py-1 rounded-full text-xs font-semibold">
+                            New
+                          </span>
+                        )}
                       </div>
-                    )}
-
-                    <div className="relative z-10 flex flex-col h-full">
-                      {/* Badges */}
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex gap-2">
-                          {course.isPopular && (
-                            <motion.span
-                              className="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs font-semibold"
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              transition={{ duration: 0.5, delay: 0.2 }}
-                            >
-                              Popular
-                            </motion.span>
-                          )}
-                          {course.isNew && (
-                            <motion.span
-                              className="bg-green-400 text-black px-3 py-1 rounded-full text-xs font-semibold"
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              transition={{ duration: 0.5, delay: 0.3 }}
-                            >
-                              New
-                            </motion.span>
-                          )}
-                        </div>
-                        <motion.div
-                          className="flex items-center gap-1"
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          transition={{ duration: 0.5, delay: 0.4 }}
-                        >
-                          <span className="text-yellow-400">★</span>
-                          <span className="text-white text-sm font-medium">{course.rating}</span>
-                        </motion.div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-yellow-400">★</span>
+                        <span className="text-white text-sm font-medium">{course.rating}</span>
                       </div>
+                    </div>
 
-                      {/* Course Info */}
-                      <div className="flex-grow flex flex-col justify-between">
-                        <div>
-                          <motion.div
-                            className="text-yellow-400 text-sm font-medium mb-2"
-                            initial={{ x: -20, opacity: 0 }}
-                            whileInView={{ x: 0, opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.5 }}
-                          >
-                            {course.subheading || `${course.category} • ${course.duration}`}
-                          </motion.div>
-
-                          {course.limitedSeats && (
-                            <motion.div
-                              className="mb-2"
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              transition={{ duration: 0.3, delay: 0.55 }}
-                            >
-                              <span className="inline-flex items-center gap-1 bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-semibold border border-red-500/30">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                                </svg>
-                                Limited Seats • Live Interactive Session
-                              </span>
-                            </motion.div>
-                          )}
-
-                          {course.discount && (
-                            <motion.div
-                              className="mb-2"
-                              initial={{ scale: 0 }}
-                              whileInView={{ scale: 1 }}
-                              transition={{ duration: 0.3, delay: 0.55 }}
-                            >
-                              <span className="inline-flex items-center gap-1 bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-xs font-semibold border border-green-500/30">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                                </svg>
-                                {course.discount}
-                              </span>
-                            </motion.div>
-                          )}
-
-                          <motion.h3
-                            className="text-lg font-bold text-white mb-3 line-clamp-3 min-h-[3.5rem]"
-                            initial={{ y: 20, opacity: 0 }}
-                            whileInView={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.6 }}
-                          >
-                            {course.title}
-                          </motion.h3>
-                          <motion.p
-                            className="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3 min-h-[3.5rem]"
-                            initial={{ y: 20, opacity: 0 }}
-                            whileInView={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.7 }}
-                          >
-                            {course.description}
-                          </motion.p>
-
-                          {course.highlights && course.highlights.length > 0 && (
-                            <motion.div
-                              className="mb-6"
-                              initial={{ y: 20, opacity: 0 }}
-                              whileInView={{ y: 0, opacity: 1 }}
-                              transition={{ duration: 0.5, delay: 0.8 }}
-                            >
-                              <div className="space-y-2">
-                                {course.highlights.slice(0, 3).map((highlight, highlightIndex) => (
-                                  <motion.div
-                                    key={highlightIndex}
-                                    className="flex items-start gap-2 text-xs text-gray-300"
-                                    initial={{ x: -10, opacity: 0 }}
-                                    whileInView={{ x: 0, opacity: 1 }}
-                                    transition={{ duration: 0.3, delay: 0.9 + highlightIndex * 0.1 }}
-                                  >
-                                    <svg className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                    </svg>
-                                    <span className="leading-relaxed">{highlight}</span>
-                                  </motion.div>
-                                ))}
-                                {course.highlights.length > 3 && (
-                                  <motion.div
-                                    className="text-yellow-400 text-xs font-medium"
-                                    initial={{ opacity: 0 }}
-                                    whileInView={{ opacity: 1 }}
-                                    transition={{ duration: 0.3, delay: 1.2 }}
-                                  >
-                                    +{course.highlights.length - 3} more highlights
-                                  </motion.div>
-                                )}
-                              </div>
-                            </motion.div>
-                          )}
-
-                          {(!course.highlights || course.highlights.length === 0) && (
-                            <motion.div
-                              className="mb-6"
-                              initial={{ y: 20, opacity: 0 }}
-                              whileInView={{ y: 0, opacity: 1 }}
-                              transition={{ duration: 0.5, delay: 0.8 }}
-                            >
-                              <div className="flex flex-wrap gap-2">
-                                {course.skills.slice(0, 3).map((skill, skillIndex) => (
-                                  <motion.span
-                                    key={skill}
-                                    className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
-                                    initial={{ scale: 0 }}
-                                    whileInView={{ scale: 1 }}
-                                    transition={{ duration: 0.3, delay: 0.9 + skillIndex * 0.1 }}
-                                  >
-                                    {skill}
-                                  </motion.span>
-                                ))}
-                                {course.skills.length > 3 && (
-                                  <motion.span
-                                    className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
-                                    initial={{ scale: 0 }}
-                                    whileInView={{ scale: 1 }}
-                                    transition={{ duration: 0.3, delay: 1.2 }}
-                                  >
-                                    +{course.skills.length - 3} more
-                                  </motion.span>
-                                )}
-                              </div>
-                            </motion.div>
-                          )}
+                    {/* Course Info */}
+                    <div className="flex-grow flex flex-col justify-between">
+                      <div>
+                        <div className="text-yellow-400 text-sm font-medium mb-2">
+                          {course.subheading || `${course.category} • ${course.duration}`}
                         </div>
 
-                        <div className="mt-auto">
-                          <div className="flex justify-between items-center mb-4">
-                            <motion.div
-                              className="text-gray-400 text-sm"
-                              initial={{ x: -20, opacity: 0 }}
-                              whileInView={{ x: 0, opacity: 1 }}
-                              transition={{ duration: 0.5, delay: 1 }}
-                            >
-                              {course.learners.toLocaleString()}+ learners
-                            </motion.div>
-                            <motion.div
-                              className="text-gray-400 text-sm"
-                              initial={{ x: 20, opacity: 0 }}
-                              whileInView={{ x: 0, opacity: 1 }}
-                              transition={{ duration: 0.5, delay: 1.1 }}
-                            >
-                              {course.university}
-                            </motion.div>
+                        {course.limitedSeats && (
+                          <div className="mb-2">
+                            <span className="inline-flex items-center gap-1 bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-xs font-semibold border border-red-500/30">
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                              </svg>
+                              Limited Seats • Live Interactive Session
+                            </span>
                           </div>
+                        )}
 
-                          <div className="flex justify-between items-center mb-6">
-                            <div>
-                              <motion.div
-                                className="text-2xl font-bold text-white"
-                                initial={{ scale: 0 }}
-                                whileInView={{ scale: 1 }}
-                                transition={{ duration: 0.5, delay: 1.2 }}
-                              >
-                                ₹{course.price.toLocaleString('en-IN')}
-                              </motion.div>
-                              {course.originalPrice && (
-                                <motion.div
-                                  className="text-gray-400 text-sm line-through"
-                                  initial={{ opacity: 0 }}
-                                  whileInView={{ opacity: 1 }}
-                                  transition={{ duration: 0.5, delay: 1.3 }}
+                        {course.discount && (
+                          <div className="mb-2">
+                            <span className="inline-flex items-center gap-1 bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-xs font-semibold border border-green-500/30">
+                              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                              </svg>
+                              {course.discount}
+                            </span>
+                          </div>
+                        )}
+
+                        <h3 className="text-lg font-bold text-white mb-3 line-clamp-3 min-h-[3.5rem]">
+                          {course.title}
+                        </h3>
+                        <p className="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3 min-h-[3.5rem]">
+                          {course.description}
+                        </p>
+
+                        {course.highlights && course.highlights.length > 0 && (
+                          <div className="mb-6">
+                            <div className="space-y-2">
+                              {course.highlights.slice(0, 3).map((highlight, highlightIndex) => (
+                                <div
+                                  key={highlightIndex}
+                                  className="flex items-start gap-2 text-xs text-gray-300"
                                 >
-                                  ₹{course.originalPrice.toLocaleString('en-IN')}
-                                </motion.div>
+                                  <svg className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                  </svg>
+                                  <span className="leading-relaxed">{highlight}</span>
+                                </div>
+                              ))}
+                              {course.highlights.length > 3 && (
+                                <div className="text-yellow-400 text-xs font-medium">
+                                  +{course.highlights.length - 3} more highlights
+                                </div>
                               )}
                             </div>
                           </div>
-                        </div>
+                        )}
+
+                        {(!course.highlights || course.highlights.length === 0) && (
+                          <div className="mb-6">
+                            <div className="flex flex-wrap gap-2">
+                              {course.skills.slice(0, 3).map((skill) => (
+                                <span
+                                  key={skill}
+                                  className="bg-white/10 text-white px-3 py-1 rounded-full text-xs"
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                              {course.skills.length > 3 && (
+                                <span className="bg-white/10 text-white px-3 py-1 rounded-full text-xs">
+                                  +{course.skills.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
-                      <div className={`mt-auto flex gap-3 ${course.buttons.secondary ? '' : 'flex-col'}`}>
-                        <motion.div
-                          whileHover={isMobile ? undefined : { scale: 1.02, y: -1 }}
-                          whileTap={isMobile ? undefined : { scale: 0.98 }}
-                          className={`relative group ${course.buttons.secondary ? 'flex-1' : 'w-full'}`}
+                      <div className="mt-auto">
+                        <div className="flex justify-between items-center mb-4">
+                          <div className="text-gray-400 text-sm">
+                            {course.learners.toLocaleString()}+ learners
+                          </div>
+                          <div className="text-gray-400 text-sm">
+                            {course.university}
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center mb-6">
+                          <div>
+                            <div className="text-2xl font-bold text-white">
+                              ₹{course.price.toLocaleString('en-IN')}
+                            </div>
+                            {course.originalPrice && (
+                              <div className="text-gray-400 text-sm line-through">
+                                ₹{course.originalPrice.toLocaleString('en-IN')}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={`mt-auto flex gap-3 ${course.buttons.secondary ? '' : 'flex-col'}`}>
+                      <div className={`relative group ${course.buttons.secondary ? 'flex-1' : 'w-full'}`}>
+                        <div className="absolute inset-0 bg-yellow-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <Button
+                          className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-yellow-400/20 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 shadow-lg hover:shadow-xl`}
+                          data-cursor-hover
+                          onClick={() => {
+                            if (course.id === 1) {
+                              return
+                            } else {
+                              window.open(`/course-details/${course.id}`, '_blank')
+                            }
+                          }}
                         >
-                          <motion.div
-                            className="absolute inset-0 bg-yellow-400/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                            animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1], opacity: [0, 0.2, 0] }}
-                            transition={shouldReduceMotion ? undefined : { duration: 3, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
-                          />
-                          <Button
-                            className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-yellow-400/20 ${isMobile ? 'bg-yellow-400 text-black shadow-md' : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 shadow-lg hover:shadow-xl'}`}
+                          <span className="relative z-10 flex items-center justify-center gap-1">
+                            {course.buttons.primary}
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                          </span>
+                        </Button>
+                      </div>
+
+                      {course.buttons.secondary && (
+                        <div className="relative group flex-1">
+                          <div className="absolute inset-0 bg-white/10 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          <Button 
+                            className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-white/20 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 shadow-lg hover:shadow-xl hover:border-white/40`}
                             data-cursor-hover
                             onClick={() => {
-                              if (course.id === 1) {
-                                return
+                              if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert')) {
+                                window.location.href = `tel:${TALK_TO_EXPERT_TEL}`
                               } else {
                                 window.open(`/course-details/${course.id}`, '_blank')
                               }
                             }}
                           >
-                            <motion.span
-                              className="relative z-10 flex items-center justify-center gap-1"
-                              whileHover={isMobile ? undefined : { y: -0.5 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              {course.buttons.primary}
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                              </svg>
-                            </motion.span>
+                            <span className="relative z-10 flex flex-col items-center justify-center gap-0 leading-tight">
+                              <span>{course.buttons.secondary}</span>
+                              {course.buttons.secondary?.includes('Talk to Expert') && (
+                                <span className="text-xs font-normal text-yellow-300">{TALK_TO_EXPERT_DISPLAY}</span>
+                              )}
+                            </span>
                           </Button>
-                        </motion.div>
-
-                        {course.buttons.secondary && (
-                          <motion.div
-                            whileHover={isMobile ? undefined : { scale: 1.02, y: -1 }}
-                            whileTap={isMobile ? undefined : { scale: 0.98 }}
-                            className="relative group flex-1"
-                          >
-                            <motion.div
-                              className="absolute inset-0 bg-white/10 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1], opacity: [0, 0.2, 0] }}
-                              transition={shouldReduceMotion ? undefined : { duration: 3, repeat: Infinity, ease: [0.42, 0, 0.58, 1] }}
-                            />
-                            <Button 
-                              className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-white/20 ${isMobile ? 'bg-white/15 text-white' : 'bg-white/10 backdrop-blur-md text-white hover:bg-white/20 shadow-lg hover:shadow-xl hover:border-white/40'}`}
-                              data-cursor-hover
-                              onClick={() => {
-                                if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert')) {
-                                  window.location.href = `tel:${TALK_TO_EXPERT_TEL}`
-                                } else {
-                                  window.open(`/course-details/${course.id}`, '_blank')
-                                }
-                              }}
-                            >
-                              <motion.span
-                                className="relative z-10 flex flex-col items-center justify-center gap-0 leading-tight"
-                                whileHover={isMobile ? undefined : { y: -0.5 }}
-                                transition={{ duration: 0.2 }}
-                              >
-                                <span>{course.buttons.secondary}</span>
-                                {course.buttons.secondary?.includes('Talk to Expert') && (
-                                  <span className="text-xs font-normal text-yellow-300">{TALK_TO_EXPERT_DISPLAY}</span>
-                                )}
-                              </motion.span>
-                            </Button>
-                          </motion.div>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
-                  </motion.div>
-                </motion.div>
-              )
-            })}
-          </AnimatePresence>
-        </motion.div>
-      </motion.div>
-    </div>
-  </motion.section>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
-
-
-
