@@ -295,7 +295,7 @@ export default function SuccessStories() {
         <div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {testimonials.map((testimonial, index) => (
+          {testimonials.map((testimonial) => (
             <div
               key={testimonial.id}
               className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-6 relative overflow-hidden group"

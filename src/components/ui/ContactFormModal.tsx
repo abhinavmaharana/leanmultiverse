@@ -195,7 +195,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-white mb-2">Connect with Our Expert</h2>
-                  <p className="text-gray-400 text-sm">Before connecting, we'd like some information to provide you with a better response</p>
+                  <p className="text-gray-400 text-sm">Before connecting, we&apos;d like some information to provide you with a better response</p>
                 </div>
                 <button
                   onClick={handleClose}

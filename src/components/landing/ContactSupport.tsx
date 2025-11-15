@@ -41,7 +41,6 @@ const contactMethods = [
 ]
 
 export default function ContactSupport() {
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
   const [isContactFormOpen, setIsContactFormOpen] = useState(false)
   const [pendingAction, setPendingAction] = useState<string | null>(null)
 
@@ -105,8 +104,6 @@ export default function ContactSupport() {
               <div
                 key={method.id}
                 className="group relative"
-                onMouseEnter={() => setHoveredCard(method.id)}
-                onMouseLeave={() => setHoveredCard(null)}
               >
                 {/* Background glow */}
                 <div
