@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import ContactFormModal from "@/components/ui/ContactFormModal"
 
 const BUSINESS_PHONE_DISPLAY = "080 6217 7938"
 const BUSINESS_PHONE_E164 = "+918062177938"
@@ -41,22 +42,35 @@ const contactMethods = [
 
 export default function ContactSupport() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
+  const [pendingAction, setPendingAction] = useState<string | null>(null)
 
   const handleContactAction = (action: string) => {
-    if (action === "Chat on WhatsApp") {
+    setPendingAction(action)
+    setIsContactFormOpen(true)
+  }
+
+  const handleFormSubmit = () => {
+    if (pendingAction === "Chat on WhatsApp") {
       const phoneNumber = BUSINESS_PHONE_E164.replace('+', '')
       const message = "Hi! I'm interested in learning more about your courses."
-      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
-      window.open(url, '_blank')
-    } else if (action === "Call Now") {
-      window.location.href = `tel:${BUSINESS_PHONE_E164}`
-    } else if (action === "Start Chat") {
+      setTimeout(() => {
+        window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank')
+      }, 500)
+    } else if (pendingAction === "Call Now") {
+      setTimeout(() => {
+        window.location.href = `tel:${BUSINESS_PHONE_E164}`
+      }, 500)
+    } else if (pendingAction === "Start Chat") {
       // This will trigger the chat widget
-      const chatButton = document.querySelector('[data-chat-button]') as HTMLElement
-      if (chatButton) {
-        chatButton.click()
-      }
+      setTimeout(() => {
+        const chatButton = document.querySelector('[data-chat-button]') as HTMLElement
+        if (chatButton) {
+          chatButton.click()
+        }
+      }, 500)
     }
+    setPendingAction(null)
   }
 
   return (
@@ -208,6 +222,17 @@ export default function ContactSupport() {
           </div>
         </div>
       </div>
+
+      {/* Contact Form Modal */}
+      <ContactFormModal
+        isOpen={isContactFormOpen}
+        onClose={() => {
+          setIsContactFormOpen(false)
+          setPendingAction(null)
+        }}
+        onSubmit={handleFormSubmit}
+        source={pendingAction || "contact-support"}
+      />
     </section>
   )
 }

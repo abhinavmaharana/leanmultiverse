@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Course } from '@/data/courses'
 import Navbar from "@/components/shared/Navbar"
 import Footer from "@/components/shared/Footer"
+import ContactFormModal from "@/components/ui/ContactFormModal"
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -24,6 +25,7 @@ export default function CourseDetailClient({ course }: CourseDetailClientProps) 
   const heroRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const skillsRef = useRef<HTMLDivElement>(null)
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -72,8 +74,16 @@ export default function CourseDetailClient({ course }: CourseDetailClientProps) 
   }, [])
 
   const handleWhatsAppClick = () => {
+    console.log('Talk to Expert clicked, opening form')
+    setIsContactFormOpen(true)
+  }
+
+  const handleFormSubmit = () => {
+    // After form submission, redirect to WhatsApp
     const message = `Hi, I'm interested in the ${course.title} course. Can you provide more details about enrollment and pricing?`
-    window.open(`https://wa.me/918062177938?text=${encodeURIComponent(message)}`, '_blank')
+    setTimeout(() => {
+      window.open(`https://wa.me/918062177938?text=${encodeURIComponent(message)}`, '_blank')
+    }, 500)
   }
 
   const handleBackClick = () => {
@@ -412,6 +422,14 @@ export default function CourseDetailClient({ course }: CourseDetailClientProps) 
 
       {/* Footer */}
       <Footer />
+
+      {/* Contact Form Modal */}
+      <ContactFormModal
+        isOpen={isContactFormOpen}
+        onClose={() => setIsContactFormOpen(false)}
+        onSubmit={handleFormSubmit}
+        source={`course-${course.id}`}
+      />
     </div>
   )
 }

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import ContactFormModal from "@/components/ui/ContactFormModal"
 
 const chatMessages = [
   {
@@ -35,6 +36,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState(chatMessages)
   const [inputText, setInputText] = useState("")
   const [isTyping, setIsTyping] = useState(false)
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
 
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return
@@ -79,10 +81,15 @@ export default function ChatWidget() {
   }
 
   const openWhatsApp = () => {
+    setIsContactFormOpen(true)
+  }
+
+  const handleFormSubmit = () => {
     const phoneNumber = "918062177938" // Business WhatsApp number
     const message = "Hi! I'm interested in learning more about your courses."
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
-    window.open(url, '_blank')
+    setTimeout(() => {
+      window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank')
+    }, 500)
   }
 
   return (
@@ -214,6 +221,14 @@ export default function ChatWidget() {
           </svg>
         </Button>
       </div>
+
+      {/* Contact Form Modal */}
+      <ContactFormModal
+        isOpen={isContactFormOpen}
+        onClose={() => setIsContactFormOpen(false)}
+        onSubmit={handleFormSubmit}
+        source="chat-widget-whatsapp"
+      />
     </>
   )
 }
