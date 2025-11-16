@@ -43,15 +43,6 @@ export default function PerfectChatbot() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
       >
-        <motion.span
-          className="px-4 py-2 rounded-full bg-black/70 text-white text-sm font-semibold shadow-lg backdrop-blur-md border border-white/10"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.3 }}
-        >
-          Call us: {PHONE_DISPLAY}
-        </motion.span>
-
         <div className="flex flex-col gap-3 items-stretch w-full">
           <motion.button
             onClick={handleWhatsAppClick}
@@ -84,7 +75,7 @@ export default function PerfectChatbot() {
                 d="M3 5a2 2 0 012-2h1.28a2 2 0 011.94 1.515l.62 2.48a2 2 0 01-.72 2.07l-.92.77a16.001 16.001 0 007.18 7.18l.77-.92a2 2 0 012.07-.72l2.48.62A2 2 0 0121 17.72V19a2 2 0 01-2 2h-1C10.163 21 3 13.837 3 4V5z"
               />
             </svg>
-            Talk to Expert
+            Contact us
           </motion.button>
         </div>
       </motion.div>
