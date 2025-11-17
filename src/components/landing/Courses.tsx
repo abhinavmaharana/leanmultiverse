@@ -3,7 +3,7 @@
 
 import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
-import { courses, categories, levels } from "@/data/courses"
+import { courses, categories, levels, targetAudiences } from "@/data/courses"
 
 const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
 const TALK_TO_EXPERT_TEL = "+918062177938"
@@ -11,6 +11,7 @@ const TALK_TO_EXPERT_TEL = "+918062177938"
 export default function Courses() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedLevel, setSelectedLevel] = useState("All")
+  const [selectedTargetAudience, setSelectedTargetAudience] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
 
   const filteredCourses = useMemo(() => {
@@ -21,13 +22,17 @@ export default function Courses() {
       }
       const matchesCategory = selectedCategory === "All" || course.category === selectedCategory
       const matchesLevel = selectedLevel === "All" || course.level === selectedLevel
+      const matchesTargetAudience = selectedTargetAudience === "All" || 
+        (selectedTargetAudience === "Freshers" && course.targetAudience === "freshers") ||
+        (selectedTargetAudience === "Working Professional" && course.targetAudience === "working-professional") ||
+        (selectedTargetAudience === "Everyone" && course.targetAudience === "everyone")
       const query = searchQuery.trim().toLowerCase()
       const matchesSearch = query === "" || 
         course.title.toLowerCase().includes(query) ||
         course.skills.some(skill => skill.toLowerCase().includes(query))
-      return matchesCategory && matchesLevel && matchesSearch
+      return matchesCategory && matchesLevel && matchesTargetAudience && matchesSearch
     })
-  }, [selectedCategory, selectedLevel, searchQuery])
+  }, [selectedCategory, selectedLevel, selectedTargetAudience, searchQuery])
 
   return (
     <section className="relative py-20 bg-black min-h-screen overflow-hidden">
@@ -81,44 +86,66 @@ export default function Courses() {
           </div>
 
           {/* Filters */}
-          <div className="flex flex-col md:flex-row gap-6 mb-16">
-            <div className="flex-1">
-              <h3 className="text-white font-semibold mb-4">Categories:</h3>
-              <div className="flex flex-wrap gap-3">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      selectedCategory === category
-                        ? "bg-yellow-400 text-black"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                    data-cursor-hover
-                  >
-                    {category}
-                  </button>
-                ))}
+          <div className="flex flex-col gap-6 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <h3 className="text-white font-semibold mb-4">Categories:</h3>
+                <div className="flex flex-wrap gap-3">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                        selectedCategory === category
+                          ? "bg-yellow-400 text-black"
+                          : "bg-white/10 text-white hover:bg-white/20"
+                      }`}
+                      data-cursor-hover
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-            
-            <div className="flex-1">
-              <h3 className="text-white font-semibold mb-4">Level:</h3>
-              <div className="flex flex-wrap gap-3">
-                {levels.map((level) => (
-                  <button
-                    key={level}
-                    onClick={() => setSelectedLevel(level)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      selectedLevel === level
-                        ? "bg-yellow-400 text-black"
-                        : "bg-white/10 text-white hover:bg-white/20"
-                    }`}
-                    data-cursor-hover
-                  >
-                    {level}
-                  </button>
-                ))}
+              
+              <div>
+                <h3 className="text-white font-semibold mb-4">Level:</h3>
+                <div className="flex flex-wrap gap-3">
+                  {levels.map((level) => (
+                    <button
+                      key={level}
+                      onClick={() => setSelectedLevel(level)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                        selectedLevel === level
+                          ? "bg-yellow-400 text-black"
+                          : "bg-white/10 text-white hover:bg-white/20"
+                      }`}
+                      data-cursor-hover
+                    >
+                      {level}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-white font-semibold mb-4">Target Audience:</h3>
+                <div className="flex flex-wrap gap-3">
+                  {targetAudiences.map((audience) => (
+                    <button
+                      key={audience}
+                      onClick={() => setSelectedTargetAudience(audience)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                        selectedTargetAudience === audience
+                          ? "bg-yellow-400 text-black"
+                          : "bg-white/10 text-white hover:bg-white/20"
+                      }`}
+                      data-cursor-hover
+                    >
+                      {audience}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
