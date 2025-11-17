@@ -291,40 +291,53 @@ export default function CourseDetailClient({ course }: CourseDetailClientProps) 
                 <CardTitle className="text-2xl text-white mb-6">What You&apos;ll Learn</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-300 leading-relaxed text-lg">
-                  This comprehensive course will equip you with the essential skills and knowledge 
-                  to excel in {course.category.toLowerCase()} roles. You&apos;ll gain hands-on experience 
-                  with industry-leading practices and methodologies that drive real-world success.
+                <p className="text-gray-300 leading-relaxed text-lg mb-6">
+                  {course.description}
                 </p>
-                <div className="mt-6 space-y-4">
-                  <div className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-yellow-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <div>
-                      <h4 className="text-white font-semibold mb-1">Interactive Learning</h4>
-                      <p className="text-gray-300 text-sm">Hands-on exercises and real-world scenarios</p>
+                {course.highlights && course.highlights.length > 0 ? (
+                  <div className="mt-6 space-y-4">
+                    {course.highlights.map((highlight, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <svg className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <div>
+                          <p className="text-gray-300 text-sm leading-relaxed">{highlight}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="mt-6 space-y-4">
+                    <div className="flex items-start gap-3">
+                      <svg className="w-6 h-6 text-yellow-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Interactive Learning</h4>
+                        <p className="text-gray-300 text-sm">Hands-on exercises and real-world scenarios</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-6 h-6 text-yellow-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Expert Instructors</h4>
+                        <p className="text-gray-300 text-sm">Learn from industry professionals with years of experience</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-6 h-6 text-yellow-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <h4 className="text-white font-semibold mb-1">Certification</h4>
+                        <p className="text-gray-300 text-sm">Receive industry-recognized certification upon completion</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-yellow-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <div>
-                      <h4 className="text-white font-semibold mb-1">Expert Instructors</h4>
-                      <p className="text-gray-300 text-sm">Learn from industry professionals with years of experience</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <svg className="w-6 h-6 text-yellow-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                    <div>
-                      <h4 className="text-white font-semibold mb-1">Certification</h4>
-                      <p className="text-gray-300 text-sm">Receive industry-recognized certification upon completion</p>
-                    </div>
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 

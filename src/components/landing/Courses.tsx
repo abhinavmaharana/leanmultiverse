@@ -4,6 +4,7 @@
 import { useState, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { courses, categories, levels, targetAudiences } from "@/data/courses"
+import ContactFormModal from "@/components/ui/ContactFormModal"
 
 const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
 const TALK_TO_EXPERT_TEL = "+918062177938"
@@ -13,6 +14,8 @@ export default function Courses() {
   const [selectedLevel, setSelectedLevel] = useState("All")
   const [selectedTargetAudience, setSelectedTargetAudience] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
+  const [selectedCourse, setSelectedCourse] = useState<number | null>(null)
 
   const filteredCourses = useMemo(() => {
     return courses.filter(course => {
@@ -33,6 +36,20 @@ export default function Courses() {
       return matchesCategory && matchesLevel && matchesTargetAudience && matchesSearch
     })
   }, [selectedCategory, selectedLevel, selectedTargetAudience, searchQuery])
+
+  const handleTalkToExpert = (courseId: number) => {
+    setSelectedCourse(courseId)
+    setIsContactFormOpen(true)
+  }
+
+  const handleFormSubmit = () => {
+    // After form submission, redirect to phone call
+    setTimeout(() => {
+      window.location.href = `tel:${TALK_TO_EXPERT_TEL}`
+    }, 500)
+    setIsContactFormOpen(false)
+    setSelectedCourse(null)
+  }
 
   return (
     <section className="relative py-20 bg-black min-h-screen overflow-hidden">
@@ -317,18 +334,15 @@ export default function Courses() {
                             className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-white/20 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 shadow-lg hover:shadow-xl hover:border-white/40`}
                             data-cursor-hover
                             onClick={() => {
-                              if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert')) {
-                                window.location.href = `tel:${TALK_TO_EXPERT_TEL}`
+                              if (course.buttons.secondary?.includes('Talk to Expert') || course.buttons.secondary?.includes('Expert') || course.buttons.secondary?.includes('Contact us')) {
+                                handleTalkToExpert(course.id)
                               } else {
                                 window.open(`/course-details/${course.id}`, '_blank')
                               }
                             }}
                           >
-                            <span className="relative z-10 flex flex-col items-center justify-center gap-0 leading-tight">
-                              <span>{course.buttons.secondary}</span>
-                              {course.buttons.secondary?.includes('Talk to Expert') && (
-                                <span className="text-xs font-normal text-yellow-300">{TALK_TO_EXPERT_DISPLAY}</span>
-                              )}
+                            <span className="relative z-10 flex items-center justify-center">
+                              {course.buttons.secondary}
                             </span>
                           </Button>
                         </div>
@@ -341,6 +355,17 @@ export default function Courses() {
           </div>
         </div>
       </div>
+
+      {/* Contact Form Modal */}
+      <ContactFormModal
+        isOpen={isContactFormOpen}
+        onClose={() => {
+          setIsContactFormOpen(false)
+          setSelectedCourse(null)
+        }}
+        onSubmit={handleFormSubmit}
+        source={selectedCourse ? `course-${selectedCourse}` : "courses-page"}
+      />
     </section>
   )
 }
