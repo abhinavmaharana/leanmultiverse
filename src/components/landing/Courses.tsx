@@ -16,6 +16,7 @@ export default function Courses() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isContactFormOpen, setIsContactFormOpen] = useState(false)
   const [selectedCourse, setSelectedCourse] = useState<number | null>(null)
+  const [expandedHighlights, setExpandedHighlights] = useState<Set<number>>(new Set())
 
   const filteredCourses = useMemo(() => {
     return courses.filter(course => {
@@ -236,23 +237,37 @@ export default function Courses() {
                         </p>
 
                         {course.highlights && course.highlights.length > 0 && (
-                          <div className="mb-6">
+                          <div className="mb-6 pointer-events-auto">
                             <div className="space-y-2">
-                              {course.highlights.slice(0, 3).map((highlight, highlightIndex) => (
+                              {(expandedHighlights.has(course.id) ? course.highlights : course.highlights.slice(0, 3)).map((highlight, highlightIndex) => (
                                 <div
                                   key={highlightIndex}
-                                  className="flex items-start gap-2 text-xs text-gray-300"
+                                  className="flex items-start gap-2 text-xs text-gray-300 pointer-events-auto"
                                 >
-                                  <svg className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                  <svg className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0 pointer-events-none" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                   </svg>
-                                  <span className="leading-relaxed">{highlight}</span>
+                                  <span className="leading-relaxed pointer-events-auto">{highlight}</span>
                                 </div>
                               ))}
                               {course.highlights.length > 3 && (
-                                <div className="text-yellow-400 text-xs font-medium">
-                                  +{course.highlights.length - 3} more highlights
-                                </div>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    const newExpanded = new Set(expandedHighlights)
+                                    if (newExpanded.has(course.id)) {
+                                      newExpanded.delete(course.id)
+                                    } else {
+                                      newExpanded.add(course.id)
+                                    }
+                                    setExpandedHighlights(newExpanded)
+                                  }}
+                                  className="text-yellow-400 text-xs font-medium pointer-events-auto hover:text-yellow-300 transition-colors cursor-pointer"
+                                >
+                                  {expandedHighlights.has(course.id) 
+                                    ? "Show less" 
+                                    : `+${course.highlights.length - 3} more highlights`}
+                                </button>
                               )}
                             </div>
                           </div>
