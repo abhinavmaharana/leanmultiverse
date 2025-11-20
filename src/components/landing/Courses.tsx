@@ -281,9 +281,11 @@ export default function Courses() {
 
                       <div className="mt-auto">
                         <div className="flex justify-between items-center mb-4">
-                          <div className="text-gray-400 text-sm">
-                            {course.learners.toLocaleString()}+ learners
-                          </div>
+                          {course.learners > 0 && (
+                            <div className="text-gray-400 text-sm">
+                              {course.learners.toLocaleString()}+ learners
+                            </div>
+                          )}
                           <div className="text-gray-400 text-sm">
                             {course.university}
                           </div>
@@ -311,11 +313,7 @@ export default function Courses() {
                           className={`relative w-full rounded-xl py-2.5 text-sm font-semibold transition-all duration-300 border border-yellow-400/20 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 shadow-lg hover:shadow-xl`}
                           data-cursor-hover
                           onClick={() => {
-                            if (course.id === 1) {
-                              return
-                            } else {
-                              window.open(`/course-details/${course.id}`, '_blank')
-                            }
+                            window.open(`/course-details/${course.id}`, '_blank')
                           }}
                         >
                           <span className="relative z-10 flex items-center justify-center gap-1">

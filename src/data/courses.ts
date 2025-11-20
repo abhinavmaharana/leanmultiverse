@@ -57,525 +57,545 @@ export const courses: Course[] = [
     limitedSeats: true,
     targetAudience: "everyone"
   },
+  // ₹500 Courses
   {
     id: 2,
-    title: "Product Management Fundamentals",
-    shortTitle: "Product Management Foundation",
-    subheading: "Foundation Course • 3 Hours",
-    description: "Build a strong foundation in Product Management. Learn how to define strategy, plan roadmaps, and collaborate effectively with teams. Perfect for beginners exploring and experienced experts into a PM role.",
-    category: "Foundation Course",
-    duration: "3 Hours",
+    title: "Fresher-to-Product Manager Blueprint™: Your Complete Beginner Roadmap to Becoming PM-Ready",
+    shortTitle: "Fresher-to-Product Manager Blueprint™",
+    subheading: "₹500 Courses • 60 minutes",
+    description: "No experience. No MBA. No tech skills. Still become PM-ready. A 60-minute starter course that gives absolute freshers complete clarity on how to break into Product Management. Learn real entry paths, PM skills, recruiter expectations, and build your first mini PM case study. Perfect for anyone starting from zero.",
+    category: "₹500 Courses",
+    duration: "60 minutes",
     level: "Beginner",
     rating: 4.8,
     learners: 0,
-    price: 2500,
-    originalPrice: 5000,
+    price: 499,
+    originalPrice: 999,
     isPopular: true,
-    isNew: false,
-    skills: ["Product Strategy", "Roadmap Planning", "Team Collaboration"],
+    isNew: true,
+    skills: ["Product Management", "PM Entry Paths", "PM Skills", "Case Study", "Resume Building"],
     highlights: [
-      "Real-world Product Management role overview",
-      "Hands-on demo with leading tools like Jira, Trello, and Miro",
-      "Live, interactive foundation session with industry mentors",
-      "₹5,000 discount on the advanced Product Management program"
+      "Realistic fresher entry paths into Product Management",
+      "PM vs BA vs PO explained in simple terms",
+      "Mini hands-on project: Zomato case study",
+      "Fresher PM roadmap + resume & portfolio templates"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Talk to Expert"
+      secondary: "Contact us"
     },
-    discount: "₹2,500 OFF",
-    targetAudience: "everyone"
+    targetAudience: "freshers"
   },
   {
     id: 3,
-    title: "Project Management Fundamentals",
-    shortTitle: "Project Management Foundation",
-    subheading: "Foundation Course • 3 Hours",
-    description: "Explore how real projects are planned, executed, and delivered. Learn core project management principles and frameworks before pursuing your PMI-aligned certification.",
-    category: "Foundation Course",
-    duration: "3 Hours",
-    level: "Beginner",
-    rating: 4.7,
-    learners: 0,
-    price: 2500,
-    originalPrice: 5000,
-    isPopular: true,
-    isNew: false,
-    skills: ["Agile", "Waterfall", "Hybrid", "MS Project", "Jira", "Asana"],
-    highlights: [
-      "Core Project Management concepts & frameworks (Agile, Waterfall, Hybrid)",
-      "Practical exposure to tools like MS Project, Jira, and Asana",
-      "Live instructor-led 3-hour foundation session",
-      "₹5,000 discount on the advanced Project Management program"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Talk to Expert"
-    },
-    discount: "₹2,500 OFF",
-    targetAudience: "everyone"
-  },
-  {
-    id: 4,
-    title: "Business Analyst Fundamentals",
-    shortTitle: "Business Analyst Foundation",
-    subheading: "Foundation Course • 3 Hours",
-    description: "Gain a complete understanding of the Business Analyst role — from requirement gathering to creating user stories and communicating with stakeholders.",
-    category: "Foundation Course",
-    duration: "3 Hours",
-    level: "Beginner",
-    rating: 4.8,
-    learners: 0,
-    price: 2500,
-    originalPrice: 5000,
-    isPopular: true,
-    isNew: false,
-    skills: ["Requirement Gathering", "User Stories", "Stakeholder Communication", "Jira", "Confluence", "Lucidchart"],
-    highlights: [
-      "Comprehensive introduction to the Business Analyst role",
-      "Hands-on demo of requirement gathering and documentation techniques",
-      "Exposure to tools like Jira, Confluence, and Lucidchart",
-      "Real-world business case walkthrough with practical examples",
-      "₹5,000 discount on the advanced BA program"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Talk to Expert"
-    },
-    discount: "₹2,500 OFF",
-    targetAudience: "everyone"
-  },
-  {
-    id: 5,
-    title: "Job Switch Mastery Program",
-    shortTitle: "Job Switch Mastery Program",
-    subheading: "Career Accelerator • 5 Hours",
-    description: "Transform your career journey with a complete guide to switching jobs successfully. Learn to craft impactful resumes, optimize your profiles, and master interview techniques.",
-    category: "Career Accelerator",
-    duration: "5 Hours",
+    title: "Working-Professional-to-Product Manager Blueprint™: Your Complete Transition Roadmap to Becoming PM-Ready",
+    shortTitle: "Working-Professional-to-Product Manager Blueprint™",
+    subheading: "₹500 Courses • 70 minutes",
+    description: "Switch to Product Management with your existing experience — no coding, no MBA required. A power-packed 70-minute transition course designed for working professionals who want to move into Product Management but don't know where to start. Learn how to convert your past experience into PM-relevant skills, understand real transition paths, master PM fundamentals, and build your first industry-style PM case study.",
+    category: "₹500 Courses",
+    duration: "70 minutes",
     level: "Professional",
     rating: 4.9,
     learners: 0,
-    price: 5000,
-    originalPrice: 10000,
+    price: 499,
+    originalPrice: 999,
     isPopular: true,
     isNew: true,
-    skills: ["Resume Building", "LinkedIn Optimization", "Interview Preparation", "Profile Optimization"],
+    skills: ["Career Transition", "PM Transition", "PM Fundamentals", "Case Study", "Resume Rewrite"],
     highlights: [
-      "Resume building from scratch",
-      "LinkedIn & Naukri optimization",
-      "100+ interview questions & answers",
-      "Crack interviews with proven strategies"
+      "Real transition paths for professionals (BA → PM, QA → PM, Sales → PM, Support → PM & more)",
+      "How to map your existing experience to PM responsibilities",
+      "PM vs BA vs PO vs Project Manager — practical differences",
+      "Hands-on PM exercise: Real industry case study",
+      "Transition roadmap + resume rewrite framework + portfolio samples"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Talk to Expert"
+      secondary: "Contact us"
     },
-    discount: "₹5,000 OFF",
+    targetAudience: "working-professional"
+  },
+  {
+    id: 4,
+    title: "Fresher-to-Project Manager Blueprint™",
+    shortTitle: "Fresher-to-Project Manager Blueprint™",
+    subheading: "₹500 Courses • 60 minutes",
+    description: "No experience. No certifications. No MBA. Still become Project-Management-ready. A beginner-friendly 60-minute course that gives freshers complete clarity on how to enter the Project Management world. Learn real entry paths, project workflow basics, practical tools, and build your first mini project plan to understand how PMs actually work inside companies.",
+    category: "₹500 Courses",
+    duration: "60 minutes",
+    level: "Beginner",
+    rating: 4.7,
+    learners: 0,
+    price: 499,
+    originalPrice: 999,
+    isPopular: true,
+    isNew: true,
+    skills: ["Project Management", "PM Entry Paths", "Project Workflow", "Project Planning", "Resume Building"],
+    highlights: [
+      "Realistic entry paths into Project Management for freshers",
+      "PM vs Project Coordinator vs Scrum Master explained simply",
+      "Hands-on mini project: Plan & track a sample project",
+      "Fresher PM roadmap + resume & skill-building templates"
+    ],
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Contact us"
+    },
+    targetAudience: "freshers"
+  },
+  {
+    id: 5,
+    title: "Working-Professional-to-Project Manager Blueprint™",
+    shortTitle: "Working-Professional-to-Project Manager Blueprint™",
+    subheading: "₹500 Courses • 70 minutes",
+    description: "Switch to Project Management using your existing experience — without PMP, MBA, or technical background. A practical 70-minute transition course designed for working professionals who want to move into Project Management. Learn real transition paths, understand how to position your past experience, master essential PM workflows, and complete a hands-on mini project plan to confidently start applying for PM roles.",
+    category: "₹500 Courses",
+    duration: "70 minutes",
+    level: "Professional",
+    rating: 4.8,
+    learners: 0,
+    price: 499,
+    originalPrice: 999,
+    isPopular: true,
+    isNew: true,
+    skills: ["Career Transition", "Project Management", "PM Workflows", "Project Planning", "Resume Rewrite"],
+    highlights: [
+      "Proven transition paths (Coordinator, QA, BA, Operations, Support, Sales → PM)",
+      "How to convert your current experience into PM responsibilities",
+      "PM vs Project Coordinator vs Scrum Master — real-world clarity",
+      "Hands-on mini project: Create & track a sample project",
+      "Transition roadmap + resume rewrite + PM tool templates"
+    ],
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Contact us"
+    },
     targetAudience: "working-professional"
   },
   {
     id: 6,
-    title: "Product Management with SAFe®, Scaled Agile & Scrum org Reference",
-    shortTitle: "Product Management (SAFe, Scrum Alliance & Scrum org Reference)",
-    subheading: "Professional Course • 2 Days",
-    description: "Master the complete product lifecycle aligned with SAFe® Agile principles. Learn roadmap planning, backlog prioritization, and release management from industry experts.",
-    category: "Professional Course",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.9,
+    title: "Fresher-to-Business Analyst Blueprint™",
+    shortTitle: "Fresher-to-Business Analyst Blueprint™",
+    subheading: "₹500 Courses • 60 minutes",
+    description: "No experience. No coding. No MBA. Still become BA-ready. A beginner-friendly 60-minute clarity course designed to help freshers enter the Business Analyst domain with confidence. Learn real industry entry paths, BA responsibilities, essential tools, documentation formats, and complete a hands-on BA case study — even if you're starting from zero.",
+    category: "₹500 Courses",
+    duration: "60 minutes",
+    level: "Beginner",
+    rating: 4.8,
     learners: 0,
-    price: 5000,
-    originalPrice: 10000,
+    price: 499,
+    originalPrice: 999,
     isPopular: true,
-    isNew: false,
-    skills: ["SAFe®", "Scrum Alliance", "Scrum org", "Roadmap Planning", "Backlog Prioritization", "Release Management"],
+    isNew: true,
+    skills: ["Business Analysis", "BA Entry Paths", "BA Responsibilities", "Documentation", "Case Study"],
     highlights: [
-      "2-day live instructor-led training",
-      "Hands-on case studies & practical exercises",
-      "Gain a verified Lean Multiverse certificate aligned with industry frameworks"
+      "Real fresher entry paths into Business Analysis",
+      "BA vs QA vs PM vs Data Analyst — practical differences",
+      "Hands-on BA assignment: Requirement gathering + user stories",
+      "Fresher BA roadmap + resume format + documentation templates"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Talk to Expert"
+      secondary: "Contact us"
     },
-    discount: "₹5,000 OFF",
-    targetAudience: "everyone"
+    targetAudience: "freshers"
   },
   {
     id: 7,
-    title: "Project Management with PMI® Reference",
-    shortTitle: "Project Management (PMI Reference)",
-    subheading: "Professional Course • 2 Days",
-    description: "Develop a strong understanding of PMI-aligned frameworks. Learn professional project planning, execution, risk control, and stakeholder communication.",
-    category: "Professional Course",
-    duration: "2 Days",
+    title: "Working-Professional-to-BA Blueprint™",
+    shortTitle: "Working-Professional-to-BA Blueprint™",
+    subheading: "₹500 Courses • 70 minutes",
+    description: "Switch to Business Analysis using your existing experience — no coding, no MBA. A 70-minute transition course designed for professionals who want to shift into Business Analysis. Learn how to map your experience to BA responsibilities, master requirement workflows, and perform a hands-on BA case study.",
+    category: "₹500 Courses",
+    duration: "70 minutes",
     level: "Professional",
-    rating: 4.8,
+    rating: 4.9,
     learners: 0,
-    price: 5000,
-    originalPrice: 10000,
+    price: 499,
+    originalPrice: 999,
     isPopular: true,
-    isNew: false,
-    skills: ["PMI®", "Project Planning", "Risk Control", "Stakeholder Communication", "Execution"],
+    isNew: true,
+    skills: ["Career Transition", "Business Analysis", "BA Responsibilities", "Requirement Workflows", "Case Study"],
     highlights: [
-      "2 days of live expert-led sessions",
-      "PMI-based process framework overview",
-      "Receive a Lean Multiverse Course Completion Certificate validating your learning"
+      "Proven transition paths (QA, Support, Ops, Sales → BA)",
+      "BA vs QA vs PM vs PO — real industry clarity",
+      "Hands-on BA assignment: Requirements + user stories",
+      "Transition roadmap + resume rewrite + tool templates"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Talk to Expert"
+      secondary: "Contact us"
     },
-    discount: "₹5,000 OFF",
-    targetAudience: "everyone"
+    targetAudience: "working-professional"
   },
   {
     id: 8,
-    title: "Business Analyst with IIBA® Reference",
-    shortTitle: "Business Analyst (IIBA Reference)",
-    subheading: "Professional Course • 2 Days",
-    description: "Learn the principles of business analysis aligned with IIBA standards. Gain expertise in requirement documentation, stakeholder mapping, and business process improvement.",
-    category: "Professional Course",
-    duration: "2 Days",
+    title: "Engineer-to-Management Career Breakthrough™",
+    shortTitle: "Engineer-to-Management Career Breakthrough™",
+    subheading: "₹500 Courses • 60 minutes",
+    description: "Your roadmap to move from technical roles into high-growth management careers. A 60-minute clarity blueprint for B.Tech graduates & engineers who want to transition from technical work to managerial, business, or leadership roles. Learn the top career options, salary paths, and transition strategies.",
+    category: "₹500 Courses",
+    duration: "60 minutes",
     level: "Professional",
-    rating: 4.9,
+    rating: 4.8,
     learners: 0,
-    price: 5000,
-    originalPrice: 10000,
+    price: 499,
+    originalPrice: 999,
     isPopular: true,
-    isNew: false,
-    skills: ["IIBA®", "Requirement Documentation", "Stakeholder Mapping", "Business Process Improvement"],
+    isNew: true,
+    skills: ["Career Transition", "Management Roles", "PM", "BA", "Consultant", "Program Manager"],
     highlights: [
-      "2 days of guided live training",
-      "Real-world project simulations",
-      "Earn a Lean Multiverse Certificate of Achievement"
+      "Top 7 non-coding management roles for engineers",
+      "PM, BA, Consultant, Program Manager — explained simply",
+      "How to convert technical experience into leadership experience",
+      "Transition roadmap + resume rewrite + skills checklist"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Talk to Expert"
+      secondary: "Contact us"
     },
-    discount: "₹5,000 OFF",
-    targetAudience: "everyone"
+    targetAudience: "working-professional"
   },
   {
     id: 9,
-    title: "Product Management + Job Switch Mastery",
-    shortTitle: "Product Management + Job Switch",
-    subheading: "Dual Program • 2 Days",
-    description: "Get the best of both worlds, learn product management concepts with real-world application and master how to switch or advance your career with confidence.",
-    category: "Dual Program",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.9,
+    title: "BBA-to-Management Career Blueprint™",
+    shortTitle: "BBA-to-Management Career Blueprint™",
+    subheading: "₹500 Courses • 50 minutes",
+    description: "The top 5 high-income career paths every BBA graduate must know. A beginner-friendly 50-minute course for BBA students & freshers who want clarity on their best career options. Discover realistic roles, salaries, required skills, and step-by-step entry paths to reach managerial roles.",
+    category: "₹500 Courses",
+    duration: "50 minutes",
+    level: "Beginner",
+    rating: 4.7,
     learners: 0,
-    price: 8000,
-    originalPrice: 20000,
+    price: 399,
+    originalPrice: 999,
     isPopular: true,
     isNew: true,
-    skills: ["Product Management", "Career Transition", "Interview Preparation"],
+    skills: ["Career Paths", "PM", "BA", "HRBP", "Marketing Manager", "Consultant"],
     highlights: [
-      "Product Management foundation aligned with SAFe® reference",
-      "Resume & LinkedIn optimization training",
-      "100+ interview Q&A discussion",
-      "Career guidance from industry mentors"
+      "Top 5 proven career paths after BBA",
+      "PM, BA, HRBP, Marketing Manager, Consultant — explained",
+      "What companies expect from BBA graduates",
+      "Fresher roadmap + resume format + skill-building plan"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Talk to Expert"
+      secondary: "Contact us"
     },
-    discount: "₹12,000 OFF",
-    targetAudience: "working-professional"
+    targetAudience: "everyone"
   },
   {
     id: 10,
-    title: "Project Management + Job Switch Mastery",
-    shortTitle: "Project Management + Job Switch",
-    subheading: "Dual Program • 2 Days",
-    description: "Upskill with PMI-aligned project management practices while learning how to build a powerful professional profile and confidently switch jobs.",
-    category: "Dual Program",
-    duration: "2 Days",
-    level: "Professional",
-    rating: 4.8,
+    title: "Graduate Career Compass™ (BA/BSc/BCom Edition)",
+    shortTitle: "Graduate Career Compass™",
+    subheading: "₹500 Courses • 60 minutes",
+    description: "Your clarity guide to the highest-paying career options after graduation. A 60-minute career-direction course for BA, BSc, and BCom graduates who feel stuck or confused. Learn the top modern career paths, salaries, required skills, and step-by-step entry routes.",
+    category: "₹500 Courses",
+    duration: "60 minutes",
+    level: "Beginner",
+    rating: 4.7,
     learners: 0,
-    price: 8000,
-    originalPrice: 20000,
+    price: 399,
+    originalPrice: 999,
     isPopular: true,
     isNew: true,
-    skills: ["Project Management", "Career Transition", "Interview Preparation"],
+    skills: ["Career Options", "PM", "BA", "DA", "HR", "UI/UX", "Operations"],
     highlights: [
-      "Project Management basics aligned with PMI® framework",
-      "Resume & Naukri profile optimization",
-      "100+ interview Q&A preparation",
-      "Career transition roadmap guidance"
+      "Top 8 realistic, high-growth roles for graduates",
+      "PM, BA, DA, HR, UI/UX, & Operations — explained simply",
+      "What companies ACTUALLY want from graduates",
+      "6-month career roadmap + resume format + skill plan"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
-      secondary: "Talk to Expert"
+      secondary: "Contact us"
     },
-    discount: "₹12,000 OFF",
-    targetAudience: "working-professional"
+    targetAudience: "everyone"
   },
   {
     id: 11,
-    title: "Business Analyst + Job Switch Mastery",
-    shortTitle: "Business Analyst + Job Switch",
-    subheading: "Dual Program • 2 Days",
-    description: "Combine practical business analysis skills with career growth strategies. Learn IIBA-aligned BA fundamentals and job-switching techniques that get results.",
-    category: "Dual Program",
-    duration: "2 Days",
-    level: "Professional",
+    title: "Career Clarity for Confused Freshers™",
+    shortTitle: "Career Clarity for Confused Freshers™",
+    subheading: "₹500 Courses • 60 minutes",
+    description: "The ultimate clarity blueprint for BA/BCom/BSc/BBA graduates who don't know which career to choose. A 60-minute power-packed course designed for freshers who feel lost, confused, or stuck after graduation. Get complete clarity on the top modern career paths, real salaries, skill requirements, and step-by-step entry routes — all explained in simple, practical language. No more guessing, no more random YouTube advice, no more wasting years.",
+    category: "₹500 Courses",
+    duration: "60 minutes",
+    level: "Beginner",
     rating: 4.9,
     learners: 0,
-    price: 8000,
-    originalPrice: 20000,
+    price: 499,
+    originalPrice: 999,
     isPopular: true,
     isNew: true,
-    skills: ["Business Analysis", "Career Transition", "Interview Preparation"],
+    skills: ["Career Guidance", "Career Options", "Career Paths", "Skills", "Resume Building"],
     highlights: [
-      "Business Analysis concepts aligned with IIBA® standards",
-      "Resume & LinkedIn enhancement workshop",
-      "100+ interview preparation questions",
-      "Career mentoring and guidance"
+      "Top 10 high-growth career options for BA/BCom/BSc/BBA",
+      "Real salaries, demand, and growth for each career path",
+      "Which degree fits which job role (with real hiring logic)",
+      "Roadmap: Skills + certifications for each career",
+      "Fresher-friendly resume template & 6-month action plan"
     ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Talk to Expert"
-    },
-    discount: "₹12,000 OFF",
-    targetAudience: "working-professional"
-  },
-  // ₹500 Courses
-  {
-    id: 12,
-    title: "Product Sprint: Freshers to Product Management",
-    shortTitle: "Product Sprint: Freshers to PM",
-    subheading: "₹500 Courses • Beginner",
-    description: "Start your journey into Product Management with this comprehensive course designed for freshers. Learn product thinking, GenAI for ideation, and build your first portfolio artifact.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
-    level: "Beginner",
-    rating: 4.8,
-    learners: 0,
-    price: 500,
-    isPopular: true,
-    isNew: true,
-    skills: ["Product Management", "Design Thinking", "GenAI", "Trello", "Miro", "Portfolio Building"],
-    highlights: [
-      "What is Product Management? Product vs Project vs BA",
-      "Types of Product Managers (Tech/Non-Tech/Data/Product Ops)",
-      "Beginner Product Thinking with Design Thinking Lite",
-      "GenAI for Product Ideation using ChatGPT",
-      "Industry Tools Preview: Trello, Miro",
-      "Mini-Portfolio Task: Ideate and blueprint a digital product"
-    ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
     },
-    targetAudience: "freshers"
+    targetAudience: "everyone"
+  },
+  // ₹1499 Courses
+  {
+    id: 12,
+    title: "Project Management Foundation: Agile to Predictive Delivery™",
+    shortTitle: "Project Management Foundation: Agile to Predictive Delivery™",
+    subheading: "₹1499 Courses • 90 minutes",
+    description: "A complete starter framework for anyone who wants to understand how real projects actually run inside companies. This course gives learners a strong base in project management. It connects the dots between Agile, Scrum, Waterfall, hybrid models, and traditional PMP-style project structures. It's designed for freshers and early professionals who want to understand planning, execution, risk, timelines, and accountability in a project environment.",
+    category: "₹1499 Courses",
+    duration: "90 minutes",
+    level: "Beginner",
+    rating: 4.9,
+    learners: 0,
+    price: 1499,
+    isPopular: true,
+    isNew: true,
+    skills: ["Project Management", "Agile", "Waterfall", "Hybrid", "Scrum", "PMP", "Project Planning"],
+    highlights: [
+      "How companies actually structure projects",
+      "Core PM concepts: scope, timelines, risks, stakeholders, delivery",
+      "Agile vs Waterfall vs Hybrid explained simply",
+      "Sprint planning, standups, retrospectives",
+      "Introduction to PMP process groups",
+      "Real project lifecycle walkthrough",
+      "Beginner-friendly templates for project planning"
+    ],
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Contact us"
+    },
+    targetAudience: "everyone"
   },
   {
     id: 13,
-    title: "Level-Up: Working Professionals to Product Management",
-    shortTitle: "Level-Up: Working Professionals to PM",
-    subheading: "₹500 Courses • Professional",
-    description: "Transition from your current role to Product Management. Learn to map your existing skills to PM must-haves, understand Agile & Scrum, and accelerate your career transition.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
-    level: "Professional",
+    title: "Product Management Foundation: GenAI, Agile & Product Practices™",
+    shortTitle: "Product Management Foundation: GenAI, Agile & Product Practices™",
+    subheading: "₹1499 Courses • 90 minutes",
+    description: "A modern foundation course that explains Product Management using simple language, real examples, and GenAI-supported workflows. This course helps learners understand what a Product Manager truly does, how AI is changing product roles, and how Agile teams build and ship products. It's designed to give absolute clarity for anyone exploring PM as a career.",
+    category: "₹1499 Courses",
+    duration: "90 minutes",
+    level: "Beginner",
     rating: 4.9,
     learners: 0,
-    price: 500,
+    price: 1499,
     isPopular: true,
     isNew: true,
-    skills: ["Career Transition", "Agile & Scrum", "Stakeholder Alignment", "Jira", "Productboard"],
+    skills: ["Product Management", "GenAI", "Agile", "Product Practices", "User Stories", "Backlog"],
     highlights: [
-      "Transitioning to Product - Overcoming the 'Frozen Middle'",
-      "Mapping current skills to PM must-haves",
-      "Introduction to Agile & Scrum in Product",
-      "Stakeholder Alignment with practical exercises",
-      "Tools Deep-Dive: Jira, Productboard",
-      "Career Ladder Assignment: Map your career story to PM competencies"
+      "What product teams actually look like",
+      "Core PM concepts: problem statements, users, metrics",
+      "GenAI for PM: idea testing, user story drafting, competitor analysis",
+      "Requirements writing basics",
+      "Agile for PMs: backlog, prioritization, ceremonies",
+      "Real product lifecycle walkthrough",
+      "Beginner PM case study with a template"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
     },
-    targetAudience: "working-professional"
+    targetAudience: "everyone"
   },
   {
     id: 14,
-    title: "Project Launchpad: Fresher to Project Management",
-    shortTitle: "Project Launchpad: Fresher to PM",
-    subheading: "₹500 Courses • Beginner",
-    description: "Begin your Project Management journey with this foundational course. Learn planning basics, communication drills, and run your first mini-project.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
+    title: "Business Analysis Foundation: Global BA Standards & Digital Tools™",
+    shortTitle: "Business Analysis Foundation: Global BA Standards & Digital Tools™",
+    subheading: "₹1499 Courses • 90 minutes",
+    description: "A structured foundation course that introduces Business Analysis the way it's practiced across modern digital workplaces. This course gives clarity on BA tasks, documentation, tools, Agile collaboration, and how IIBA frameworks fit into practical work. Ideal for freshers and professionals exploring BA as a career.",
+    category: "₹1499 Courses",
+    duration: "90 minutes",
     level: "Beginner",
-    rating: 4.7,
+    rating: 4.9,
     learners: 0,
-    price: 500,
+    price: 1499,
     isPopular: true,
     isNew: true,
-    skills: ["Project Management", "Waterfall", "Agile", "Hybrid", "WBS", "Gantt", "ClickUp"],
+    skills: ["Business Analysis", "IIBA", "BA Standards", "Digital Tools", "JIRA", "Confluence", "Miro", "Lucid"],
     highlights: [
-      "What is Project Management? Waterfall vs Agile vs Hybrid",
-      "Planning Basics: WBS, Gantt with free tools (ClickUp demo)",
-      "Communication Drills: Mock email-writing, status updates",
-      "Starter PM Toolkit: Run a mini-project (template provided)"
+      "BA roles inside Agile and traditional teams",
+      "Requirements gathering, user stories, acceptance criteria",
+      "IIBA foundational concepts explained simply",
+      "Digital BA skills: workflows, process mapping, systems thinking",
+      "Tools overview: JIRA, Confluence, Miro, Lucid",
+      "Hands-on documentation practice",
+      "BA career roadmap with template pack"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
     },
-    targetAudience: "freshers"
+    targetAudience: "everyone"
   },
+  // ₹3999 Courses
   {
     id: 15,
-    title: "Growth Path: Working Professional to Project Management",
-    shortTitle: "Growth Path: Working Professional to PM",
-    subheading: "₹500 Courses • Professional",
-    description: "Leverage your professional experience to transition into Project Management. Learn Agile execution, modern PM tools, and risk management.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
-    level: "Professional",
-    rating: 4.8,
-    learners: 0,
-    price: 500,
-    isPopular: true,
-    isNew: true,
-    skills: ["Career Transition", "Agile Execution", "Jira", "Wrike", "Resource Allocation", "Risk Management"],
-    highlights: [
-      "Inventorying Your Managerial Skills - Translation to PM must-haves",
-      "Agile Execution with Sprint simulation",
-      "Tools for Professionals: Jira, Wrike demo; resource allocation basics",
-      "Risk Spotting with mini-case study assignment"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "working-professional"
-  },
-  {
-    id: 16,
-    title: "Analyst Insights: Fresher to Business Analyst",
-    shortTitle: "Analyst Insights: Fresher to BA",
-    subheading: "₹500 Courses • Beginner",
-    description: "Discover the Business Analyst role and start building essential BA skills. Learn core tools, requirements gathering, and communication fundamentals.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
-    level: "Beginner",
-    rating: 4.8,
-    learners: 0,
-    price: 500,
-    isPopular: true,
-    isNew: true,
-    skills: ["Business Analysis", "BA vs PM vs Product vs QA", "Lucidchart", "Microsoft Excel", "Requirements Gathering", "User Stories"],
-    highlights: [
-      "Role of a Business Analyst: BA vs PM vs Product vs QA",
-      "Core BA Tools: Lucidchart, Microsoft Excel analyzer demo",
-      "Requirements Gathering 101: Practical assignment on user story writing",
-      "BA Communication: Email, documentation basics"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "freshers"
-  },
-  {
-    id: 17,
-    title: "Analyst Pro: Working Professional to Business Analyst",
-    shortTitle: "Analyst Pro: Working Professional to BA",
-    subheading: "₹500 Courses • Professional",
-    description: "Transition your professional experience into a Business Analyst role. Learn IIBA overview, modern BA tools, and advanced elicitation techniques.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
+    title: "Certified Product Management with GenAI™",
+    shortTitle: "Certified Product Management with GenAI™",
+    subheading: "₹3999 Courses • 3 hours",
+    description: "A practical certification program that teaches real Product Management using modern GenAI workflows, Agile rituals, and hands-on product case work. This course is built for learners who want to move past theory and actually practice PM tasks. It teaches problem framing, user insights, documentation, prioritization, metrics, and full product thinking — supported by GenAI tools that speed up research and execution.",
+    category: "₹3999 Courses",
+    duration: "3 hours",
     level: "Professional",
     rating: 4.9,
     learners: 0,
-    price: 500,
+    price: 3999,
     isPopular: true,
     isNew: true,
-    skills: ["Career Transition", "IIBA Overview", "Agile BA", "JIRA", "Confluence", "Elicitation"],
+    skills: ["Product Management", "GenAI", "Agile", "PRD", "User Stories", "Prioritization", "Product Analytics"],
     highlights: [
-      "Leverage Prior Experience in BA: BA in Tech/Consulting/Banking contexts",
-      "IIBA Overview & Agile BA: Practical frameworks preview",
-      "Modern BA Tools: JIRA, Confluence walkthrough",
-      "Elicitation Scenarios: Assignment with live case study"
+      "End-to-end PM workflow: discovery to delivery",
+      "GenAI for PM: user research, PRDs, competitor analysis",
+      "User stories, acceptance criteria, epics",
+      "Prioritization frameworks practiced live",
+      "Product analytics and KPIs",
+      "Build a complete product case study",
+      "Certification exam + graded assignment"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
     },
-    targetAudience: "working-professional"
+    targetAudience: "everyone"
+  },
+  {
+    id: 16,
+    title: "Certified Project Management with GenAI™",
+    shortTitle: "Certified Project Management with GenAI™",
+    subheading: "₹3999 Courses • 3 hours",
+    description: "A project-ready certification that teaches practical project planning, scheduling, execution, and reporting — enhanced with GenAI-driven workflows. This course is for professionals who want structured, real-world project skills. They learn project lifecycle, Agile operations, communication patterns, escalation handling, documentation, and how GenAI speeds up project planning and reporting.",
+    category: "₹3999 Courses",
+    duration: "3 hours",
+    level: "Professional",
+    rating: 4.9,
+    learners: 0,
+    price: 3999,
+    isPopular: true,
+    isNew: true,
+    skills: ["Project Management", "GenAI", "Agile", "Waterfall", "Hybrid", "JIRA", "Confluence", "MS Project"],
+    highlights: [
+      "How to plan and manage real projects",
+      "Project scopes, schedules, risks, dependencies",
+      "GenAI for PM: reports, risk logs, meeting summaries",
+      "Agile + Waterfall + Hybrid execution",
+      "Stakeholder management and communication",
+      "Tools: JIRA, Confluence, MS Project templates",
+      "Build a complete project plan + certification assessment"
+    ],
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Contact us"
+    },
+    targetAudience: "everyone"
+  },
+  {
+    id: 17,
+    title: "Certified Business Analysis with GenAI™",
+    shortTitle: "Certified Business Analysis with GenAI™",
+    subheading: "₹3999 Courses • 3 hours",
+    description: "A hands-on BA certification focused on documentation, requirements, process mapping, and digital BA techniques powered by GenAI. This course helps learners practice actual BA tasks instead of just learning definitions. They work on real documentation, user stories, workflows, acceptance criteria, and digital toolkits — all supported by GenAI for faster analysis and better clarity.",
+    category: "₹3999 Courses",
+    duration: "3 hours",
+    level: "Professional",
+    rating: 4.9,
+    learners: 0,
+    price: 3999,
+    isPopular: true,
+    isNew: true,
+    skills: ["Business Analysis", "GenAI", "IIBA", "Requirements", "Process Mapping", "BRD", "FRD", "User Stories"],
+    highlights: [
+      "Requirements gathering and documentation",
+      "IIBA-aligned BA practices",
+      "GenAI for BA: process mapping, requirement drafts, test scenarios",
+      "User stories, BRDs, FRDs",
+      "Workflow diagrams and use cases",
+      "Complete digital BA toolkit",
+      "Certification test + project submission"
+    ],
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
+    buttons: {
+      primary: "Enroll Now",
+      secondary: "Contact us"
+    },
+    targetAudience: "everyone"
   },
   {
     id: 18,
-    title: "Beyond B.Tech: Career Shifts from Engineer to Management",
-    shortTitle: "Beyond B.Tech: Engineer to Management",
-    subheading: "₹500 Courses • Professional",
-    description: "Explore management career paths from engineering. Learn transition options, skill mapping, and find your perfect role fitment.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
+    title: "Communication Mastery with Resume Building™",
+    shortTitle: "Communication Mastery with Resume Building™",
+    subheading: "₹3999 Courses • 2.5 hours",
+    description: "A complete communication transformation program designed to improve speaking, writing, and interview clarity — with a resume that actually gets shortlisted. This course helps freshers and professionals build strong communication habits. It teaches confident speaking, corporate writing, structured answering, email etiquette, and a resume that makes immediate sense to recruiters. It ends with a mock interview framework and a polished resume.",
+    category: "₹3999 Courses",
+    duration: "2.5 hours",
     level: "Professional",
-    rating: 4.8,
+    rating: 4.9,
     learners: 0,
-    price: 500,
+    price: 3999,
     isPopular: true,
     isNew: true,
-    skills: ["Career Transition", "PM", "BA", "Consulting", "Skill Mapping", "Role Fitment"],
+    skills: ["Communication", "Resume Building", "Interview Skills", "STAR", "Email Etiquette", "Speaking"],
     highlights: [
-      "Transition Options: PM, BA, Consulting, and more",
-      "Skill-Mapping Interactive session",
-      "Role Fitment Hackathon with peer and alumni examples"
+      "Confident English speaking frameworks",
+      "Fix fillers, hesitation, nervous tone, unclear communication",
+      "Corporate email etiquette and chat professionalism",
+      "Resume building: structure, clarity, keywords",
+      "Interview frameworks: STAR, context mapping, role-fit answers",
+      "Body language and voice clarity",
+      "Final resume review checklist"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
     },
-    targetAudience: "working-professional"
+    targetAudience: "everyone"
   },
+  // ₹5999 Courses
   {
     id: 19,
-    title: "From BBA to Manager: BBA to Top 5 Career options",
-    shortTitle: "From BBA to Manager",
-    subheading: "₹500 Courses • Beginner",
-    description: "Discover top management career paths for BBA graduates. Learn entry management roles, practical caselets, and communication skills for managers.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
-    level: "Beginner",
-    rating: 4.7,
+    title: "Product Management Elite™: PM + Interview Skills and Resume Building",
+    shortTitle: "Product Management Elite™",
+    subheading: "₹5999 Courses • 4 hours",
+    description: "Your complete job-ready Product Management program combining advanced PM skills, full interview prep, and a recruiter-ready resume. This program is designed for learners serious about breaking into PM roles. It blends advanced product concepts, hands-on product work, GenAI workflows, and deep interview training. They walk away with a polished resume, strong portfolio material, and the confidence to explain their PM thinking in interviews.",
+    category: "₹5999 Courses",
+    duration: "4 hours",
+    level: "Professional",
+    rating: 5.0,
     learners: 0,
-    price: 500,
+    price: 5999,
     isPopular: true,
     isNew: true,
-    skills: ["Management Paths", "PM", "BA", "Ops", "Data Management", "Communication"],
+    skills: ["Product Management", "GenAI", "Interview Skills", "Resume Building", "Portfolio", "Product Thinking"],
     highlights: [
-      "Entry Management Paths: PM, BA, Ops",
-      "Practical Caselet: Managing with Data",
-      "Communication for Managers with peer feedback task"
+      "Advanced product thinking",
+      "GenAI for PM: deep-dive templates and workflows",
+      "User research, PRDs, metrics, and roadmapping",
+      "High-impact case study practice",
+      "PM interview frameworks: product sense, estimations, strategy",
+      "Story-based resume building",
+      "One complete product portfolio project"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
@@ -584,313 +604,60 @@ export const courses: Course[] = [
   },
   {
     id: 20,
-    title: "Graduate Gateway: BBA/BSc/BCom Career options",
-    shortTitle: "Graduate Gateway: Career options",
-    subheading: "₹500 Courses • Beginner",
-    description: "Explore modern career roles for graduates. Build your skill inventory and create a compelling career story to showcase to employers.",
-    category: "₹500 Courses",
-    duration: "Self-paced",
-    level: "Beginner",
-    rating: 4.7,
+    title: "Project Management Pro™: PM + Interview Skills",
+    shortTitle: "Project Management Pro™",
+    subheading: "₹5999 Courses • 4 hours",
+    description: "A full-spectrum program for transitioning into strong project roles, combining real PM execution skills with targeted interview preparation. This course is built for anyone aiming for project roles in IT, consulting, or operations. It covers advanced project planning, breakdown structures, Agile-Waterfall integration, stakeholder communication, risk management, and interview mastery for PM profiles.",
+    category: "₹5999 Courses",
+    duration: "4 hours",
+    level: "Professional",
+    rating: 5.0,
     learners: 0,
-    price: 500,
+    price: 5999,
     isPopular: true,
     isNew: true,
-    skills: ["Career Exploration", "Product", "BA", "Project", "Ops", "Analytics", "Skill Inventory"],
+    skills: ["Project Management", "GenAI", "Interview Skills", "Agile", "Waterfall", "JIRA", "Confluence", "MS Project"],
     highlights: [
-      "Exploring Modern Roles: Product, BA, Project, Ops, Analytics",
-      "Skill Inventory Maker",
-      "Career Story Assignment"
+      "Advanced project planning and scheduling",
+      "Risk, escalation, dependency, and stakeholder management",
+      "GenAI for PM documentation and reporting",
+      "Tools walkthrough: JIRA, Confluence, MS Project",
+      "PM interview frameworks and scenario questions",
+      "Role-specific communication patterns",
+      "Final project assignment for job-ready practice"
     ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
     },
     targetAudience: "everyone"
   },
-  // ₹1500 Courses
   {
     id: 21,
-    title: "Project Management Foundation: Agile to PMP",
-    shortTitle: "Project Management Foundation",
-    subheading: "₹1500 Courses • Professional",
-    description: "Deep dive into project life cycle, methodologies, and tools. Learn Agile, SAFe, PMP perspectives with hands-on sprint simulation.",
-    category: "₹1500 Courses",
-    duration: "Comprehensive",
-    level: "Professional",
-    rating: 4.9,
-    learners: 0,
-    price: 1500,
-    isPopular: true,
-    isNew: true,
-    skills: ["Agile", "SAFe", "PMP", "MS Project", "Jira", "Kanban", "Stakeholder Management", "Risk Management"],
-    highlights: [
-      "Project Life Cycle & Methodology Deep Dive: Agile, SAFe, PMP perspectives; modern hybrids",
-      "Tools Examined: MS Project, Jira, Kanban boards",
-      "Stakeholder & Risk Management (Templates provided)",
-      "Sprint Simulation Assignment: Group project to plan and deliver a mini Agile project"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 22,
-    title: "Product Management Foundation: GenAI, Agile, & More",
-    shortTitle: "Product Management Foundation",
-    subheading: "₹1500 Courses • Professional",
-    description: "Master PM frameworks, GenAI tools, and build your portfolio. Includes mock PM interviews with real company scenarios.",
-    category: "₹1500 Courses",
-    duration: "Comprehensive",
-    level: "Professional",
-    rating: 4.9,
-    learners: 0,
-    price: 1500,
-    isPopular: true,
-    isNew: true,
-    skills: ["SAFe", "Scrum", "Agile", "Lean", "GenAI Tools", "PRD", "BRD", "Mock Interviews"],
-    highlights: [
-      "PM Frameworks Compared: SAFe, Scrum, Agile, Lean",
-      "GenAI Tools for PM: Ideation, user feedback mining, roadmap building with AI",
-      "Portfolio Builder: Create a product doc (PRD/BRD) using real tools",
-      "Interview Loops: Mock PM interviews with real company scenarios"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 23,
-    title: "Business Analysis Foundation: IIBA, Agile, and Digital",
-    shortTitle: "Business Analysis Foundation",
-    subheading: "₹1500 Courses • Professional",
-    description: "Master BA Body of Knowledge, digital tools, and process modeling. Build your BA portfolio with real-world assignments.",
-    category: "₹1500 Courses",
-    duration: "Comprehensive",
-    level: "Professional",
-    rating: 4.9,
-    learners: 0,
-    price: 1500,
-    isPopular: true,
-    isNew: true,
-    skills: ["BABOK", "IIBA", "AWS", "PowerBI", "Jira", "Process Modeling", "Use Cases"],
-    highlights: [
-      "BA Body of Knowledge (BABOK/IIBA)",
-      "Digital BA Tools: AWS, PowerBI, Jira",
-      "Process Modeling & Use Case Writing",
-      "Assignment: Model a digital business process"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  // ₹4000 Courses (with Certification)
-  {
-    id: 24,
-    title: "Certified Product Management with GenAI",
-    shortTitle: "Certified Product Management with GenAI",
-    subheading: "₹4000 Courses • Certification",
-    description: "Master advanced PM frameworks and GenAI for product design. Build features with GenAI support and complete a capstone project for certification.",
-    category: "₹4000 Courses",
-    duration: "Certification Program",
-    level: "Professional",
-    rating: 4.9,
-    learners: 0,
-    price: 4000,
-    isPopular: true,
-    isNew: true,
-    skills: ["SAFe", "Lean", "OKRs", "GenAI", "Product Design", "PowerBI", "Tableau", "Product Metrics"],
-    highlights: [
-      "Product Management Mastery: Deep dive into advanced practical frameworks (SAFe, Lean, OKRs)",
-      "Using GenAI for Product Design: Live case - Build features with GenAI support",
-      "Product Metrics & Analytics: PowerBI & Tableau for PMs",
-      "Industry Simulation: Team-based product launch challenge",
-      "Certification Assignment: Capstone + digital badge"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 25,
-    title: "Certified Project Management with GenAI",
-    shortTitle: "Certified Project Management with GenAI",
-    subheading: "₹4000 Courses • Certification",
-    description: "Master SAFe, Agile, PMP with GenAI for execution. Plan and execute a complete project lifecycle with certification.",
-    category: "₹4000 Courses",
-    duration: "Certification Program",
-    level: "Professional",
-    rating: 4.9,
-    learners: 0,
-    price: 4000,
-    isPopular: true,
-    isNew: true,
-    skills: ["SAFe", "Agile", "PMP", "GenAI", "Resource Planning", "Risk Detection", "MS Project", "Confluence"],
-    highlights: [
-      "SAFe, Agile, PMP Practice: Real-world mapping of frameworks",
-      "Leveraging GenAI for Execution: Resource planning, risk detection auto-demo",
-      "Project Analytics & Reporting: MS Project, Confluence deep-dive",
-      "Live Simulation: Plan & execute a project lifecycle",
-      "Certification Task: Full simulation with grading"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 26,
-    title: "Certified Business Analysis with GenAI",
-    shortTitle: "Certified Business Analysis with GenAI",
-    subheading: "₹4000 Courses • Certification",
-    description: "Master advanced IIBA applications, automation, and process mining. Build a real-world BA portfolio with GenAI support.",
-    category: "₹4000 Courses",
-    duration: "Certification Program",
-    level: "Professional",
-    rating: 4.9,
-    learners: 0,
-    price: 4000,
-    isPopular: true,
-    isNew: true,
-    skills: ["IIBA", "Automation", "Process Mining", "GenAI", "Requirements Gathering", "Lucidchart", "PowerBI", "AWS"],
-    highlights: [
-      "Advanced IIBA Applications",
-      "Automation & Process Mining: Using GenAI for requirements gathering",
-      "Digital Tool Mastery: Lucidchart, PowerBI, AWS hands-on",
-      "Real-World Portfolio Assignment"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 27,
-    title: "Communication Mastery with Resume Building: Ace Your Resume and Interview",
-    shortTitle: "Communication Mastery with Resume Building",
-    subheading: "₹4000 Courses • Certification",
-    description: "Master interview techniques, build compelling resumes, and ace your interviews. Includes roleplay labs and GenAI tools for communication.",
-    category: "₹4000 Courses",
-    duration: "Certification Program",
-    level: "Professional",
-    rating: 4.9,
-    learners: 0,
-    price: 4000,
-    isPopular: true,
-    isNew: true,
-    skills: ["STAR", "CAR", "Behavioral Frameworks", "Resume Building", "Interview Skills", "GenAI", "Video Storytelling"],
-    highlights: [
-      "Interview Mindset Shift: STAR, CAR, and real-time behavioral frameworks",
-      "Roleplay Labs: Video-based storytelling practice",
-      "Toolkits for Communication: GenAI for resume and response building",
-      "Assignment: Record & submit an interview pitch"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  // ₹6000 Courses
-  {
-    id: 28,
-    title: "Product Management Elite: PM + Interview Skills and Resume Building",
-    shortTitle: "Product Management Elite",
-    subheading: "₹6000 Courses • Elite Program",
-    description: "Advanced PM case masterclass with real employer panels, portfolio accelerator, and placement lab. Includes SAFe POPM, Scrum & RTE certification previews.",
-    category: "₹6000 Courses",
-    duration: "Elite Program",
+    title: "Business Analysis Advanced™: BA + Interview Skills",
+    shortTitle: "Business Analysis Advanced™",
+    subheading: "₹5999 Courses • 4 hours",
+    description: "A job-focused BA program that blends advanced analysis techniques with structured interview preparation for BA, PO, and PM roles. This course is ideal for learners who want to move beyond basics and practice real BA work — documentation, workflows, systems analysis, and Agile collaboration — along with interview mastery that teaches them how to speak like a BA in real scenarios.",
+    category: "₹5999 Courses",
+    duration: "4 hours",
     level: "Professional",
     rating: 5.0,
     learners: 0,
-    price: 6000,
+    price: 5999,
     isPopular: true,
     isNew: true,
-    skills: ["SAFe POPM", "Scrum", "RTE", "PM Case Studies", "Interview Skills", "Figma", "Jira", "PowerBI", "Resume Building"],
+    skills: ["Business Analysis", "GenAI", "IIBA", "Interview Skills", "BRD", "FRD", "User Stories", "Stakeholder Communication"],
     highlights: [
-      "PM Case Masterclass: Advanced SAFe/POPM Simulation",
-      "Interview Room: Real Employer Panels with video interviews and review",
-      "Portfolio Accelerator: Build with industry-grade tools (Figma, Jira, PowerBI)",
-      "Placement Lab: Employer connect, alumni chat",
-      "Bonus: Preview of SAFe POPM, Scrum & RTE certification tracks"
+      "Advanced requirements analysis and documentation",
+      "Workflow design, system behavior, and impact mapping",
+      "GenAI for BA: analysis, documentation, scenario modeling",
+      "BRDs, FRDs, user stories, acceptance criteria",
+      "BA and PO interview frameworks",
+      "Stakeholder communication skills",
+      "A full BA case study project"
     ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 29,
-    title: "Project Management Pro: PM + Interview Skills",
-    shortTitle: "Project Management Pro",
-    subheading: "₹6000 Courses • Elite Program",
-    description: "Master PMP & SAFe case simulation, 1:1 interview labs, and employer panel simulations. Includes preview of SAFe LPM/PMP certification.",
-    category: "₹6000 Courses",
-    duration: "Elite Program",
-    level: "Professional",
-    rating: 5.0,
-    learners: 0,
-    price: 6000,
-    isPopular: true,
-    isNew: true,
-    skills: ["PMP", "SAFe", "Case Simulation", "Interview Skills", "PM", "Agile", "Program Manager", "Analytics", "Reporting"],
-    highlights: [
-      "PMP & SAFe Case Simulation",
-      "1:1 Interview Labs: PM, Agile, Program Manager roles",
-      "Analytics & Reporting, portfolio task",
-      "Employer Panel Simulations",
-      "Bonus: Preview of SAFe LPM/PMP certification"
-    ],
-    university: "Lean Multiverse",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 30,
-    title: "Business Analysis Advanced: BA + Interview Skills",
-    shortTitle: "Business Analysis Advanced",
-    subheading: "₹6000 Courses • Elite Program",
-    description: "Master IIBA & Agile, advanced BA tools, and live interview room with industry panel. Includes preview of SAFe BA/POPM certifications.",
-    category: "₹6000 Courses",
-    duration: "Elite Program",
-    level: "Professional",
-    rating: 5.0,
-    learners: 0,
-    price: 6000,
-    isPopular: true,
-    isNew: true,
-    skills: ["IIBA", "Agile", "PowerBI", "AWS", "Jira", "BA Tools", "Interview Skills", "SAFe BA", "POPM"],
-    highlights: [
-      "IIBA & Agile Masterclass",
-      "Advanced BA Tools: PowerBI, AWS, Jira",
-      "Employer Caselets + Portfolio Building",
-      "Live Interview Room with Industry Panel",
-      "Bonus: Preview of SAFe BA/POPM certifications"
-    ],
-    university: "Lean Multiverse",
+    university: "Lean Multiverse Consultancy Pvt. Ltd.",
     buttons: {
       primary: "Enroll Now",
       secondary: "Contact us"
@@ -899,6 +666,6 @@ export const courses: Course[] = [
   }
 ]
 
-export const categories = ["All", "Webinar", "Foundation Course", "Professional Course", "Career Accelerator", "Dual Program", "₹500 Courses", "₹1500 Courses", "₹4000 Courses", "₹6000 Courses"]
+export const categories = ["All", "Webinar", "₹500 Courses", "₹1499 Courses", "₹3999 Courses", "₹5999 Courses"]
 export const levels = ["All", "All Levels", "Beginner", "Professional"]
 export const targetAudiences = ["All", "Freshers", "Working Professional", "Everyone"]
