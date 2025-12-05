@@ -118,6 +118,12 @@ export default function Navbar() {
         >
           Success Stories
         </a>
+        <Link 
+          href="/services" 
+          className="hover:opacity-90 transition text-white"
+        >
+          Services
+        </Link>
         <a 
           href="#contact" 
           className="hover:opacity-90 transition text-white"
@@ -200,6 +206,13 @@ export default function Navbar() {
             >
               Success Stories
             </a>
+            <Link 
+              onClick={() => setOpen(false)} 
+              href="/services" 
+              className="px-3 py-3 rounded-lg hover:bg-white/5 text-white text-base sm:text-lg"
+            >
+              Services
+            </Link>
             <a 
               onClick={() => setOpen(false)} 
               href="#contact" 
