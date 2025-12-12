@@ -19,8 +19,8 @@ export async function generateCalendarInvite(
     booking.selected_time
   )
 
-  // Webinar duration: 1 hour
-  const endDate = addHours(startDate, 1)
+  // Webinar duration: 4 hours
+  const endDate = addHours(startDate, 4)
 
   // Create calendar
   const calendar = ical({
