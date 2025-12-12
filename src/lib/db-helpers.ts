@@ -72,7 +72,8 @@ export async function updateBookingByOrderId(orderId: string, updates: Partial<W
   if (error) {
     // If error is about missing column, try again without zoom_registration_link
     if (error.message?.includes('zoom_registration_link') && safeUpdates.zoom_registration_link) {
-      const { zoom_registration_link, ...updatesWithoutZoom } = safeUpdates
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { zoom_registration_link: _zoomLink, ...updatesWithoutZoom } = safeUpdates
       const { data: retryData, error: retryError } = await supabase
         .from('webinar_bookings')
         .update(updatesWithoutZoom)

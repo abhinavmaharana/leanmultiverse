@@ -3,8 +3,8 @@ import crypto from 'crypto'
 import Razorpay from 'razorpay'
 import { getBookingByOrderId, updateBookingByOrderId } from '@/lib/db-helpers'
 import { generateCalendarInvite } from '@/lib/calendar'
-import { generateMeetLink } from '@/lib/meet-link'
 import { sendCalendarInviteEmail } from '@/lib/email'
+import { WebinarBooking } from '@/lib/db'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       try {
         // Fetch order details from Razorpay to get user information
         const order = await razorpay.orders.fetch(razorpay_order_id)
-        const notes = order.notes as any
+        const notes = order.notes as Record<string, string> | null
         
         if (notes && notes.user_name && notes.user_email && notes.user_phone && notes.selected_date && notes.selected_time) {
           const { createBooking } = await import('@/lib/db-helpers')
@@ -96,28 +96,26 @@ export async function POST(request: NextRequest) {
 
     // Update booking with payment details
     // Use Zoom registration link (always use the registration link)
-    const zoomRegistrationLink = (booking as any).zoom_registration_link || 
+    const bookingWithZoom = booking as WebinarBooking & { zoom_registration_link?: string | null }
+    const zoomRegistrationLink = bookingWithZoom.zoom_registration_link || 
                                  process.env.ZOOM_REGISTRATION_LINK || 
                                  'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
     
     const meetLink = zoomRegistrationLink
     
     // Update booking with payment details (try to include zoom_registration_link if column exists)
-    const updateData: any = {
+    const updateData: Partial<WebinarBooking & { zoom_registration_link?: string }> = {
       razorpay_payment_id,
       payment_status: 'paid',
       meet_link: meetLink,
     }
     
     // Try to add zoom_registration_link if it exists in the booking or env
-    const zoomLink = (booking as any).zoom_registration_link || 
+    const zoomLink = bookingWithZoom.zoom_registration_link || 
                      process.env.ZOOM_REGISTRATION_LINK || 
                      'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
-    try {
-      updateData.zoom_registration_link = zoomLink
-    } catch (e) {
-      // Column might not exist, that's okay
-    }
+    
+    updateData.zoom_registration_link = zoomLink
     
     await updateBookingByOrderId(razorpay_order_id, updateData)
 
