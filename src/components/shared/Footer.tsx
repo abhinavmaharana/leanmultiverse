@@ -113,11 +113,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {QUICK_LINKS.map((link, index) => (
                 <li key={index}>
-                  {link.disabled ? (
-                    <span className="text-gray-500 cursor-default select-none">
-                      {link.text}
-                    </span>
-                  ) : link.href.startsWith('/') ? (
+                  {link.href.startsWith('/') ? (
                     <Link
                       href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
