@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -72,6 +72,8 @@ function getZoomLinkForDate(dateStr: string): string {
 export default function BookWebinarClient() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false)
+  const scriptLoadedRef = useRef(false)
   const availableDates = getAvailableDates()
 
   const {
@@ -86,6 +88,50 @@ export default function BookWebinarClient() {
 
   const selectedDate = watch('selected_date')
   const selectedTime = watch('selected_time')
+
+  // Preload Razorpay script on component mount for faster checkout
+  useEffect(() => {
+    // Check if Razorpay is already loaded
+    if (typeof window !== 'undefined' && (window as typeof window & { Razorpay?: unknown }).Razorpay) {
+      setRazorpayLoaded(true)
+      scriptLoadedRef.current = true
+      return
+    }
+
+    // Check if script is already in the DOM
+    const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')
+    if (existingScript) {
+      existingScript.addEventListener('load', () => {
+        setRazorpayLoaded(true)
+        scriptLoadedRef.current = true
+      })
+      // If script is already loading/loaded, check if Razorpay is available
+      if ((window as typeof window & { Razorpay?: unknown }).Razorpay) {
+        setRazorpayLoaded(true)
+        scriptLoadedRef.current = true
+      }
+      return
+    }
+
+    // Load the script
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    script.defer = true
+    script.onload = () => {
+      setRazorpayLoaded(true)
+      scriptLoadedRef.current = true
+    }
+    script.onerror = () => {
+      console.error('Failed to load Razorpay script')
+      setError('Failed to load payment gateway. Please refresh the page and try again.')
+    }
+    document.body.appendChild(script)
+
+    return () => {
+      // Cleanup: don't remove script on unmount as it might be used by other components
+    }
+  }, [])
 
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true)
@@ -114,71 +160,130 @@ export default function BookWebinarClient() {
 
       const { orderId, bookingId } = await response.json()
 
-      // Initialize Razorpay checkout
-      const script = document.createElement('script')
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-      script.onload = () => {
-        const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-          amount: 9900, // ₹99 in paise
-          currency: 'INR',
-          name: 'Lean Multiverse',
-          description: 'Webinar Booking - Product Manager | Project Manager | Program Management Career Roadmap',
-          order_id: orderId,
-          handler: async function (response: {
-            razorpay_order_id: string
-            razorpay_payment_id: string
-            razorpay_signature: string
-          }) {
-            // Payment successful - verify on server
-            try {
-              const verifyResponse = await fetch('/api/razorpay/verify-payment', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                  booking_id: bookingId,
-                }),
-              })
+      // Wait for Razorpay script to load if not already loaded
+      const waitForRazorpay = (): Promise<void> => {
+        return new Promise((resolve, reject) => {
+          if (scriptLoadedRef.current && (window as typeof window & { Razorpay?: unknown }).Razorpay) {
+            resolve()
+            return
+          }
 
-              if (verifyResponse.ok) {
-                // After successful payment, redirect to Zoom registration
-                const zoomLink = getZoomLinkForDate(data.selected_date)
-                window.location.href = zoomLink
-              } else {
-                const errorData = await verifyResponse.json().catch(() => ({}))
-                throw new Error(errorData.error || 'Payment verification failed')
+          // Check if script is already in DOM
+          const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')
+          if (existingScript) {
+            const checkRazorpay = setInterval(() => {
+              if ((window as typeof window & { Razorpay?: unknown }).Razorpay) {
+                clearInterval(checkRazorpay)
+                scriptLoadedRef.current = true
+                setRazorpayLoaded(true)
+                resolve()
               }
-            } catch (err) {
-              const errorMessage = err instanceof Error ? err.message : 'Payment verification failed'
-              console.error('Payment verification error:', err)
-              setError(`${errorMessage}. Please contact support if payment was successful.`)
-              setIsSubmitting(false)
-            }
-          },
-          prefill: {
-            name: data.user_name,
-            email: data.user_email,
-            contact: data.user_phone,
-          },
-          theme: {
-            color: '#C69D44',
-          },
-          modal: {
-            ondismiss: function() {
-              setIsSubmitting(false)
-            },
-          },
-        }
+            }, 100)
 
-        const razorpay = new (window as typeof window & { Razorpay: new (options: unknown) => { open: () => void } }).Razorpay(options)
-        razorpay.open()
+            // Timeout after 10 seconds
+            setTimeout(() => {
+              clearInterval(checkRazorpay)
+              reject(new Error('Razorpay script loading timeout'))
+            }, 10000)
+
+            existingScript.addEventListener('load', () => {
+              clearInterval(checkRazorpay)
+              scriptLoadedRef.current = true
+              setRazorpayLoaded(true)
+              resolve()
+            })
+            return
+          }
+
+          // Load script if not present
+          const script = document.createElement('script')
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+          script.async = true
+          script.defer = true
+          script.onload = () => {
+            scriptLoadedRef.current = true
+            setRazorpayLoaded(true)
+            resolve()
+          }
+          script.onerror = () => {
+            reject(new Error('Failed to load Razorpay script'))
+          }
+          document.body.appendChild(script)
+        })
       }
-      document.body.appendChild(script)
+
+      // Wait for Razorpay to be ready
+      await waitForRazorpay()
+
+      // Initialize Razorpay checkout
+      const Razorpay = (window as typeof window & { Razorpay: new (options: unknown) => { open: () => void } }).Razorpay
+      
+      if (!Razorpay) {
+        throw new Error('Razorpay is not available. Please refresh the page and try again.')
+      }
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
+        amount: 9900, // ₹99 in paise
+        currency: 'INR',
+        name: 'Lean Multiverse',
+        description: 'Webinar Booking - Product Manager | Project Manager | Program Management Career Roadmap',
+        order_id: orderId,
+        handler: async function (response: {
+          razorpay_order_id: string
+          razorpay_payment_id: string
+          razorpay_signature: string
+        }) {
+          // Payment successful - verify on server
+          try {
+            const verifyResponse = await fetch('/api/razorpay/verify-payment', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                booking_id: bookingId,
+              }),
+            })
+
+            if (verifyResponse.ok) {
+              // After successful payment, redirect to success page with payment details
+              const successUrl = new URL('/book-webinar/success', window.location.origin)
+              successUrl.searchParams.set('payment_id', response.razorpay_payment_id)
+              successUrl.searchParams.set('order_id', response.razorpay_order_id)
+              successUrl.searchParams.set('date', data.selected_date)
+              window.location.href = successUrl.toString()
+            } else {
+              const errorData = await verifyResponse.json().catch(() => ({}))
+              throw new Error(errorData.error || 'Payment verification failed')
+            }
+          } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Payment verification failed'
+            console.error('Payment verification error:', err)
+            setError(`${errorMessage}. Please contact support if payment was successful.`)
+            setIsSubmitting(false)
+          }
+        },
+        prefill: {
+          name: data.user_name,
+          email: data.user_email,
+          contact: data.user_phone,
+        },
+        theme: {
+          color: '#C69D44',
+        },
+        modal: {
+          ondismiss: function() {
+            setIsSubmitting(false)
+          },
+        },
+      }
+
+      const razorpay = new Razorpay(options)
+      razorpay.open()
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Something went wrong. Please try again.'
       setError(errorMessage)
