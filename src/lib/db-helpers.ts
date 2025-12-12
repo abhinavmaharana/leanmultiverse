@@ -1,6 +1,7 @@
 import { supabase, WebinarBooking, CreateBookingData } from './db'
 
 export async function createBooking(data: CreateBookingData) {
+  // Try to insert with all data first
   const { data: booking, error } = await supabase
     .from('webinar_bookings')
     .insert([data])
@@ -8,6 +9,23 @@ export async function createBooking(data: CreateBookingData) {
     .single()
 
   if (error) {
+    // If error is about missing zoom_registration_link column, retry without it
+    if (error.message?.includes('zoom_registration_link') && 'zoom_registration_link' in data) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { zoom_registration_link: _zoomLink, ...dataWithoutZoom } = data
+      const { data: retryBooking, error: retryError } = await supabase
+        .from('webinar_bookings')
+        .insert([dataWithoutZoom])
+        .select()
+        .single()
+      
+      if (retryError) {
+        throw new Error(`Failed to create booking: ${retryError.message}`)
+      }
+      
+      return retryBooking as WebinarBooking
+    }
+    
     throw new Error(`Failed to create booking: ${error.message}`)
   }
 

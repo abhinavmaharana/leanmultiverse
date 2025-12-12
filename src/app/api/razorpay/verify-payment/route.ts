@@ -6,6 +6,19 @@ import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
 import { WebinarBooking } from '@/lib/db'
 
+// Zoom registration links mapped by date
+const ZOOM_LINKS: Record<string, string> = {
+  '13': 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA',
+  '20': 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA',
+}
+
+// Get Zoom link for a specific date
+function getZoomLinkForDate(dateStr: string): string {
+  const date = new Date(dateStr)
+  const day = date.getDate().toString()
+  return ZOOM_LINKS[day] || ZOOM_LINKS['13'] // Default to 13th if not found
+}
+
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
   key_secret: process.env.RAZORPAY_KEY_SECRET || '',
@@ -62,89 +75,108 @@ export async function POST(request: NextRequest) {
     let booking = await getBookingByOrderId(razorpay_order_id)
 
     // If booking doesn't exist, create it from Razorpay order notes
+    let orderNotes: Record<string, string> | null = null
     if (!booking) {
       try {
         // Fetch order details from Razorpay to get user information
         const order = await razorpay.orders.fetch(razorpay_order_id)
-        const notes = order.notes as Record<string, string> | null
+        orderNotes = order.notes as Record<string, string> | null
         
-        if (notes && notes.user_name && notes.user_email && notes.user_phone && notes.selected_date && notes.selected_time) {
+        if (orderNotes && orderNotes.user_name && orderNotes.user_email && orderNotes.user_phone && orderNotes.selected_date && orderNotes.selected_time) {
           const { createBooking } = await import('@/lib/db-helpers')
-          booking = await createBooking({
-            user_name: notes.user_name,
-            user_email: notes.user_email,
-            user_phone: notes.user_phone,
-            selected_date: notes.selected_date,
-            selected_time: notes.selected_time,
-            razorpay_order_id: razorpay_order_id,
-            zoom_registration_link: notes.zoom_registration_link || undefined,
-          })
-          console.log('Created booking from Razorpay order notes:', booking.id)
+          try {
+            booking = await createBooking({
+              user_name: orderNotes.user_name,
+              user_email: orderNotes.user_email,
+              user_phone: orderNotes.user_phone,
+              selected_date: orderNotes.selected_date,
+              selected_time: orderNotes.selected_time,
+              razorpay_order_id: razorpay_order_id,
+              zoom_registration_link: orderNotes.zoom_registration_link || undefined,
+            })
+            console.log('Created booking from Razorpay order notes:', booking.id)
+          } catch (createError) {
+            console.error('Error creating booking from order (will use order notes for email):', createError)
+            // Continue with order notes - we can still send the email
+            booking = null
+          }
         } else {
           return NextResponse.json(
             { error: 'Booking not found and cannot be created from order data' },
             { status: 404 }
           )
         }
-      } catch (createError) {
-        console.error('Error creating booking from order:', createError)
+      } catch (fetchError) {
+        console.error('Error fetching order from Razorpay:', fetchError)
         return NextResponse.json(
-          { error: 'Booking not found and failed to create from order data' },
+          { error: 'Booking not found and failed to fetch order data' },
           { status: 404 }
         )
       }
     }
+    
+    // If we still don't have a booking but have order notes, use order notes for email
+    const bookingData = booking || (orderNotes ? {
+      user_name: orderNotes.user_name,
+      user_email: orderNotes.user_email,
+      user_phone: orderNotes.user_phone,
+      selected_date: orderNotes.selected_date,
+      selected_time: orderNotes.selected_time,
+      id: `temp_${razorpay_order_id}`,
+    } : null)
+    
+    if (!bookingData) {
+      return NextResponse.json(
+        { error: 'Booking not found and no order data available' },
+        { status: 404 }
+      )
+    }
 
     // Update booking with payment details
     // Use Zoom registration link (always use the registration link)
-    // First check booking, then Razorpay order notes, then env, then default
+    // Priority: booking -> order notes -> calculate from date -> env -> default
     let zoomRegistrationLink: string
     
-    const bookingWithZoom = booking as WebinarBooking & { zoom_registration_link?: string | null }
+    const bookingWithZoom = booking as (WebinarBooking & { zoom_registration_link?: string | null }) | null
     
-    if (bookingWithZoom.zoom_registration_link) {
+    if (bookingWithZoom?.zoom_registration_link) {
       zoomRegistrationLink = bookingWithZoom.zoom_registration_link
+    } else if (orderNotes?.zoom_registration_link) {
+      zoomRegistrationLink = orderNotes.zoom_registration_link
+    } else if (bookingData.selected_date) {
+      // Calculate Zoom link based on selected date
+      zoomRegistrationLink = getZoomLinkForDate(bookingData.selected_date)
+      console.log(`Calculated Zoom link for date ${bookingData.selected_date}: ${zoomRegistrationLink}`)
     } else {
-      // Try to get from Razorpay order notes if not in booking
-      try {
-        const order = await razorpay.orders.fetch(razorpay_order_id)
-        const notes = order.notes as Record<string, string> | null
-        if (notes?.zoom_registration_link) {
-          zoomRegistrationLink = notes.zoom_registration_link
-        } else {
-          zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || 
-                                 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
-        }
-      } catch (error) {
-        console.error('Error fetching order notes for Zoom link:', error)
-        zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || 
-                               'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
-      }
+      zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || 
+                             'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
     }
     
     const meetLink = zoomRegistrationLink
     
-    // Update booking with payment details (try to include zoom_registration_link if column exists)
-    const updateData: Partial<WebinarBooking & { zoom_registration_link?: string }> = {
-      razorpay_payment_id,
-      payment_status: 'paid',
-      meet_link: meetLink,
+    // Update booking with payment details (only if booking exists)
+    if (booking) {
+      const updateData: Partial<WebinarBooking & { zoom_registration_link?: string }> = {
+        razorpay_payment_id,
+        payment_status: 'paid',
+        meet_link: meetLink,
+      }
+      
+      // Store the Zoom link in the booking for future reference
+      updateData.zoom_registration_link = zoomRegistrationLink
+      
+      await updateBookingByOrderId(razorpay_order_id, updateData)
     }
-    
-    // Store the Zoom link in the booking for future reference
-    updateData.zoom_registration_link = zoomRegistrationLink
-    
-    await updateBookingByOrderId(razorpay_order_id, updateData)
 
     // Generate calendar invite
     let calendarInvite: string
     try {
       calendarInvite = await generateCalendarInvite({
-        id: booking.id,
-        user_name: booking.user_name,
-        user_email: booking.user_email,
-        selected_date: booking.selected_date,
-        selected_time: booking.selected_time,
+        id: bookingData.id,
+        user_name: bookingData.user_name,
+        user_email: bookingData.user_email,
+        selected_date: bookingData.selected_date,
+        selected_time: bookingData.selected_time,
         meet_link: meetLink,
       })
     } catch (error) {
@@ -154,20 +186,22 @@ export async function POST(request: NextRequest) {
 
     // Send email with calendar invite
     try {
-      console.log('Attempting to send email to:', booking.user_email)
+      console.log('Attempting to send email to:', bookingData.user_email)
       await sendCalendarInviteEmail({
-        to: booking.user_email,
-        name: booking.user_name,
-        date: booking.selected_date,
-        time: booking.selected_time,
+        to: bookingData.user_email,
+        name: bookingData.user_name,
+        date: bookingData.selected_date,
+        time: bookingData.selected_time,
         meetLink: meetLink,
         calendarInvite: calendarInvite,
       })
       
-      // Mark calendar invite as sent
-      await updateBookingByOrderId(razorpay_order_id, {
-        calendar_invite_sent: true,
-      })
+      // Mark calendar invite as sent (only if booking exists)
+      if (booking) {
+        await updateBookingByOrderId(razorpay_order_id, {
+          calendar_invite_sent: true,
+        })
+      }
       console.log('Email sent successfully and marked as sent in database')
     } catch (error) {
       console.error('Error sending email:', error)
@@ -178,7 +212,7 @@ export async function POST(request: NextRequest) {
       console.error('Email sending error details:', {
         message: errorMessage,
         stack: errorStack,
-        email: booking.user_email,
+        email: bookingData.user_email,
         timestamp: new Date().toISOString(),
       })
       

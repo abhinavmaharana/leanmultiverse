@@ -5,6 +5,19 @@ import { generateCalendarInvite } from '@/lib/calendar'
 import { generateMeetLink } from '@/lib/meet-link'
 import { sendCalendarInviteEmail } from '@/lib/email'
 
+// Zoom registration links mapped by date
+const ZOOM_LINKS: Record<string, string> = {
+  '13': 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA',
+  '20': 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA',
+}
+
+// Get Zoom link for a specific date
+function getZoomLinkForDate(dateStr: string): string {
+  const date = new Date(dateStr)
+  const day = date.getDate().toString()
+  return ZOOM_LINKS[day] || ZOOM_LINKS['13'] // Default to 13th if not found
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.text()
@@ -55,12 +68,22 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true, message: 'Already processed' })
       }
 
-      // Get Zoom registration link from booking, or fallback to generateMeetLink
+      // Get Zoom registration link from booking, calculate from date, or fallback
+      // Priority: booking -> calculate from date -> generateMeetLink -> env -> default
       const bookingWithZoom = booking as typeof booking & { zoom_registration_link?: string | null }
-      const meetLink = bookingWithZoom.zoom_registration_link || 
-                       await generateMeetLink(booking) ||
-                       process.env.ZOOM_REGISTRATION_LINK ||
-                       'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
+      let meetLink: string
+      
+      if (bookingWithZoom.zoom_registration_link) {
+        meetLink = bookingWithZoom.zoom_registration_link
+      } else if (booking.selected_date) {
+        // Calculate Zoom link based on selected date
+        meetLink = getZoomLinkForDate(booking.selected_date)
+        console.log(`Webhook: Calculated Zoom link for date ${booking.selected_date}: ${meetLink}`)
+      } else {
+        meetLink = await generateMeetLink(booking) ||
+                   process.env.ZOOM_REGISTRATION_LINK ||
+                   'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
+      }
 
       await updateBookingByOrderId(orderId, {
         razorpay_payment_id: payment.id,
