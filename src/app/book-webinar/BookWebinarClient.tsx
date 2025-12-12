@@ -22,33 +22,51 @@ const bookingSchema = z.object({
 
 type BookingFormData = z.infer<typeof bookingSchema>
 
-// Zoom registration link
-const ZOOM_REGISTRATION_LINK = 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
+// Zoom registration links mapped by date
+const ZOOM_LINKS: Record<string, string> = {
+  '13': 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA',
+  '20': 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA',
+}
 
 // Available time slots in IST
 const TIME_SLOTS = [
   { value: '20:00', label: '8:00 PM IST' },
 ]
 
-// Get available dates - only December 13th
+// Get available dates - December 13th and 20th
 function getAvailableDates() {
   const dates: Date[] = []
   const today = new Date()
+  const currentYear = today.getFullYear()
   
-  // December 13th of current year
-  const december13 = new Date(today.getFullYear(), 11, 13) // Month is 0-indexed, so 11 = December
+  // December 13th and 20th of current year
+  const december13 = new Date(currentYear, 11, 13) // Month is 0-indexed, so 11 = December
+  const december20 = new Date(currentYear, 11, 20)
   
-  // If December 13th has passed this year, use next year
+  // If dates have passed this year, use next year
   if (december13 < today) {
-    december13.setFullYear(today.getFullYear() + 1)
+    december13.setFullYear(currentYear + 1)
+  }
+  if (december20 < today) {
+    december20.setFullYear(currentYear + 1)
   }
   
-  // Only add December 13th if it's today or in the future
+  // Add dates if they're today or in the future
   if (december13 >= today) {
     dates.push(december13)
   }
+  if (december20 >= today) {
+    dates.push(december20)
+  }
   
   return dates
+}
+
+// Get Zoom link for a specific date
+function getZoomLinkForDate(dateStr: string): string {
+  const date = new Date(dateStr)
+  const day = date.getDate().toString()
+  return ZOOM_LINKS[day] || ZOOM_LINKS['13'] // Default to 13th if not found
 }
 
 export default function BookWebinarClient() {
@@ -74,6 +92,9 @@ export default function BookWebinarClient() {
     setError(null)
 
     try {
+      // Get the appropriate Zoom link for the selected date
+      const zoomLink = getZoomLinkForDate(data.selected_date)
+      
       // Create booking and get Razorpay order
       const response = await fetch('/api/razorpay/create-order', {
         method: 'POST',
@@ -82,7 +103,7 @@ export default function BookWebinarClient() {
         },
         body: JSON.stringify({
           ...data,
-          zoom_registration_link: ZOOM_REGISTRATION_LINK,
+          zoom_registration_link: zoomLink,
         }),
       })
 
@@ -126,7 +147,8 @@ export default function BookWebinarClient() {
 
               if (verifyResponse.ok) {
                 // After successful payment, redirect to Zoom registration
-                window.location.href = ZOOM_REGISTRATION_LINK
+                const zoomLink = getZoomLinkForDate(data.selected_date)
+                window.location.href = zoomLink
               } else {
                 const errorData = await verifyResponse.json().catch(() => ({}))
                 throw new Error(errorData.error || 'Payment verification failed')
@@ -328,7 +350,11 @@ export default function BookWebinarClient() {
               <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 rounded-xl p-6 text-center">
                 <div className="text-gray-300 text-sm mb-1">Total Amount</div>
                 <div className="text-4xl font-bold text-yellow-400 mb-2">₹99</div>
-                <div className="text-gray-300 text-sm mt-2">December 13th, 8:00 PM IST</div>
+                {selectedDate && (
+                  <div className="text-gray-300 text-sm mt-2">
+                    {format(new Date(selectedDate), 'MMMM d')}, 8:00 PM IST
+                  </div>
+                )}
               </div>
 
               {/* Error Message */}
@@ -360,7 +386,7 @@ export default function BookWebinarClient() {
               After payment, you&apos;ll be redirected to complete your Zoom registration and receive a confirmation email.
             </p>
             <p className="mt-2">
-              All times are in IST (Indian Standard Time). Webinar is scheduled for December 13th, 8:00 PM IST.
+              All times are in IST (Indian Standard Time). Webinars are scheduled for December 13th and 20th, 8:00 PM IST.
             </p>
           </motion.div>
         </div>
