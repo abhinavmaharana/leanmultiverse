@@ -10,7 +10,7 @@ const razorpay = new Razorpay({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { user_name, user_email, user_phone, selected_date, selected_time } = body
+    const { user_name, user_email, user_phone, selected_date, selected_time, zoom_registration_link } = body
 
     // Validate required fields
     if (!user_name || !user_email || !user_phone || !selected_date || !selected_time) {
@@ -31,22 +31,34 @@ export async function POST(request: NextRequest) {
         user_phone,
         selected_date,
         selected_time,
+        zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK,
       },
     })
 
-    // Create booking in database
-    const booking = await createBooking({
-      user_name,
-      user_email,
-      user_phone,
-      selected_date,
-      selected_time,
-      razorpay_order_id: order.id,
-    })
+    // Create booking in database (with error handling)
+    // Don't include zoom_registration_link in initial insert to avoid column errors
+    let booking
+    try {
+      const bookingData = {
+        user_name,
+        user_email,
+        user_phone,
+        selected_date,
+        selected_time,
+        razorpay_order_id: order.id,
+      }
+      
+      booking = await createBooking(bookingData)
+    } catch (dbError) {
+      console.error('Database error (continuing with order creation):', dbError)
+      // Continue even if database save fails - we still have the Razorpay order
+      // The booking will be created during payment verification using order notes
+      booking = null
+    }
 
     return NextResponse.json({
       orderId: order.id,
-      bookingId: booking.id,
+      bookingId: booking?.id || `temp_${order.id}`,
       amount: order.amount,
       currency: order.currency,
     })

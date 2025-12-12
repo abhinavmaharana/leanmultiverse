@@ -37,7 +37,7 @@ const QUICK_LINKS = [
   { href: "#stories", text: "Success Stories" },
   { href: "/services", text: "Services" },
   { href: "#contact", text: "Contact" },
-  { href: "/book-webinar", text: "Book Webinar", disabled: true }
+  { href: "/book-webinar", text: "Book Webinar" }
 ]
 
 const PROGRAM_LINKS = [

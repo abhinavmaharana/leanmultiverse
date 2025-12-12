@@ -21,6 +21,7 @@ export interface WebinarBooking {
   razorpay_payment_id: string | null
   payment_status: 'pending' | 'paid' | 'failed'
   meet_link: string | null
+  zoom_registration_link?: string | null
   calendar_invite_sent: boolean
   created_at: string
   updated_at: string
@@ -33,5 +34,6 @@ export interface CreateBookingData {
   selected_date: string
   selected_time: string
   razorpay_order_id?: string
+  zoom_registration_link?: string
 }
 

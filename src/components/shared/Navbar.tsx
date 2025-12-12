@@ -136,15 +136,17 @@ export default function Navbar() {
       <div className="flex items-center gap-3">
         {SHOW_WEBINAR_CTA && (
           <div>
-            <Button
-              className={`hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[65px] text-white shadow-md hover:opacity-90 transition ${
-                isTransparent 
-                  ? 'bg-white/20 backdrop-blur-sm border border-white/30' 
-                  : 'bg-white/10 backdrop-blur-md border border-white/20'
-              }`}
-            >
-              <span>Book Webinar</span>
-            </Button>
+            <Link href="/book-webinar">
+              <Button
+                className={`hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[65px] text-white shadow-md hover:opacity-90 transition ${
+                  isTransparent 
+                    ? 'bg-white/20 backdrop-blur-sm border border-white/30' 
+                    : 'bg-white/10 backdrop-blur-md border border-white/20'
+                }`}
+              >
+                <span>Book Webinar</span>
+              </Button>
+            </Link>
           </div>
         )}
         <button
@@ -222,12 +224,13 @@ export default function Navbar() {
             </a>
             {SHOW_WEBINAR_CTA && (
               <div>
-                <Button
-                  className="mt-2 w-full rounded-full px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
-                  onClick={() => setOpen(false)}
-                >
-                  <span>Book Webinar</span>
-                </Button>
+                <Link href="/book-webinar" onClick={() => setOpen(false)}>
+                  <Button
+                    className="mt-2 w-full rounded-full px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-md hover:opacity-90 transition"
+                  >
+                    <span>Book Webinar</span>
+                  </Button>
+                </Link>
               </div>
             )}
           </div>

@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS webinar_bookings (
   razorpay_payment_id VARCHAR(255),
   payment_status VARCHAR(20) DEFAULT 'pending' CHECK (payment_status IN ('pending', 'paid', 'failed')),
   meet_link TEXT,
+  zoom_registration_link TEXT,
   calendar_invite_sent BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

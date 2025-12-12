@@ -59,30 +59,67 @@ export async function POST(request: NextRequest) {
     }
 
     // Get booking from database
-    const booking = await getBookingByOrderId(razorpay_order_id)
+    let booking = await getBookingByOrderId(razorpay_order_id)
 
+    // If booking doesn't exist, create it from Razorpay order notes
     if (!booking) {
-      return NextResponse.json(
-        { error: 'Booking not found' },
-        { status: 404 }
-      )
+      try {
+        // Fetch order details from Razorpay to get user information
+        const order = await razorpay.orders.fetch(razorpay_order_id)
+        const notes = order.notes as any
+        
+        if (notes && notes.user_name && notes.user_email && notes.user_phone && notes.selected_date && notes.selected_time) {
+          const { createBooking } = await import('@/lib/db-helpers')
+          booking = await createBooking({
+            user_name: notes.user_name,
+            user_email: notes.user_email,
+            user_phone: notes.user_phone,
+            selected_date: notes.selected_date,
+            selected_time: notes.selected_time,
+            razorpay_order_id: razorpay_order_id,
+          })
+          console.log('Created booking from Razorpay order notes:', booking.id)
+        } else {
+          return NextResponse.json(
+            { error: 'Booking not found and cannot be created from order data' },
+            { status: 404 }
+          )
+        }
+      } catch (createError) {
+        console.error('Error creating booking from order:', createError)
+        return NextResponse.json(
+          { error: 'Booking not found and failed to create from order data' },
+          { status: 404 }
+        )
+      }
     }
 
     // Update booking with payment details
-    let meetLink: string
-    try {
-      meetLink = await generateMeetLink(booking)
-    } catch (error) {
-      console.error('Error generating meet link:', error)
-      // Use fallback meeting URL if Zoom API fails
-      meetLink = process.env.ZOOM_MEETING_URL || 'https://zoom.us/j/YOUR_MEETING_ID'
-    }
+    // Use Zoom registration link (always use the registration link)
+    const zoomRegistrationLink = (booking as any).zoom_registration_link || 
+                                 process.env.ZOOM_REGISTRATION_LINK || 
+                                 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
     
-    await updateBookingByOrderId(razorpay_order_id, {
+    const meetLink = zoomRegistrationLink
+    
+    // Update booking with payment details (try to include zoom_registration_link if column exists)
+    const updateData: any = {
       razorpay_payment_id,
       payment_status: 'paid',
       meet_link: meetLink,
-    })
+    }
+    
+    // Try to add zoom_registration_link if it exists in the booking or env
+    const zoomLink = (booking as any).zoom_registration_link || 
+                     process.env.ZOOM_REGISTRATION_LINK || 
+                     'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
+    try {
+      updateData.zoom_registration_link = zoomLink
+    } catch (e) {
+      // Column might not exist, that's okay
+    }
+    
+    await updateBookingByOrderId(razorpay_order_id, updateData)
 
     // Generate calendar invite
     let calendarInvite: string

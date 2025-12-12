@@ -22,35 +22,33 @@ const bookingSchema = z.object({
 
 type BookingFormData = z.infer<typeof bookingSchema>
 
+// Zoom registration link
+const ZOOM_REGISTRATION_LINK = 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
+
 // Available time slots in IST
 const TIME_SLOTS = [
   { value: '20:00', label: '8:00 PM IST' },
 ]
 
-// Get next 4 weekends (Saturdays and Sundays)
+// Get available dates - only December 13th
 function getAvailableDates() {
   const dates: Date[] = []
   const today = new Date()
-  const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 }) // Monday as start
   
-  // Start from next Saturday
-  let currentDate = addDays(startOfCurrentWeek, 5) // Saturday
+  // December 13th of current year
+  const december13 = new Date(today.getFullYear(), 11, 13) // Month is 0-indexed, so 11 = December
   
-  // If today is already past Saturday, start from next week's Saturday
-  if (currentDate < today) {
-    currentDate = addDays(currentDate, 7)
+  // If December 13th has passed this year, use next year
+  if (december13 < today) {
+    december13.setFullYear(today.getFullYear() + 1)
   }
   
-  // Get 4 weekends (8 dates: 4 Saturdays + 4 Sundays)
-  for (let week = 0; week < 4; week++) {
-    const saturday = addWeeks(currentDate, week)
-    const sunday = addDays(saturday, 1)
-    
-    if (saturday >= today) dates.push(saturday)
-    if (sunday >= today) dates.push(sunday)
+  // Only add December 13th if it's today or in the future
+  if (december13 >= today) {
+    dates.push(december13)
   }
   
-  return dates.filter(date => date >= today)
+  return dates
 }
 
 export default function BookWebinarClient() {
@@ -82,7 +80,10 @@ export default function BookWebinarClient() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          zoom_registration_link: ZOOM_REGISTRATION_LINK,
+        }),
       })
 
       if (!response.ok) {
@@ -101,7 +102,7 @@ export default function BookWebinarClient() {
           amount: 9900, // ₹99 in paise
           currency: 'INR',
           name: 'Lean Multiverse',
-          description: 'Webinar Booking',
+          description: 'Webinar Booking - Product Manager | Project Manager | Program Management Career Roadmap',
           order_id: orderId,
           handler: async function (response: {
             razorpay_order_id: string
@@ -124,12 +125,16 @@ export default function BookWebinarClient() {
               })
 
               if (verifyResponse.ok) {
-                window.location.href = '/book-webinar/success'
+                // After successful payment, redirect to Zoom registration
+                window.location.href = ZOOM_REGISTRATION_LINK
               } else {
-                throw new Error('Payment verification failed')
+                const errorData = await verifyResponse.json().catch(() => ({}))
+                throw new Error(errorData.error || 'Payment verification failed')
               }
-            } catch {
-              setError('Payment verification failed. Please contact support.')
+            } catch (err) {
+              const errorMessage = err instanceof Error ? err.message : 'Payment verification failed'
+              console.error('Payment verification error:', err)
+              setError(`${errorMessage}. Please contact support if payment was successful.`)
               setIsSubmitting(false)
             }
           },
@@ -172,10 +177,11 @@ export default function BookWebinarClient() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              Book Your Webinar
+              Product Manager | Project Manager | Program Management Career Roadmap Webinar
             </h1>
-            <p className="text-gray-300 text-lg">
-              Select your preferred date and time for our exclusive webinar
+            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+              Want to move from your current job—sales, operations, support, HR, finance, tech—into high-growth management roles? 
+              Learn the exact pathways to become a Product Owner, Product Manager, Project Manager, or Program Manager.
             </p>
           </motion.div>
 
@@ -190,33 +196,50 @@ export default function BookWebinarClient() {
               {/* Date Selection */}
               <div>
                 <Label htmlFor="date" className="text-white mb-3 block text-lg font-semibold">
-                  Select Date (Weekends Only)
+                  Select Date
                 </Label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {availableDates.map((date) => {
-                    const dateStr = format(date, 'yyyy-MM-dd')
-                    const isSelected = selectedDate === dateStr
-                    const dayName = format(date, 'EEE')
-                    const dayNum = format(date, 'd')
-                    const month = format(date, 'MMM')
+                <div className="grid grid-cols-1 gap-3">
+                  {availableDates.length > 0 ? (
+                    availableDates.map((date) => {
+                      const dateStr = format(date, 'yyyy-MM-dd')
+                      const isSelected = selectedDate === dateStr
+                      const dayName = format(date, 'EEEE')
+                      const dayNum = format(date, 'd')
+                      const month = format(date, 'MMMM yyyy')
 
-                    return (
-                      <button
-                        key={dateStr}
-                        type="button"
-                        onClick={() => setValue('selected_date', dateStr)}
-                        className={`p-4 rounded-xl border-2 transition-all ${
-                          isSelected
-                            ? 'border-yellow-400 bg-yellow-400/20 text-yellow-400'
-                            : 'border-white/20 bg-white/5 text-white hover:border-white/40'
-                        }`}
-                      >
-                        <div className="text-sm font-medium">{dayName}</div>
-                        <div className="text-2xl font-bold">{dayNum}</div>
-                        <div className="text-xs text-gray-400">{month}</div>
-                      </button>
-                    )
-                  })}
+                      return (
+                        <button
+                          key={dateStr}
+                          type="button"
+                          onClick={() => setValue('selected_date', dateStr)}
+                          className={`p-6 rounded-xl border-2 transition-all ${
+                            isSelected
+                              ? 'border-yellow-400 bg-yellow-400/20 text-yellow-400'
+                              : 'border-white/20 bg-white/5 text-white hover:border-white/40'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="text-left">
+                              <div className="text-sm font-medium text-gray-300">{dayName}</div>
+                              <div className="text-3xl font-bold mt-1">{dayNum}</div>
+                              <div className="text-sm text-gray-400 mt-1">{month}</div>
+                            </div>
+                            {isSelected && (
+                              <div className="text-yellow-400">
+                                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      )
+                    })
+                  ) : (
+                    <div className="p-6 rounded-xl border-2 border-white/20 bg-white/5 text-center text-gray-400">
+                      No available dates at this time
+                    </div>
+                  )}
                 </div>
                 {errors.selected_date && (
                   <p className="text-red-400 text-sm mt-2">{errors.selected_date.message}</p>
@@ -304,7 +327,8 @@ export default function BookWebinarClient() {
               {/* Price Display */}
               <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 rounded-xl p-6 text-center">
                 <div className="text-gray-300 text-sm mb-1">Total Amount</div>
-                <div className="text-4xl font-bold text-yellow-400">₹99</div>
+                <div className="text-4xl font-bold text-yellow-400 mb-2">₹99</div>
+                <div className="text-gray-300 text-sm mt-2">December 13th, 8:00 PM IST</div>
               </div>
 
               {/* Error Message */}
@@ -333,10 +357,10 @@ export default function BookWebinarClient() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <p>
-              After payment, you&apos;ll receive a calendar invite and meeting link via email.
+              After payment, you&apos;ll be redirected to complete your Zoom registration and receive a confirmation email.
             </p>
             <p className="mt-2">
-              All times are in IST (Indian Standard Time). Webinars are held on weekends only.
+              All times are in IST (Indian Standard Time). Webinar is scheduled for December 13th, 8:00 PM IST.
             </p>
           </motion.div>
         </div>

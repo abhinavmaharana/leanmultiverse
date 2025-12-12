@@ -58,14 +58,35 @@ export async function updateBooking(id: string, updates: Partial<WebinarBooking>
 }
 
 export async function updateBookingByOrderId(orderId: string, updates: Partial<WebinarBooking>) {
+  // Remove zoom_registration_link if column doesn't exist to avoid errors
+  const safeUpdates = { ...updates }
+  
+  // Try to update, and if it fails due to missing column, retry without zoom_registration_link
   const { data, error } = await supabase
     .from('webinar_bookings')
-    .update(updates)
+    .update(safeUpdates)
     .eq('razorpay_order_id', orderId)
     .select()
     .single()
 
   if (error) {
+    // If error is about missing column, try again without zoom_registration_link
+    if (error.message?.includes('zoom_registration_link') && safeUpdates.zoom_registration_link) {
+      const { zoom_registration_link, ...updatesWithoutZoom } = safeUpdates
+      const { data: retryData, error: retryError } = await supabase
+        .from('webinar_bookings')
+        .update(updatesWithoutZoom)
+        .eq('razorpay_order_id', orderId)
+        .select()
+        .single()
+      
+      if (retryError) {
+        throw new Error(`Failed to update booking: ${retryError.message}`)
+      }
+      
+      return retryData as WebinarBooking
+    }
+    
     throw new Error(`Failed to update booking: ${error.message}`)
   }
 
