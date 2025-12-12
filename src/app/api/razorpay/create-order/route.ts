@@ -36,16 +36,28 @@ export async function POST(request: NextRequest) {
     })
 
     // Create booking in database (with error handling)
-    // Don't include zoom_registration_link in initial insert to avoid column errors
     let booking
     try {
-      const bookingData = {
+      const bookingData: {
+        user_name: string
+        user_email: string
+        user_phone: string
+        selected_date: string
+        selected_time: string
+        razorpay_order_id: string
+        zoom_registration_link?: string
+      } = {
         user_name,
         user_email,
         user_phone,
         selected_date,
         selected_time,
         razorpay_order_id: order.id,
+      }
+      
+      // Include zoom_registration_link if provided
+      if (zoom_registration_link) {
+        bookingData.zoom_registration_link = zoom_registration_link
       }
       
       booking = await createBooking(bookingData)

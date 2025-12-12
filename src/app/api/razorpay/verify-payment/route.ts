@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
             selected_date: notes.selected_date,
             selected_time: notes.selected_time,
             razorpay_order_id: razorpay_order_id,
+            zoom_registration_link: notes.zoom_registration_link || undefined,
           })
           console.log('Created booking from Razorpay order notes:', booking.id)
         } else {
@@ -96,10 +97,30 @@ export async function POST(request: NextRequest) {
 
     // Update booking with payment details
     // Use Zoom registration link (always use the registration link)
+    // First check booking, then Razorpay order notes, then env, then default
+    let zoomRegistrationLink: string
+    
     const bookingWithZoom = booking as WebinarBooking & { zoom_registration_link?: string | null }
-    const zoomRegistrationLink = bookingWithZoom.zoom_registration_link || 
-                                 process.env.ZOOM_REGISTRATION_LINK || 
+    
+    if (bookingWithZoom.zoom_registration_link) {
+      zoomRegistrationLink = bookingWithZoom.zoom_registration_link
+    } else {
+      // Try to get from Razorpay order notes if not in booking
+      try {
+        const order = await razorpay.orders.fetch(razorpay_order_id)
+        const notes = order.notes as Record<string, string> | null
+        if (notes?.zoom_registration_link) {
+          zoomRegistrationLink = notes.zoom_registration_link
+        } else {
+          zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || 
                                  'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
+        }
+      } catch (error) {
+        console.error('Error fetching order notes for Zoom link:', error)
+        zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || 
+                               'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
+      }
+    }
     
     const meetLink = zoomRegistrationLink
     
@@ -110,12 +131,8 @@ export async function POST(request: NextRequest) {
       meet_link: meetLink,
     }
     
-    // Try to add zoom_registration_link if it exists in the booking or env
-    const zoomLink = bookingWithZoom.zoom_registration_link || 
-                     process.env.ZOOM_REGISTRATION_LINK || 
-                     'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
-    
-    updateData.zoom_registration_link = zoomLink
+    // Store the Zoom link in the booking for future reference
+    updateData.zoom_registration_link = zoomRegistrationLink
     
     await updateBookingByOrderId(razorpay_order_id, updateData)
 

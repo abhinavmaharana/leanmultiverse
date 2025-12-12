@@ -55,13 +55,18 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true, message: 'Already processed' })
       }
 
-      // Update booking with payment details
-      const meetLink = await generateMeetLink(booking)
+      // Get Zoom registration link from booking, or fallback to generateMeetLink
+      const bookingWithZoom = booking as typeof booking & { zoom_registration_link?: string | null }
+      const meetLink = bookingWithZoom.zoom_registration_link || 
+                       await generateMeetLink(booking) ||
+                       process.env.ZOOM_REGISTRATION_LINK ||
+                       'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA'
 
       await updateBookingByOrderId(orderId, {
         razorpay_payment_id: payment.id,
         payment_status: 'paid',
         meet_link: meetLink,
+        zoom_registration_link: bookingWithZoom.zoom_registration_link || meetLink,
       })
 
       // Generate calendar invite
