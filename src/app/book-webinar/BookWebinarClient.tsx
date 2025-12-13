@@ -33,28 +33,21 @@ const TIME_SLOTS = [
   { value: '20:00', label: '8:00 PM IST' },
 ]
 
-// Get available dates - December 13th and 20th
+// Get available dates - December 20th only
 function getAvailableDates() {
   const dates: Date[] = []
   const today = new Date()
   const currentYear = today.getFullYear()
   
-  // December 13th and 20th of current year
-  const december13 = new Date(currentYear, 11, 13) // Month is 0-indexed, so 11 = December
-  const december20 = new Date(currentYear, 11, 20)
+  // December 20th of current year
+  const december20 = new Date(currentYear, 11, 20) // Month is 0-indexed, so 11 = December
   
-  // If dates have passed this year, use next year
-  if (december13 < today) {
-    december13.setFullYear(currentYear + 1)
-  }
+  // If date has passed this year, use next year
   if (december20 < today) {
     december20.setFullYear(currentYear + 1)
   }
   
-  // Add dates if they're today or in the future
-  if (december13 >= today) {
-    dates.push(december13)
-  }
+  // Add date if it's today or in the future
   if (december20 >= today) {
     dates.push(december20)
   }
@@ -491,7 +484,7 @@ export default function BookWebinarClient() {
               After payment, you&apos;ll be redirected to complete your Zoom registration and receive a confirmation email.
             </p>
             <p className="mt-2">
-              All times are in IST (Indian Standard Time). Webinars are scheduled for December 13th and 20th, 8:00 PM IST.
+              All times are in IST (Indian Standard Time). Webinar is scheduled for December 20th, 8:00 PM IST.
             </p>
           </motion.div>
         </div>
