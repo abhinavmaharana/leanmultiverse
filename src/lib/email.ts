@@ -25,13 +25,22 @@ export async function sendCalendarInviteEmail(data: EmailData) {
     }
 
     const { startDate, dateStr, timeStr } = normalizeDateTime(data.date, data.time)
+    
+    // Ensure we're formatting the date correctly in IST timezone
+    // Parse the date string directly and create date at midnight IST to avoid timezone conversion issues
+    const [year, month, day] = dateStr.split('-').map(Number)
+    // Create date at midnight IST (UTC+5:30) = 18:30 previous day UTC
+    // So for Dec 13 IST midnight, we need Dec 12 18:30 UTC
+    const dateInIST = new Date(Date.UTC(year, month - 1, day - 1, 18, 30, 0))
+    
+    // Format using IST timezone to get the correct day of week
     const formattedDate = new Intl.DateTimeFormat('en-IN', {
       timeZone: 'Asia/Kolkata',
       weekday: 'long',
       month: 'long',
       day: 'numeric',
       year: 'numeric'
-    }).format(startDate)
+    }).format(dateInIST)
     const formattedTime = `${new Intl.DateTimeFormat('en-IN', {
       timeZone: 'Asia/Kolkata',
       hour: 'numeric',
