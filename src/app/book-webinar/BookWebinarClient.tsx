@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -88,7 +88,7 @@ export default function BookWebinarClient() {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   const [currentStep, setCurrentStep] = useState(1) // 1: Date, 2: Time, 3: Info
   const scriptLoadedRef = useRef(false)
-  const availableDates = getAvailableDates()
+  const availableDates = useMemo(() => getAvailableDates(), [])
 
   const {
     register,
@@ -352,9 +352,9 @@ export default function BookWebinarClient() {
           {/* Header */}
           <motion.div
             className="text-center mb-12"
-            initial={{ y: 20, opacity: 0 }}
+            initial={{ y: 12, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.25 }}
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Product Manager | Project Manager | Program Management Career Roadmap Webinar
@@ -367,10 +367,10 @@ export default function BookWebinarClient() {
 
           {/* Booking Form - Typeform Style */}
           <motion.div
-            className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-12"
-            initial={{ y: 20, opacity: 0 }}
+            className="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12"
+            initial={{ y: 12, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.2, delay: 0.05 }}
           >
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
               {/* Hidden inputs for form validation */}
@@ -397,10 +397,10 @@ export default function BookWebinarClient() {
                 {currentStep === 1 && (
                   <motion.div
                     key="step1"
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 16 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
+                    exit={{ opacity: 0, x: -16 }}
+                    transition={{ duration: 0.2 }}
                     className="space-y-6"
                   >
                   <div>
@@ -442,14 +442,14 @@ export default function BookWebinarClient() {
                   
                   {selectedDate && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <Button
                         type="button"
                         onClick={handleNext}
-                        className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-base md:text-lg font-semibold transition-all duration-150"
                       >
                         Next →
                       </Button>
@@ -462,10 +462,10 @@ export default function BookWebinarClient() {
                 {currentStep === 2 && (
                   <motion.div
                     key="step2"
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 16 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
+                    exit={{ opacity: 0, x: -16 }}
+                    transition={{ duration: 0.2 }}
                     className="space-y-6"
                   >
                   <div>
@@ -515,15 +515,15 @@ export default function BookWebinarClient() {
                     </Button>
                     {selectedTime && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.2 }}
                         className="flex-1"
                       >
                         <Button
                           type="button"
                           onClick={handleNext}
-                          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300"
+                          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-base md:text-lg font-semibold transition-all duration-150"
                         >
                           Next →
                         </Button>
@@ -537,10 +537,10 @@ export default function BookWebinarClient() {
                 {currentStep === 3 && (
                   <motion.div
                     key="step3"
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 16 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
+                    exit={{ opacity: 0, x: -16 }}
+                    transition={{ duration: 0.2 }}
                     className="space-y-6"
                   >
                   <div>
@@ -629,7 +629,7 @@ export default function BookWebinarClient() {
                     <Button
                       type="submit"
                       disabled={isSubmitting || !isFormReady}
-                      className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-base md:text-lg font-semibold transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? 'Processing...' : 'Proceed to Payment'}
                     </Button>
