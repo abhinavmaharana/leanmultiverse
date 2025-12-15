@@ -9,15 +9,35 @@ import { format } from 'date-fns'
 
 // Zoom registration links mapped by date
 const ZOOM_LINKS: Record<string, string> = {
-  '13': 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA',
   '20': 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA',
+  '27': 'https://us06web.zoom.us/meeting/register/4uacbLXgTTO0ZVf80rn84g',
+  '3': 'https://us06web.zoom.us/meeting/register/RVGi4wsHSO6sMUVLQ3kOAA',
+  '10': 'https://us06web.zoom.us/meeting/register/PgEF0RlUT5uHSfiZcIkS2w',
+  '17': 'https://us06web.zoom.us/meeting/register/PQcno5-aQFCXfiiU_UEGTA',
+  '24': 'https://us06web.zoom.us/meeting/register/1_8YK9pZRqi7jShOgQtx4w',
 }
 
 // Get Zoom link for a specific date
 function getZoomLinkForDate(dateStr: string): string {
-  const date = new Date(dateStr)
-  const day = date.getDate().toString()
-  return ZOOM_LINKS[day] || ZOOM_LINKS['13'] // Default to 13th if not found
+  try {
+    // Parse date string (format: YYYY-MM-DD) - extract day directly to avoid timezone issues
+    const [year, month, day] = dateStr.split('-').map(Number)
+    const dayStr = day.toString()
+    
+    console.log(`Success page: Getting Zoom link for date: ${dateStr}, extracted day: ${dayStr}`)
+    
+    if (ZOOM_LINKS[dayStr]) {
+      console.log(`Success page: Found Zoom link for day ${dayStr}: ${ZOOM_LINKS[dayStr]}`)
+      return ZOOM_LINKS[dayStr]
+    }
+    
+    // Default fallback to December 20th
+    console.log(`Success page: No Zoom link found for day ${dayStr}, using default`)
+    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
+  } catch (error) {
+    console.error('Success page: Error parsing date for Zoom link:', error, 'dateStr:', dateStr)
+    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
+  }
 }
 
 function SuccessContent() {

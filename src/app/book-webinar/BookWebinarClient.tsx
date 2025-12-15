@@ -77,9 +77,25 @@ function getAvailableDates() {
 
 // Get Zoom link for a specific date
 function getZoomLinkForDate(dateStr: string): string {
-  const date = new Date(dateStr)
-  const day = date.getDate().toString()
-  return ZOOM_LINKS[day] || ZOOM_LINKS['20'] // Default to 20th if not found
+  try {
+    // Parse date string (format: YYYY-MM-DD) - extract day directly to avoid timezone issues
+    const [year, month, day] = dateStr.split('-').map(Number)
+    const dayStr = day.toString()
+    
+    console.log(`Client: Getting Zoom link for date: ${dateStr}, extracted day: ${dayStr}`)
+    
+    if (ZOOM_LINKS[dayStr]) {
+      console.log(`Client: Found Zoom link for day ${dayStr}: ${ZOOM_LINKS[dayStr]}`)
+      return ZOOM_LINKS[dayStr]
+    }
+    
+    // Default fallback to December 20th
+    console.log(`Client: No Zoom link found for day ${dayStr}, using default`)
+    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
+  } catch (error) {
+    console.error('Client: Error parsing date for Zoom link:', error, 'dateStr:', dateStr)
+    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
+  }
 }
 
 export default function BookWebinarClient() {
