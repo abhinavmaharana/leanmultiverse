@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -23,9 +23,15 @@ const bookingSchema = z.object({
 type BookingFormData = z.infer<typeof bookingSchema>
 
 // Zoom registration links mapped by date
+// Note: You'll need to add actual Zoom links for the new dates
 const ZOOM_LINKS: Record<string, string> = {
-  '13': 'https://us06web.zoom.us/meeting/register/oc2syBDwTkWNTu0dhVd4qA',
   '20': 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA',
+  '27': 'https://us06web.zoom.us/meeting/register/4uacbLXgTTO0ZVf80rn84g', // Update with actual link
+  '3': 'https://us06web.zoom.us/meeting/register/RVGi4wsHSO6sMUVLQ3kOAA', // Update with actual link
+  '10': 'https://us06web.zoom.us/meeting/register/PgEF0RlUT5uHSfiZcIkS2w', // Update with actual link
+  '17': 'https://us06web.zoom.us/meeting/register/PQcno5-aQFCXfiiU_UEGTA', // Update with actual link
+  '24': 'https://us06web.zoom.us/meeting/register/1_8YK9pZRqi7jShOgQtx4w', // Update with actual link
+  '31': '', // Update with actual link
 }
 
 // Available time slots in IST
@@ -33,24 +39,38 @@ const TIME_SLOTS = [
   { value: '20:00', label: '8:00 PM IST' },
 ]
 
-// Get available dates - December 20th only
+// Get available dates - December 20th, 27th, January 3rd, 10th, 17th, 24th
 function getAvailableDates() {
   const dates: Date[] = []
   const today = new Date()
   const currentYear = today.getFullYear()
   
-  // December 20th of current year
-  const december20 = new Date(currentYear, 11, 20) // Month is 0-indexed, so 11 = December
+  // Define all available dates
+  const availableDatesConfig = [
+    { month: 11, day: 20, label: 'December 20' }, // December (month 11)
+    { month: 11, day: 27, label: 'December 27' },
+    { month: 0, day: 3, label: 'January 3' },      // January (month 0)
+    { month: 0, day: 10, label: 'January 10' },
+    { month: 0, day: 17, label: 'January 17' },
+    { month: 0, day: 24, label: 'January 24' },
+  ]
   
-  // If date has passed this year, use next year
-  if (december20 < today) {
-    december20.setFullYear(currentYear + 1)
-  }
+  availableDatesConfig.forEach(({ month, day }) => {
+    let date = new Date(currentYear, month, day)
+    
+    // If the date is in the past, use next year
+    if (date < today) {
+      date = new Date(currentYear + 1, month, day)
+    }
+    
+    // Add date if it's today or in the future
+    if (date >= today) {
+      dates.push(date)
+    }
+  })
   
-  // Add date if it's today or in the future
-  if (december20 >= today) {
-    dates.push(december20)
-  }
+  // Sort dates chronologically
+  dates.sort((a, b) => a.getTime() - b.getTime())
   
   return dates
 }
@@ -59,28 +79,37 @@ function getAvailableDates() {
 function getZoomLinkForDate(dateStr: string): string {
   const date = new Date(dateStr)
   const day = date.getDate().toString()
-  return ZOOM_LINKS[day] || ZOOM_LINKS['13'] // Default to 13th if not found
+  return ZOOM_LINKS[day] || ZOOM_LINKS['20'] // Default to 20th if not found
 }
 
 export default function BookWebinarClient() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1) // 1: Date, 2: Time, 3: Info
   const scriptLoadedRef = useRef(false)
   const availableDates = getAvailableDates()
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
     setValue,
+    trigger,
   } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
+    mode: 'onChange', // Validate on change for better UX
   })
 
   const selectedDate = watch('selected_date')
   const selectedTime = watch('selected_time')
+  const userName = watch('user_name')
+  const userEmail = watch('user_email')
+  const userPhone = watch('user_phone')
+
+  // Check if form is ready for submission
+  const isFormReady = selectedDate && selectedTime && userName && userEmail && userPhone && isValid
 
   // Preload Razorpay script on component mount for faster checkout
   useEffect(() => {
@@ -125,6 +154,37 @@ export default function BookWebinarClient() {
       // Cleanup: don't remove script on unmount as it might be used by other components
     }
   }, [])
+
+  // Auto-select time if only one option is available
+  useEffect(() => {
+    if (TIME_SLOTS.length === 1 && !selectedTime) {
+      setValue('selected_time', TIME_SLOTS[0].value, { shouldValidate: true })
+    }
+  }, [selectedTime, setValue])
+
+  // Handle step navigation
+  const handleNext = () => {
+    if (currentStep === 1 && selectedDate) {
+      setCurrentStep(2)
+    } else if (currentStep === 2 && selectedTime) {
+      setCurrentStep(3)
+    }
+  }
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  // Handle date selection from dropdown
+  const handleDateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const dateStr = e.target.value
+    if (dateStr) {
+      setValue('selected_date', dateStr, { shouldValidate: true })
+    }
+  }
+
 
   const onSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true)
@@ -305,171 +365,290 @@ export default function BookWebinarClient() {
             </p>
           </motion.div>
 
-          {/* Booking Form */}
+          {/* Booking Form - Typeform Style */}
           <motion.div
             className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 md:p-12"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Date Selection */}
-              <div>
-                <Label htmlFor="date" className="text-white mb-3 block text-lg font-semibold">
-                  Select Date
-                </Label>
-                <div className="grid grid-cols-1 gap-3">
-                  {availableDates.length > 0 ? (
-                    availableDates.map((date) => {
-                      const dateStr = format(date, 'yyyy-MM-dd')
-                      const isSelected = selectedDate === dateStr
-                      const dayName = format(date, 'EEEE')
-                      const dayNum = format(date, 'd')
-                      const month = format(date, 'MMMM yyyy')
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              {/* Hidden inputs for form validation */}
+              <input type="hidden" {...register('selected_date')} />
+              <input type="hidden" {...register('selected_time')} />
 
-                      return (
+              {/* Progress Indicator */}
+              <div className="flex items-center justify-center gap-2 mb-8">
+                {[1, 2, 3].map((step) => (
+                  <div
+                    key={step}
+                    className={`h-2 rounded-full transition-all ${
+                      currentStep >= step
+                        ? 'bg-yellow-400 w-8'
+                        : 'bg-white/20 w-2'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Multi-step Form */}
+              <AnimatePresence mode="wait">
+                {/* Step 1: Date Selection */}
+                {currentStep === 1 && (
+                  <motion.div
+                    key="step1"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                  <div>
+                    <Label htmlFor="date" className="text-white mb-4 block text-2xl font-semibold">
+                      Select your preferred date <span className="text-red-400">*</span>
+                    </Label>
+                    <select
+                      id="date"
+                      value={selectedDate || ''}
+                      onChange={handleDateChange}
+                      className="w-full bg-white/10 border-2 border-white/20 text-white rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50 transition-all appearance-none cursor-pointer"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3C/polyline%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'right 1rem center',
+                        backgroundSize: '1.5rem',
+                        paddingRight: '3rem',
+                      }}
+                    >
+                      <option value="" className="bg-gray-800 text-white">
+                        Choose a date...
+                      </option>
+                      {availableDates.map((date) => {
+                        const dateStr = format(date, 'yyyy-MM-dd')
+                        const dayName = format(date, 'EEEE')
+                        const dayNum = format(date, 'd')
+                        const month = format(date, 'MMMM yyyy')
+                        return (
+                          <option key={dateStr} value={dateStr} className="bg-gray-800 text-white">
+                            {dayName}, {dayNum} {month}
+                          </option>
+                        )
+                      })}
+                    </select>
+                    {errors.selected_date && (
+                      <p className="text-red-400 text-sm mt-2">{errors.selected_date.message}</p>
+                    )}
+                  </div>
+                  
+                  {selectedDate && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Button
+                        type="button"
+                        onClick={handleNext}
+                        className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300"
+                      >
+                        Next →
+                      </Button>
+                    </motion.div>
+                  )}
+                  </motion.div>
+                )}
+
+                {/* Step 2: Time Selection */}
+                {currentStep === 2 && (
+                  <motion.div
+                    key="step2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                  <div>
+                    <Label htmlFor="time" className="text-white mb-4 block text-2xl font-semibold">
+                      Select your preferred time <span className="text-red-400">*</span>
+                    </Label>
+                    <div className="grid grid-cols-1 gap-3">
+                      {TIME_SLOTS.map((slot) => (
                         <button
-                          key={dateStr}
+                          key={slot.value}
                           type="button"
-                          onClick={() => setValue('selected_date', dateStr)}
-                          className={`p-6 rounded-xl border-2 transition-all ${
-                            isSelected
+                          onClick={() => {
+                            setValue('selected_time', slot.value, { shouldValidate: true })
+                          }}
+                          className={`p-6 rounded-xl border-2 transition-all text-left ${
+                            selectedTime === slot.value
                               ? 'border-yellow-400 bg-yellow-400/20 text-yellow-400'
-                              : 'border-white/20 bg-white/5 text-white hover:border-white/40'
+                              : 'border-white/20 bg-white/5 text-white hover:border-white/40 hover:bg-white/10'
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <div className="text-left">
-                              <div className="text-sm font-medium text-gray-300">{dayName}</div>
-                              <div className="text-3xl font-bold mt-1">{dayNum}</div>
-                              <div className="text-sm text-gray-400 mt-1">{month}</div>
-                            </div>
-                            {isSelected && (
+                            <span className="text-xl font-semibold">{slot.label}</span>
+                            {selectedTime === slot.value && (
                               <div className="text-yellow-400">
-                                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                               </div>
                             )}
                           </div>
                         </button>
-                      )
-                    })
-                  ) : (
-                    <div className="p-6 rounded-xl border-2 border-white/20 bg-white/5 text-center text-gray-400">
-                      No available dates at this time
+                      ))}
+                    </div>
+                    {errors.selected_time && (
+                      <p className="text-red-400 text-sm mt-2">{errors.selected_time.message}</p>
+                    )}
+                  </div>
+
+                  <div className="flex gap-4">
+                    <Button
+                      type="button"
+                      onClick={handleBack}
+                      variant="outline"
+                      className="flex-1 border-white/20 bg-white/10 text-white hover:bg-white/20 rounded-xl py-4 text-lg font-semibold"
+                    >
+                      ← Back
+                    </Button>
+                    {selectedTime && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="flex-1"
+                      >
+                        <Button
+                          type="button"
+                          onClick={handleNext}
+                          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300"
+                        >
+                          Next →
+                        </Button>
+                      </motion.div>
+                    )}
+                  </div>
+                  </motion.div>
+                )}
+
+                {/* Step 3: User Information */}
+                {currentStep === 3 && (
+                  <motion.div
+                    key="step3"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                  <div>
+                    <Label className="text-white mb-6 block text-2xl font-semibold">
+                      Your Information
+                    </Label>
+                  </div>
+
+                  <div className="space-y-5">
+                    <div>
+                      <Label htmlFor="user_name" className="text-white mb-3 block text-lg">
+                        Full Name <span className="text-red-400">*</span>
+                      </Label>
+                      <Input
+                        id="user_name"
+                        {...register('user_name')}
+                        className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
+                        placeholder="Enter your full name"
+                      />
+                      {errors.user_name && (
+                        <p className="text-red-400 text-sm mt-2">{errors.user_name.message}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="user_email" className="text-white mb-3 block text-lg">
+                        Email Address <span className="text-red-400">*</span>
+                      </Label>
+                      <Input
+                        id="user_email"
+                        type="email"
+                        {...register('user_email')}
+                        className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
+                        placeholder="your.email@example.com"
+                      />
+                      {errors.user_email && (
+                        <p className="text-red-400 text-sm mt-2">{errors.user_email.message}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <Label htmlFor="user_phone" className="text-white mb-3 block text-lg">
+                        Phone Number <span className="text-red-400">*</span>
+                      </Label>
+                      <Input
+                        id="user_phone"
+                        type="tel"
+                        {...register('user_phone')}
+                        className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
+                        placeholder="+91 9876543210"
+                      />
+                      {errors.user_phone && (
+                        <p className="text-red-400 text-sm mt-2">{errors.user_phone.message}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Price Display */}
+                  <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 rounded-xl p-6 text-center">
+                    <div className="text-gray-300 text-sm mb-1">Total Amount</div>
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">₹99</div>
+                    {selectedDate && (
+                      <div className="text-gray-300 text-sm mt-2">
+                        {format(new Date(selectedDate), 'MMMM d')}, 8:00 PM IST
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Error Message */}
+                  {error && (
+                    <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 text-red-200">
+                      {error}
                     </div>
                   )}
-                </div>
-                {errors.selected_date && (
-                  <p className="text-red-400 text-sm mt-2">{errors.selected_date.message}</p>
-                )}
-              </div>
 
-              {/* Time Selection */}
-              <div>
-                <Label htmlFor="time" className="text-white mb-3 block text-lg font-semibold">
-                  Select Time (IST)
-                </Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                  {TIME_SLOTS.map((slot) => (
-                    <button
-                      key={slot.value}
+                  {/* Navigation and Submit */}
+                  <div className="flex gap-4">
+                    <Button
                       type="button"
-                      onClick={() => setValue('selected_time', slot.value)}
-                      className={`p-4 rounded-xl border-2 transition-all ${
-                        selectedTime === slot.value
-                          ? 'border-yellow-400 bg-yellow-400/20 text-yellow-400'
-                          : 'border-white/20 bg-white/5 text-white hover:border-white/40'
-                      }`}
+                      onClick={handleBack}
+                      variant="outline"
+                      className="flex-1 border-white/20 bg-white/10 text-white hover:bg-white/20 rounded-xl py-4 text-lg font-semibold"
                     >
-                      {slot.label}
-                    </button>
-                  ))}
-                </div>
-                {errors.selected_time && (
-                  <p className="text-red-400 text-sm mt-2">{errors.selected_time.message}</p>
-                )}
-              </div>
-
-              {/* User Information */}
-              <div className="space-y-4 pt-4 border-t border-white/10">
-                <h3 className="text-xl font-semibold text-white mb-4">Your Information</h3>
-
-                <div>
-                  <Label htmlFor="user_name" className="text-white mb-2 block">
-                    Full Name
-                  </Label>
-                  <Input
-                    id="user_name"
-                    {...register('user_name')}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                    placeholder="Enter your full name"
-                  />
-                  {errors.user_name && (
-                    <p className="text-red-400 text-sm mt-1">{errors.user_name.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="user_email" className="text-white mb-2 block">
-                    Email Address
-                  </Label>
-                  <Input
-                    id="user_email"
-                    type="email"
-                    {...register('user_email')}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                    placeholder="your.email@example.com"
-                  />
-                  {errors.user_email && (
-                    <p className="text-red-400 text-sm mt-1">{errors.user_email.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="user_phone" className="text-white mb-2 block">
-                    Phone Number
-                  </Label>
-                  <Input
-                    id="user_phone"
-                    type="tel"
-                    {...register('user_phone')}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                    placeholder="+91 9876543210"
-                  />
-                  {errors.user_phone && (
-                    <p className="text-red-400 text-sm mt-1">{errors.user_phone.message}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Price Display */}
-              <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 rounded-xl p-6 text-center">
-                <div className="text-gray-300 text-sm mb-1">Total Amount</div>
-                <div className="text-4xl font-bold text-yellow-400 mb-2">₹99</div>
-                {selectedDate && (
-                  <div className="text-gray-300 text-sm mt-2">
-                    {format(new Date(selectedDate), 'MMMM d')}, 8:00 PM IST
+                      ← Back
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting || !isFormReady}
+                      className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmitting ? 'Processing...' : 'Proceed to Payment'}
+                    </Button>
                   </div>
+
+                  {/* Form Status Indicator */}
+                  {!isFormReady && (
+                    <div className="bg-blue-500/20 border border-blue-500/50 rounded-xl p-4 text-blue-200 text-sm">
+                      <p className="font-semibold mb-2">Please complete all fields:</p>
+                      <ul className="list-disc list-inside space-y-1">
+                        {!userName && <li>Enter your full name</li>}
+                        {!userEmail && <li>Enter your email address</li>}
+                        {!userPhone && <li>Enter your phone number</li>}
+                      </ul>
+                    </div>
+                  )}
+                  </motion.div>
                 )}
-              </div>
-
-              {/* Error Message */}
-              {error && (
-                <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 text-red-200">
-                  {error}
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-6 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all duration-300"
-              >
-                {isSubmitting ? 'Processing...' : 'Proceed to Payment'}
-              </Button>
+              </AnimatePresence>
             </form>
           </motion.div>
 
@@ -484,7 +663,7 @@ export default function BookWebinarClient() {
               After payment, you&apos;ll be redirected to complete your Zoom registration and receive a confirmation email.
             </p>
             <p className="mt-2">
-              All times are in IST (Indian Standard Time). Webinar is scheduled for December 20th, 8:00 PM IST.
+              All times are in IST (Indian Standard Time). Webinars are scheduled for 8:00 PM IST.
             </p>
           </motion.div>
         </div>
