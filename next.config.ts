@@ -42,10 +42,7 @@ const nextConfig: NextConfig = {
     } : false,
   },
   
-  // Output optimization
-  swcMinify: true,
-  
-  // Power optimization
+  // Power optimization (SWC minification is enabled by default in Next.js 16+)
   poweredByHeader: false,
   
   // Bundle analyzer (uncomment to analyze bundle)
