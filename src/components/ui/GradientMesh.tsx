@@ -1,13 +1,15 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { memo } from "react"
 
-export default function GradientMesh() {
+function GradientMesh() {
   return (
     <div className="fixed inset-0 -z-20 overflow-hidden">
-      {/* Primary gradient mesh */}
+      {/* Primary gradient mesh - Optimized with will-change */}
       <motion.div
         className="absolute top-0 left-0 w-full h-full"
+        style={{ willChange: 'background' }}
         animate={{
           background: [
             "radial-gradient(circle at 20% 20%, rgba(251, 191, 36, 0.1) 0%, transparent 50%)",
@@ -24,9 +26,10 @@ export default function GradientMesh() {
         }}
       />
 
-      {/* Secondary gradient mesh */}
+      {/* Secondary gradient mesh - Optimized */}
       <motion.div
         className="absolute top-0 left-0 w-full h-full"
+        style={{ willChange: 'background' }}
         animate={{
           background: [
             "radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 40%)",
@@ -42,9 +45,10 @@ export default function GradientMesh() {
         }}
       />
 
-      {/* Animated orbs */}
+      {/* Animated orbs - Reduced complexity for better performance */}
       <motion.div
         className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-400/5 rounded-full blur-3xl"
+        style={{ willChange: 'transform, opacity' }}
         animate={{
           x: [0, 100, 0],
           y: [0, -50, 0],
@@ -60,6 +64,7 @@ export default function GradientMesh() {
 
       <motion.div
         className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-yellow-400/3 rounded-full blur-3xl"
+        style={{ willChange: 'transform, opacity' }}
         animate={{
           x: [0, -80, 0],
           y: [0, 60, 0],
@@ -76,6 +81,7 @@ export default function GradientMesh() {
 
       <motion.div
         className="absolute top-1/2 left-1/2 w-64 h-64 bg-yellow-400/4 rounded-full blur-3xl"
+        style={{ willChange: 'transform, opacity' }}
         animate={{
           x: [0, 60, 0],
           y: [0, -80, 0],
@@ -92,3 +98,5 @@ export default function GradientMesh() {
     </div>
   )
 }
+
+export default memo(GradientMesh)

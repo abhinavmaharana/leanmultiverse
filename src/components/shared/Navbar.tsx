@@ -2,10 +2,10 @@
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, memo } from "react"
 import Link from "next/link"
 
-export default function Navbar() {
+function Navbar() {
   const [open, setOpen] = useState(false)
   const [isTransparent, setIsTransparent] = useState(true)
   const SHOW_WEBINAR_CTA = true
@@ -13,14 +13,22 @@ export default function Navbar() {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // Scroll detection for transparent navbar
+    // Throttled scroll detection for better performance
+    let ticking = false
+    const heroHeight = window.innerHeight * 0.8 // 80% of viewport height
+
     const handleScroll = () => {
-      const scrollY = window.scrollY
-      const heroHeight = window.innerHeight * 0.8 // 80% of viewport height
-      setIsTransparent(scrollY < heroHeight)
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY
+          setIsTransparent(scrollY < heroHeight)
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll() // Initial check
 
     return () => {
@@ -44,7 +52,9 @@ export default function Navbar() {
             alt="Lean Multiverse Logo" 
             width={160} 
             height={44} 
-            className="h-10 sm:h-12 md:h-14 w-auto" 
+            className="h-10 sm:h-12 md:h-14 w-auto"
+            priority
+            fetchPriority="high"
           />
         </Link>
       </div>
@@ -239,3 +249,5 @@ export default function Navbar() {
     </nav>
   )
 }
+
+export default memo(Navbar)

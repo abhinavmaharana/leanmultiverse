@@ -53,8 +53,11 @@ export default function LandingPageClient() {
           fill 
           className="object-contain opacity-50"
           priority={false}
-          quality={60}
+          quality={50}
           sizes="100vw"
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDAiLz48L3N2Zz4="
         />
       </div>
     </>

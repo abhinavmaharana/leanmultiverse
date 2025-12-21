@@ -9,12 +9,14 @@ import LenisProvider from "@/components/providers/LenisProvider"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import "./globals.css"
 
-// Load Raleway font
+// Load Raleway font with optimization
 const raleway = Raleway({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"], // include multiple weights
   variable: "--font-raleway",
   display: "swap",
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 })
 
 export const metadata: Metadata = {
@@ -141,9 +143,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        {/* Resource Hints for Performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
+        
+        {/* Icons */}
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/logo.svg" />
         <link rel="shortcut icon" href="/logo.svg" type="image/svg+xml" />
+        
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
