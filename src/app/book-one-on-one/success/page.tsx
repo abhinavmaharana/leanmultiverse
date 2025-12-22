@@ -28,6 +28,9 @@ function SuccessContent() {
   const timeStr = searchParams.get('time')
 
   useEffect(() => {
+    // Default Outlook booking link for one-on-one sessions
+    const defaultOutlookLink = 'https://outlook.office.com/book/FutureManagersProductProjectManagementSessions@leanmultiverse.com/s/Joc-_JMSnkuA8o9BCRBMiw2'
+    
     // Fetch booking details to get meeting link
     if (orderId) {
       fetch(`/api/razorpay/get-one-on-one-booking?order_id=${orderId}`)
@@ -36,14 +39,17 @@ function SuccessContent() {
           if (data.booking?.meet_link) {
             setMeetLink(data.booking.meet_link)
           } else {
-            // Fallback to default meeting link
-            setMeetLink(process.env.NEXT_PUBLIC_ONE_ON_ONE_ZOOM_LINK || process.env.NEXT_PUBLIC_ZOOM_REGISTRATION_LINK || '')
+            // Fallback to default Outlook booking link
+            setMeetLink(defaultOutlookLink)
           }
         })
         .catch(err => {
           console.error('Error fetching booking:', err)
-          setMeetLink(process.env.NEXT_PUBLIC_ONE_ON_ONE_ZOOM_LINK || process.env.NEXT_PUBLIC_ZOOM_REGISTRATION_LINK || '')
+          setMeetLink(defaultOutlookLink)
         })
+    } else {
+      // If no order ID, use default link
+      setMeetLink(defaultOutlookLink)
     }
   }, [orderId])
 

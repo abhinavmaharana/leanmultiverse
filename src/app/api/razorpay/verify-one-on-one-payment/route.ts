@@ -12,10 +12,9 @@ const razorpay = new Razorpay({
 
 // Generate meeting link for one-on-one sessions
 function generateMeetingLink(email: string, date: string, time: string): string {
-  // For one-on-one, we can use a generic Zoom meeting link or generate one
-  // For now, using a placeholder - you should replace this with actual Zoom link generation
-  const baseLink = process.env.ONE_ON_ONE_ZOOM_LINK || process.env.ZOOM_REGISTRATION_LINK || 'https://us06web.zoom.us/j/meeting'
-  return baseLink
+  // Use Outlook booking link for one-on-one sessions
+  const outlookBookingLink = process.env.ONE_ON_ONE_OUTLOOK_LINK || 'https://outlook.office.com/book/FutureManagersProductProjectManagementSessions@leanmultiverse.com/s/Joc-_JMSnkuA8o9BCRBMiw2'
+  return outlookBookingLink
 }
 
 export async function POST(request: NextRequest) {
