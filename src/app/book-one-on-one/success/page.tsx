@@ -9,9 +9,9 @@ import { format } from 'date-fns'
 
 // Time slot labels
 const TIME_SLOTS: Record<string, string> = {
+  '19:00': '7:00 PM - 8:00 PM IST',
   '20:00': '8:00 PM - 9:00 PM IST',
   '21:00': '9:00 PM - 10:00 PM IST',
-  '22:00': '10:00 PM - 11:00 PM IST',
 }
 
 function getTimeLabel(timeValue: string): string {

@@ -24,31 +24,36 @@ type BookingFormData = z.infer<typeof bookingSchema>
 
 // Three time slots available per day
 const TIME_SLOTS = [
+  { value: '19:00', label: '7:00 PM - 8:00 PM IST' },
   { value: '20:00', label: '8:00 PM - 9:00 PM IST' },
   { value: '21:00', label: '9:00 PM - 10:00 PM IST' },
-  { value: '22:00', label: '10:00 PM - 11:00 PM IST' },
 ]
 
 // Get available dates - Only weekdays (Monday to Friday) for the next 4 weeks
 function getAvailableDates() {
   const dates: Date[] = []
-  const today = new Date()
+  const now = new Date()
+  const today = new Date(now)
   today.setHours(0, 0, 0, 0) // Reset time to start of day
   
-  // Start from next Monday if today is weekend, otherwise start from today if it's a weekday
-  let currentDate = new Date(today)
+  // Check if today should be excluded based on current time
+  // If it's past 10 PM (latest slot end time), exclude today
+  const shouldExcludeToday = now.getHours() >= 22
+  
+  // Start from the earliest possible date
+  let startDate = new Date(today)
   
   // If today is weekend, move to next Monday
-  if (isWeekend(currentDate)) {
-    const daysUntilMonday = (8 - currentDate.getDay()) % 7 || 7
-    currentDate = addDays(currentDate, daysUntilMonday)
-  } else {
-    // If today is a weekday, start from today
-    // But if today is Friday and it's past 11 PM, start from next Monday
-    const now = new Date()
-    if (currentDate.getDay() === 5 && now.getHours() >= 23) {
-      const daysUntilMonday = 3 // Friday to Monday
-      currentDate = addDays(currentDate, daysUntilMonday)
+  if (isWeekend(startDate)) {
+    const daysUntilMonday = (8 - startDate.getDay()) % 7 || 7
+    startDate = addDays(startDate, daysUntilMonday)
+  } else if (shouldExcludeToday) {
+    // If today is a weekday but all slots have passed, start from tomorrow
+    startDate = addDays(startDate, 1)
+    // If tomorrow is weekend, move to next Monday
+    if (isWeekend(startDate)) {
+      const daysUntilMonday = (8 - startDate.getDay()) % 7 || 7
+      startDate = addDays(startDate, daysUntilMonday)
     }
   }
   
@@ -57,11 +62,16 @@ function getAvailableDates() {
   while (dates.length < 20 && weekCount < 6) {
     // For each week, add Monday through Friday
     for (let dayOfWeek = 1; dayOfWeek <= 5; dayOfWeek++) {
-      const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 }) // Monday
+      const weekStart = startOfWeek(startDate, { weekStartsOn: 1 }) // Monday
       const date = addDays(weekStart, dayOfWeek - 1 + (weekCount * 7))
+      const dateOnly = new Date(date)
+      dateOnly.setHours(0, 0, 0, 0)
       
-      // Only add if it's today or in the future
-      if (date >= today) {
+      // Filter out past dates
+      // Exclude if: date is before today, OR (date is today AND all slots have passed)
+      const isPastDate = dateOnly < today || (dateOnly.getTime() === today.getTime() && shouldExcludeToday)
+      
+      if (!isPastDate && !isWeekend(date)) {
         dates.push(new Date(date))
       }
       
