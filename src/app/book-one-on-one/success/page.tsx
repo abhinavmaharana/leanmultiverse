@@ -91,7 +91,7 @@ function SuccessContent() {
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/10">
               <span className="text-gray-300">Amount Paid:</span>
-              <span className="text-green-400 font-bold text-lg">₹1</span>
+              <span className="text-green-400 font-bold text-lg">₹1,000</span>
             </div>
             {formattedDate && (
               <div className="flex justify-between items-center py-2 border-b border-white/10">

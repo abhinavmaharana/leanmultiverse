@@ -8,11 +8,12 @@ import Link from "next/link"
 function Navbar() {
   const [open, setOpen] = useState(false)
   const [isTransparent, setIsTransparent] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const SHOW_WEBINAR_CTA = true
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-
+    setMounted(true)
+    
     // Throttled scroll detection for better performance
     let ticking = false
     const heroHeight = window.innerHeight * 0.8 // 80% of viewport height
@@ -36,13 +37,16 @@ function Navbar() {
     }
   }, [])
 
+  // Use mounted state to prevent hydration mismatch
+  const navbarClassName = mounted 
+    ? (isTransparent 
+        ? 'bg-transparent backdrop-blur-none' 
+        : 'bg-black/95 backdrop-blur-md')
+    : 'bg-transparent backdrop-blur-none' // Default for SSR
+
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 md:px-8 py-6 transition-all duration-300 ${
-        isTransparent 
-          ? 'bg-transparent backdrop-blur-none' 
-          : 'bg-black/95 backdrop-blur-md'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 md:px-8 py-6 transition-all duration-300 ${navbarClassName}`}
     >
       {/* Left: Logo */}
       <div className="flex items-center">
@@ -61,11 +65,12 @@ function Navbar() {
 
       {/* Center: Navigation links (desktop) */}
       <div 
-        className={`hidden md:flex md:w-auto md:h-[65px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[20px] rounded-full shadow-md hover:opacity-90 transition ${
-          isTransparent 
-            ? 'bg-gradient-to-r from-[#C69D44]/30 to-[#604C21]/30 backdrop-blur-sm border border-white/30' 
-            : 'bg-gradient-to-r from-[#C69D44]/20 to-[#604C21]/20 backdrop-blur-md border border-white/20'
-        }`}
+        className="hidden md:flex md:w-auto md:h-[65px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[20px] rounded-full shadow-md hover:opacity-90 transition bg-gradient-to-r from-[#C69D44]/30 to-[#604C21]/30 backdrop-blur-sm border border-white/30"
+        style={mounted && !isTransparent ? {
+          background: 'linear-gradient(to right, rgba(198, 157, 68, 0.2), rgba(96, 76, 33, 0.2))',
+          backdropFilter: 'blur(12px)',
+          borderColor: 'rgba(255, 255, 255, 0.2)'
+        } : undefined}
       >
         <a 
           href="#home" 
@@ -143,17 +148,18 @@ function Navbar() {
       </div>
 
       {/* Right: CTA + Mobile menu button */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         {SHOW_WEBINAR_CTA && (
           <>
             <div>
               <Link href="/book-webinar">
                 <Button
-                  className={`hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[65px] text-white shadow-md hover:opacity-90 transition ${
-                    isTransparent 
-                      ? 'bg-white/20 backdrop-blur-sm border border-white/30' 
-                      : 'bg-white/10 backdrop-blur-md border border-white/20'
-                  }`}
+                  className="hidden md:inline-flex rounded-full text-[13px] sm:text-[14.75px] w-[140px] sm:w-[160px] h-[60px] sm:h-[65px] text-white shadow-md hover:opacity-90 transition bg-white/20 backdrop-blur-sm border border-white/30"
+                  style={mounted && !isTransparent ? {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)'
+                  } : undefined}
                 >
                   <span>Book Webinar</span>
                 </Button>
@@ -162,11 +168,12 @@ function Navbar() {
             <div>
               <Link href="/book-one-on-one">
                 <Button
-                  className={`hidden sm:inline-flex rounded-full text-[14.75px] w-[160px] h-[65px] text-white shadow-md hover:opacity-90 transition ${
-                    isTransparent 
-                      ? 'bg-yellow-400/20 backdrop-blur-sm border border-yellow-400/30' 
-                      : 'bg-yellow-400/10 backdrop-blur-md border border-yellow-400/20'
-                  }`}
+                  className="hidden md:inline-flex rounded-full text-[13px] sm:text-[14.75px] w-[140px] sm:w-[160px] h-[60px] sm:h-[65px] text-white shadow-md hover:opacity-90 transition bg-yellow-400/20 backdrop-blur-sm border border-yellow-400/30"
+                  style={mounted && !isTransparent ? {
+                    backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                    backdropFilter: 'blur(12px)',
+                    borderColor: 'rgba(250, 204, 21, 0.2)'
+                  } : undefined}
                 >
                   <span>Book 1-on-1</span>
                 </Button>
@@ -179,11 +186,11 @@ function Navbar() {
           aria-label="Toggle menu"
           aria-expanded={open}
           onClick={() => setOpen(v => !v)}
-          className={`inline-flex md:hidden items-center justify-center h-12 w-12 rounded-full text-white hover:bg-white/15 transition ${
-            isTransparent 
-              ? 'border border-white/30 bg-white/20' 
-              : 'border border-white/20 bg-white/10'
-          }`}
+          className="inline-flex md:hidden items-center justify-center h-12 w-12 rounded-full text-white hover:bg-white/15 transition border border-white/30 bg-white/20"
+          style={mounted && !isTransparent ? {
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+          } : undefined}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -206,11 +213,11 @@ function Navbar() {
           className="absolute left-0 right-0 top-full mt-3 px-4 sm:px-6 md:hidden z-40"
         >
           <div 
-            className={`flex flex-col gap-2 text-sm sm:text-base font-medium rounded-2xl shadow-lg backdrop-blur-md p-4 sm:p-6 ${
-              isTransparent 
-                ? 'bg-gradient-to-b from-[#0b0b0b]/95 to-[#1a1a1a]/95 border border-white/20' 
-                : 'bg-gradient-to-b from-[#0b0b0b]/90 to-[#1a1a1a]/90 border border-white/10'
-            }`}
+            className="flex flex-col gap-2 text-sm sm:text-base font-medium rounded-2xl shadow-lg backdrop-blur-md p-4 sm:p-6 bg-gradient-to-b from-[#0b0b0b]/95 to-[#1a1a1a]/95 border border-white/20"
+            style={mounted && !isTransparent ? {
+              background: 'linear-gradient(to bottom, rgba(11, 11, 11, 0.9), rgba(26, 26, 26, 0.9))',
+              borderColor: 'rgba(255, 255, 255, 0.1)'
+            } : undefined}
           >
             <a 
               onClick={() => setOpen(false)} 

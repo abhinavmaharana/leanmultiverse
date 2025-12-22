@@ -324,7 +324,7 @@ export default function BookOneOnOneClient() {
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-        amount: 100, // ₹1 in paise
+        amount: 100000, // ₹1000 in paise
         currency: 'INR',
         name: 'Lean Multiverse',
         description: `One-on-One Session - ${format(new Date(data.selected_date), 'MMM d, yyyy')} at ${timeLabel}`,
@@ -687,7 +687,7 @@ export default function BookOneOnOneClient() {
                   {/* Price Display */}
                   <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 rounded-xl p-6 text-center">
                     <div className="text-gray-300 text-sm mb-1">Total Amount</div>
-                    <div className="text-4xl font-bold text-yellow-400 mb-2">₹1</div>
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">₹1,000</div>
                     {selectedDate && selectedTime && (
                       <div className="text-gray-300 text-sm mt-2">
                         {format(new Date(selectedDate), 'MMMM d')}, {getTimeLabel(selectedTime)}
