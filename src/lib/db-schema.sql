@@ -75,3 +75,21 @@ CREATE TRIGGER update_one_on_one_bookings_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at_column();
 
+-- Admin Users Table Schema
+CREATE TABLE IF NOT EXISTS admin_users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  username VARCHAR(255) UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create index on username for faster lookups
+CREATE INDEX IF NOT EXISTS idx_admin_users_username ON admin_users(username);
+
+-- Trigger to automatically update updated_at for admin_users
+CREATE TRIGGER update_admin_users_updated_at
+  BEFORE UPDATE ON admin_users
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
