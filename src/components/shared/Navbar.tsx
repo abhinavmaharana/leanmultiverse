@@ -49,7 +49,7 @@ function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 md:px-8 py-6 transition-all duration-300 ${navbarClassName}`}
     >
       {/* Left: Logo */}
-      <div className="flex items-center">
+      <div className="flex items-center flex-shrink-0">
         <Link href="/" className="cursor-pointer hover:opacity-80 transition-opacity duration-300">
           <Image 
             src="/logo.svg" 
@@ -63,9 +63,9 @@ function Navbar() {
         </Link>
       </div>
 
-      {/* Center: Navigation links (desktop) */}
+      {/* Center: Navigation links (desktop) - Absolutely positioned for true centering */}
       <div 
-        className="hidden md:flex md:w-auto md:h-[65px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[20px] rounded-full shadow-md hover:opacity-90 transition bg-gradient-to-r from-[#C69D44]/30 to-[#604C21]/30 backdrop-blur-sm border border-white/30"
+        className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 md:h-[65px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[20px] rounded-full shadow-md hover:opacity-90 transition bg-gradient-to-r from-[#C69D44]/30 to-[#604C21]/30 backdrop-blur-sm border border-white/30"
         style={mounted && !isTransparent ? {
           background: 'linear-gradient(to right, rgba(198, 157, 68, 0.2), rgba(96, 76, 33, 0.2))',
           backdropFilter: 'blur(12px)',
@@ -148,7 +148,7 @@ function Navbar() {
       </div>
 
       {/* Right: CTA + Mobile menu button */}
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {SHOW_WEBINAR_CTA && (
           <>
             <div>
