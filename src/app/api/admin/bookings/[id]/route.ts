@@ -10,13 +10,23 @@ const updateSchema = z.object({
 
 async function handler(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  auth: { userId: string; username: string }
 ) {
   try {
-    const resolvedParams = await params
-    const { searchParams } = new URL(request.url)
+    const url = new URL(request.url)
+    const { searchParams, pathname } = url
     const type = searchParams.get('type') || 'webinar'
-    const bookingId = resolvedParams.id
+    
+    // Extract booking ID from pathname: /api/admin/bookings/[id]
+    const pathParts = pathname.split('/')
+    const bookingId = pathParts[pathParts.length - 1]
+    
+    if (!bookingId || bookingId === 'bookings') {
+      return NextResponse.json(
+        { error: 'Booking ID is required' },
+        { status: 400 }
+      )
+    }
 
     if (request.method === 'GET') {
       // Get booking

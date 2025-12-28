@@ -22,7 +22,6 @@ const getDriveImageUrl = (driveUrl: string): string => {
   if (!driveUrl) return ""
   
   // Extract file ID from various Google Drive URL formats
-  // Priority: id= pattern (most common), then /d/ pattern
   let fileId = null
   
   // Try id= pattern first (e.g., https://drive.google.com/open?id=FILE_ID)
@@ -38,8 +37,9 @@ const getDriveImageUrl = (driveUrl: string): string => {
   }
   
   if (fileId) {
-    // Use uc?export=view format (works for publicly shared files)
-    return `https://drive.google.com/uc?export=view&id=${fileId}`
+    // Use thumbnail API - more reliable for public files
+    // sz parameter controls size: w400 = width 400px
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`
   }
   
   // If no match, return original URL
@@ -289,12 +289,6 @@ const testimonials: Testimonial[] = [
 export default function SuccessStories() {
   const [selectedTestimonial, setSelectedTestimonial] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-  const [isMounted, setIsMounted] = useState(false)
-
-  // Ensure client-side only rendering for dynamic content
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   // Safety check
   if (!testimonials || testimonials.length === 0) {
@@ -311,14 +305,14 @@ export default function SuccessStories() {
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying || testimonials.length === 0 || !isMounted) return
+    if (!isAutoPlaying || testimonials.length === 0) return
     
     const interval = setInterval(() => {
       setSelectedTestimonial((prev) => (prev + 1) % testimonials.length)
     }, 5000)
     
     return () => clearInterval(interval)
-  }, [isAutoPlaying, testimonials.length, isMounted])
+  }, [isAutoPlaying, testimonials.length])
 
   return (
     <section className="py-20 bg-black relative overflow-hidden">
@@ -356,40 +350,59 @@ export default function SuccessStories() {
             <div className="text-center lg:text-left">
                 <div className="flex flex-col lg:flex-row gap-6 items-center lg:items-start">
                   {/* Profile Image - Always render container for consistent structure */}
-                  <div className="flex-shrink-0">
-                    {testimonials[selectedTestimonial].image && isMounted ? (
-                      <img
-                        src={testimonials[selectedTestimonial].image}
-                        alt={testimonials[selectedTestimonial].name}
-                        className="w-24 h-24 rounded-full object-cover border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20"
-                        loading="lazy"
-                        onError={(e) => {
-                          const img = e.currentTarget
-                          const currentSrc = img.src
+                  <div className="flex-shrink-0 relative w-24 h-24">
+                    {/* Image - always rendered, hidden if no image URL */}
+                    <img
+                      src={testimonials[selectedTestimonial].image || ''}
+                      alt={testimonials[selectedTestimonial].name}
+                      className={`w-24 h-24 rounded-full object-cover border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20 ${testimonials[selectedTestimonial].image ? '' : 'hidden'}`}
+                      loading="lazy"
+                      onError={(e) => {
+                        const img = e.currentTarget
+                        const currentSrc = img.src
+                        
+                        // Try alternative Google Drive formats
+                        const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
+                        if (fileIdMatch && fileIdMatch[1]) {
+                          const fileId = fileIdMatch[1]
                           
-                          // Try alternative Google Drive format
-                          const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
-                          if (fileIdMatch && fileIdMatch[1] && !currentSrc.includes('lh3.googleusercontent.com')) {
-                            const fileId = fileIdMatch[1]
-                            // Try thumbnail format as fallback
-                            img.src = `https://lh3.googleusercontent.com/d/${fileId}`
+                          // Try uc?export=view format
+                          if (!currentSrc.includes('uc?export=view')) {
+                            img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
                             return
                           }
                           
-                          // If all else fails, use placeholder or show initials
-                          if (!img.src.includes('data:image')) {
-                            img.src = PLACEHOLDER_IMAGE
-                            img.alt = `${testimonials[selectedTestimonial].name} (image unavailable)`
+                          // Try lh3.googleusercontent.com format
+                          if (!currentSrc.includes('lh3.googleusercontent.com')) {
+                            img.src = `https://lh3.googleusercontent.com/d/${fileId}`
+                            return
                           }
-                        }}
-                      />
-                    ) : (
-                      <div className="w-24 h-24 rounded-full border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20 flex items-center justify-center">
-                        <span className="text-yellow-400 text-2xl font-bold">
-                          {testimonials[selectedTestimonial].name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
+                        }
+                        
+                        // If all formats fail, show placeholder
+                        img.style.display = 'none'
+                        const placeholder = img.nextElementSibling as HTMLElement
+                        if (placeholder) {
+                          placeholder.style.display = 'flex'
+                        }
+                      }}
+                      onLoad={() => {
+                        // Hide placeholder when image loads successfully
+                        const placeholder = (document.querySelector(`[data-placeholder-for="${testimonials[selectedTestimonial].name}"]`) as HTMLElement)
+                        if (placeholder) {
+                          placeholder.style.display = 'none'
+                        }
+                      }}
+                    />
+                    {/* Fallback placeholder - always rendered, shown when no image */}
+                    <div 
+                      data-placeholder-for={testimonials[selectedTestimonial].name}
+                      className={`w-24 h-24 rounded-full border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20 flex items-center justify-center absolute inset-0 ${testimonials[selectedTestimonial].image ? 'hidden' : 'flex'}`}
+                    >
+                      <span className="text-yellow-400 text-2xl font-bold">
+                        {testimonials[selectedTestimonial].name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
                   </div>
                   
                   <div className="flex-1">
@@ -558,40 +571,59 @@ export default function SuccessStories() {
                   className="mb-4 flex items-start gap-3"
                 >
                   {/* Profile Image - Always render container for consistent structure */}
-                  <div className="flex-shrink-0">
-                    {testimonial.image && isMounted ? (
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-16 h-16 rounded-full object-cover border-2 border-yellow-400/30 flex-shrink-0 bg-yellow-400/20"
-                        loading="lazy"
-                        onError={(e) => {
-                          const img = e.currentTarget
-                          const currentSrc = img.src
+                  <div className="flex-shrink-0 relative w-16 h-16">
+                    {/* Image - always rendered, hidden if no image URL */}
+                    <img
+                      src={testimonial.image || ''}
+                      alt={testimonial.name}
+                      className={`w-16 h-16 rounded-full object-cover border-2 border-yellow-400/30 flex-shrink-0 bg-yellow-400/20 ${testimonial.image ? '' : 'hidden'}`}
+                      loading="lazy"
+                      onError={(e) => {
+                        const img = e.currentTarget
+                        const currentSrc = img.src
+                        
+                        // Try alternative Google Drive formats
+                        const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
+                        if (fileIdMatch && fileIdMatch[1]) {
+                          const fileId = fileIdMatch[1]
                           
-                          // Try alternative Google Drive format
-                          const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
-                          if (fileIdMatch && fileIdMatch[1] && !currentSrc.includes('lh3.googleusercontent.com')) {
-                            const fileId = fileIdMatch[1]
-                            // Try thumbnail format as fallback
-                            img.src = `https://lh3.googleusercontent.com/d/${fileId}`
+                          // Try uc?export=view format
+                          if (!currentSrc.includes('uc?export=view')) {
+                            img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
                             return
                           }
                           
-                          // If all else fails, use placeholder
-                          if (!img.src.includes('data:image')) {
-                            img.src = PLACEHOLDER_IMAGE
-                            img.alt = `${testimonial.name} (image unavailable)`
+                          // Try lh3.googleusercontent.com format
+                          if (!currentSrc.includes('lh3.googleusercontent.com')) {
+                            img.src = `https://lh3.googleusercontent.com/d/${fileId}`
+                            return
                           }
-                        }}
-                      />
-                    ) : (
-                      <div className="w-16 h-16 rounded-full border-2 border-yellow-400/30 bg-yellow-400/20 flex items-center justify-center flex-shrink-0">
-                        <span className="text-yellow-400 text-lg font-bold">
-                          {testimonial.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
+                        }
+                        
+                        // If all formats fail, show placeholder
+                        img.style.display = 'none'
+                        const placeholder = img.nextElementSibling as HTMLElement
+                        if (placeholder) {
+                          placeholder.style.display = 'flex'
+                        }
+                      }}
+                      onLoad={() => {
+                        // Hide placeholder when image loads successfully
+                        const placeholder = (document.querySelector(`[data-placeholder-for="${testimonial.name}"]`) as HTMLElement)
+                        if (placeholder) {
+                          placeholder.style.display = 'none'
+                        }
+                      }}
+                    />
+                    {/* Fallback placeholder - always rendered, shown when no image */}
+                    <div 
+                      data-placeholder-for={testimonial.name}
+                      className={`w-16 h-16 rounded-full border-2 border-yellow-400/30 bg-yellow-400/20 flex items-center justify-center flex-shrink-0 absolute inset-0 ${testimonial.image ? 'hidden' : 'flex'}`}
+                    >
+                      <span className="text-yellow-400 text-lg font-bold">
+                        {testimonial.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 
