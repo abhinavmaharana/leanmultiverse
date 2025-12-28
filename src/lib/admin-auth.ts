@@ -92,24 +92,31 @@ export async function createAdminUser(username: string, password: string): Promi
  * Authenticate admin user with username and password
  */
 export async function authenticateAdmin(username: string, password: string): Promise<{ user: AdminUser; token: string } | null> {
-  const user = await getAdminByUsername(username)
+  try {
+    const user = await getAdminByUsername(username)
 
-  if (!user) {
+    if (!user) {
+      console.log(`Admin user not found: ${username}`)
+      return null
+    }
+
+    const isValid = await verifyPassword(password, user.password_hash)
+
+    if (!isValid) {
+      console.log(`Invalid password for user: ${username}`)
+      return null
+    }
+
+    const token = generateToken({
+      userId: user.id,
+      username: user.username,
+    })
+
+    return { user, token }
+  } catch (error) {
+    console.error('Error authenticating admin:', error)
     return null
   }
-
-  const isValid = await verifyPassword(password, user.password_hash)
-
-  if (!isValid) {
-    return null
-  }
-
-  const token = generateToken({
-    userId: user.id,
-    username: user.username,
-  })
-
-  return { user, token }
 }
 
 /**
