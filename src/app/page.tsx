@@ -100,6 +100,12 @@ export default function LandingPage() {
             <Certification />
           </Suspense>
         </div>
+
+        <div id='stories'>
+          <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
+            <SuccessStories />
+          </Suspense>
+        </div>
         
         {/* Courses section hidden - will add new courses later */}
         <div id="courses">
@@ -126,12 +132,6 @@ export default function LandingPage() {
             </div>
           </section>
         </div> */}
-        
-        <div id='stories'>
-          <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
-            <SuccessStories />
-          </Suspense>
-        </div>
         
         <div id="contact">
           <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
