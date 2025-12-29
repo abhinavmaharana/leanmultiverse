@@ -1,18 +1,25 @@
 import type { Metadata } from "next"
 import { Raleway } from "next/font/google"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import PerfectChatbot from "@/components/ui/PerfectChatbot"
+import dynamic from "next/dynamic"
 import CustomCursor from "@/components/ui/CustomCursor"
 import LenisProvider from "@/components/providers/LenisProvider"
 // import LoadingProvider from "@/components/providers/LoadingProvider"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import "./globals.css"
 
-// Load Raleway font with optimization
+// Lazy load non-critical components - removed ssr: false for Server Components compatibility
+const Analytics = dynamic(() => import("@vercel/analytics/react").then(mod => ({ default: mod.Analytics })))
+
+const SpeedInsights = dynamic(() => import("@vercel/speed-insights/next").then(mod => ({ default: mod.SpeedInsights })))
+
+const PerfectChatbot = dynamic(() => import("@/components/ui/PerfectChatbot"), {
+  loading: () => null,
+})
+
+// Load Raleway font with optimization - reduced weights for better performance
 const raleway = Raleway({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"], // include multiple weights
+  weight: ["400", "500", "600", "700"], // Reduced from 5 to 4 weights
   variable: "--font-raleway",
   display: "swap",
   preload: true,
@@ -148,6 +155,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
+        <link rel="dns-prefetch" href="https://drive.google.com" />
+        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
         
         {/* Icons */}
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
@@ -166,12 +175,14 @@ export default function RootLayout({
             <LenisProvider>
               {children}
               <CustomCursor />
+              {/* Lazy load chatbot - only loads when user scrolls or interacts */}
               <PerfectChatbot />
-              <Analytics />
-              <SpeedInsights />
             </LenisProvider>
           {/* </LoadingProvider> */}
         </ErrorBoundary>
+        {/* Defer analytics loading until after page is interactive */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )

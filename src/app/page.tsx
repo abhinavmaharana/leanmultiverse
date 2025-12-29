@@ -1,43 +1,31 @@
 import { Metadata } from 'next'
-import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import LandingPageClient from './LandingPageClient'
+import LazySection from '../components/shared/LazySection'
 
 // Critical components loaded immediately
 import Navbar from '../components/shared/Navbar'
 import Hero from '../components/landing/Hero'
 
-// Lazy load heavy components
+// Lazy load heavy components - will be loaded via intersection observer
+// Removed ssr: false for Server Components compatibility - intersection observer handles client-side lazy loading
 const Courses = dynamic(() => import('@/components/landing/Courses'), {
-  ssr: true,
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
 const SuccessStories = dynamic(() => import('@/components/landing/SuccessStories'), {
-  ssr: true,
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
 const ContactSupport = dynamic(() => import('@/components/landing/ContactSupport'), {
-  ssr: true,
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
 const Certification = dynamic(() => import('@/components/landing/Certication'), {
-  ssr: true,
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
-// FlowingMenuWrapper commented out - not currently used
-// const FlowingMenuWrapper = dynamic(() => import('@/components/ui/FlowingMenuWrapper'), {
-//   ssr: true,
-//   loading: () => <div className="h-full bg-gray-900 animate-pulse flex items-center justify-center">
-//     <p className="text-white">Loading Success Stories...</p>
-//   </div>
-// })
-
 const Footer = dynamic(() => import('../components/shared/Footer'), {
-  ssr: true,
   loading: () => <div className="h-32 bg-black animate-pulse" />
 })
 
@@ -95,53 +83,26 @@ export default function LandingPage() {
         <LandingPageClient />
         
         {/* Lazy loaded sections with intersection observer */}
-        <div id='certification'>
-          <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
-            <Certification />
-          </Suspense>
-        </div>
+        <LazySection id="certification">
+          <Certification />
+        </LazySection>
 
-        <div id='stories'>
-          <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
-            <SuccessStories />
-          </Suspense>
-        </div>
+        <LazySection id="stories">
+          <SuccessStories />
+        </LazySection>
         
         {/* Courses section hidden - will add new courses later */}
-        <div id="courses">
-          <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
-            <Courses />
-          </Suspense>
-        </div>
+        <LazySection id="courses">
+          <Courses />
+        </LazySection>
         
-        {/* <div id="partners">
-          <section className='bg-black'>
-            <div className="text-center mb-16 bg-black">
-              <p className="uppercase tracking-[6px] text-yellow-400 lg:text-[20px] text-[16px] font-medium mb-3">
-                Success Stories
-              </p>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Real-World Impact
-              </h2>
-              <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-                See how leading organizations transformed their operations using our Lean Enterprise methodologies
-              </p>
-            </div>
-            <div className='bg-black' style={{ height: '600px', position: 'relative' }}>
-              <FlowingMenuWrapper items={demoItems} />
-            </div>
-          </section>
-        </div> */}
+        <LazySection id="contact">
+          <ContactSupport />
+        </LazySection>
         
-        <div id="contact">
-          <Suspense fallback={<div className="h-96 bg-black animate-pulse" />}>
-            <ContactSupport />
-          </Suspense>
-        </div>
-        
-        <Suspense fallback={<div className="h-32 bg-black animate-pulse" />}>
+        <LazySection fallback={<div className="h-32 bg-black animate-pulse" />}>
           <Footer />
-        </Suspense>
+        </LazySection>
       </div>
     </main>
   )

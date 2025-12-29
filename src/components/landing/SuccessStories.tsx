@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, memo, useCallback } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
@@ -287,33 +288,203 @@ const testimonials: Testimonial[] = [
   }
 ]
 
+// Memoized testimonial card component
+const TestimonialCard = memo(({ testimonial }: { testimonial: Testimonial }) => {
+  return (
+    <div
+      key={testimonial.id}
+      className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-6 relative overflow-hidden group"
+    >
+      {/* Hover effect background */}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      />
+
+      <div className="relative z-10">
+        <div 
+          className="mb-4 flex items-start gap-3"
+        >
+          {/* Profile Image - Always render container for consistent structure */}
+          <div className="flex-shrink-0 relative w-16 h-16">
+            {/* Image - always rendered, hidden if no image URL */}
+            {testimonial.image ? (
+              <div className="relative w-16 h-16">
+                <Image
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  width={96}
+                  height={96}
+                  className="rounded-full object-cover object-center border-2 border-yellow-400/30 flex-shrink-0 bg-yellow-400/20"
+                  style={{ objectPosition: 'center top' }}
+                  unoptimized={testimonial.image.includes('drive.google.com') || testimonial.image.includes('lh3.googleusercontent.com')}
+                  loading="lazy"
+                  onError={(e) => {
+                    const img = e.currentTarget as HTMLImageElement
+                    const currentSrc = img.src
+                    
+                    // Try alternative Google Drive formats
+                    const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
+                    if (fileIdMatch && fileIdMatch[1]) {
+                      const fileId = fileIdMatch[1]
+                      
+                      // Try uc?export=view format
+                      if (!currentSrc.includes('uc?export=view')) {
+                        img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
+                        return
+                      }
+                      
+                      // Try lh3.googleusercontent.com format
+                      if (!currentSrc.includes('lh3.googleusercontent.com')) {
+                        img.src = `https://lh3.googleusercontent.com/d/${fileId}`
+                        return
+                      }
+                    }
+                    
+                    // If all formats fail, show placeholder
+                    img.style.display = 'none'
+                    const placeholder = img.parentElement?.parentElement?.querySelector('[data-placeholder]') as HTMLElement
+                    if (placeholder) {
+                      placeholder.style.display = 'flex'
+                    }
+                  }}
+                  onLoad={() => {
+                    // Hide placeholder when image loads successfully
+                    const placeholder = document.querySelector(`[data-placeholder-for="${testimonial.name}"]`) as HTMLElement
+                    if (placeholder) {
+                      placeholder.style.display = 'none'
+                    }
+                  }}
+                />
+              </div>
+            ) : null}
+            {/* Fallback placeholder - always rendered, shown when no image */}
+            <div 
+              data-placeholder
+              data-placeholder-for={testimonial.name}
+              className="w-16 h-16 rounded-full border-2 border-yellow-400/30 bg-yellow-400/20 flex items-center justify-center flex-shrink-0 absolute inset-0"
+              style={{ display: testimonial.image ? 'none' : 'flex' }}
+            >
+              <span className="text-yellow-400 text-lg font-bold">
+                {testimonial.name.charAt(0).toUpperCase()}
+              </span>
+            </div>
+          </div>
+          <div className="flex-1 min-w-0">
+            <h4 
+              className="text-white font-semibold mb-1"
+            >
+              {testimonial.name}
+            </h4>
+            <p 
+              className="text-gray-400 text-sm"
+            >
+              {testimonial.role} {testimonial.company && `• ${testimonial.company}`}
+            </p>
+            {/* Social Links */}
+            <div className="flex gap-2 mt-2">
+              {testimonial.instagram && (
+                <a
+                  href={testimonial.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-pink-400 hover:text-pink-300 transition-colors"
+                  aria-label="Instagram"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+              )}
+              {testimonial.linkedin && (
+                <a
+                  href={testimonial.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div 
+          className="flex mb-3"
+        >
+        {[...Array(testimonial.rating)].map((_, i) => (
+            <svg
+            key={i}
+            className="w-4 h-4 text-yellow-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
+
+        <p 
+          className="text-gray-300 text-sm mb-4 line-clamp-3"
+        >
+        &ldquo;{testimonial.quote}&rdquo;
+        </p>
+
+        <div 
+          className="border-t border-white/10 pt-4"
+        >
+          <div 
+            className="achievement-badge text-yellow-400 font-semibold text-sm bg-yellow-400/10 px-3 py-1 rounded-full inline-block mb-2"
+          >
+          {testimonial.achievement}
+          </div>
+          <div 
+            className="text-gray-400 text-xs"
+          >
+          {testimonial.course}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
+
+TestimonialCard.displayName = 'TestimonialCard'
+
 export default function SuccessStories() {
   const [selectedTestimonial, setSelectedTestimonial] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
+  // Memoize testimonials array to prevent unnecessary re-renders
+  const memoizedTestimonials = useMemo(() => testimonials, [])
+
   // Safety check
-  if (!testimonials || testimonials.length === 0) {
+  if (!memoizedTestimonials || memoizedTestimonials.length === 0) {
     return null
   }
 
-  const nextTestimonial = () => {
-    setSelectedTestimonial((prev) => (prev + 1) % testimonials.length)
-  }
+  // Memoize callbacks
+  const nextTestimonial = useCallback(() => {
+    setSelectedTestimonial((prev) => (prev + 1) % memoizedTestimonials.length)
+  }, [memoizedTestimonials.length])
 
-  const prevTestimonial = () => {
-    setSelectedTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
+  const prevTestimonial = useCallback(() => {
+    setSelectedTestimonial((prev) => (prev - 1 + memoizedTestimonials.length) % memoizedTestimonials.length)
+  }, [memoizedTestimonials.length])
 
-  // Auto-play functionality
+  // Auto-play functionality with debouncing
   useEffect(() => {
-    if (!isAutoPlaying || testimonials.length === 0) return
+    if (!isAutoPlaying || memoizedTestimonials.length === 0) return
     
     const interval = setInterval(() => {
-      setSelectedTestimonial((prev) => (prev + 1) % testimonials.length)
+      setSelectedTestimonial((prev) => (prev + 1) % memoizedTestimonials.length)
     }, 5000)
     
     return () => clearInterval(interval)
-  }, [isAutoPlaying, testimonials.length])
+  }, [isAutoPlaying, memoizedTestimonials.length])
 
   return (
     <section className="py-20 bg-black relative overflow-hidden">
@@ -353,59 +524,63 @@ export default function SuccessStories() {
                   {/* Profile Image - Always render container for consistent structure */}
                   <div className="flex-shrink-0 relative w-24 h-24">
                     {/* Image - always rendered */}
-                    {testimonials[selectedTestimonial].image ? (
-                      <img
-                        src={testimonials[selectedTestimonial].image}
-                        alt={testimonials[selectedTestimonial].name}
-                        className="w-24 h-24 rounded-full object-cover object-center border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20"
-                        style={{ objectPosition: 'center top' }}
-                        loading="lazy"
-                        onError={(e) => {
-                          const img = e.currentTarget
-                          const currentSrc = img.src
-                          
-                          // Try alternative Google Drive formats
-                          const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
-                          if (fileIdMatch && fileIdMatch[1]) {
-                            const fileId = fileIdMatch[1]
+                    {memoizedTestimonials[selectedTestimonial].image ? (
+                      <div className="relative w-24 h-24">
+                        <Image
+                          src={memoizedTestimonials[selectedTestimonial].image}
+                          alt={memoizedTestimonials[selectedTestimonial].name}
+                          width={120}
+                          height={120}
+                          className="rounded-full object-cover object-center border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20"
+                          style={{ objectPosition: 'center top' }}
+                          unoptimized={memoizedTestimonials[selectedTestimonial].image.includes('drive.google.com') || memoizedTestimonials[selectedTestimonial].image.includes('lh3.googleusercontent.com')}
+                          onError={(e) => {
+                            const img = e.currentTarget as HTMLImageElement
+                            const currentSrc = img.src
                             
-                            // Try uc?export=view format
-                            if (!currentSrc.includes('uc?export=view')) {
-                              img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
-                              return
+                            // Try alternative Google Drive formats
+                            const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
+                            if (fileIdMatch && fileIdMatch[1]) {
+                              const fileId = fileIdMatch[1]
+                              
+                              // Try uc?export=view format
+                              if (!currentSrc.includes('uc?export=view')) {
+                                img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
+                                return
+                              }
+                              
+                              // Try lh3.googleusercontent.com format
+                              if (!currentSrc.includes('lh3.googleusercontent.com')) {
+                                img.src = `https://lh3.googleusercontent.com/d/${fileId}`
+                                return
+                              }
                             }
                             
-                            // Try lh3.googleusercontent.com format
-                            if (!currentSrc.includes('lh3.googleusercontent.com')) {
-                              img.src = `https://lh3.googleusercontent.com/d/${fileId}`
-                              return
+                            // If all formats fail, hide image and show placeholder
+                            img.style.display = 'none'
+                            const placeholder = img.parentElement?.parentElement?.querySelector('[data-placeholder]') as HTMLElement
+                            if (placeholder) {
+                              placeholder.style.display = 'flex'
                             }
-                          }
-                          
-                          // If all formats fail, hide image and show placeholder
-                          img.style.display = 'none'
-                          const placeholder = img.parentElement?.querySelector('[data-placeholder]') as HTMLElement
-                          if (placeholder) {
-                            placeholder.style.display = 'flex'
-                          }
-                        }}
-                        onLoad={(e) => {
-                          // Hide placeholder when image loads successfully
-                          const placeholder = (e.currentTarget.parentElement?.querySelector('[data-placeholder]') as HTMLElement)
-                          if (placeholder) {
-                            placeholder.style.display = 'none'
-                          }
-                        }}
-                      />
+                          }}
+                          onLoad={() => {
+                            // Hide placeholder when image loads successfully
+                            const placeholder = document.querySelector(`[data-placeholder-for="${memoizedTestimonials[selectedTestimonial].name}"]`) as HTMLElement
+                            if (placeholder) {
+                              placeholder.style.display = 'none'
+                            }
+                          }}
+                        />
+                      </div>
                     ) : null}
                     {/* Fallback placeholder - always rendered */}
                     <div 
-                      data-placeholder
+                      data-placeholder-for={memoizedTestimonials[selectedTestimonial].name}
                       className="w-24 h-24 rounded-full border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20 flex items-center justify-center absolute inset-0"
-                      style={{ display: testimonials[selectedTestimonial].image ? 'none' : 'flex' }}
+                      style={{ display: memoizedTestimonials[selectedTestimonial].image ? 'none' : 'flex' }}
                     >
                       <span className="text-yellow-400 text-2xl font-bold">
-                        {testimonials[selectedTestimonial].name.charAt(0).toUpperCase()}
+                        {memoizedTestimonials[selectedTestimonial].name.charAt(0).toUpperCase()}
                       </span>
                     </div>
                   </div>
@@ -429,7 +604,7 @@ export default function SuccessStories() {
                     <blockquote 
                       className="text-xl md:text-2xl text-white mb-6 leading-relaxed"
                     >
-                    &ldquo;{testimonials[selectedTestimonial].quote}&rdquo;
+                    &ldquo;{memoizedTestimonials[selectedTestimonial].quote}&rdquo;
                     </blockquote>
                   </div>
                 </div>
@@ -441,23 +616,23 @@ export default function SuccessStories() {
                     <h4 
                       className="text-xl font-bold text-white"
                     >
-                      {testimonials[selectedTestimonial].name}
+                      {memoizedTestimonials[selectedTestimonial].name}
                     </h4>
                     <p 
                       className="text-gray-300"
                     >
-                      {testimonials[selectedTestimonial].role}
+                      {memoizedTestimonials[selectedTestimonial].role}
                     </p>
                     <p 
                       className="text-yellow-400 font-semibold"
                     >
-                      {testimonials[selectedTestimonial].company}
+                      {memoizedTestimonials[selectedTestimonial].company}
                     </p>
                     {/* Social Links */}
                     <div className="flex gap-3 mt-3">
-                      {testimonials[selectedTestimonial].instagram && (
+                      {memoizedTestimonials[selectedTestimonial].instagram && (
                         <a
-                          href={testimonials[selectedTestimonial].instagram}
+                          href={memoizedTestimonials[selectedTestimonial].instagram}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-pink-400 hover:text-pink-300 transition-colors"
@@ -468,9 +643,9 @@ export default function SuccessStories() {
                           </svg>
                         </a>
                       )}
-                      {testimonials[selectedTestimonial].linkedin && (
+                      {memoizedTestimonials[selectedTestimonial].linkedin && (
                         <a
-                          href={testimonials[selectedTestimonial].linkedin}
+                          href={memoizedTestimonials[selectedTestimonial].linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-400 hover:text-blue-300 transition-colors"
@@ -489,12 +664,12 @@ export default function SuccessStories() {
                     <div 
                       className="achievement-badge text-yellow-400 font-bold text-lg bg-yellow-400/10 px-4 py-2 rounded-full border border-yellow-400/30"
                     >
-                      {testimonials[selectedTestimonial].achievement}
+                      {memoizedTestimonials[selectedTestimonial].achievement}
                     </div>
                     <div 
                       className="text-gray-400 text-sm mt-1"
                     >
-                      {testimonials[selectedTestimonial].course}
+                      {memoizedTestimonials[selectedTestimonial].course}
                     </div>
                   </div>
                 </div>
@@ -561,157 +736,8 @@ export default function SuccessStories() {
         <div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.id}
-              className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-2xl p-6 relative overflow-hidden group"
-            >
-              {/* Hover effect background */}
-              <div
-                className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-blue-400/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-
-              <div className="relative z-10">
-                <div 
-                  className="mb-4 flex items-start gap-3"
-                >
-                  {/* Profile Image - Always render container for consistent structure */}
-                  <div className="flex-shrink-0 relative w-16 h-16">
-                    {/* Image - always rendered, hidden if no image URL */}
-                    <img
-                      src={testimonial.image || ''}
-                      alt={testimonial.name}
-                      className={`w-16 h-16 rounded-full object-cover object-center border-2 border-yellow-400/30 flex-shrink-0 bg-yellow-400/20 ${testimonial.image ? '' : 'hidden'}`}
-                      style={{ objectPosition: 'center top' }}
-                      loading="lazy"
-                      onError={(e) => {
-                        const img = e.currentTarget
-                        const currentSrc = img.src
-                        
-                        // Try alternative Google Drive formats
-                        const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
-                        if (fileIdMatch && fileIdMatch[1]) {
-                          const fileId = fileIdMatch[1]
-                          
-                          // Try uc?export=view format
-                          if (!currentSrc.includes('uc?export=view')) {
-                            img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
-                            return
-                          }
-                          
-                          // Try lh3.googleusercontent.com format
-                          if (!currentSrc.includes('lh3.googleusercontent.com')) {
-                            img.src = `https://lh3.googleusercontent.com/d/${fileId}`
-                            return
-                          }
-                        }
-                        
-                        // If all formats fail, show placeholder
-                        img.style.display = 'none'
-                        const placeholder = img.nextElementSibling as HTMLElement
-                        if (placeholder) {
-                          placeholder.style.display = 'flex'
-                        }
-                      }}
-                      onLoad={(e) => {
-                        // Hide placeholder when image loads successfully
-                        const placeholder = (e.currentTarget.parentElement?.querySelector('[data-placeholder]') as HTMLElement)
-                        if (placeholder) {
-                          placeholder.style.display = 'none'
-                        }
-                      }}
-                    />
-                    {/* Fallback placeholder - always rendered, shown when no image */}
-                    <div 
-                      data-placeholder
-                      className="w-16 h-16 rounded-full border-2 border-yellow-400/30 bg-yellow-400/20 flex items-center justify-center flex-shrink-0 absolute inset-0"
-                      style={{ display: testimonial.image ? 'none' : 'flex' }}
-                    >
-                      <span className="text-yellow-400 text-lg font-bold">
-                        {testimonial.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 
-                      className="text-white font-semibold mb-1"
-                    >
-                      {testimonial.name}
-                    </h4>
-                    <p 
-                      className="text-gray-400 text-sm"
-                    >
-                      {testimonial.role} {testimonial.company && `• ${testimonial.company}`}
-                    </p>
-                    {/* Social Links */}
-                    <div className="flex gap-2 mt-2">
-                      {testimonial.instagram && (
-                        <a
-                          href={testimonial.instagram}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-pink-400 hover:text-pink-300 transition-colors"
-                          aria-label="Instagram"
-                        >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                          </svg>
-                        </a>
-                      )}
-                      {testimonial.linkedin && (
-                        <a
-                          href={testimonial.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-400 hover:text-blue-300 transition-colors"
-                          aria-label="LinkedIn"
-                        >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                          </svg>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div 
-                  className="flex mb-3"
-                >
-                {[...Array(testimonial.rating)].map((_, i) => (
-                    <svg
-                    key={i}
-                    className="w-4 h-4 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-
-                <p 
-                  className="text-gray-300 text-sm mb-4 line-clamp-3"
-                >
-                &ldquo;{testimonial.quote}&rdquo;
-                </p>
-
-                <div 
-                  className="border-t border-white/10 pt-4"
-                >
-                  <div 
-                    className="achievement-badge text-yellow-400 font-semibold text-sm bg-yellow-400/10 px-3 py-1 rounded-full inline-block mb-2"
-                  >
-                  {testimonial.achievement}
-                  </div>
-                  <div 
-                    className="text-gray-400 text-xs"
-                  >
-                  {testimonial.course}
-                  </div>
-                </div>
-              </div>
-            </div>
+          {memoizedTestimonials.map((testimonial) => (
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
           ))}
         </div>
 

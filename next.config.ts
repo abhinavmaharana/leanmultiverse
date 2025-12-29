@@ -3,8 +3,19 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Performance optimizations
   experimental: {
-    optimizePackageImports: ['framer-motion', 'gsap', '@tabler/icons-react', 'lucide-react'],
-    optimizeCss: true,
+    optimizePackageImports: [
+      'framer-motion', 
+      'motion',
+      'gsap', 
+      '@tabler/icons-react', 
+      'lucide-react',
+      'react-icons',
+      '@radix-ui/react-label',
+      '@radix-ui/react-slot',
+      'date-fns',
+    ],
+    // optimizeCss disabled - requires critters package which causes build issues
+    // optimizeCss: true,
   },
   
   // Image optimization
@@ -39,6 +50,7 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 31536000, // 1 year
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    qualities: [50, 75, 90], // Support all quality values used in the app
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -125,6 +137,24 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/api/courses(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=3600, stale-while-revalidate=86400',
+          },
+        ],
+      },
+      {
+        source: '/api/contact/submit',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate',
           },
         ],
       },

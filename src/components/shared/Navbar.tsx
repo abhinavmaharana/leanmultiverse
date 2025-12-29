@@ -11,31 +11,42 @@ function Navbar() {
   const [mounted, setMounted] = useState(false)
   const SHOW_WEBINAR_CTA = true
 
+  // Optimized scroll handler with useCallback and throttling
+  const handleScroll = useCallback(() => {
+    const heroHeight = window.innerHeight * 0.8 // 80% of viewport height
+    const scrollY = window.scrollY
+    setIsTransparent(scrollY < heroHeight)
+  }, [])
+
   useEffect(() => {
     setMounted(true)
     
     // Throttled scroll detection for better performance
     let ticking = false
-    const heroHeight = window.innerHeight * 0.8 // 80% of viewport height
+    let lastScrollY = 0
 
-    const handleScroll = () => {
+    const throttledScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY
-          setIsTransparent(scrollY < heroHeight)
+          const currentScrollY = window.scrollY
+          // Only update if scroll position changed significantly (throttle)
+          if (Math.abs(currentScrollY - lastScrollY) > 5) {
+            handleScroll()
+            lastScrollY = currentScrollY
+          }
           ticking = false
         })
         ticking = true
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('scroll', throttledScroll, { passive: true })
     handleScroll() // Initial check
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', throttledScroll)
     }
-  }, [])
+  }, [handleScroll])
 
   // Use mounted state to prevent hydration mismatch
   const navbarClassName = mounted 
