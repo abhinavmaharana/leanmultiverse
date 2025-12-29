@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 interface Testimonial {
@@ -351,53 +352,56 @@ export default function SuccessStories() {
                 <div className="flex flex-col lg:flex-row gap-6 items-center lg:items-start">
                   {/* Profile Image - Always render container for consistent structure */}
                   <div className="flex-shrink-0 relative w-24 h-24">
-                    {/* Image - always rendered, hidden if no image URL */}
-                    <img
-                      src={testimonials[selectedTestimonial].image || ''}
-                      alt={testimonials[selectedTestimonial].name}
-                      className={`w-24 h-24 rounded-full object-cover border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20 ${testimonials[selectedTestimonial].image ? '' : 'hidden'}`}
-                      loading="lazy"
-                      onError={(e) => {
-                        const img = e.currentTarget
-                        const currentSrc = img.src
-                        
-                        // Try alternative Google Drive formats
-                        const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
-                        if (fileIdMatch && fileIdMatch[1]) {
-                          const fileId = fileIdMatch[1]
+                    {/* Image - always rendered */}
+                    {testimonials[selectedTestimonial].image ? (
+                      <img
+                        src={testimonials[selectedTestimonial].image}
+                        alt={testimonials[selectedTestimonial].name}
+                        className="w-24 h-24 rounded-full object-cover border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20"
+                        loading="lazy"
+                        onError={(e) => {
+                          const img = e.currentTarget
+                          const currentSrc = img.src
                           
-                          // Try uc?export=view format
-                          if (!currentSrc.includes('uc?export=view')) {
-                            img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
-                            return
+                          // Try alternative Google Drive formats
+                          const fileIdMatch = currentSrc.match(/id=([a-zA-Z0-9_-]+)/)
+                          if (fileIdMatch && fileIdMatch[1]) {
+                            const fileId = fileIdMatch[1]
+                            
+                            // Try uc?export=view format
+                            if (!currentSrc.includes('uc?export=view')) {
+                              img.src = `https://drive.google.com/uc?export=view&id=${fileId}`
+                              return
+                            }
+                            
+                            // Try lh3.googleusercontent.com format
+                            if (!currentSrc.includes('lh3.googleusercontent.com')) {
+                              img.src = `https://lh3.googleusercontent.com/d/${fileId}`
+                              return
+                            }
                           }
                           
-                          // Try lh3.googleusercontent.com format
-                          if (!currentSrc.includes('lh3.googleusercontent.com')) {
-                            img.src = `https://lh3.googleusercontent.com/d/${fileId}`
-                            return
+                          // If all formats fail, hide image and show placeholder
+                          img.style.display = 'none'
+                          const placeholder = img.parentElement?.querySelector('[data-placeholder]') as HTMLElement
+                          if (placeholder) {
+                            placeholder.style.display = 'flex'
                           }
-                        }
-                        
-                        // If all formats fail, show placeholder
-                        img.style.display = 'none'
-                        const placeholder = img.nextElementSibling as HTMLElement
-                        if (placeholder) {
-                          placeholder.style.display = 'flex'
-                        }
-                      }}
-                      onLoad={() => {
-                        // Hide placeholder when image loads successfully
-                        const placeholder = (document.querySelector(`[data-placeholder-for="${testimonials[selectedTestimonial].name}"]`) as HTMLElement)
-                        if (placeholder) {
-                          placeholder.style.display = 'none'
-                        }
-                      }}
-                    />
-                    {/* Fallback placeholder - always rendered, shown when no image */}
+                        }}
+                        onLoad={(e) => {
+                          // Hide placeholder when image loads successfully
+                          const placeholder = (e.currentTarget.parentElement?.querySelector('[data-placeholder]') as HTMLElement)
+                          if (placeholder) {
+                            placeholder.style.display = 'none'
+                          }
+                        }}
+                      />
+                    ) : null}
+                    {/* Fallback placeholder - always rendered */}
                     <div 
-                      data-placeholder-for={testimonials[selectedTestimonial].name}
-                      className={`w-24 h-24 rounded-full border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20 flex items-center justify-center absolute inset-0 ${testimonials[selectedTestimonial].image ? 'hidden' : 'flex'}`}
+                      data-placeholder
+                      className="w-24 h-24 rounded-full border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20 flex items-center justify-center absolute inset-0"
+                      style={{ display: testimonials[selectedTestimonial].image ? 'none' : 'flex' }}
                     >
                       <span className="text-yellow-400 text-2xl font-bold">
                         {testimonials[selectedTestimonial].name.charAt(0).toUpperCase()}
@@ -607,9 +611,9 @@ export default function SuccessStories() {
                           placeholder.style.display = 'flex'
                         }
                       }}
-                      onLoad={() => {
+                      onLoad={(e) => {
                         // Hide placeholder when image loads successfully
-                        const placeholder = (document.querySelector(`[data-placeholder-for="${testimonial.name}"]`) as HTMLElement)
+                        const placeholder = (e.currentTarget.parentElement?.querySelector('[data-placeholder]') as HTMLElement)
                         if (placeholder) {
                           placeholder.style.display = 'none'
                         }
@@ -617,8 +621,9 @@ export default function SuccessStories() {
                     />
                     {/* Fallback placeholder - always rendered, shown when no image */}
                     <div 
-                      data-placeholder-for={testimonial.name}
-                      className={`w-16 h-16 rounded-full border-2 border-yellow-400/30 bg-yellow-400/20 flex items-center justify-center flex-shrink-0 absolute inset-0 ${testimonial.image ? 'hidden' : 'flex'}`}
+                      data-placeholder
+                      className="w-16 h-16 rounded-full border-2 border-yellow-400/30 bg-yellow-400/20 flex items-center justify-center flex-shrink-0 absolute inset-0"
+                      style={{ display: testimonial.image ? 'none' : 'flex' }}
                     >
                       <span className="text-yellow-400 text-lg font-bold">
                         {testimonial.name.charAt(0).toUpperCase()}
@@ -730,12 +735,16 @@ export default function SuccessStories() {
             through our comprehensive learning programs.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
-                Start Your Journey
-              </Button>
-              <Button className="bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300">
-                View All Courses
-              </Button>
+              <Link href="/book-webinar">
+                <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto">
+                  Book Webinar
+                </Button>
+              </Link>
+              <Link href="/book-one-on-one">
+                <Button className="bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300 w-full sm:w-auto">
+                  Book One on One
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

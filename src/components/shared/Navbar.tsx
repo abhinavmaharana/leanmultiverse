@@ -66,11 +66,6 @@ function Navbar() {
       {/* Center: Navigation links (desktop) - Absolutely positioned for true centering */}
       <div 
         className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 md:h-[65px] items-center justify-center space-x-8 text-[14.75px] font-semibold font-[Raleway] px-[28px] py-[20px] rounded-full shadow-md hover:opacity-90 transition bg-gradient-to-r from-[#C69D44]/30 to-[#604C21]/30 backdrop-blur-sm border border-white/30"
-        style={mounted && !isTransparent ? {
-          background: 'linear-gradient(to right, rgba(198, 157, 68, 0.2), rgba(96, 76, 33, 0.2))',
-          backdropFilter: 'blur(12px)',
-          borderColor: 'rgba(255, 255, 255, 0.2)'
-        } : undefined}
       >
         <a 
           href="#home" 
@@ -155,11 +150,6 @@ function Navbar() {
               <Link href="/book-webinar">
                 <Button
                   className="hidden md:inline-flex rounded-full text-[13px] sm:text-[14.75px] w-[140px] sm:w-[160px] h-[60px] sm:h-[65px] text-white shadow-md hover:opacity-90 transition bg-white/20 backdrop-blur-sm border border-white/30"
-                  style={mounted && !isTransparent ? {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(12px)',
-                    borderColor: 'rgba(255, 255, 255, 0.2)'
-                  } : undefined}
                 >
                   <span>Book Webinar</span>
                 </Button>
@@ -169,11 +159,6 @@ function Navbar() {
               <Link href="/book-one-on-one">
                 <Button
                   className="hidden md:inline-flex rounded-full text-[13px] sm:text-[14.75px] w-[140px] sm:w-[160px] h-[60px] sm:h-[65px] text-white shadow-md hover:opacity-90 transition bg-yellow-400/20 backdrop-blur-sm border border-yellow-400/30"
-                  style={mounted && !isTransparent ? {
-                    backgroundColor: 'rgba(250, 204, 21, 0.1)',
-                    backdropFilter: 'blur(12px)',
-                    borderColor: 'rgba(250, 204, 21, 0.2)'
-                  } : undefined}
                 >
                   <span>Book 1-on-1</span>
                 </Button>
@@ -187,10 +172,6 @@ function Navbar() {
           aria-expanded={open}
           onClick={() => setOpen(v => !v)}
           className="inline-flex md:hidden items-center justify-center h-12 w-12 rounded-full text-white hover:bg-white/15 transition border border-white/30 bg-white/20"
-          style={mounted && !isTransparent ? {
-            borderColor: 'rgba(255, 255, 255, 0.2)',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)'
-          } : undefined}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -214,10 +195,6 @@ function Navbar() {
         >
           <div 
             className="flex flex-col gap-2 text-sm sm:text-base font-medium rounded-2xl shadow-lg backdrop-blur-md p-4 sm:p-6 bg-gradient-to-b from-[#0b0b0b]/95 to-[#1a1a1a]/95 border border-white/20"
-            style={mounted && !isTransparent ? {
-              background: 'linear-gradient(to bottom, rgba(11, 11, 11, 0.9), rgba(26, 26, 26, 0.9))',
-              borderColor: 'rgba(255, 255, 255, 0.1)'
-            } : undefined}
           >
             <a 
               onClick={() => setOpen(false)} 
