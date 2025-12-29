@@ -357,7 +357,8 @@ export default function SuccessStories() {
                       <img
                         src={testimonials[selectedTestimonial].image}
                         alt={testimonials[selectedTestimonial].name}
-                        className="w-24 h-24 rounded-full object-cover border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20"
+                        className="w-24 h-24 rounded-full object-cover object-center border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20"
+                        style={{ objectPosition: 'center top' }}
                         loading="lazy"
                         onError={(e) => {
                           const img = e.currentTarget
@@ -580,7 +581,8 @@ export default function SuccessStories() {
                     <img
                       src={testimonial.image || ''}
                       alt={testimonial.name}
-                      className={`w-16 h-16 rounded-full object-cover border-2 border-yellow-400/30 flex-shrink-0 bg-yellow-400/20 ${testimonial.image ? '' : 'hidden'}`}
+                      className={`w-16 h-16 rounded-full object-cover object-center border-2 border-yellow-400/30 flex-shrink-0 bg-yellow-400/20 ${testimonial.image ? '' : 'hidden'}`}
+                      style={{ objectPosition: 'center top' }}
                       loading="lazy"
                       onError={(e) => {
                         const img = e.currentTarget
