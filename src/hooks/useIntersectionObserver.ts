@@ -10,9 +10,9 @@ interface UseIntersectionObserverOptions {
 
 export function useIntersectionObserver<T extends HTMLElement = HTMLDivElement>(
   options: UseIntersectionObserverOptions = {}
-): [RefObject<T>, boolean] {
+): [RefObject<T | null>, boolean] {
   const { threshold = 0.1, rootMargin = '50px', triggerOnce = true } = options
-  const elementRef = useRef<T>(null)
+  const elementRef = useRef<T | null>(null)
   const [isIntersecting, setIsIntersecting] = useState(false)
 
   useEffect(() => {
