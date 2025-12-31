@@ -103,63 +103,47 @@ export default function PaymentDiagnosticsPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <AdminNavbar />
-        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
-            <p className="text-gray-400">Loading payment diagnostics...</p>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-        <AdminNavbar />
-        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
-          <div className="text-center">
-            <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-            <p className="text-red-400 mb-4">Error: {error}</p>
-            <button
-              onClick={fetchPaymentStats}
-              className="px-4 py-2 bg-yellow-500 text-black rounded-lg hover:bg-yellow-400 transition-colors"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (!stats) {
-    return null
-  }
-
-  const totalPaid = stats.webinarStatusCounts.paid + stats.oneOnOneStatusCounts.paid
-  const totalPending = stats.webinarStatusCounts.pending + stats.oneOnOneStatusCounts.pending
-  const totalFailed = stats.webinarStatusCounts.failed + stats.oneOnOneStatusCounts.failed
-  const totalBookings = stats.summary.totalWebinars + stats.summary.totalOneOnOne
+  const totalPaid = stats?.webinarStatusCounts.paid + stats?.oneOnOneStatusCounts.paid || 0
+  const totalPending = stats?.webinarStatusCounts.pending + stats?.oneOnOneStatusCounts.pending || 0
+  const totalFailed = stats?.webinarStatusCounts.failed + stats?.oneOnOneStatusCounts.failed || 0
+  const totalBookings = (stats?.summary.totalWebinars || 0) + (stats?.summary.totalOneOnOne || 0)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <AdminNavbar />
       <div className="container mx-auto px-4 py-8">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">
-            Payment Diagnostics
-          </h1>
-          <p className="text-gray-400">Comprehensive breakdown of payment statuses and verification</p>
-        </motion.div>
+        {loading ? (
+          <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+              <p className="text-gray-400">Loading payment diagnostics...</p>
+            </div>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+            <div className="text-center">
+              <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <p className="text-red-400 mb-4">Error: {error}</p>
+              <button
+                onClick={fetchPaymentStats}
+                className="px-4 py-2 bg-yellow-500 text-black rounded-lg hover:bg-yellow-400 transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8"
+            >
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">
+                Payment Diagnostics
+              </h1>
+              <p className="text-gray-400">Comprehensive breakdown of payment statuses and verification</p>
+            </motion.div>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -475,20 +459,22 @@ export default function PaymentDiagnosticsPage() {
           </motion.div>
         </div>
 
-        {/* Refresh Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8 text-center"
-        >
-          <button
-            onClick={fetchPaymentStats}
-            className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-lg hover:shadow-yellow-400/40"
-          >
-            Refresh Data
-          </button>
-        </motion.div>
+            {/* Refresh Button */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="mt-8 text-center"
+            >
+              <button
+                onClick={fetchPaymentStats}
+                className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-lg hover:shadow-yellow-400/40"
+              >
+                Refresh Data
+              </button>
+            </motion.div>
+          </>
+        )}
       </div>
     </div>
   )
