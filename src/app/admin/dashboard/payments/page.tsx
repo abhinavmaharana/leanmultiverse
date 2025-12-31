@@ -103,9 +103,9 @@ export default function PaymentDiagnosticsPage() {
     }
   }
 
-  const totalPaid = stats?.webinarStatusCounts.paid + stats?.oneOnOneStatusCounts.paid || 0
-  const totalPending = stats?.webinarStatusCounts.pending + stats?.oneOnOneStatusCounts.pending || 0
-  const totalFailed = stats?.webinarStatusCounts.failed + stats?.oneOnOneStatusCounts.failed || 0
+  const totalPaid = (stats?.webinarStatusCounts.paid || 0) + (stats?.oneOnOneStatusCounts.paid || 0)
+  const totalPending = (stats?.webinarStatusCounts.pending || 0) + (stats?.oneOnOneStatusCounts.pending || 0)
+  const totalFailed = (stats?.webinarStatusCounts.failed || 0) + (stats?.oneOnOneStatusCounts.failed || 0)
   const totalBookings = (stats?.summary.totalWebinars || 0) + (stats?.summary.totalOneOnOne || 0)
 
   return (
@@ -227,7 +227,7 @@ export default function PaymentDiagnosticsPage() {
                   <span className="text-gray-300">Paid</span>
                 </div>
                 <span className="text-xl font-bold text-green-400">
-                  {stats.webinarStatusCounts.paid}
+                  {stats?.webinarStatusCounts.paid ?? 0}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-yellow-900/20 rounded-lg border border-yellow-700/30">
@@ -236,7 +236,7 @@ export default function PaymentDiagnosticsPage() {
                   <span className="text-gray-300">Pending</span>
                 </div>
                 <span className="text-xl font-bold text-yellow-400">
-                  {stats.webinarStatusCounts.pending}
+                  {stats?.webinarStatusCounts.pending ?? 0}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-red-900/20 rounded-lg border border-red-700/30">
@@ -245,17 +245,17 @@ export default function PaymentDiagnosticsPage() {
                   <span className="text-gray-300">Failed</span>
                 </div>
                 <span className="text-xl font-bold text-red-400">
-                  {stats.webinarStatusCounts.failed}
+                  {stats?.webinarStatusCounts.failed ?? 0}
                 </span>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-700">
                 <div className="flex items-center justify-between text-sm text-gray-400">
                   <span>With Payment ID</span>
-                  <span className="text-white">{stats.webinarStatusCounts.withPaymentId}</span>
+                  <span className="text-white">{stats?.webinarStatusCounts.withPaymentId ?? 0}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm text-gray-400 mt-2">
                   <span>With Order ID</span>
-                  <span className="text-white">{stats.webinarStatusCounts.withOrderId}</span>
+                  <span className="text-white">{stats?.webinarStatusCounts.withOrderId ?? 0}</span>
                 </div>
               </div>
             </div>
@@ -278,7 +278,7 @@ export default function PaymentDiagnosticsPage() {
                   <span className="text-gray-300">Paid</span>
                 </div>
                 <span className="text-xl font-bold text-green-400">
-                  {stats.oneOnOneStatusCounts.paid}
+                  {stats?.oneOnOneStatusCounts.paid ?? 0}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-yellow-900/20 rounded-lg border border-yellow-700/30">
@@ -287,7 +287,7 @@ export default function PaymentDiagnosticsPage() {
                   <span className="text-gray-300">Pending</span>
                 </div>
                 <span className="text-xl font-bold text-yellow-400">
-                  {stats.oneOnOneStatusCounts.pending}
+                  {stats?.oneOnOneStatusCounts.pending ?? 0}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-red-900/20 rounded-lg border border-red-700/30">
@@ -296,17 +296,17 @@ export default function PaymentDiagnosticsPage() {
                   <span className="text-gray-300">Failed</span>
                 </div>
                 <span className="text-xl font-bold text-red-400">
-                  {stats.oneOnOneStatusCounts.failed}
+                  {stats?.oneOnOneStatusCounts.failed ?? 0}
                 </span>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-700">
                 <div className="flex items-center justify-between text-sm text-gray-400">
                   <span>With Payment ID</span>
-                  <span className="text-white">{stats.oneOnOneStatusCounts.withPaymentId}</span>
+                  <span className="text-white">{stats?.oneOnOneStatusCounts.withPaymentId ?? 0}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm text-gray-400 mt-2">
                   <span>With Order ID</span>
-                  <span className="text-white">{stats.oneOnOneStatusCounts.withOrderId}</span>
+                  <span className="text-white">{stats?.oneOnOneStatusCounts.withOrderId ?? 0}</span>
                 </div>
               </div>
             </div>
@@ -314,7 +314,7 @@ export default function PaymentDiagnosticsPage() {
         </div>
 
         {/* Suspicious Entries */}
-        {stats.suspiciousEntries.webinars > 0 || stats.suspiciousEntries.oneOnOne > 0 ? (
+        {(stats?.suspiciousEntries.webinars ?? 0) > 0 || (stats?.suspiciousEntries.oneOnOne ?? 0) > 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -330,11 +330,11 @@ export default function PaymentDiagnosticsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="text-red-400 font-semibold mb-2">
-                  Webinars: {stats.suspiciousEntries.webinars}
+                  Webinars: {stats?.suspiciousEntries.webinars ?? 0}
                 </p>
-                {stats.suspiciousEntries.details.webinars.length > 0 && (
+                {(stats?.suspiciousEntries.details.webinars.length ?? 0) > 0 && (
                   <div className="space-y-2">
-                    {stats.suspiciousEntries.details.webinars.map((entry) => (
+                    {stats?.suspiciousEntries.details.webinars.map((entry) => (
                       <div
                         key={entry.id}
                         className="bg-gray-800/50 p-3 rounded border border-red-700/30 text-sm"
@@ -352,11 +352,11 @@ export default function PaymentDiagnosticsPage() {
               </div>
               <div>
                 <p className="text-red-400 font-semibold mb-2">
-                  One-on-One: {stats.suspiciousEntries.oneOnOne}
+                  One-on-One: {stats?.suspiciousEntries.oneOnOne ?? 0}
                 </p>
-                {stats.suspiciousEntries.details.oneOnOne.length > 0 && (
+                {(stats?.suspiciousEntries.details.oneOnOne.length ?? 0) > 0 && (
                   <div className="space-y-2">
-                    {stats.suspiciousEntries.details.oneOnOne.map((entry) => (
+                    {stats?.suspiciousEntries.details.oneOnOne.map((entry) => (
                       <div
                         key={entry.id}
                         className="bg-gray-800/50 p-3 rounded border border-red-700/30 text-sm"
@@ -404,9 +404,9 @@ export default function PaymentDiagnosticsPage() {
               <CheckCircle2 className="h-5 w-5 text-green-400" />
               Sample Paid Webinars (Recent)
             </h2>
-            {stats.samplePaidWebinars.length > 0 ? (
+            {(stats?.samplePaidWebinars.length ?? 0) > 0 ? (
               <div className="space-y-3">
-                {stats.samplePaidWebinars.map((booking) => (
+                {stats?.samplePaidWebinars.map((booking) => (
                   <div
                     key={booking.id}
                     className="bg-gray-900/50 p-3 rounded border border-green-700/30"
@@ -436,9 +436,9 @@ export default function PaymentDiagnosticsPage() {
               <CheckCircle2 className="h-5 w-5 text-green-400" />
               Sample Paid One-on-One (Recent)
             </h2>
-            {stats.samplePaidOneOnOne.length > 0 ? (
+            {(stats?.samplePaidOneOnOne.length ?? 0) > 0 ? (
               <div className="space-y-3">
-                {stats.samplePaidOneOnOne.map((booking) => (
+                {stats?.samplePaidOneOnOne.map((booking) => (
                   <div
                     key={booking.id}
                     className="bg-gray-900/50 p-3 rounded border border-green-700/30"
