@@ -15,7 +15,9 @@ const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/admin/dashboard' },
   { label: 'Tracker', href: '/admin/dashboard/tracker' },
   { label: 'Bookings', href: '/admin/dashboard/bookings' },
+  { label: 'Customers', href: '/admin/dashboard/customers' },
   { label: 'Analytics', href: '/admin/dashboard/analytics' },
+  { label: 'Payments', href: '/admin/dashboard/payments' },
 ]
 
 export default function AdminNavbar() {

@@ -33,11 +33,14 @@ async function handler(request: NextRequest) {
     const pendingBookings = allBookings.filter((b) => b.payment_status === 'pending').length
     const failedBookings = allBookings.filter((b) => b.payment_status === 'failed').length
 
-    // Calculate revenue (assuming ₹99 for webinar, need to check actual pricing)
-    // For now, we'll use a simple calculation
+    // Calculate revenue (₹99 for webinar, ₹1000 for one-on-one)
     const webinarPrice = 99 // ₹99 for webinar
-    const oneOnOnePrice = 0 // Need to check actual price
-    const totalRevenue = (paidBookings * webinarPrice) // Simplified - should calculate based on booking type
+    const oneOnOnePrice = 1000 // ₹1000 for one-on-one
+    const paidWebinarCount = (webinarBookings || []).filter((b) => b.payment_status === 'paid').length
+    const paidOneOnOneCount = (oneOnOneBookings || []).filter((b) => b.payment_status === 'paid').length
+    const webinarRevenue = paidWebinarCount * webinarPrice
+    const oneOnOneRevenue = paidOneOnOneCount * oneOnOnePrice
+    const totalRevenue = webinarRevenue + oneOnOneRevenue
 
     // Calculate bookings by date (last 30 days)
     const thirtyDaysAgo = new Date()
@@ -75,6 +78,10 @@ async function handler(request: NextRequest) {
       pendingBookings,
       failedBookings,
       totalRevenue,
+      webinarRevenue,
+      oneOnOneRevenue,
+      paidWebinarCount,
+      paidOneOnOneCount,
       bookingsByDate,
       paymentStatusBreakdown,
       bookingsByType,

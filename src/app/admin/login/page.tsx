@@ -49,8 +49,11 @@ export default function AdminLoginPage() {
         throw new Error(result.error || 'Login failed')
       }
 
-      // Redirect to admin dashboard
-      router.push('/admin/dashboard')
+      // Use window.location for a hard redirect to ensure cookie is set
+      // Small delay to ensure cookie is set before redirect
+      setTimeout(() => {
+        window.location.href = '/admin/dashboard'
+      }, 100)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Login failed. Please try again.'
       setError(errorMessage)

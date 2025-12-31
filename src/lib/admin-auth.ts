@@ -8,6 +8,7 @@ const JWT_EXPIRES_IN = '24h'
 export interface AdminUser {
   id: string
   username: string
+  email?: string
   password_hash: string
   created_at: string
   updated_at: string
@@ -70,14 +71,34 @@ export async function getAdminByUsername(username: string): Promise<AdminUser | 
 }
 
 /**
+ * Get admin user by email
+ */
+export async function getAdminByEmail(email: string): Promise<AdminUser | null> {
+  const { data, error } = await supabase
+    .from('admin_users')
+    .select('*')
+    .eq('email', email)
+    .single()
+
+  if (error || !data) {
+    return null
+  }
+
+  return data as AdminUser
+}
+
+/**
  * Create a new admin user
  */
-export async function createAdminUser(username: string, password: string): Promise<AdminUser> {
+export async function createAdminUser(username: string, password: string, email?: string): Promise<AdminUser> {
   const passwordHash = await hashPassword(password)
+  
+  // Use username as email if email is not provided and username looks like an email
+  const userEmail = email || (username.includes('@') ? username : `${username}@leanmultiverse.com`)
 
   const { data, error } = await supabase
     .from('admin_users')
-    .insert([{ username, password_hash: passwordHash }])
+    .insert([{ username, email: userEmail, password_hash: passwordHash }])
     .select()
     .single()
 
