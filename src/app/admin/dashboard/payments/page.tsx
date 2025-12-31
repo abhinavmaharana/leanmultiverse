@@ -12,7 +12,6 @@ import {
   TrendingUp,
   FileText
 } from 'lucide-react'
-import AdminNavbar from '@/components/admin/AdminNavbar'
 
 interface PaymentStats {
   summary: {
@@ -109,9 +108,7 @@ export default function PaymentDiagnosticsPage() {
   const totalBookings = (stats?.summary.totalWebinars || 0) + (stats?.summary.totalOneOnOne || 0)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <AdminNavbar />
-      <div className="container mx-auto px-4 py-8">
+    <div className="w-full">
         {loading ? (
           <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
             <div className="text-center">
@@ -475,7 +472,6 @@ export default function PaymentDiagnosticsPage() {
             </motion.div>
           </>
         )}
-      </div>
     </div>
   )
 }
