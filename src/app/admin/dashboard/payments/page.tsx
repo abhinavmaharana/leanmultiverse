@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { 
   CheckCircle2, 
@@ -75,14 +75,19 @@ export default function PaymentDiagnosticsPage() {
   const [stats, setStats] = useState<PaymentStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const hasFetched = useRef(false)
 
   useEffect(() => {
-    fetchPaymentStats()
+    if (!hasFetched.current) {
+      hasFetched.current = true
+      fetchPaymentStats()
+    }
   }, [])
 
   const fetchPaymentStats = async () => {
     try {
       setLoading(true)
+      setError(null)
       const response = await fetch('/api/admin/check-payments')
       
       if (!response.ok) {

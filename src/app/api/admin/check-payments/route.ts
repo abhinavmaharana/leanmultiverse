@@ -86,16 +86,29 @@ async function handler(request: NextRequest) {
         webinars: suspiciousWebinars.length,
         oneOnOne: suspiciousOneOnOne.length,
         details: {
-          webinars: suspiciousWebinars.slice(0, 10), // First 10
-          oneOnOne: suspiciousOneOnOne.slice(0, 10), // First 10
+          // Deduplicate by ID to avoid showing same entry multiple times
+          webinars: Array.from(
+            new Map(suspiciousWebinars.map((b) => [b.id, b])).values()
+          ).slice(0, 10),
+          oneOnOne: Array.from(
+            new Map(suspiciousOneOnOne.map((b) => [b.id, b])).values()
+          ).slice(0, 10),
         },
       },
-      samplePaidWebinars: (webinarBookings || [])
-        .filter((b) => b.payment_status === 'paid')
-        .slice(0, 5),
-      samplePaidOneOnOne: (oneOnOneBookings || [])
-        .filter((b) => b.payment_status === 'paid')
-        .slice(0, 5),
+      samplePaidWebinars: Array.from(
+        new Map(
+          (webinarBookings || [])
+            .filter((b) => b.payment_status === 'paid')
+            .map((b) => [b.id, b])
+        ).values()
+      ).slice(0, 5),
+      samplePaidOneOnOne: Array.from(
+        new Map(
+          (oneOnOneBookings || [])
+            .filter((b) => b.payment_status === 'paid')
+            .map((b) => [b.id, b])
+        ).values()
+      ).slice(0, 5),
     })
   } catch (error) {
     console.error('Error checking payments:', error)
