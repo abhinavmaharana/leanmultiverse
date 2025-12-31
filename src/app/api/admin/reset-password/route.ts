@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { withAdminAuth } from '@/lib/admin-middleware'
-import { getAdminByUsername, hashPassword, supabase } from '@/lib/admin-auth'
+import { getAdminByUsername, hashPassword } from '@/lib/admin-auth'
+import { supabase } from '@/lib/db'
 
 /**
  * Reset admin password
