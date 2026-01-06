@@ -293,7 +293,7 @@ export default function BookWebinarClient() {
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-        amount: 9900, // ₹99 in paise
+        amount: 11682, // ₹99 in paise
         currency: 'INR',
         name: 'Lean Multiverse',
         description: 'Webinar Booking - Product Manager | Project Manager | Program Management Career Roadmap',
@@ -617,7 +617,7 @@ export default function BookWebinarClient() {
                   {/* Price Display */}
                   <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 rounded-xl p-6 text-center">
                     <div className="text-gray-300 text-sm mb-1">Total Amount</div>
-                    <div className="text-4xl font-bold text-yellow-400 mb-2">₹99</div>
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">₹99 + <span className='text-2xl'>18% GST</span></div>
                     {selectedDate && (
                       <div className="text-gray-300 text-sm mt-2">
                         {format(new Date(selectedDate), 'MMMM d')}, 8:00 PM IST
