@@ -2,217 +2,275 @@
 
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 
 interface TrackerFormData {
-  fields: string[]
+  name: string
+  email: string
+  popm_status: string
+  scrum_status: string
+  pmp_status: string
+  profile_status: string
+}
+
+const STATUS_OPTIONS = [
+  "Not Started",
+  "In Progress",
+  "Scheduled",
+  "Completed",
+  "Passed",
+  "Certified",
+  "Done"
+]
+
+// Convert text status → % progress
+const mapStatusToPercent = (value: string) => {
+  if (!value) return 0
+  const v = value.toLowerCase()
+
+  if (v.includes("not")) return 0
+  if (v.includes("in progress")) return 40
+  if (v.includes("scheduled")) return 60
+  if (v.includes("completed") || v.includes("done")) return 100
+  if (v.includes("passed") || v.includes("certified")) return 100
+
+  return 0
 }
 
 export default function TrackerPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+
+  const { register, handleSubmit, reset } = useForm<TrackerFormData>()
+
   const [sheetData, setSheetData] = useState<(string | number)[][]>([])
   const [loading, setLoading] = useState(true)
-  const [fieldCount, setFieldCount] = useState(5) // Default 5 fields, user can add more
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<TrackerFormData>()
-
-  useEffect(() => {
-    fetchSheetData()
-  }, [])
+  // ===== READ GOOGLE SHEET =====
+  useEffect(() => { fetchSheetData() }, [])
 
   const fetchSheetData = async () => {
     try {
-      const response = await fetch('/api/admin/tracker/read')
-      if (response.ok) {
-        const result = await response.json()
-        setSheetData(result.data || [])
-      }
-    } catch (error) {
-      console.error('Error fetching sheet data:', error)
+      const res = await fetch('/api/admin/tracker/read')
+      const json = await res.json()
+      setSheetData(json.data || [])
     } finally {
       setLoading(false)
     }
   }
 
-  const onSubmit = async (data: TrackerFormData) => {
-    setIsSubmitting(true)
-    setError(null)
-    setSuccess(null)
+  // ===== USE LATEST ENTRY IN SHEET =====
+  const latest = sheetData[sheetData.length - 1] || []
 
-    try {
-      // Extract field values
-      const fieldValues: (string | number)[] = []
-      for (let i = 0; i < fieldCount; i++) {
-        const value = (data.fields as any)[i] || ''
-        if (value) {
-          fieldValues.push(value)
-        }
-      }
+  // Column index mapping
+  const popmStatus  = latest[2] as string
+  const scrumStatus = latest[3] as string
+  const pmpStatus   = latest[4] as string
 
-      if (fieldValues.length === 0) {
-        throw new Error('At least one field must be filled')
-      }
+  const popmProgress  = mapStatusToPercent(popmStatus)
+  const scrumProgress = mapStatusToPercent(scrumStatus)
+  const pmpProgress   = mapStatusToPercent(pmpStatus)
 
-      const response = await fetch('/api/admin/tracker/write', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: fieldValues }),
-      })
+  const overall = Math.round(
+    (popmProgress + scrumProgress + pmpProgress) / 3
+  )
 
-      const result = await response.json()
+  // ===== EXPORT CSV =====
+  const exportCsv = (rows: (string | number)[][]) => {
+    const csv = rows.map(r => r.join(",")).join("\n")
+    const blob = new Blob([csv], { type: "text/csv" })
+    const url = URL.createObjectURL(blob)
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to write to Google Sheet')
-      }
-
-      setSuccess('Data written to Google Sheet successfully!')
-      reset()
-      // Refresh sheet data
-      await fetchSheetData()
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to write data'
-      setError(errorMessage)
-    } finally {
-      setIsSubmitting(false)
-    }
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "tracker.csv"
+    a.click()
   }
 
+  // ===== EXPORT PDF (simple) =====
+  const exportPdf = (rows: (string | number)[][]) => {
+    const text = rows.map(r => r.join(" | ")).join("\n")
+    const blob = new Blob([text], { type: "application/pdf" })
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "tracker.pdf"
+    a.click()
+  }
+
+  // ===== WRITE TO SHEET =====
+  const onSubmit = async (data: TrackerFormData) => {
+    setIsSubmitting(true)
+
+    const values = Object.values(data)
+
+    await fetch('/api/admin/tracker/write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: values })
+    })
+
+    reset()
+    fetchSheetData()
+    setIsSubmitting(false)
+  }
+
+  // ===== PROGRESS CARD DATA =====
+  const progressCards = [
+    { label: "POPM",  value: popmProgress },
+    { label: "Scrum", value: scrumProgress },
+    { label: "PMP",   value: pmpProgress }
+  ]
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Tracker</h1>
-        <p className="text-gray-400">Add entries to Google Sheets tracker</p>
+    <div className="max-w-5xl mx-auto space-y-10">
+
+      {/* ================= HEADER ================= */}
+      <div className="text-center space-y-1">
+        <h1 className="text-4xl font-bold text-white">
+          Certification Progress Dashboard
+        </h1>
+        <p className="text-gray-400">
+          POPM • Scrum • PMP • Profile Optimization
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white/5 border border-white/10 rounded-2xl p-6"
-        >
-          <h2 className="text-xl font-semibold text-white mb-6">Add New Entry</h2>
+      {/* ================= PROGRESS SECTION ================= */}
+      {!sheetData.length ? (
+        <div className="text-center text-gray-400">
+          No progress yet — submit your first update below.
+        </div>
+      ) : (
+        <div className="space-y-6">
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {Array.from({ length: fieldCount }).map((_, index) => (
-              <div key={index}>
-                <Label htmlFor={`field-${index}`} className="text-white mb-2 block">
-                  Field {index + 1}
-                </Label>
-                <Input
-                  id={`field-${index}`}
-                  {...register(`fields.${index}` as any)}
-                  className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
-                  placeholder={`Enter value for field ${index + 1}`}
-                />
-              </div>
-            ))}
+          {/* Overall % */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
+            <h3 className="text-gray-300 text-sm mb-2">
+              Overall Journey Score
+            </h3>
 
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setFieldCount(fieldCount + 1)}
-                className="border-white/20 bg-white/10 text-white hover:bg-white/20"
-              >
-                + Add Field
-              </Button>
-              {fieldCount > 1 && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setFieldCount(Math.max(1, fieldCount - 1))}
-                  className="border-white/20 bg-white/10 text-white hover:bg-white/20"
-                >
-                  - Remove Field
-                </Button>
-              )}
+            <div className="text-5xl font-bold text-yellow-300">
+              {overall}%
             </div>
 
-            {error && (
-              <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 text-red-200">
-                {error}
-              </div>
-            )}
-
-            {success && (
-              <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 text-green-200">
-                {success}
-              </div>
-            )}
-
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl py-4 text-lg font-semibold transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? 'Writing...' : 'Write to Google Sheet'}
-            </Button>
-          </form>
-        </motion.div>
-
-        {/* Sheet Data Preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white/5 border border-white/10 rounded-2xl p-6"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-white">Sheet Data Preview</h2>
-            <Button
-              onClick={fetchSheetData}
-              variant="outline"
-              className="border-white/20 bg-white/10 text-white hover:bg-white/20"
-            >
-              Refresh
-            </Button>
+            <p className="text-gray-400 mt-2 text-sm">
+              Based on latest tracker entry
+            </p>
           </div>
 
-          {loading ? (
-            <div className="text-gray-400">Loading...</div>
-          ) : sheetData.length === 0 ? (
-            <div className="text-gray-400">No data in sheet yet</div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-white/10">
-                    {sheetData[0]?.map((_, colIndex) => (
-                      <th key={colIndex} className="text-left py-2 px-3 text-gray-400 font-medium">
-                        Column {colIndex + 1}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {sheetData.slice(0, 10).map((row, rowIndex) => (
-                    <tr key={rowIndex} className="border-b border-white/5">
-                      {row.map((cell, colIndex) => (
-                        <td key={colIndex} className="py-2 px-3 text-white">
-                          {String(cell)}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {sheetData.length > 10 && (
-                <p className="text-gray-400 text-sm mt-4">
-                  Showing first 10 rows of {sheetData.length} total rows
+          {/* Per-Certification Progress */}
+          <div className="grid grid-cols-3 gap-4">
+            {progressCards.map(card => (
+              <div
+                key={card.label}
+                className="bg-white/5 border border-white/10 rounded-2xl p-4"
+              >
+                <div className="flex justify-between text-white">
+                  <span className="font-medium">{card.label}</span>
+                  <span>{card.value}%</span>
+                </div>
+
+                <div className="h-2 bg-white/20 rounded-lg mt-2">
+                  <div
+                    className="h-2 bg-yellow-400 rounded-lg"
+                    style={{ width: `${card.value}%` }}
+                  />
+                </div>
+
+                <p className="text-xs text-gray-400 mt-1">
+                  {String(latest[2])}
                 </p>
-              )}
-            </div>
-          )}
-        </motion.div>
+              </div>
+            ))}
+          </div>
+
+          {/* Export Buttons */}
+          <div className="flex gap-2 justify-center">
+            <Button
+              className="bg-white/10 text-white border border-white/20"
+              onClick={() => exportCsv(sheetData)}
+            >
+              Export CSV
+            </Button>
+
+            <Button
+              className="bg-yellow-400 text-black"
+              onClick={() => exportPdf(sheetData)}
+            >
+              Export PDF
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Divider */}
+      <div className="h-px bg-white/10" />
+
+      {/* ================= FORM ================= */}
+      <div className="space-y-5">
+
+        <h2 className="text-2xl font-semibold text-white">
+          Update Progress
+        </h2>
+
+        {/* User Info */}
+        <div className="grid grid-cols-2 gap-4">
+          <Input
+            placeholder="Name"
+            {...register("name")}
+            className="bg-white/10 border-white/20 text-white"
+          />
+          <Input
+            placeholder="Email"
+            {...register("email")}
+            className="bg-white/10 border-white/20 text-white"
+          />
+        </div>
+
+        {/* Status Inputs */}
+        <div className="grid grid-cols-4 gap-4">
+
+          <select {...register("popm_status")}
+            className="bg-black/60 border border-white/20 text-white rounded-xl px-3 py-2"
+          >
+            <option>POPM</option>
+            {STATUS_OPTIONS.map(s => <option key={s}>{s}</option>)}
+          </select>
+
+          <select {...register("scrum_status")}
+            className="bg-black/60 border border-white/20 text-white rounded-xl px-3 py-2"
+          >
+            <option>Scrum</option>
+            {STATUS_OPTIONS.map(s => <option key={s}>{s}</option>)}
+          </select>
+
+          <select {...register("pmp_status")}
+            className="bg-black/60 border border-white/20 text-white rounded-xl px-3 py-2"
+          >
+            <option>PMP</option>
+            {STATUS_OPTIONS.map(s => <option key={s}>{s}</option>)}
+          </select>
+
+          <select {...register("profile_status")}
+            className="bg-black/60 border border-white/20 text-white rounded-xl px-3 py-2"
+          >
+            <option>Profile</option>
+            <option>Not Started</option>
+            <option>In Progress</option>
+            <option>Done</option>
+          </select>
+        </div>
+
+        {/* Save */}
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          disabled={isSubmitting}
+          className="w-full bg-yellow-400 text-black font-semibold rounded-xl py-3"
+        >
+          {isSubmitting ? "Saving..." : "Save Update"}
+        </Button>
       </div>
     </div>
   )
 }
-
