@@ -352,99 +352,99 @@ export const courses: Course[] = [
     targetAudience: "everyone"
   },
   // ₹1499 Courses
-  {
-    id: 12,
-    title: "Project Management Foundation: Agile to Predictive Delivery™",
-    shortTitle: "Project Management Foundation: Agile to Predictive Delivery™",
-    subheading: "₹1499 Courses • 90 minutes",
-    description: "A complete starter framework for anyone who wants to understand how real projects actually run inside companies. This course gives learners a strong base in project management. It connects the dots between Agile, Scrum, Waterfall, hybrid models, and traditional PMP-style project structures. It's designed for freshers and early professionals who want to understand planning, execution, risk, timelines, and accountability in a project environment.",
-    category: "₹1499 Courses",
-    duration: "90 minutes",
-    level: "Beginner",
-    rating: 4.9,
-    learners: 0,
-    price: 1499,
-    isPopular: true,
-    isNew: true,
-    skills: ["Project Management", "Agile", "Waterfall", "Hybrid", "Scrum", "PMP", "Project Planning"],
-    highlights: [
-      "How companies actually structure projects",
-      "Core PM concepts: scope, timelines, risks, stakeholders, delivery",
-      "Agile vs Waterfall vs Hybrid explained simply",
-      "Sprint planning, standups, retrospectives",
-      "Introduction to PMP process groups",
-      "Real project lifecycle walkthrough",
-      "Beginner-friendly templates for project planning"
-    ],
-    university: "Lean Multiverse Consultancy Pvt. Ltd.",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 13,
-    title: "Product Management Foundation: GenAI, Agile & Product Practices™",
-    shortTitle: "Product Management Foundation: GenAI, Agile & Product Practices™",
-    subheading: "₹1499 Courses • 90 minutes",
-    description: "A modern foundation course that explains Product Management using simple language, real examples, and GenAI-supported workflows. This course helps learners understand what a Product Manager truly does, how AI is changing product roles, and how Agile teams build and ship products. It's designed to give absolute clarity for anyone exploring PM as a career.",
-    category: "₹1499 Courses",
-    duration: "90 minutes",
-    level: "Beginner",
-    rating: 4.9,
-    learners: 0,
-    price: 1499,
-    isPopular: true,
-    isNew: true,
-    skills: ["Product Management", "GenAI", "Agile", "Product Practices", "User Stories", "Backlog"],
-    highlights: [
-      "What product teams actually look like",
-      "Core PM concepts: problem statements, users, metrics",
-      "GenAI for PM: idea testing, user story drafting, competitor analysis",
-      "Requirements writing basics",
-      "Agile for PMs: backlog, prioritization, ceremonies",
-      "Real product lifecycle walkthrough",
-      "Beginner PM case study with a template"
-    ],
-    university: "Lean Multiverse Consultancy Pvt. Ltd.",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
-  {
-    id: 14,
-    title: "Business Analysis Foundation: Global BA Standards & Digital Tools™",
-    shortTitle: "Business Analysis Foundation: Global BA Standards & Digital Tools™",
-    subheading: "₹1499 Courses • 90 minutes",
-    description: "A structured foundation course that introduces Business Analysis the way it's practiced across modern digital workplaces. This course gives clarity on BA tasks, documentation, tools, Agile collaboration, and how IIBA frameworks fit into practical work. Ideal for freshers and professionals exploring BA as a career.",
-    category: "₹1499 Courses",
-    duration: "90 minutes",
-    level: "Beginner",
-    rating: 4.9,
-    learners: 0,
-    price: 1499,
-    isPopular: true,
-    isNew: true,
-    skills: ["Business Analysis", "IIBA", "BA Standards", "Digital Tools", "JIRA", "Confluence", "Miro", "Lucid"],
-    highlights: [
-      "BA roles inside Agile and traditional teams",
-      "Requirements gathering, user stories, acceptance criteria",
-      "IIBA foundational concepts explained simply",
-      "Digital BA skills: workflows, process mapping, systems thinking",
-      "Tools overview: JIRA, Confluence, Miro, Lucid",
-      "Hands-on documentation practice",
-      "BA career roadmap with template pack"
-    ],
-    university: "Lean Multiverse Consultancy Pvt. Ltd.",
-    buttons: {
-      primary: "Enroll Now",
-      secondary: "Contact us"
-    },
-    targetAudience: "everyone"
-  },
+  // {
+  //   id: 12,
+  //   title: "Project Management Foundation: Agile to Predictive Delivery™",
+  //   shortTitle: "Project Management Foundation: Agile to Predictive Delivery™",
+  //   subheading: "₹1499 Courses • 90 minutes",
+  //   description: "A complete starter framework for anyone who wants to understand how real projects actually run inside companies. This course gives learners a strong base in project management. It connects the dots between Agile, Scrum, Waterfall, hybrid models, and traditional PMP-style project structures. It's designed for freshers and early professionals who want to understand planning, execution, risk, timelines, and accountability in a project environment.",
+  //   category: "₹1499 Courses",
+  //   duration: "90 minutes",
+  //   level: "Beginner",
+  //   rating: 4.9,
+  //   learners: 0,
+  //   price: 1499,
+  //   isPopular: true,
+  //   isNew: true,
+  //   skills: ["Project Management", "Agile", "Waterfall", "Hybrid", "Scrum", "PMP", "Project Planning"],
+  //   highlights: [
+  //     "How companies actually structure projects",
+  //     "Core PM concepts: scope, timelines, risks, stakeholders, delivery",
+  //     "Agile vs Waterfall vs Hybrid explained simply",
+  //     "Sprint planning, standups, retrospectives",
+  //     "Introduction to PMP process groups",
+  //     "Real project lifecycle walkthrough",
+  //     "Beginner-friendly templates for project planning"
+  //   ],
+  //   university: "Lean Multiverse Consultancy Pvt. Ltd.",
+  //   buttons: {
+  //     primary: "Enroll Now",
+  //     secondary: "Contact us"
+  //   },
+  //   targetAudience: "everyone"
+  // },
+  // {
+  //   id: 13,
+  //   title: "Product Management Foundation: GenAI, Agile & Product Practices™",
+  //   shortTitle: "Product Management Foundation: GenAI, Agile & Product Practices™",
+  //   subheading: "₹1499 Courses • 90 minutes",
+  //   description: "A modern foundation course that explains Product Management using simple language, real examples, and GenAI-supported workflows. This course helps learners understand what a Product Manager truly does, how AI is changing product roles, and how Agile teams build and ship products. It's designed to give absolute clarity for anyone exploring PM as a career.",
+  //   category: "₹1499 Courses",
+  //   duration: "90 minutes",
+  //   level: "Beginner",
+  //   rating: 4.9,
+  //   learners: 0,
+  //   price: 1499,
+  //   isPopular: true,
+  //   isNew: true,
+  //   skills: ["Product Management", "GenAI", "Agile", "Product Practices", "User Stories", "Backlog"],
+  //   highlights: [
+  //     "What product teams actually look like",
+  //     "Core PM concepts: problem statements, users, metrics",
+  //     "GenAI for PM: idea testing, user story drafting, competitor analysis",
+  //     "Requirements writing basics",
+  //     "Agile for PMs: backlog, prioritization, ceremonies",
+  //     "Real product lifecycle walkthrough",
+  //     "Beginner PM case study with a template"
+  //   ],
+  //   university: "Lean Multiverse Consultancy Pvt. Ltd.",
+  //   buttons: {
+  //     primary: "Enroll Now",
+  //     secondary: "Contact us"
+  //   },
+  //   targetAudience: "everyone"
+  // },
+  // {
+  //   id: 14,
+  //   title: "Business Analysis Foundation: Global BA Standards & Digital Tools™",
+  //   shortTitle: "Business Analysis Foundation: Global BA Standards & Digital Tools™",
+  //   subheading: "₹1499 Courses • 90 minutes",
+  //   description: "A structured foundation course that introduces Business Analysis the way it's practiced across modern digital workplaces. This course gives clarity on BA tasks, documentation, tools, Agile collaboration, and how IIBA frameworks fit into practical work. Ideal for freshers and professionals exploring BA as a career.",
+  //   category: "₹1499 Courses",
+  //   duration: "90 minutes",
+  //   level: "Beginner",
+  //   rating: 4.9,
+  //   learners: 0,
+  //   price: 1499,
+  //   isPopular: true,
+  //   isNew: true,
+  //   skills: ["Business Analysis", "IIBA", "BA Standards", "Digital Tools", "JIRA", "Confluence", "Miro", "Lucid"],
+  //   highlights: [
+  //     "BA roles inside Agile and traditional teams",
+  //     "Requirements gathering, user stories, acceptance criteria",
+  //     "IIBA foundational concepts explained simply",
+  //     "Digital BA skills: workflows, process mapping, systems thinking",
+  //     "Tools overview: JIRA, Confluence, Miro, Lucid",
+  //     "Hands-on documentation practice",
+  //     "BA career roadmap with template pack"
+  //   ],
+  //   university: "Lean Multiverse Consultancy Pvt. Ltd.",
+  //   buttons: {
+  //     primary: "Enroll Now",
+  //     secondary: "Contact us"
+  //   },
+  //   targetAudience: "everyone"
+  // },
   // ₹3999 Courses
   {
     id: 15,
@@ -666,6 +666,6 @@ export const courses: Course[] = [
   }
 ]
 
-export const categories = ["All", "Webinar", "₹500 Courses", "₹1499 Courses", "₹3999 Courses", "₹5999 Courses"]
+export const categories = ["All", "Webinar", "₹500 Courses", "₹3999 Courses", "₹5999 Courses"]
 export const levels = ["All", "All Levels", "Beginner", "Professional"]
 export const targetAudiences = ["All", "Freshers", "Working Professional", "Everyone"]

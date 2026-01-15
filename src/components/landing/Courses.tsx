@@ -9,6 +9,12 @@ import ContactFormModal from "@/components/ui/ContactFormModal"
 const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
 const TALK_TO_EXPERT_TEL = "+918062177938"
 
+// GST helper (keep it local to this component)
+const addGST = (price: number, gstPercent = 18) => {
+  const gstAmount = (price * gstPercent) / 100
+  return Math.round(price + gstAmount)
+}
+
 export default function Courses() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [selectedLevel, setSelectedLevel] = useState("All")
@@ -309,11 +315,11 @@ export default function Courses() {
                         <div className="flex justify-between items-center mb-6">
                           <div>
                             <div className="text-2xl font-bold text-white">
-                              ₹{course.price.toLocaleString('en-IN')}
+                              ₹{addGST(course.price).toLocaleString('en-IN')} (Including 18% GST)
                             </div>
                             {course.originalPrice && (
                               <div className="text-gray-400 text-sm line-through">
-                                ₹{course.originalPrice.toLocaleString('en-IN')}
+                                ₹{addGST(course.originalPrice).toLocaleString('en-IN')}
                               </div>
                             )}
                           </div>
