@@ -85,11 +85,23 @@ export default function EnrollmentForm() {
       })
       
       if (!orderResponse.ok) {
-        const errorData = await orderResponse.json()
-        throw new Error(errorData.error || 'Failed to create order')
+        let errorMessage = 'Failed to create order'
+        try {
+          const errorData = await orderResponse.json()
+          errorMessage = errorData.error || errorMessage
+        } catch (e) {
+          // Response is not JSON, use status text
+          errorMessage = `${errorMessage}: ${orderResponse.statusText}`
+        }
+        throw new Error(errorMessage)
       }
       
-      const orderData = await orderResponse.json()
+      let orderData
+      try {
+        orderData = await orderResponse.json()
+      } catch (e) {
+        throw new Error('Invalid response from server. Please try again.')
+      }
       
       // Razorpay options
       const options = {
@@ -116,14 +128,26 @@ export default function EnrollmentForm() {
             })
             
             if (!verifyResponse.ok) {
-              throw new Error('Payment verification failed')
+              // Get detailed error message
+              let errorMessage = 'Payment verification failed'
+              try {
+                const errorData = await verifyResponse.json()
+                errorMessage = errorData.error || errorMessage
+                console.error('Verification error details:', errorData)
+              } catch (e) {
+                errorMessage = `${errorMessage}: ${verifyResponse.statusText}`
+              }
+              throw new Error(errorMessage)
             }
+            
+            const verifyData = await verifyResponse.json()
+            console.log('Payment verified successfully:', verifyData)
             
             // Redirect to success page
             window.location.href = `/courses/ai-ml-foundation/success?enrollment_id=${orderData.enrollmentId}`
           } catch (error) {
             console.error('Payment verification error:', error)
-            alert('Payment verification failed. Please contact support.')
+            alert(`Payment verification failed: ${error instanceof Error ? error.message : 'Unknown error'}. Please contact support with your payment ID: ${response.razorpay_payment_id}`)
           }
         },
         prefill: {
@@ -227,7 +251,7 @@ export default function EnrollmentForm() {
           disabled={loading}
           whileHover={{ scale: loading ? 1 : 1.02 }}
           whileTap={{ scale: loading ? 1 : 0.98 }}
-          className="w-full py-4 bg-yellow-500 text-white rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-black rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           data-testid="enrollment-submit-btn"
         >
           {loading ? (

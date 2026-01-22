@@ -100,7 +100,7 @@ export default function SuccessClient() {
                 </div>
               </div>
               
-              <div className="flex items-start gap-4">
+              {/* <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
                   <Clock className="w-5 h-5 text-yellow-400" />
                 </div>
@@ -110,7 +110,7 @@ export default function SuccessClient() {
                     You will receive your course login credentials and materials within 24 hours.
                   </p>
                 </div>
-              </div>
+              </div> */}
               
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
