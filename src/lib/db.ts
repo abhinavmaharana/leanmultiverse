@@ -37,3 +37,26 @@ export interface CreateBookingData {
   zoom_registration_link?: string
 }
 
+// AI/ML Course Enrollment types
+export interface AiMlEnrollment {
+  id: string
+  user_name: string
+  user_email: string
+  user_phone: string
+  razorpay_order_id: string | null
+  razorpay_payment_id: string | null
+  payment_status: 'pending' | 'paid' | 'failed'
+  amount_paid: number
+  email_sent: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CreateAiMlEnrollmentData {
+  user_name: string
+  user_email: string
+  user_phone: string
+  razorpay_order_id?: string
+  amount_paid?: number
+}
+

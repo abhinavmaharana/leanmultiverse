@@ -1,4 +1,4 @@
-import { supabase, WebinarBooking, CreateBookingData } from './db'
+import { supabase, WebinarBooking, CreateBookingData, AiMlEnrollment, CreateAiMlEnrollmentData } from './db'
 
 export async function createBooking(data: CreateBookingData) {
   // Try to insert with all data first
@@ -110,5 +110,83 @@ export async function updateBookingByOrderId(orderId: string, updates: Partial<W
   }
 
   return data as WebinarBooking
+}
+
+
+// AI/ML Enrollment helpers
+export async function createAiMlEnrollment(data: CreateAiMlEnrollmentData) {
+  const { data: enrollment, error } = await supabase
+    .from('ai_ml_enrollments')
+    .insert([{
+      ...data,
+      payment_status: 'pending',
+      email_sent: false
+    }])
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to create AI/ML enrollment: ${error.message}`)
+  }
+
+  return enrollment as AiMlEnrollment
+}
+
+export async function getAiMlEnrollmentById(id: string) {
+  const { data, error } = await supabase
+    .from('ai_ml_enrollments')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to get AI/ML enrollment: ${error.message}`)
+  }
+
+  return data as AiMlEnrollment | null
+}
+
+export async function getAiMlEnrollmentByOrderId(orderId: string) {
+  const { data, error } = await supabase
+    .from('ai_ml_enrollments')
+    .select('*')
+    .eq('razorpay_order_id', orderId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    throw new Error(`Failed to get AI/ML enrollment: ${error.message}`)
+  }
+
+  return data as AiMlEnrollment | null
+}
+
+export async function updateAiMlEnrollment(id: string, updates: Partial<AiMlEnrollment>) {
+  const { data, error } = await supabase
+    .from('ai_ml_enrollments')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to update AI/ML enrollment: ${error.message}`)
+  }
+
+  return data as AiMlEnrollment
+}
+
+export async function updateAiMlEnrollmentByOrderId(orderId: string, updates: Partial<AiMlEnrollment>) {
+  const { data, error } = await supabase
+    .from('ai_ml_enrollments')
+    .update(updates)
+    .eq('razorpay_order_id', orderId)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to update AI/ML enrollment: ${error.message}`)
+  }
+
+  return data as AiMlEnrollment
 }
 
