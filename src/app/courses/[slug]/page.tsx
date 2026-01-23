@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { careerStarterCourses } from '@/data/careerStarterCourses'
 import DynamicCourseClient from './DynamicCourseClient'
+import Navbar from '@/components/shared/Navbar'
+import Footer from '@/components/shared/Footer'
 
 // Generate static params for all courses
 export async function generateStaticParams() {
@@ -48,5 +50,9 @@ export default async function DynamicCoursePage({ params }: { params: Promise<{ 
     notFound()
   }
 
-  return <DynamicCourseClient course={course} />
+  return <>
+  <Navbar />
+  <DynamicCourseClient course={course} />
+  <Footer />
+  </>
 }

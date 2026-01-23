@@ -669,3 +669,5 @@ export const courses: Course[] = [
 export const categories = ["All", "Webinar", "₹500 Courses", "₹3999 Courses", "₹5999 Courses"]
 export const levels = ["All", "All Levels", "Beginner", "Professional"]
 export const targetAudiences = ["All", "Freshers", "Working Professional", "Everyone"]
+
+

@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 import CoursesPageClient from './CoursesPageClient'
+import Footer from '@/components/shared/Footer'
+import Navbar from '@/components/shared/Navbar'
 
 export const metadata: Metadata = {
   title: 'Career Starter Courses | LeanMultiverse',
@@ -17,5 +19,9 @@ export const metadata: Metadata = {
 }
 
 export default function CoursesPage() {
-  return <CoursesPageClient />
+  return <>
+    <Navbar />
+    <CoursesPageClient />
+    <Footer />
+  </>
 }

@@ -24,7 +24,7 @@ const allCourses = [
     shortTitle: 'AI & ML Career Foundation',
     price: 2499,
     originalPrice: 4999,
-    duration: '4 Weeks',
+    duration: '1 Month',
     schedule: 'Friday, Saturday, Sunday',
     timePerWeek: 'Flexible',
     totalHours: '12+ Hours',
