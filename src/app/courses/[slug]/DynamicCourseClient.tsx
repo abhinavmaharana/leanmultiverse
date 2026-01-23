@@ -62,10 +62,10 @@ export default function DynamicCourseClient({ course }: DynamicCourseClientProps
                 <Clock className="w-5 h-5 text-yellow-400" />
                 <span>{course.duration}</span>
               </div>
-              <div className="flex items-center gap-2 text-slate-300">
+              {/* <div className="flex items-center gap-2 text-slate-300">
                 <Calendar className="w-5 h-5 text-yellow-400" />
                 <span>{course.schedule}</span>
-              </div>
+              </div> */}
             </div>
             
             <div className="flex items-baseline gap-2 justify-center mb-8">
