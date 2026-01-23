@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     let order
     try {
       order = await razorpay.orders.create({
-        amount: 100,
+        amount: 249900,
         currency: 'INR',
         receipt: `course_${courseId}_${Date.now()}`,
         notes: {
