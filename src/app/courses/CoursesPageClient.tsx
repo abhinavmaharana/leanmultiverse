@@ -1,13 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { 
+import {
   Search,
-  BookOpen,
   Clock,
-  IndianRupee,
   Award,
   TrendingUp,
   ArrowRight,
@@ -16,63 +14,97 @@ import {
 } from 'lucide-react'
 import { careerStarterCourses } from '@/data/careerStarterCourses'
 
-const allCourses = [
-  {
-    id: 'ai-ml-foundation',
-    slug: 'ai-ml-foundation',
-    title: 'AI & Machine Learning – Career Foundation Program',
-    shortTitle: 'AI & ML Career Foundation',
-    price: 2499,
-    originalPrice: 4999,
-    duration: '1 Month',
-    schedule: 'Friday, Saturday, Sunday',
-    timePerWeek: 'Flexible',
-    totalHours: '12+ Hours',
+/* ------------------------------------------------------------------ */
+/* Helpers: category & icon mapping (single source of truth)           */
+/* ------------------------------------------------------------------ */
+
+const COURSE_META: Record<
+  string,
+  { category: string; icon: string }
+> = {
+  'ai-ml-foundation': {
     category: 'AI & Technology',
-    icon: '🤖',
-    description: 'Master AI fundamentals, discover your career path, and build real-world projects. No coding required!',
-    highlights: [
-      'Clear understanding of AI & ML',
-      'Career path identification',
-      'Resume-ready AI project',
-      'Global certification roadmap'
-    ]
+    icon: '🤖'
   },
-  ...careerStarterCourses.map(course => ({
-    ...course,
-    category: course.id === 'cloud-devops' ? 'Cloud & DevOps' : 
-              course.id === 'business-analyst' ? 'Business Analysis' : 'AI & Management',
-    icon: course.id === 'cloud-devops' ? '☁️' : 
-          course.id === 'business-analyst' ? '📊' : 
-          course.id === 'ai-product-management' ? '🎯' : '📈',
-    description: course.goal[0],
-    highlights: course.goal.slice(1, 5)
-  }))
+  'cloud-devops': {
+    category: 'Cloud & DevOps',
+    icon: '☁️'
+  },
+  'business-analyst': {
+    category: 'Business Analysis',
+    icon: '📊'
+  },
+  'ai-product-management': {
+    category: 'AI & Management',
+    icon: '🎯'
+  },
+  'ai-project-management': {
+    category: 'AI & Management',
+    icon: '📈'
+  }
+}
+
+const CATEGORIES = [
+  'All',
+  'AI & Technology',
+  'Cloud & DevOps',
+  'Business Analysis',
+  'AI & Management'
 ]
 
-const categories = ['All', 'AI & Technology', 'Cloud & DevOps', 'Business Analysis', 'AI & Management']
+/* ------------------------------------------------------------------ */
+/* Derived UI-ready course list                                        */
+/* ------------------------------------------------------------------ */
+
+const allCourses = Array.from(
+    new Map(
+      careerStarterCourses.map(course => [course.id, course])
+    ).values()
+  ).map(course => {
+    const meta = COURSE_META[course.id]
+  
+    return {
+      ...course,
+      category: meta?.category ?? 'Other',
+      icon: meta?.icon ?? '📘',
+      description: course.goal[0],
+      highlights: course.goal.slice(1, 5)
+    }
+  })
+  
+
+/* ------------------------------------------------------------------ */
+/* Component                                                          */
+/* ------------------------------------------------------------------ */
 
 export default function CoursesPageClient() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
 
-  const filteredCourses = allCourses.filter(course => {
-    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         course.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === 'All' || course.category === selectedCategory
-    return matchesSearch && matchesCategory
-  })
+  const filteredCourses = useMemo(() => {
+    const q = searchQuery.toLowerCase()
+
+    return allCourses.filter(course => {
+      const matchesSearch =
+        course.title.toLowerCase().includes(q) ||
+        course.description.toLowerCase().includes(q)
+
+      const matchesCategory =
+        selectedCategory === 'All' ||
+        course.category === selectedCategory
+
+      return matchesSearch && matchesCategory
+    })
+  }, [searchQuery, selectedCategory])
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Hero Section */}
+      {/* -------------------------------------------------------------- */}
+      {/* Hero Section                                                   */}
+      {/* -------------------------------------------------------------- */}
       <section className="relative overflow-hidden pt-32 pb-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-yellow-600/10 via-yellow-500/10 to-amber-600/10" />
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl" />
-        </div>
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -86,12 +118,12 @@ export default function CoursesPageClient() {
                 Programs
               </span>
             </h1>
-            
+
             <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
-              Transform your career with our comprehensive 4-week programs. From zero to decision-ready!
+              Transform your career with our 4-week programs. From zero to decision-ready.
             </p>
 
-            {/* Search Bar */}
+            {/* Search */}
             <div className="max-w-2xl mx-auto mb-8">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -99,9 +131,8 @@ export default function CoursesPageClient() {
                   type="text"
                   placeholder="Search courses..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-zinc-900 border border-yellow-500/20 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-yellow-500 transition-colors"
-                  data-testid="course-search"
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 bg-zinc-900 border border-yellow-500/20 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-yellow-500"
                 />
               </div>
             </div>
@@ -109,7 +140,7 @@ export default function CoursesPageClient() {
             {/* Category Filter */}
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Filter className="w-5 h-5 text-yellow-400" />
-              {categories.map(category => (
+              {CATEGORIES.map(category => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
@@ -118,7 +149,6 @@ export default function CoursesPageClient() {
                       ? 'bg-gradient-to-r from-yellow-500 to-amber-500 text-black'
                       : 'bg-zinc-900 border border-yellow-500/20 text-slate-300 hover:border-yellow-500/40'
                   }`}
-                  data-testid={`filter-${category.toLowerCase()}`}
                 >
                   {category}
                 </button>
@@ -128,13 +158,15 @@ export default function CoursesPageClient() {
         </div>
       </section>
 
-      {/* Courses Grid */}
+      {/* -------------------------------------------------------------- */}
+      {/* Courses Grid                                                   */}
+      {/* -------------------------------------------------------------- */}
       <section className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           {filteredCourses.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-slate-400 text-xl">No courses found matching your criteria.</p>
-            </div>
+            <p className="text-center text-slate-400 text-xl">
+              No courses found.
+            </p>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredCourses.map((course, index) => (
@@ -142,23 +174,21 @@ export default function CoursesPageClient() {
                   key={course.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.08 }}
                   className="group relative"
                 >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
-                  
-                  <div className="relative bg-zinc-950 border border-yellow-500/20 rounded-2xl p-6 hover:border-yellow-500/40 transition-all h-full flex flex-col">
-                    {/* Course Icon & Category */}
-                    <div className="flex items-center justify-between mb-4">
+                  <div className="relative bg-zinc-950 border border-yellow-500/20 rounded-2xl p-6 h-full flex flex-col hover:border-yellow-500/40 transition">
+                    {/* Icon & Category */}
+                    <div className="flex justify-between mb-4">
                       <span className="text-4xl">{course.icon}</span>
                       <span className="text-xs text-yellow-400 bg-yellow-500/10 px-3 py-1 rounded-full border border-yellow-500/20">
                         {course.category}
                       </span>
                     </div>
 
-                    {/* Course Title */}
-                    <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">
-                      {course.shortTitle || course.title}
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-white mb-3">
+                      {course.shortTitle}
                     </h3>
 
                     {/* Description */}
@@ -166,88 +196,55 @@ export default function CoursesPageClient() {
                       {course.description}
                     </p>
 
-                    {/* Course Details */}
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-slate-300 text-sm">
+                    {/* Meta */}
+                    <div className="space-y-2 mb-4 text-sm text-slate-300">
+                      <div className="flex gap-2">
                         <Clock className="w-4 h-4 text-yellow-400" />
-                        <span>{course.duration}</span>
+                        {course.duration}
                       </div>
-                      <div className="flex items-center gap-2 text-slate-300 text-sm">
+                      <div className="flex gap-2">
                         <Calendar className="w-4 h-4 text-yellow-400" />
-                        <span>{course.schedule}</span>
+                        {course.schedule}
                       </div>
-                      <div className="flex items-center gap-2 text-slate-300 text-sm">
+                      <div className="flex gap-2">
                         <Award className="w-4 h-4 text-yellow-400" />
-                        <span>Certificate Included</span>
+                        Certificate Included
                       </div>
                     </div>
 
                     {/* Highlights */}
-                    <div className="mb-6 flex-grow">
-                      <ul className="space-y-2">
-                        {course.highlights.slice(0, 3).map((highlight, i) => (
-                          <li key={i} className="flex items-start gap-2 text-slate-400 text-xs">
-                            <TrendingUp className="w-3 h-3 text-yellow-400 mt-0.5 flex-shrink-0" />
-                            <span className="line-clamp-1">{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className="mb-6 space-y-2 text-xs text-slate-400 flex-grow">
+                      {course.highlights.slice(0, 3).map((h, i) => (
+                        <li key={i} className="flex gap-2">
+                          <TrendingUp className="w-3 h-3 text-yellow-400 mt-0.5" />
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
 
                     {/* Price */}
-                    <div className="flex items-baseline gap-2 mb-4">
-                      <span className="text-slate-400 line-through text-sm">₹{course.originalPrice}</span>
-                      <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-400 flex items-center">
-                      ₹{course.price}
+                    <div className="mb-4 flex items-baseline gap-2">
+                      <span className="line-through text-slate-500 text-sm">
+                        ₹{course.originalPrice}
+                      </span>
+                      <span className="text-2xl font-bold text-yellow-400">
+                        ₹{course.price}
                       </span>
                     </div>
 
-                    {/* CTA Button */}
+                    {/* CTA */}
                     <Link
                       href={`/courses/${course.slug}`}
-                      className="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-black rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn"
-                      data-testid={`course-card-${course.id}`}
+                      className="w-full py-3 bg-gradient-to-r from-yellow-500 to-amber-500 text-black rounded-lg font-semibold flex items-center justify-center gap-2 hover:shadow-lg"
                     >
                       Know More
-                      <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </motion.div>
               ))}
             </div>
           )}
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="py-20 px-4 bg-zinc-950">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Not Sure Which Course to Choose?
-            </h2>
-            <p className="text-slate-300 text-lg mb-8">
-              All courses are just ₹2,499 with lifetime access. Start with any course and upgrade later!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="#courses"
-                className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-black rounded-lg font-semibold hover:shadow-lg transition-all"
-              >
-                Browse All Courses
-              </Link>
-              <Link
-                href="/contact"
-                className="px-8 py-4 bg-zinc-900 border border-yellow-500/30 text-white rounded-lg font-semibold hover:bg-yellow-500/10 transition-all"
-              >
-                Talk to Advisor
-              </Link>
-            </div>
-          </motion.div>
         </div>
       </section>
     </div>
