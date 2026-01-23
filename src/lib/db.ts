@@ -55,7 +55,7 @@ export interface AiMlEnrollment {
 export interface CreateAiMlEnrollmentData {
   user_name: string
   user_email: string
-  user_phone: string
+  user_phone?: string 
   razorpay_order_id?: string
   amount_paid?: number
 }
@@ -68,7 +68,7 @@ export interface CourseEnrollment {
   course_slug: string
   user_name: string
   user_email: string
-  user_phone: string
+  user_phone?: string 
   razorpay_order_id: string | null
   razorpay_payment_id: string | null
   payment_status: 'pending' | 'paid' | 'failed'
@@ -84,7 +84,7 @@ export interface CreateCourseEnrollmentData {
   course_slug: string
   user_name: string
   user_email: string
-  user_phone: string
+  user_phone?: string 
   razorpay_order_id?: string
   amount_paid?: number
 }
