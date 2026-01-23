@@ -46,6 +46,11 @@ const COUNTRY_CODES = [
   { code: '+971', label: '🇦🇪 UAE' }
 ]
 
+/* -------------------- Helpers -------------------- */
+
+// SINGLE source of truth for phone normalization
+const normalizePhone = (value: string) => value.replace(/[^\d]/g, '')
+
 /* -------------------- Component -------------------- */
 
 export default function GenericEnrollmentForm({
@@ -58,7 +63,7 @@ export default function GenericEnrollmentForm({
     countryCode: '+91'
   })
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   /* -------------------- Validation -------------------- */
@@ -66,30 +71,34 @@ export default function GenericEnrollmentForm({
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {}
 
+    // Name
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required'
     }
 
+    // Email
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Invalid email format'
     }
 
-    const phoneDigits = formData.phone.replace(/\D/g, '')
+    // Phone
+    const phoneDigits = normalizePhone(formData.phone)
 
     if (!phoneDigits) {
       newErrors.phone = 'Phone number is required'
-    } else if (
-      formData.countryCode === '+91' &&
-      !/^[6-9]\d{9}$/.test(phoneDigits)
-    ) {
-      newErrors.phone = 'Enter valid 10-digit Indian number'
-    } else if (
-      formData.countryCode !== '+91' &&
-      phoneDigits.length < 7
-    ) {
-      newErrors.phone = 'Enter valid phone number'
+    } else if (formData.countryCode === '+91') {
+      if (phoneDigits.length !== 10) {
+        newErrors.phone = 'Indian phone number must be 10 digits'
+      } else if (Number(phoneDigits[0]) < 6) {
+        newErrors.phone =
+          'Indian mobile number must start with 6, 7, 8, or 9'
+      }
+    } else {
+      if (phoneDigits.length < 7 || phoneDigits.length > 15) {
+        newErrors.phone = 'Enter a valid international phone number'
+      }
     }
 
     setErrors(newErrors)
@@ -129,10 +138,8 @@ export default function GenericEnrollmentForm({
         return
       }
 
-      const fullPhone = `${formData.countryCode}${formData.phone.replace(
-        /\D/g,
-        ''
-      )}`
+      const phoneDigits = normalizePhone(formData.phone)
+      const fullPhone = `${formData.countryCode}${phoneDigits}`
 
       const orderResponse = await fetch(
         '/api/courses/enroll/create-order',
@@ -213,12 +220,8 @@ export default function GenericEnrollmentForm({
       })
 
       razorpay.open()
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert(err.message)
-      } else {
-        alert('Something went wrong')
-      }
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Something went wrong')
       setLoading(false)
     }
   }
@@ -237,7 +240,7 @@ export default function GenericEnrollmentForm({
           icon={<User />}
           value={formData.name}
           onChange={(value) =>
-            setFormData((prev) => ({ ...prev, name: value }))
+            setFormData((p) => ({ ...p, name: value }))
           }
           placeholder="Enter your full name"
           error={errors.name}
@@ -251,7 +254,7 @@ export default function GenericEnrollmentForm({
           type="email"
           value={formData.email}
           onChange={(value) =>
-            setFormData((prev) => ({ ...prev, email: value }))
+            setFormData((p) => ({ ...p, email: value }))
           }
           placeholder="your.email@example.com"
           error={errors.email}
@@ -288,9 +291,13 @@ export default function GenericEnrollmentForm({
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
               <input
                 type="tel"
+                inputMode="numeric"
                 value={formData.phone}
                 onChange={(e) =>
-                  setFormData((p) => ({ ...p, phone: e.target.value }))
+                  setFormData((p) => ({
+                    ...p,
+                    phone: e.target.value.replace(/[^\d\s-]/g, '')
+                  }))
                 }
                 disabled={loading}
                 placeholder="Mobile number"
