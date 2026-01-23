@@ -11,8 +11,6 @@ declare global {
   }
 }
 
-/* -------------------- Types -------------------- */
-
 interface GenericEnrollmentFormProps {
   course: CareerStarterCourse
 }
@@ -34,23 +32,17 @@ interface FieldProps {
   type?: 'text' | 'email' | 'tel'
 }
 
-/* -------------------- Helpers -------------------- */
+/* -------------------- Phone Utils (FINAL) -------------------- */
 
-// Normalize user input to digits only
-const normalizePhone = (value: string) => value.replace(/[^\d]/g, '')
-
-// Normalize Indian mobile number to 10 digits (remove leading 0 / +91)
 const normalizeIndianMobile = (value: string) => {
-  let digits = normalizePhone(value)
+  let digits = value.replace(/\D/g, '')
 
-  // Remove country code if user pasted it
-  if (digits.startsWith('91') && digits.length > 10) {
-    digits = digits.slice(2)
-  }
-
-  // Remove leading zero
   if (digits.startsWith('0')) {
     digits = digits.slice(1)
+  }
+
+  if (digits.length > 10 && digits.startsWith('91')) {
+    digits = digits.slice(2)
   }
 
   return digits
@@ -58,55 +50,44 @@ const normalizeIndianMobile = (value: string) => {
 
 /* -------------------- Component -------------------- */
 
-export default function GenericEnrollmentForm({
-  course
-}: GenericEnrollmentFormProps) {
+export default function GenericEnrollmentForm({ course }: GenericEnrollmentFormProps) {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     phone: ''
   })
 
-  const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [loading, setLoading] = useState(false)
 
-  /* -------------------- Validation -------------------- */
-
-  const validateForm = (): boolean => {
+  const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
-    // Name
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required'
     }
 
-    // Email
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required'
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email format'
+      newErrors.email = 'Invalid email'
     }
 
-    // Phone (India – robust & production safe)
-    const phoneDigits = normalizeIndianMobile(formData.phone)
+    const phone = normalizeIndianMobile(formData.phone)
 
-    if (!phoneDigits) {
+    if (!phone) {
       newErrors.phone = 'Phone number is required'
-    } else if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
-      newErrors.phone =
-        'Enter a valid 10-digit Indian mobile number'
+    } else if (!/^[6-9]\d{9}$/.test(phone)) {
+      newErrors.phone = 'Enter a valid 10-digit Indian mobile number'
     }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  /* -------------------- Razorpay Loader -------------------- */
-
-  const loadRazorpayScript = (): Promise<boolean> =>
-    new Promise((resolve) => {
+  const loadRazorpayScript = () =>
+    new Promise<boolean>((resolve) => {
       if (window.Razorpay) return resolve(true)
-
       const script = document.createElement('script')
       script.src = 'https://checkout.razorpay.com/v1/checkout.js'
       script.onload = () => resolve(true)
@@ -114,219 +95,105 @@ export default function GenericEnrollmentForm({
       document.body.appendChild(script)
     })
 
-  /* -------------------- Submit -------------------- */
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!validateForm()) return
 
     setLoading(true)
 
     try {
-      const scriptLoaded = await loadRazorpayScript()
-      if (!scriptLoaded) {
-        alert('Failed to load payment gateway')
-        setLoading(false)
-        return
-      }
+      const ok = await loadRazorpayScript()
+      if (!ok) throw new Error('Razorpay failed to load')
 
-      const phoneDigits = normalizeIndianMobile(formData.phone)
-      const fullPhone = `+91${phoneDigits}`
+      const phone = `+91${normalizeIndianMobile(formData.phone)}`
 
-      const orderResponse = await fetch(
-        '/api/courses/enroll/create-order',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            phone: fullPhone,
-            courseId: course.id,
-            courseTitle: course.title,
-            courseSlug: course.slug
-          })
-        }
-      )
+      const res = await fetch('/api/courses/enroll/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone,
+          courseId: course.id,
+          courseSlug: course.slug,
+          courseTitle: course.title
+        })
+      })
 
-      if (!orderResponse.ok) {
-        const err = await orderResponse.json()
-        throw new Error(err.error || 'Failed to create order')
-      }
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
 
-      const orderData = await orderResponse.json()
-
-      const razorpay = new window.Razorpay({
+      const rz = new window.Razorpay({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: orderData.amount,
-        currency: orderData.currency,
+        amount: data.amount,
+        currency: data.currency,
+        order_id: data.orderId,
         name: 'LeanMultiverse',
         description: course.shortTitle,
-        order_id: orderData.orderId,
-
         prefill: {
           name: formData.name,
           email: formData.email,
-          contact: fullPhone
+          contact: phone
         },
-
         theme: { color: '#eab308' },
-
-        handler: async (response: {
-          razorpay_order_id: string
-          razorpay_payment_id: string
-          razorpay_signature: string
-        }) => {
-          try {
-            const verifyRes = await fetch(
-              '/api/courses/enroll/verify-payment',
-              {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                  enrollment_id: orderData.enrollmentId
-                })
-              }
-            )
-
-            if (!verifyRes.ok) {
-              const err = await verifyRes.json()
-              throw new Error(err.error || 'Verification failed')
-            }
-
-            window.location.href = `/courses/enrollment-success?enrollment_id=${orderData.enrollmentId}&course=${course.slug}`
-          } catch {
-            alert(
-              `Payment verification failed. Contact support with payment ID ${response.razorpay_payment_id}`
-            )
-            setLoading(false)
-          }
+        handler: async (r: any) => {
+          await fetch('/api/courses/enroll/verify-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ...r,
+              enrollment_id: data.enrollmentId
+            })
+          })
+          window.location.href = `/courses/enrollment-success?course=${course.slug}`
         },
-
-        modal: {
-          ondismiss: () => setLoading(false)
-        }
+        modal: { ondismiss: () => setLoading(false) }
       })
 
-      razorpay.open()
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'Something went wrong')
+      rz.open()
+    } catch (err: any) {
+      alert(err.message || 'Payment failed')
       setLoading(false)
     }
   }
 
-  /* -------------------- Render -------------------- */
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-zinc-950 border border-yellow-500/20 rounded-2xl p-8"
-    >
+    <motion.div className="bg-zinc-950 border border-yellow-500/20 rounded-2xl p-8">
       <form onSubmit={handleSubmit} className="space-y-6">
-        <Field
-          label="Full Name"
-          icon={<User />}
-          value={formData.name}
-          onChange={(value) =>
-            setFormData((p) => ({ ...p, name: value }))
-          }
-          placeholder="Enter your full name"
-          error={errors.name}
-          disabled={loading}
-        />
+        <Field label="Full Name" icon={<User />} value={formData.name}
+          onChange={(v) => setFormData(p => ({ ...p, name: v }))} error={errors.name} />
 
-        <Field
-          label="Email Address"
-          icon={<Mail />}
-          type="email"
-          value={formData.email}
-          onChange={(value) =>
-            setFormData((p) => ({ ...p, email: value }))
-          }
-          placeholder="your.email@example.com"
-          error={errors.email}
-          disabled={loading}
-        />
+        <Field label="Email" type="email" icon={<Mail />} value={formData.email}
+          onChange={(v) => setFormData(p => ({ ...p, email: v }))} error={errors.email} />
 
-        <Field
-          label="Phone Number"
-          icon={<Phone />}
-          type="tel"
-          value={formData.phone}
-          onChange={(value) =>
-            setFormData((p) => ({ ...p, phone: value }))
-          }
-          placeholder="10-digit mobile number"
-          error={errors.phone}
-          disabled={loading}
-        />
+        <Field label="Phone Number" type="tel" icon={<Phone />} value={formData.phone}
+          onChange={(v) => setFormData(p => ({ ...p, phone: v }))} error={errors.phone}
+          placeholder="10-digit mobile number" />
 
-        <motion.button
-          type="submit"
-          disabled={loading}
-          whileHover={{ scale: loading ? 1 : 1.02 }}
-          whileTap={{ scale: loading ? 1 : 0.98 }}
-          className="w-full py-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-black rounded-lg font-semibold text-lg flex items-center justify-center gap-2 disabled:opacity-50"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              Processing...
-            </>
-          ) : (
-            <>
-              <CheckCircle2 className="w-5 h-5" />
-              Enroll Now – Pay ₹{course.price}
-            </>
-          )}
-        </motion.button>
-
-        <p className="text-center text-sm text-slate-400">
-          Secure payment powered by Razorpay
-        </p>
+        <button disabled={loading}
+          className="w-full py-4 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-lg font-semibold">
+          {loading ? 'Processing…' : `Enroll Now – ₹${course.price}`}
+        </button>
       </form>
     </motion.div>
   )
 }
 
-/* -------------------- Reusable Field -------------------- */
-
-function Field({
-  label,
-  icon,
-  value,
-  onChange,
-  placeholder,
-  error,
-  disabled,
-  type = 'text'
-}: FieldProps) {
+function Field({ label, icon, value, onChange, placeholder, error, type = 'text' }: FieldProps) {
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-300 mb-2">
-        {label} *
-      </label>
-
+      <label className="text-sm text-slate-300">{label}</label>
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-          {icon}
-        </span>
-
+        <span className="absolute left-3 top-1/2 -translate-y-1/2">{icon}</span>
         <input
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          disabled={disabled}
           placeholder={placeholder}
-          className="w-full pl-12 pr-4 py-3 bg-zinc-900 border border-yellow-500/20 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+          className="w-full pl-12 py-3 bg-zinc-900 border border-yellow-500/20 rounded-lg"
         />
       </div>
-
-      {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
+      {error && <p className="text-red-400 text-sm">{error}</p>}
     </div>
   )
 }
