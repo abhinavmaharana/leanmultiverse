@@ -32,13 +32,29 @@ interface FieldProps {
   error?: string
   disabled?: boolean
   type?: 'text' | 'email' | 'tel'
-  testId?: string
 }
 
 /* -------------------- Helpers -------------------- */
 
-// Keep digits only
+// Normalize user input to digits only
 const normalizePhone = (value: string) => value.replace(/[^\d]/g, '')
+
+// Normalize Indian mobile number to 10 digits (remove leading 0 / +91)
+const normalizeIndianMobile = (value: string) => {
+  let digits = normalizePhone(value)
+
+  // Remove country code if user pasted it
+  if (digits.startsWith('91') && digits.length > 10) {
+    digits = digits.slice(2)
+  }
+
+  // Remove leading zero
+  if (digits.startsWith('0')) {
+    digits = digits.slice(1)
+  }
+
+  return digits
+}
 
 /* -------------------- Component -------------------- */
 
@@ -71,16 +87,14 @@ export default function GenericEnrollmentForm({
       newErrors.email = 'Invalid email format'
     }
 
-    // Phone (India only – 10 digits)
-    const phoneDigits = normalizePhone(formData.phone)
+    // Phone (India – robust & production safe)
+    const phoneDigits = normalizeIndianMobile(formData.phone)
 
     if (!phoneDigits) {
       newErrors.phone = 'Phone number is required'
-    } else if (phoneDigits.length !== 10) {
-      newErrors.phone = 'Phone number must be 10 digits'
-    } else if (Number(phoneDigits[0]) < 6) {
+    } else if (!/^[6-9]\d{9}$/.test(phoneDigits)) {
       newErrors.phone =
-        'Mobile number must start with 6, 7, 8, or 9'
+        'Enter a valid 10-digit Indian mobile number'
     }
 
     setErrors(newErrors)
@@ -89,12 +103,9 @@ export default function GenericEnrollmentForm({
 
   /* -------------------- Razorpay Loader -------------------- */
 
-  const loadRazorpayScript = (): Promise<boolean> => {
-    return new Promise((resolve) => {
-      if (window.Razorpay) {
-        resolve(true)
-        return
-      }
+  const loadRazorpayScript = (): Promise<boolean> =>
+    new Promise((resolve) => {
+      if (window.Razorpay) return resolve(true)
 
       const script = document.createElement('script')
       script.src = 'https://checkout.razorpay.com/v1/checkout.js'
@@ -102,7 +113,6 @@ export default function GenericEnrollmentForm({
       script.onerror = () => resolve(false)
       document.body.appendChild(script)
     })
-  }
 
   /* -------------------- Submit -------------------- */
 
@@ -120,7 +130,7 @@ export default function GenericEnrollmentForm({
         return
       }
 
-      const phoneDigits = normalizePhone(formData.phone)
+      const phoneDigits = normalizeIndianMobile(formData.phone)
       const fullPhone = `+91${phoneDigits}`
 
       const orderResponse = await fetch(
@@ -242,24 +252,19 @@ export default function GenericEnrollmentForm({
           disabled={loading}
         />
 
-        {/* Phone */}
         <Field
           label="Phone Number"
           icon={<Phone />}
           type="tel"
           value={formData.phone}
           onChange={(value) =>
-            setFormData((p) => ({
-              ...p,
-              phone: value.replace(/[^\d]/g, '')
-            }))
+            setFormData((p) => ({ ...p, phone: value }))
           }
           placeholder="10-digit mobile number"
           error={errors.phone}
           disabled={loading}
         />
 
-        {/* Submit */}
         <motion.button
           type="submit"
           disabled={loading}
@@ -298,8 +303,7 @@ function Field({
   placeholder,
   error,
   disabled,
-  type = 'text',
-  testId
+  type = 'text'
 }: FieldProps) {
   return (
     <div>
@@ -318,7 +322,6 @@ function Field({
           onChange={(e) => onChange(e.target.value)}
           disabled={disabled}
           placeholder={placeholder}
-          data-testid={testId}
           className="w-full pl-12 pr-4 py-3 bg-zinc-900 border border-yellow-500/20 rounded-lg text-white focus:outline-none focus:border-yellow-500"
         />
       </div>
