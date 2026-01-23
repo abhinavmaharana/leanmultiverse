@@ -1,4 +1,4 @@
-import { supabase, WebinarBooking, CreateBookingData, AiMlEnrollment, CreateAiMlEnrollmentData } from './db'
+import { supabase, WebinarBooking, CreateBookingData, AiMlEnrollment, CreateAiMlEnrollmentData, CourseEnrollment, CreateCourseEnrollmentData } from './db'
 
 export async function createBooking(data: CreateBookingData) {
   // Try to insert with all data first
@@ -188,5 +188,83 @@ export async function updateAiMlEnrollmentByOrderId(orderId: string, updates: Pa
   }
 
   return data as AiMlEnrollment
+
+}
+
+// Generic Course Enrollment helpers
+export async function createCourseEnrollment(data: CreateCourseEnrollmentData) {
+  const { data: enrollment, error } = await supabase
+    .from('course_enrollments')
+    .insert([{
+      ...data,
+      payment_status: 'pending',
+      email_sent: false
+    }])
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to create course enrollment: ${error.message}`)
+  }
+
+  return enrollment as CourseEnrollment
+}
+
+export async function getCourseEnrollmentById(id: string) {
+  const { data, error } = await supabase
+    .from('course_enrollments')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to get course enrollment: ${error.message}`)
+  }
+
+  return data as CourseEnrollment | null
+}
+
+export async function getCourseEnrollmentByOrderId(orderId: string) {
+  const { data, error } = await supabase
+    .from('course_enrollments')
+    .select('*')
+    .eq('razorpay_order_id', orderId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    throw new Error(`Failed to get course enrollment: ${error.message}`)
+  }
+
+  return data as CourseEnrollment | null
+}
+
+export async function updateCourseEnrollment(id: string, updates: Partial<CourseEnrollment>) {
+  const { data, error } = await supabase
+    .from('course_enrollments')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to update course enrollment: ${error.message}`)
+  }
+
+  return data as CourseEnrollment
+}
+
+export async function updateCourseEnrollmentByOrderId(orderId: string, updates: Partial<CourseEnrollment>) {
+  const { data, error } = await supabase
+    .from('course_enrollments')
+    .update(updates)
+    .eq('razorpay_order_id', orderId)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to update course enrollment: ${error.message}`)
+  }
+
+  return data as CourseEnrollment
 }
 

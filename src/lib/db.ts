@@ -60,3 +60,32 @@ export interface CreateAiMlEnrollmentData {
   amount_paid?: number
 }
 
+// Generic Course Enrollment types
+export interface CourseEnrollment {
+  id: string
+  course_id: string
+  course_name: string
+  course_slug: string
+  user_name: string
+  user_email: string
+  user_phone: string
+  razorpay_order_id: string | null
+  razorpay_payment_id: string | null
+  payment_status: 'pending' | 'paid' | 'failed'
+  amount_paid: number
+  email_sent: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CreateCourseEnrollmentData {
+  course_id: string
+  course_name: string
+  course_slug: string
+  user_name: string
+  user_email: string
+  user_phone: string
+  razorpay_order_id?: string
+  amount_paid?: number
+}
+

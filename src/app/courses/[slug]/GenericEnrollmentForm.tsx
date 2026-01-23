@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, User, Loader2, CheckCircle2 } from 'lucide-react'
+import { CareerStarterCourse } from '@/data/careerStarterCourses'
 
 declare global {
   interface Window {
@@ -10,7 +11,11 @@ declare global {
   }
 }
 
-export default function EnrollmentForm() {
+interface GenericEnrollmentFormProps {
+  course: CareerStarterCourse
+}
+
+export default function GenericEnrollmentForm({ course }: GenericEnrollmentFormProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -67,7 +72,6 @@ export default function EnrollmentForm() {
     setLoading(true)
     
     try {
-      // Load Razorpay script
       const scriptLoaded = await loadRazorpayScript()
       if (!scriptLoaded) {
         alert('Failed to load payment gateway. Please try again.')
@@ -75,13 +79,18 @@ export default function EnrollmentForm() {
         return
       }
       
-      // Create order
-      const orderResponse = await fetch('/api/courses/ai-ml/create-order', {
+      // Create order with course information
+      const orderResponse = await fetch('/api/courses/enroll/create-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          courseId: course.id,
+          courseTitle: course.title,
+          courseSlug: course.slug
+        })
       })
       
       if (!orderResponse.ok) {
@@ -90,7 +99,6 @@ export default function EnrollmentForm() {
           const errorData = await orderResponse.json()
           errorMessage = errorData.error || errorMessage
         } catch (e) {
-          // Response is not JSON, use status text
           errorMessage = `${errorMessage}: ${orderResponse.statusText}`
         }
         throw new Error(errorMessage)
@@ -109,12 +117,11 @@ export default function EnrollmentForm() {
         amount: orderData.amount,
         currency: orderData.currency,
         name: 'LeanMultiverse',
-        description: 'AI & ML Career Foundation Program',
+        description: course.shortTitle,
         order_id: orderData.orderId,
         handler: async function (response: any) {
           try {
-            // Verify payment
-            const verifyResponse = await fetch('/api/courses/ai-ml/verify-payment', {
+            const verifyResponse = await fetch('/api/courses/enroll/verify-payment', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -128,7 +135,6 @@ export default function EnrollmentForm() {
             })
             
             if (!verifyResponse.ok) {
-              // Get detailed error message
               let errorMessage = 'Payment verification failed'
               try {
                 const errorData = await verifyResponse.json()
@@ -144,7 +150,7 @@ export default function EnrollmentForm() {
             console.log('Payment verified successfully:', verifyData)
             
             // Redirect to success page
-            window.location.href = `/courses/ai-ml-foundation/success?enrollment_id=${orderData.enrollmentId}`
+            window.location.href = `/courses/enrollment-success?enrollment_id=${orderData.enrollmentId}&course=${course.slug}`
           } catch (error) {
             console.error('Payment verification error:', error)
             alert(`Payment verification failed: ${error instanceof Error ? error.message : 'Unknown error'}. Please contact support with your payment ID: ${response.razorpay_payment_id}`)
@@ -262,7 +268,7 @@ export default function EnrollmentForm() {
           ) : (
             <>
               <CheckCircle2 className="w-5 h-5" />
-              Enroll Now - Pay ₹2,499
+              Enroll Now - Pay ₹{course.price}
             </>
           )}
         </motion.button>

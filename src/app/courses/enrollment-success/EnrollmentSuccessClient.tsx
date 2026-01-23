@@ -6,13 +6,13 @@ import { motion } from 'framer-motion'
 import { CheckCircle2, Mail, Clock, BookOpen, ArrowRight, Home } from 'lucide-react'
 import Link from 'next/link'
 
-export default function SuccessClient() {
+export default function EnrollmentSuccessClient() {
   const searchParams = useSearchParams()
   const enrollmentId = searchParams.get('enrollment_id')
+  const courseSlug = searchParams.get('course')
   const [showConfetti, setShowConfetti] = useState(true)
 
   useEffect(() => {
-    // Hide confetti after 3 seconds
     const timer = setTimeout(() => setShowConfetti(false), 3000)
     return () => clearTimeout(timer)
   }, [])
@@ -33,7 +33,6 @@ export default function SuccessClient() {
         className="max-w-3xl w-full relative z-10"
       >
         <div className="bg-zinc-950 backdrop-blur-sm border border-yellow-500/20 rounded-2xl p-8 md:p-12 text-center">
-          {/* Success Icon */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -43,7 +42,6 @@ export default function SuccessClient() {
             <CheckCircle2 className="w-12 h-12 text-black" />
           </motion.div>
           
-          {/* Success Message */}
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -59,10 +57,9 @@ export default function SuccessClient() {
             transition={{ delay: 0.4 }}
             className="text-xl text-slate-300 mb-8"
           >
-            Welcome to the AI & ML Career Foundation Program
+            Welcome to your Career Starter Program
           </motion.p>
           
-          {/* Enrollment ID */}
           {enrollmentId && !enrollmentId.startsWith('temp_') && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -75,7 +72,6 @@ export default function SuccessClient() {
             </motion.div>
           )}
           
-          {/* Next Steps */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -100,7 +96,7 @@ export default function SuccessClient() {
                 </div>
               </div>
               
-              {/* <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
                   <Clock className="w-5 h-5 text-yellow-400" />
                 </div>
@@ -110,7 +106,7 @@ export default function SuccessClient() {
                     You will receive your course login credentials and materials within 24 hours.
                   </p>
                 </div>
-              </div> */}
+              </div>
               
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
@@ -119,14 +115,13 @@ export default function SuccessClient() {
                 <div>
                   <h3 className="text-white font-semibold mb-1">Get Ready</h3>
                   <p className="text-slate-300 text-sm">
-                    Our team will contact you for onboarding and orientation. Start preparing for your AI journey!
+                    Our team will contact you for onboarding and orientation. Start preparing for your learning journey!
                   </p>
                 </div>
               </div>
             </div>
           </motion.div>
           
-          {/* Action Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,15 +135,22 @@ export default function SuccessClient() {
               <Home className="w-5 h-5" />
               Back to Home
             </Link>
+            {courseSlug && (
+              <Link
+                href={`/courses/${courseSlug}`}
+                className="px-6 py-3 bg-zinc-900 backdrop-blur-sm border border-yellow-500/30 text-white rounded-lg font-semibold hover:bg-yellow-500/10 transition-all"
+              >
+                View Course Details
+              </Link>
+            )}
             <Link
-              href="/courses/ai-ml-foundation"
+              href="/courses"
               className="px-6 py-3 bg-zinc-900 backdrop-blur-sm border border-yellow-500/30 text-white rounded-lg font-semibold hover:bg-yellow-500/10 transition-all"
             >
-              View Course Details
+              Browse More Courses
             </Link>
           </motion.div>
           
-          {/* Support Info */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
