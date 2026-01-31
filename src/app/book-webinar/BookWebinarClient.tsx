@@ -34,35 +34,38 @@ const TIME_SLOTS = [
   { value: '20:00', label: '8:00 PM IST' },
 ]
 
-// Get available dates - December 20th, 27th, January 3rd, 10th, 17th, 24th
+// Get "today" as YYYY-MM-DD in IST so we don't roll to next year when it's still today in India
+function getTodayIST(): string {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
+}
+
+// Get available dates - use IST for "today" so webinar date stays current year when it's still today in India
 function getAvailableDates() {
   const dates: Date[] = []
-  const today = new Date()
-  const currentYear = today.getFullYear()
-  
-  // Define all available dates
+  const todayIST = getTodayIST() // e.g. "2026-01-31"
+  const currentYear = new Date().getFullYear()
+
   const availableDatesConfig = [
     { month: 0, day: 31, label: 'January 31' },
     { month: 1, day: 7, label: 'February 7' },
   ]
-  
+
   availableDatesConfig.forEach(({ month, day }) => {
     let date = new Date(currentYear, month, day)
-    
-    // If the date is in the past, use next year
-    if (date < today) {
+    const dateStr = format(date, 'yyyy-MM-dd')
+
+    // If the date is before today in IST, use next year (so we don't show Jan 31 2027 when it's still Jan 31 in India)
+    if (dateStr < todayIST) {
       date = new Date(currentYear + 1, month, day)
     }
-    
-    // Add date if it's today or in the future
-    if (date >= today) {
+
+    const candidateStr = format(date, 'yyyy-MM-dd')
+    if (candidateStr >= todayIST) {
       dates.push(date)
     }
   })
-  
-  // Sort dates chronologically
+
   dates.sort((a, b) => a.getTime() - b.getTime())
-  
   return dates
 }
 

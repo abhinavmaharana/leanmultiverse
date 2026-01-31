@@ -30,20 +30,27 @@ const TIME_SLOTS = [
   { value: '20:00', label: '8:00 PM IST' },
 ]
 
+// Today as YYYY-MM-DD in IST so we don't roll to next year when it's still today in India
+function getTodayIST(): string {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
+}
+
 function getAvailableDates() {
   const dates: Date[] = []
-  const today = new Date()
-  const currentYear = today.getFullYear()
+  const todayIST = getTodayIST()
+  const currentYear = new Date().getFullYear()
   const availableDatesConfig = [
     { month: 0, day: 31, label: 'January 31' },
     { month: 1, day: 7, label: 'February 7' },
   ]
   availableDatesConfig.forEach(({ month, day }) => {
     let date = new Date(currentYear, month, day)
-    if (date < today) {
+    const dateStr = format(date, 'yyyy-MM-dd')
+    if (dateStr < todayIST) {
       date = new Date(currentYear + 1, month, day)
     }
-    if (date >= today) {
+    const candidateStr = format(date, 'yyyy-MM-dd')
+    if (candidateStr >= todayIST) {
       dates.push(date)
     }
   })
