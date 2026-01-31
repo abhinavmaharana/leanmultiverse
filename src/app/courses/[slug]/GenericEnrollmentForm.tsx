@@ -43,11 +43,6 @@ const normalizeIndianMobile = (value: string) => {
   return digits
 }
 
-/* -------------------- Helpers -------------------- */
-
-// SINGLE source of truth for phone normalization
-const normalizePhone = (value: string) => value.replace(/[^\d]/g, '')
-
 /* -------------------- Component -------------------- */
 
 export default function GenericEnrollmentForm({

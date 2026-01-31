@@ -11,6 +11,8 @@ function Navbar() {
   const [mounted, setMounted] = useState(false)
 
   const SHOW_WEBINAR_CTA = true
+  const SHOW_PAID_WEBINAR_CTA = false // When false, show Free Webinar CTA instead
+  const SHOW_ONE_ON_ONE_CTA = false
 
   const handleScroll = useCallback(() => {
     const heroHeight = window.innerHeight * 0.8
@@ -129,17 +131,27 @@ function Navbar() {
       <div className="flex items-center gap-3">
         {SHOW_WEBINAR_CTA && (
           <>
-            <Link href="/book-webinar">
-              <Button className="hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white">
-                Book Webinar
-              </Button>
-            </Link>
+            {SHOW_PAID_WEBINAR_CTA ? (
+              <Link href="/book-webinar">
+                <Button className="hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white">
+                  Book Webinar
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/book-free-webinar">
+                <Button className="hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white">
+                  Book Free Webinar
+                </Button>
+              </Link>
+            )}
 
-            <Link href="/book-one-on-one">
-              <Button className="hidden md:inline-flex rounded-full bg-yellow-400/20 border border-yellow-400/30 text-white">
-                Book 1-on-1
-              </Button>
-            </Link>
+            {SHOW_ONE_ON_ONE_CTA && (
+              <Link href="/book-one-on-one">
+                <Button className="hidden md:inline-flex rounded-full bg-yellow-400/20 border border-yellow-400/30 text-white">
+                  Book 1-on-1
+                </Button>
+              </Link>
+            )}
           </>
         )}
 

@@ -1,5 +1,34 @@
 import { supabase, WebinarBooking, CreateBookingData, AiMlEnrollment, CreateAiMlEnrollmentData, CourseEnrollment, CreateCourseEnrollmentData } from './db'
 
+export type FreeWebinarBookingData = {
+  user_name: string
+  user_email: string
+  user_phone: string
+  selected_date: string
+  selected_time: string
+  zoom_registration_link?: string
+}
+
+export async function createFreeWebinarBooking(data: FreeWebinarBookingData) {
+  const { data: booking, error } = await supabase
+    .from('webinar_bookings')
+    .insert([{
+      ...data,
+      payment_status: 'paid',
+      razorpay_order_id: null,
+      razorpay_payment_id: null,
+      meet_link: data.zoom_registration_link || null,
+    }])
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(`Failed to create free webinar booking: ${error.message}`)
+  }
+
+  return booking as WebinarBooking
+}
+
 export async function createBooking(data: CreateBookingData) {
   // Try to insert with all data first
   const { data: booking, error } = await supabase

@@ -763,15 +763,10 @@ export default function SuccessStories() {
             through our comprehensive learning programs.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="/book-webinar">
+              <Link href="/book-free-webinar">
                 <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto">
-                  Book Webinar
-              </Button>
-              </Link>
-              <Link href="/book-one-on-one">
-                <Button className="bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-4 text-lg font-semibold border border-white/20 backdrop-blur-md hover:border-white/40 transition-all duration-300 w-full sm:w-auto">
-                  Book One on One
-              </Button>
+                  Book Free Webinar
+                </Button>
               </Link>
             </div>
           </div>
