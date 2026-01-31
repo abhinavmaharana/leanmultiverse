@@ -1,43 +1,49 @@
+// ✅ MUST be the first line
+export const runtime = 'nodejs'
+
 import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 import { createCourseEnrollment } from '@/lib/db-helpers'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
-  key_secret: process.env.RAZORPAY_KEY_SECRET || '',
+  key_secret: process.env.RAZORPAY_KEY_SECRET || ''
 })
 
-// Health check endpoint
+/* -------------------- Health Check -------------------- */
 export async function GET() {
-  return NextResponse.json({ 
+  return NextResponse.json({
     status: 'ok',
-    configured: !!(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET)
+    configured: Boolean(
+      process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET
+    )
   })
 }
 
+/* -------------------- Create Order -------------------- */
 export async function POST(request: NextRequest) {
   try {
-    // Check if Razorpay credentials are configured
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-      console.error('Razorpay credentials not configured')
       return NextResponse.json(
-        { error: 'Payment gateway not configured. Please contact support.' },
+        { error: 'Payment gateway not configured' },
         { status: 500 }
       )
     }
 
-    const body = await request.json()
-    const { name, email, phone, courseId, courseTitle, courseSlug } = body
+    const { name, email, phone, courseTitle, courseSlug } =
+      await request.json()
 
-    // Validate required fields
-    if (!name || !email || !phone || !courseId || !courseTitle || !courseSlug) {
+      const courseId = courseSlug.replace('-career-starter', '')
+
+    /* ---------- Required fields ---------- */
+    if (!name || !email || !courseId || !courseTitle || !courseSlug) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: 'Name, email and course details are required' },
         { status: 400 }
       )
     }
 
-    // Validate email format
+    /* ---------- Email validation ---------- */
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -46,43 +52,52 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate phone format (Indian phone number)
-    const phoneRegex = /^[6-9]\d{9}$/
-    const cleanPhone = phone.replace(/[\s-]/g, '')
-    if (!phoneRegex.test(cleanPhone)) {
-      return NextResponse.json(
-        { error: 'Invalid phone number' },
-        { status: 400 }
-      )
+    /* ---------- Phone (optional) ---------- */
+    let cleanPhone: string | undefined
+
+    if (phone) {
+      let digits = phone.replace(/\D/g, '')
+
+      if (digits.startsWith('91') && digits.length > 10) {
+        digits = digits.slice(2)
+      }
+      if (digits.startsWith('0')) {
+        digits = digits.slice(1)
+      }
+
+      if (!/^[6-9]\d{9}$/.test(digits)) {
+        return NextResponse.json(
+          { error: 'Invalid phone number' },
+          { status: 400 }
+        )
+      }
+
+      cleanPhone = digits
     }
 
-    // Create Razorpay order
-    // Amount: ₹2499 (including GST) = 249900 paise
-    let order
-    try {
-      order = await razorpay.orders.create({
-        amount: 249900,
-        currency: 'INR',
-        receipt: `course_${courseId}_${Date.now()}`,
-        notes: {
-          course_id: courseId,
-          course_title: courseTitle,
-          course_slug: courseSlug,
-          user_name: name,
-          user_email: email,
-          user_phone: cleanPhone,
-        },
-      })
-    } catch (razorpayError) {
-      console.error('Razorpay order creation error:', razorpayError)
-      return NextResponse.json(
-        { error: 'Failed to create payment order. Please check your payment gateway configuration.' },
-        { status: 500 }
-      )
-    }
+    /* ---------- 🔴 FIX: SHORT RECEIPT ---------- */
+    // Razorpay receipt max length = 40 chars
+    const receipt = `crs_${courseId.slice(0, 10)}_${Date.now()
+      .toString()
+      .slice(-6)}`
 
-    // Create enrollment in database
-    let enrollment
+    /* ---------- Create Razorpay order ---------- */
+    const order = await razorpay.orders.create({
+      amount: 249900, // ₹2499 in paise
+      currency: 'INR',
+      receipt,
+      notes: {
+        course_id: courseId,
+        course_title: courseTitle,
+        course_slug: courseSlug,
+        user_name: name,
+        user_email: email,
+        ...(cleanPhone ? { user_phone: cleanPhone } : {})
+      }
+    })
+
+    /* ---------- DB insert (non-blocking) ---------- */
+    let enrollment = null
     try {
       enrollment = await createCourseEnrollment({
         course_id: courseId,
@@ -90,27 +105,25 @@ export async function POST(request: NextRequest) {
         course_slug: courseSlug,
         user_name: name,
         user_email: email,
-        user_phone: cleanPhone,
+        ...(cleanPhone ? { user_phone: cleanPhone } : {}),
         razorpay_order_id: order.id,
-        amount_paid: 2499,
+        amount_paid: 2499
       })
     } catch (dbError) {
-      console.error('Database error (continuing with order creation):', dbError)
-      // Continue even if database save fails - we still have the Razorpay order
-      enrollment = null
+      console.error('Database error (non-blocking):', dbError)
     }
 
+    /* ---------- Response ---------- */
     return NextResponse.json({
       orderId: order.id,
       enrollmentId: enrollment?.id || `temp_${order.id}`,
       amount: order.amount,
-      currency: order.currency,
+      currency: order.currency
     })
   } catch (error) {
-    console.error('Error creating Razorpay order:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Failed to create order'
+    console.error('Create order error:', error)
     return NextResponse.json(
-      { error: errorMessage },
+      { error: 'Failed to create order' },
       { status: 500 }
     )
   }

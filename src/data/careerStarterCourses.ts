@@ -265,7 +265,7 @@ export interface CareerStarterCourse {
       timePerWeek: '2 Hours per Week',
       totalHours: '8 Hours Total',
       goal: [
-        'Make non-IT & IT people understand Cloud + DevOps in simple language',
+        'Your Step-by-Step Roadmap to Learn Cloud & DevOps in Simple Language (For IT & Non-IT)',
         'Help them decide: Is this career for me?',
         'Show real salary, roles, growth',
         'Give certification roadmap',
@@ -450,7 +450,7 @@ export interface CareerStarterCourse {
       timePerWeek: '2 Hours per Week',
       totalHours: '8 Hours Total',
       goal: [
-        'Make them understand what a Business Analyst actually does',
+        'Understand the clear roadmap for a Business Analyst career',
         'Clear confusion between BA, Data Analyst, Product Manager, Consultant',
         'Show real career path, salary, skills',
         'Give global certification roadmap',
@@ -637,7 +637,7 @@ export interface CareerStarterCourse {
       timePerWeek: '2 Hours per Week',
       totalHours: '8 Hours Total',
       goal: [
-        'Make them understand Product Management in simple language',
+        'Understand the clear roadmap for a Product Management career',
         'Explain how AI products are different from normal software',
         'Show real roles, skills, salary, companies',
         'Give global certification & learning roadmap',
@@ -820,7 +820,7 @@ export interface CareerStarterCourse {
       timePerWeek: '2 Hours per Week',
       totalHours: '8 Hours Total',
       goal: [
-        'Explain Project Management in simple language',
+        'understand the clear roadmap for a Project Management career',
         'Show how managing AI projects is different from normal IT projects',
         'Clarify roles, salary, career growth',
         'Give global certification roadmap',

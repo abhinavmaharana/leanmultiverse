@@ -25,13 +25,8 @@ type BookingFormData = z.infer<typeof bookingSchema>
 // Zoom registration links mapped by date
 // Note: You'll need to add actual Zoom links for the new dates
 const ZOOM_LINKS: Record<string, string> = {
-  '20': 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA',
-  '27': 'https://us06web.zoom.us/meeting/register/4uacbLXgTTO0ZVf80rn84g', // Update with actual link
-  '3': 'https://us06web.zoom.us/meeting/register/RVGi4wsHSO6sMUVLQ3kOAA', // Update with actual link
-  '10': 'https://us06web.zoom.us/meeting/register/PgEF0RlUT5uHSfiZcIkS2w', // Update with actual link
-  '17': 'https://us06web.zoom.us/meeting/register/PQcno5-aQFCXfiiU_UEGTA', // Update with actual link
-  '24': 'https://us06web.zoom.us/meeting/register/1_8YK9pZRqi7jShOgQtx4w', // Update with actual link
-  '31': '', // Update with actual link
+  '31': 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ',
+  '7' : 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA' // Update with actual link
 }
 
 // Available time slots in IST
@@ -47,12 +42,8 @@ function getAvailableDates() {
   
   // Define all available dates
   const availableDatesConfig = [
-    { month: 11, day: 20, label: 'December 20' }, // December (month 11)
-    { month: 11, day: 27, label: 'December 27' },
-    { month: 0, day: 3, label: 'January 3' },      // January (month 0)
-    { month: 0, day: 10, label: 'January 10' },
-    { month: 0, day: 17, label: 'January 17' },
-    { month: 0, day: 24, label: 'January 24' },
+    { month: 0, day: 31, label: 'January 31' },
+    { month: 1, day: 7, label: 'February 7' },
   ]
   
   availableDatesConfig.forEach(({ month, day }) => {

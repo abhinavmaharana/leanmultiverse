@@ -97,8 +97,6 @@ export default function CoursesPageClient() {
     })
   }, [searchQuery, selectedCategory])
 
-  console.log(filteredCourses)
-
   return (
     <div className="min-h-screen bg-black">
       {/* -------------------------------------------------------------- */}
