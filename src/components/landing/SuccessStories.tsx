@@ -763,9 +763,9 @@ export default function SuccessStories() {
             through our comprehensive learning programs.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link href="/book-free-webinar">
+              <Link href="/book-webinar">
                 <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-full px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto">
-                  Book Free Webinar
+                  Book Webinar
                 </Button>
               </Link>
             </div>

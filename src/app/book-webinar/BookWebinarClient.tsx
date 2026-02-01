@@ -22,45 +22,62 @@ const bookingSchema = z.object({
 
 type BookingFormData = z.infer<typeof bookingSchema>
 
-// Zoom registration links mapped by date
-// Note: You'll need to add actual Zoom links for the new dates
+// Zoom registration links by month-day (from YYYY-MM-DD: month 1–12, day 1–31)
 const ZOOM_LINKS: Record<string, string> = {
-  '31': 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ',
-  '7' : 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA' // Update with actual link
+  '2-7': 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA',   // Feb 7
+  '2-14': 'https://us06web.zoom.us/meeting/register/LG0BbP6yQsmLlwwAbJ85xg', // Feb 14
+  '2-21': 'https://us06web.zoom.us/meeting/register/eX9-EdUBSWGcVSOU__voEg', // Feb 21
+  '2-28': 'https://us06web.zoom.us/meeting/register/DbbY6tSjSh6Dq6gsR5eS-w', // Feb 28
+  '3-7': 'https://us06web.zoom.us/meeting/register/swqMuabPQQSCOM5eF7j-IA',  // Mar 7
+  '3-14': 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ', // Mar 14
+  '3-21': 'https://us06web.zoom.us/meeting/register/4ZWJwZVSTYSPbpwh5au3BA', // Mar 21
 }
+const ZOOM_LINK_FALLBACK = 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
 
 // Available time slots in IST
 const TIME_SLOTS = [
   { value: '20:00', label: '8:00 PM IST' },
 ]
 
-// Get "today" as YYYY-MM-DD in IST so we don't roll to next year when it's still today in India
+// Today as YYYY-MM-DD in IST
 function getTodayIST(): string {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
 }
 
-// Get available dates - use IST for "today" so webinar date stays current year when it's still today in India
+// Webinar is at 8:00 PM IST. Return true if that moment has already passed.
+function isWebinarTimePast(dateStr: string): boolean {
+  const [year, month, day] = dateStr.split('-').map(Number)
+  // 8:00 PM IST = 14:30 UTC
+  const webinarAt = new Date(Date.UTC(year, month - 1, day, 14, 30, 0))
+  return webinarAt.getTime() <= Date.now()
+}
+
+// Available webinar dates: only show dates where 8:00 PM IST hasn't passed yet
 function getAvailableDates() {
   const dates: Date[] = []
-  const todayIST = getTodayIST() // e.g. "2026-01-31"
+  const todayIST = getTodayIST()
   const currentYear = new Date().getFullYear()
 
   const availableDatesConfig = [
-    { month: 0, day: 31, label: 'January 31' },
-    { month: 1, day: 7, label: 'February 7' },
+    { month: 1, day: 7 },   // Feb 7
+    { month: 1, day: 14 },  // Feb 14
+    { month: 1, day: 21 },  // Feb 21
+    { month: 1, day: 28 },  // Feb 28
+    { month: 2, day: 7 },   // Mar 7
+    { month: 2, day: 14 },  // Mar 14
+    { month: 2, day: 21 },  // Mar 21
   ]
 
   availableDatesConfig.forEach(({ month, day }) => {
     let date = new Date(currentYear, month, day)
-    const dateStr = format(date, 'yyyy-MM-dd')
+    let dateStr = format(date, 'yyyy-MM-dd')
 
-    // If the date is before today in IST, use next year (so we don't show Jan 31 2027 when it's still Jan 31 in India)
     if (dateStr < todayIST) {
       date = new Date(currentYear + 1, month, day)
+      dateStr = format(date, 'yyyy-MM-dd')
     }
 
-    const candidateStr = format(date, 'yyyy-MM-dd')
-    if (candidateStr >= todayIST) {
+    if (dateStr >= todayIST && !isWebinarTimePast(dateStr)) {
       dates.push(date)
     }
   })
@@ -69,26 +86,14 @@ function getAvailableDates() {
   return dates
 }
 
-// Get Zoom link for a specific date
+// Get Zoom link for a specific date (YYYY-MM-DD); keys are "month-day" (1–12, 1–31)
 function getZoomLinkForDate(dateStr: string): string {
   try {
-    // Parse date string (format: YYYY-MM-DD) - extract day directly to avoid timezone issues
-    const [year, month, day] = dateStr.split('-').map(Number)
-    const dayStr = day.toString()
-    
-    console.log(`Client: Getting Zoom link for date: ${dateStr}, extracted day: ${dayStr}`)
-    
-    if (ZOOM_LINKS[dayStr]) {
-      console.log(`Client: Found Zoom link for day ${dayStr}: ${ZOOM_LINKS[dayStr]}`)
-      return ZOOM_LINKS[dayStr]
-    }
-    
-    // Default fallback to December 20th
-    console.log(`Client: No Zoom link found for day ${dayStr}, using default`)
-    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
-  } catch (error) {
-    console.error('Client: Error parsing date for Zoom link:', error, 'dateStr:', dateStr)
-    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
+    const [, month, day] = dateStr.split('-').map(Number)
+    const key = `${month}-${day}`
+    return ZOOM_LINKS[key] ?? ZOOM_LINK_FALLBACK
+  } catch {
+    return ZOOM_LINK_FALLBACK
   }
 }
 
@@ -287,7 +292,7 @@ export default function BookWebinarClient() {
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-        amount: 11682, // ₹99 in paise
+        amount: 5782, // ₹49 + 18% GST in paise
         currency: 'INR',
         name: 'Lean Multiverse',
         description: 'Webinar Booking - Product Manager | Project Manager | Program Management Career Roadmap',
@@ -611,7 +616,7 @@ export default function BookWebinarClient() {
                   {/* Price Display */}
                   <div className="bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 border border-yellow-400/30 rounded-xl p-6 text-center">
                     <div className="text-gray-300 text-sm mb-1">Total Amount</div>
-                    <div className="text-4xl font-bold text-yellow-400 mb-2">₹99 + <span className='text-2xl'>18% GST</span></div>
+                    <div className="text-4xl font-bold text-yellow-400 mb-2">₹49 + <span className='text-2xl'>18% GST</span></div>
                     {selectedDate && (
                       <div className="text-gray-300 text-sm mt-2">
                         {format(new Date(selectedDate), 'MMMM d')}, 8:00 PM IST

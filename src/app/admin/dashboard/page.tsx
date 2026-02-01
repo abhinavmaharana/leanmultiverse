@@ -229,7 +229,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <div>
                     <p className="text-white font-semibold text-base">Webinar Revenue</p>
-                    <p className="text-gray-400 text-sm">{stats?.paidWebinarCount ?? 0} paid bookings × ₹99</p>
+                    <p className="text-gray-400 text-sm">{stats?.paidWebinarCount ?? 0} paid bookings × ₹49</p>
                   </div>
                 </div>
                 <div className="text-right">
