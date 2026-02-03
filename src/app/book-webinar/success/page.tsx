@@ -7,36 +7,25 @@ import { Button } from '@/components/ui/button'
 import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
 
-// Zoom registration links mapped by date
+// Must match BookWebinarClient.tsx – Zoom links by month-day (from YYYY-MM-DD)
 const ZOOM_LINKS: Record<string, string> = {
-  '20': 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA',
-  '27': 'https://us06web.zoom.us/meeting/register/4uacbLXgTTO0ZVf80rn84g',
-  '3': 'https://us06web.zoom.us/meeting/register/RVGi4wsHSO6sMUVLQ3kOAA',
-  '10': 'https://us06web.zoom.us/meeting/register/PgEF0RlUT5uHSfiZcIkS2w',
-  '17': 'https://us06web.zoom.us/meeting/register/PQcno5-aQFCXfiiU_UEGTA',
-  '24': 'https://us06web.zoom.us/meeting/register/1_8YK9pZRqi7jShOgQtx4w',
+  '2-7': 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA',   // Feb 7
+  '2-14': 'https://us06web.zoom.us/meeting/register/LG0BbP6yQsmLlwwAbJ85xg', // Feb 14
+  '2-21': 'https://us06web.zoom.us/meeting/register/eX9-EdUBSWGcVSOU__voEg', // Feb 21
+  '2-28': 'https://us06web.zoom.us/meeting/register/DbbY6tSjSh6Dq6gsR5eS-w', // Feb 28
+  '3-7': 'https://us06web.zoom.us/meeting/register/swqMuabPQQSCOM5eF7j-IA',  // Mar 7
+  '3-14': 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ', // Mar 14
+  '3-21': 'https://us06web.zoom.us/meeting/register/4ZWJwZVSTYSPbpwh5au3BA', // Mar 21
 }
+const ZOOM_LINK_FALLBACK = 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
 
-// Get Zoom link for a specific date
 function getZoomLinkForDate(dateStr: string): string {
   try {
-    // Parse date string (format: YYYY-MM-DD) - extract day directly to avoid timezone issues
-    const [year, month, day] = dateStr.split('-').map(Number)
-    const dayStr = day.toString()
-    
-    console.log(`Success page: Getting Zoom link for date: ${dateStr}, extracted day: ${dayStr}`)
-    
-    if (ZOOM_LINKS[dayStr]) {
-      console.log(`Success page: Found Zoom link for day ${dayStr}: ${ZOOM_LINKS[dayStr]}`)
-      return ZOOM_LINKS[dayStr]
-    }
-    
-    // Default fallback to December 20th
-    console.log(`Success page: No Zoom link found for day ${dayStr}, using default`)
-    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
-  } catch (error) {
-    console.error('Success page: Error parsing date for Zoom link:', error, 'dateStr:', dateStr)
-    return ZOOM_LINKS['20'] || 'https://us06web.zoom.us/meeting/register/7_BwX278QL6XL0DFIdRCBA'
+    const [, month, day] = dateStr.split('-').map(Number)
+    const key = `${month}-${day}`
+    return ZOOM_LINKS[key] ?? ZOOM_LINK_FALLBACK
+  } catch {
+    return ZOOM_LINK_FALLBACK
   }
 }
 
