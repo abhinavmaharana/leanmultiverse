@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!isValidIndianPhone(String(user_phone), true)) {
+    if (!isValidIndianPhone(String(user_phone))) {
       return NextResponse.json(
         { error: 'Invalid phone number. Use a valid 10-digit Indian mobile number.' },
         { status: 400 }
