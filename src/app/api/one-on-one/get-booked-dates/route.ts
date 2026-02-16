@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { supabase } from '@/lib/db'
 
 export async function GET() {
@@ -39,9 +40,17 @@ export async function GET() {
       })
     }
 
-    return NextResponse.json({ bookedSlots })
+    return NextResponse.json(
+      { bookedSlots },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+        },
+      }
+    )
   } catch (error) {
     console.error('Error in get-booked-dates:', error)
+    Sentry.captureException(error)
     return NextResponse.json(
       { error: 'Failed to fetch booked slots' },
       { status: 500 }

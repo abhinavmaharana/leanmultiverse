@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { google } from 'googleapis'
 import { isValidEmailFormat } from '@/lib/validators'
 import { checkRateLimit, STRICT_LIMIT } from '@/lib/rate-limit'
+import { withRetry, withTimeout, HIGH_DEMAND_MESSAGE } from '@/lib/http-utils'
 
 interface ContactFormData {
   name: string
@@ -14,7 +16,7 @@ interface ContactFormData {
 }
 
 export async function POST(request: NextRequest) {
-  const rateLimitResponse = checkRateLimit(request, STRICT_LIMIT)
+  const rateLimitResponse = await checkRateLimit(request, STRICT_LIMIT)
   if (rateLimitResponse) return rateLimitResponse
 
   try {
@@ -79,16 +81,19 @@ export async function POST(request: NextRequest) {
       source || 'general',
     ]
 
-    // Append data to the sheet
-    // Assuming the sheet has headers: Timestamp, Name, Email, Country Code, Country, Phone Number, Full Phone, Source
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: 'Sheet1!A:H', // Adjust range based on your sheet structure
-      valueInputOption: 'USER_ENTERED',
-      requestBody: {
-        values: [rowData],
-      },
-    })
+    // Append data to the sheet (idempotent; timeout + retries for resilience)
+    await withRetry(
+      () =>
+        withTimeout(
+          sheets.spreadsheets.values.append({
+            spreadsheetId,
+            range: 'Sheet1!A:H',
+            valueInputOption: 'USER_ENTERED',
+            requestBody: { values: [rowData] },
+          })
+        ),
+      { retries: 2 }
+    )
 
     return NextResponse.json({
       success: true,
@@ -96,10 +101,10 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error submitting contact form:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Failed to submit form'
+    Sentry.captureException(error)
     return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
+      { error: HIGH_DEMAND_MESSAGE },
+      { status: 503 }
     )
   }
 }

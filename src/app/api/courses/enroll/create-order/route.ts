@@ -2,10 +2,12 @@
 export const runtime = 'nodejs'
 
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import Razorpay from 'razorpay'
 import { createCourseEnrollment } from '@/lib/db-helpers'
 import { isValidEmailFormat, normalizeIndianPhone, isValidIndianPhone } from '@/lib/validators'
 import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
+import { withRetry, withTimeout, HIGH_DEMAND_MESSAGE } from '@/lib/http-utils'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -24,7 +26,7 @@ export async function GET() {
 
 /* -------------------- Create Order -------------------- */
 export async function POST(request: NextRequest) {
-  const rateLimitResponse = checkRateLimit(request, DEFAULT_LIMIT)
+  const rateLimitResponse = await checkRateLimit(request, DEFAULT_LIMIT)
   if (rateLimitResponse) return rateLimitResponse
 
   try {
@@ -74,20 +76,26 @@ export async function POST(request: NextRequest) {
       .toString()
       .slice(-6)}`
 
-    /* ---------- Create Razorpay order ---------- */
-    const order = await razorpay.orders.create({
-      amount: 249900, // ₹2499 in paise
-      currency: 'INR',
-      receipt,
-      notes: {
-        course_id: courseId,
-        course_title: courseTitle,
-        course_slug: courseSlug,
-        user_name: name,
-        user_email: email,
-        ...(cleanPhone ? { user_phone: cleanPhone } : {})
-      }
-    })
+    /* ---------- Create Razorpay order (idempotent; timeout + retries) ---------- */
+    const order = await withRetry(
+      () =>
+        withTimeout(
+          razorpay.orders.create({
+            amount: 249900,
+            currency: 'INR',
+            receipt,
+            notes: {
+              course_id: courseId,
+              course_title: courseTitle,
+              course_slug: courseSlug,
+              user_name: name,
+              user_email: email,
+              ...(cleanPhone ? { user_phone: cleanPhone } : {}),
+            },
+          })
+        ),
+      { retries: 2 }
+    )
 
     /* ---------- DB insert (non-blocking) ---------- */
     let enrollment = null
@@ -115,9 +123,10 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Create order error:', error)
+    Sentry.captureException(error)
     return NextResponse.json(
-      { error: 'Failed to create order' },
-      { status: 500 }
+      { error: HIGH_DEMAND_MESSAGE },
+      { status: 503 }
     )
   }
 }

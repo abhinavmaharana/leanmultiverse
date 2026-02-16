@@ -29,6 +29,9 @@ const Footer = dynamic(() => import('../components/shared/Footer'), {
   loading: () => <div className="h-32 bg-black animate-pulse" />
 })
 
+/** ISR: revalidate home page at the edge every 60s to reduce server load under traffic */
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: "Build in the Multiverse - Unlock Collaborative Innovation",
   description: "Empowering Boundless Creation - Catalysts for Your Success. Transform ambitious teams and professionals into industry leaders with innovative, impactful learning.",

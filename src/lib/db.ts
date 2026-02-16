@@ -1,13 +1,25 @@
 import { createClient } from '@supabase/supabase-js'
+import { fetchWithTimeout } from '@/lib/http-utils'
 
+/**
+ * For production with high concurrency, use Supabase's connection pooler and set
+ * NEXT_PUBLIC_SUPABASE_URL to the pooler URL (transaction or session mode) in your env.
+ */
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+
+/** Request timeout for Supabase (ms). Keeps serverless from hanging on slow DB. */
+const SUPABASE_TIMEOUT_MS = 15_000
 
 if (!supabaseUrl || !supabaseKey) {
   console.warn('Supabase credentials not found. Using fallback connection.')
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  global: {
+    fetch: (input, init) => fetchWithTimeout(input, init, SUPABASE_TIMEOUT_MS),
+  },
+})
 
 // Database types
 export interface WebinarBooking {

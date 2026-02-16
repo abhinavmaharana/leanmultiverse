@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import Razorpay from 'razorpay'
 import { createAiMlEnrollment } from '@/lib/db-helpers'
+import { withRetry, withTimeout, HIGH_DEMAND_MESSAGE } from '@/lib/http-utils'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -56,26 +58,32 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create Razorpay order
-    // Amount: ₹2499 (including GST) = 249900 paise
+    // Create Razorpay order (idempotent; timeout + retries)
     let order
     try {
-      order = await razorpay.orders.create({
-        amount: 249900,
-        currency: 'INR',
-        receipt: `ai_ml_${Date.now()}`,
-        notes: {
-          course: 'AI & ML Career Foundation Program',
-          user_name: name,
-          user_email: email,
-          user_phone: cleanPhone,
-        },
-      })
+      order = await withRetry(
+        () =>
+          withTimeout(
+            razorpay.orders.create({
+              amount: 249900,
+              currency: 'INR',
+              receipt: `ai_ml_${Date.now()}`,
+              notes: {
+                course: 'AI & ML Career Foundation Program',
+                user_name: name,
+                user_email: email,
+                user_phone: cleanPhone,
+              },
+            })
+          ),
+        { retries: 2 }
+      )
     } catch (razorpayError) {
       console.error('Razorpay order creation error:', razorpayError)
+      Sentry.captureException(razorpayError)
       return NextResponse.json(
-        { error: 'Failed to create payment order. Please check your payment gateway configuration.' },
-        { status: 500 }
+        { error: HIGH_DEMAND_MESSAGE },
+        { status: 503 }
       )
     }
 
@@ -104,10 +112,10 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error creating Razorpay order:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Failed to create order'
+    Sentry.captureException(error)
     return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
+      { error: HIGH_DEMAND_MESSAGE },
+      { status: 503 }
     )
   }
 }

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { google } from 'googleapis'
 import { isValidEmailFormat, isValidIndianPhone } from '@/lib/validators'
 import { checkRateLimit, STRICT_LIMIT } from '@/lib/rate-limit'
+import { withRetry, withTimeout, HIGH_DEMAND_MESSAGE } from '@/lib/http-utils'
 
 interface QuotationFormData {
   name: string
@@ -19,7 +21,7 @@ interface QuotationFormData {
 }
 
 export async function POST(request: NextRequest) {
-  const rateLimitResponse = checkRateLimit(request, STRICT_LIMIT)
+  const rateLimitResponse = await checkRateLimit(request, STRICT_LIMIT)
   if (rateLimitResponse) return rateLimitResponse
 
   try {
@@ -119,17 +121,19 @@ export async function POST(request: NextRequest) {
       'quotation-request',
     ]
 
-    // Append data to the "Quotations" tab in the same spreadsheet
-    // If the tab doesn't exist, it will be created automatically on first write
-    // Headers should be: Timestamp, Name, Email, Company, Country Code, Country, Phone Number, Full Phone, Project Type, Currency, Budget, Timeline, Description, Source
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: 'Quotations!A:N', // Using "Quotations" tab instead of "Sheet1"
-      valueInputOption: 'USER_ENTERED',
-      requestBody: {
-        values: [rowData],
-      },
-    })
+    // Append to Quotations tab (idempotent; timeout + retries for resilience)
+    await withRetry(
+      () =>
+        withTimeout(
+          sheets.spreadsheets.values.append({
+            spreadsheetId,
+            range: 'Quotations!A:N',
+            valueInputOption: 'USER_ENTERED',
+            requestBody: { values: [rowData] },
+          })
+        ),
+      { retries: 2 }
+    )
 
     return NextResponse.json({
       success: true,
@@ -137,10 +141,10 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error submitting quotation form:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Failed to submit quotation request'
+    Sentry.captureException(error)
     return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
+      { error: HIGH_DEMAND_MESSAGE },
+      { status: 503 }
     )
   }
 }

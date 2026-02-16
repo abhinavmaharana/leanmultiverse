@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { Resend } from 'resend'
 import { isValidEmailFormat } from '@/lib/validators'
 import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
+import { withRetry, withTimeout, HIGH_DEMAND_MESSAGE } from '@/lib/http-utils'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
-  const rateLimitResponse = checkRateLimit(request, DEFAULT_LIMIT)
+  const rateLimitResponse = await checkRateLimit(request, DEFAULT_LIMIT)
   if (rateLimitResponse) return rateLimitResponse
 
   try {
@@ -35,10 +37,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data, error } = await resend.contacts.create({
-      email,
-      unsubscribed: false,
-    })
+    const { data, error } = await withRetry(
+      () =>
+        withTimeout(
+          resend.contacts.create({
+            email,
+            unsubscribed: false,
+          })
+        ),
+      { retries: 2 }
+    )
 
     if (error) {
       if (error.message?.toLowerCase().includes('already exists') || (error as { statusCode?: number }).statusCode === 409) {
@@ -49,8 +57,8 @@ export async function POST(request: NextRequest) {
       }
       console.error('Resend newsletter subscribe error:', error)
       return NextResponse.json(
-        { error: 'Unable to subscribe. Please try again later.' },
-        { status: 500 }
+        { error: HIGH_DEMAND_MESSAGE },
+        { status: 503 }
       )
     }
 
@@ -60,9 +68,10 @@ export async function POST(request: NextRequest) {
     )
   } catch (err) {
     console.error('Newsletter subscribe error:', err)
+    Sentry.captureException(err)
     return NextResponse.json(
-      { error: 'Something went wrong. Please try again later.' },
-      { status: 500 }
+      { error: HIGH_DEMAND_MESSAGE },
+      { status: 503 }
     )
   }
 }

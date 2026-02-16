@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import Razorpay from 'razorpay'
 import { supabase } from '@/lib/db'
+import { withRetry, withTimeout, HIGH_DEMAND_MESSAGE } from '@/lib/http-utils'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -20,20 +22,26 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create Razorpay order
-    const order = await razorpay.orders.create({
-      amount: 118000, // ₹1180 in paise
-      currency: 'INR',
-      receipt: `oneonone_${Date.now()}`,
-      notes: {
-        user_name,
-        user_email,
-        user_phone,
-        selected_date,
-        selected_time,
-        booking_type: 'one-on-one',
-      },
-    })
+    // Create Razorpay order (idempotent; timeout + retries)
+    const order = await withRetry(
+      () =>
+        withTimeout(
+          razorpay.orders.create({
+            amount: 118000,
+            currency: 'INR',
+            receipt: `oneonone_${Date.now()}`,
+            notes: {
+              user_name,
+              user_email,
+              user_phone,
+              selected_date,
+              selected_time,
+              booking_type: 'one-on-one',
+            },
+          })
+        ),
+      { retries: 2 }
+    )
 
     // Create booking in database (with error handling)
     let booking
@@ -78,10 +86,10 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Error creating Razorpay order:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Failed to create order'
+    Sentry.captureException(error)
     return NextResponse.json(
-      { error: errorMessage },
-      { status: 500 }
+      { error: HIGH_DEMAND_MESSAGE },
+      { status: 503 }
     )
   }
 }

@@ -7,7 +7,7 @@ import { isValidEmailFormat, isValidIndianPhone, normalizeIndianPhone } from '@/
 import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
-  const rateLimitResponse = checkRateLimit(request, DEFAULT_LIMIT)
+  const rateLimitResponse = await checkRateLimit(request, DEFAULT_LIMIT)
   if (rateLimitResponse) return rateLimitResponse
 
   try {

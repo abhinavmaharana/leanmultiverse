@@ -162,6 +162,15 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: '/api/one-on-one/get-booked-dates',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=60, stale-while-revalidate=120',
+          },
+        ],
+      },
     ];
   },
 };
