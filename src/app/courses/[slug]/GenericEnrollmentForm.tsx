@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, User } from 'lucide-react'
 import { CareerStarterCourse } from '@/data/careerStarterCourses'
-import { validateEmail, validateIndianPhone } from '@/lib/validators'
+import { validateEmail, validateIndianPhone, normalizeIndianPhone } from '@/lib/validators'
 
 declare global {
   interface Window {
@@ -97,7 +97,7 @@ export default function GenericEnrollmentForm({
       if (!ok) throw new Error('Payment gateway failed to load')
 
       const phoneNormalized = formData.phone.trim()
-        ? `+91${normalizeIndianMobile(formData.phone)}`
+        ? `+91${normalizeIndianPhone(formData.phone)}`
         : null
 
       const res = await fetch('/api/courses/enroll/create-order', {
