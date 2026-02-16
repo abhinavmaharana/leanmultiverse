@@ -314,10 +314,13 @@ const TestimonialCard = memo(({ testimonial }: { testimonial: Testimonial }) => 
                   alt={testimonial.name}
                   width={96}
                   height={96}
+                  sizes="96px"
                   className="rounded-full object-cover object-center border-2 border-yellow-400/30 flex-shrink-0 bg-yellow-400/20"
                   style={{ objectPosition: 'center top' }}
                   unoptimized={testimonial.image.includes('drive.google.com') || testimonial.image.includes('lh3.googleusercontent.com')}
                   loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzJhMmEyYSIvPjwvc3ZnPg=="
                   onError={(e) => {
                     const img = e.currentTarget as HTMLImageElement
                     const currentSrc = img.src
@@ -531,9 +534,12 @@ export default function SuccessStories() {
                           alt={memoizedTestimonials[selectedTestimonial].name}
                           width={120}
                           height={120}
+                          sizes="120px"
                           className="rounded-full object-cover object-center border-4 border-yellow-400/30 shadow-lg bg-yellow-400/20"
                           style={{ objectPosition: 'center top' }}
                           unoptimized={memoizedTestimonials[selectedTestimonial].image.includes('drive.google.com') || memoizedTestimonials[selectedTestimonial].image.includes('lh3.googleusercontent.com')}
+                          placeholder="blur"
+                          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMmEyYTJhIi8+PC9zdmc+"
                           onError={(e) => {
                             const img = e.currentTarget as HTMLImageElement
                             const currentSrc = img.src

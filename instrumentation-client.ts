@@ -12,3 +12,5 @@ if (dsn && isProduction) {
     replaysOnErrorSampleRate: 0,
   })
 }
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart

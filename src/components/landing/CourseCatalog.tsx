@@ -225,6 +225,7 @@ export default function CourseCatalog() {
                   alt={course.title}
                   width={400}
                   height={250}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute top-4 left-4 flex gap-2">

@@ -37,6 +37,7 @@ export default function ServiceCard({
           alt={title}
           width={300}
           height={300}
+          sizes="(max-width: 768px) 100vw, 300px"
           className="rounded-xl shadow-lg"
         />
       </div>

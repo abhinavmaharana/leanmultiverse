@@ -290,6 +290,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
             alt={item.alt || "Logo"}
             width={100}
             height={40}
+            sizes="100px"
             className={cx(
               'h-[var(--logoloop-logoHeight)] w-auto block object-contain',
               '[-webkit-user-drag:none] pointer-events-none',

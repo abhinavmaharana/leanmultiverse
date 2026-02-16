@@ -1,12 +1,15 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const nextConfig: NextConfig = {
   // Performance optimizations
   experimental: {
     optimizePackageImports: [
-      'framer-motion', 
-      'motion',
+      'framer-motion',
       'gsap', 
       '@tabler/icons-react', 
       'lucide-react',
@@ -163,7 +166,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
+const configWithAnalyzer = withBundleAnalyzer(nextConfig);
+export default withSentryConfig(configWithAnalyzer, {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   silent: !process.env.CI,

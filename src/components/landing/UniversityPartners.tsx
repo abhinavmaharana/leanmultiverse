@@ -108,6 +108,7 @@ export default function UniversityPartners() {
                     alt={`${partner.name} logo`}
                     width={40}
                     height={40}
+                    sizes="64px"
                     className="rounded-full object-cover"
                   />
                 </div>

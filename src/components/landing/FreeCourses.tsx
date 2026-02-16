@@ -123,6 +123,7 @@ export default function FreeCourses() {
                     alt={course.title}
                     width={400}
                     height={250}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="w-full h-48 sm:h-56 object-cover group-hover:scale-110 transition-transform duration-700"
                     loading="lazy"
                   />

@@ -94,6 +94,7 @@ export default function CaseStudies() {
                     alt={`${study.company} logo`}
                     width={32}
                     height={32}
+                    sizes="32px"
                     className="h-8 w-auto filter brightness-0 invert"
                   />
                   <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">

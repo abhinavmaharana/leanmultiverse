@@ -1,16 +1,11 @@
 import type { Metadata } from "next"
 import { Raleway } from "next/font/google"
-import dynamic from "next/dynamic"
-import CustomCursor from "@/components/ui/CustomCursor"
-import LenisProvider from "@/components/providers/LenisProvider"
-// import LoadingProvider from "@/components/providers/LoadingProvider"
+import DeferredLenisWrapper from "@/components/providers/DeferredLenisWrapper"
+import DynamicCustomCursor from "@/components/DynamicCustomCursor"
+import DeferredPerfectChatbot from "@/components/DeferredPerfectChatbot"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import CookieConsent from "@/components/CookieConsent"
 import "./globals.css"
-
-const PerfectChatbot = dynamic(() => import("@/components/ui/PerfectChatbot"), {
-  loading: () => null,
-})
 
 // Load Raleway font with optimization - reduced weights for better performance
 const raleway = Raleway({
@@ -158,6 +153,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://drive.google.com" />
         <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
         
+        {/* Preload LCP hero image for landing */}
+        <link rel="preload" href="/nitesh-prasad-3.png" as="image" />
+        
         {/* Icons */}
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/logo.svg" />
@@ -173,12 +171,12 @@ export default function RootLayout({
         <ErrorBoundary>
           {/* LoadingProvider disabled; re-enable when full-page loading screen is desired */}
           {/* <LoadingProvider> */}
-            <LenisProvider>
+            <DeferredLenisWrapper>
               {children}
-              <CustomCursor />
+              <DynamicCustomCursor />
               {/* Lazy load chatbot - only loads when user scrolls or interacts */}
-              <PerfectChatbot />
-            </LenisProvider>
+              <DeferredPerfectChatbot />
+            </DeferredLenisWrapper>
           {/* </LoadingProvider> */}
         </ErrorBoundary>
         <CookieConsent />
