@@ -164,7 +164,7 @@ export default function TermsOfServicePage() {
               </p>
               <div className="bg-white/5 border border-white/10 rounded-lg p-6">
                 <p className="text-gray-300 mb-2">
-                  <strong className="text-white">Email:</strong> legal@leanmultiverse.com
+                  <strong className="text-white">Email:</strong> operations@leanmultiverse.com
                 </p>
                 <p className="text-gray-300 mb-2">
                   <strong className="text-white">Address:</strong> Lean Multiverse Consultancy Pvt Ltd

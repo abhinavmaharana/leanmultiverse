@@ -119,18 +119,10 @@ export const measurePerformance = (name: string, fn: () => void) => {
   console.log(`${name} took ${end - start} milliseconds`)
 }
 
-// Reduced motion support
+// Reduced motion: prefer checking in components (e.g. useShouldAnimate, LogoLoop) so animations can be skipped entirely when preferred.
 export const prefersReducedMotion = () => {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
-
-// Optimized animation with reduced motion support
-export const createAccessibleAnimation = (animation: gsap.TweenVars, fallback?: gsap.TweenVars) => {
-  if (prefersReducedMotion()) {
-    return fallback || { duration: 0.1, ease: "none" }
-  }
-  return animation
 }
 
 // Memory-efficient animation

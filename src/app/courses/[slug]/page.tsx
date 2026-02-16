@@ -42,6 +42,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
+function CourseJsonLd({ course }: { course: typeof careerStarterCourses[0] }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: course.title,
+    description: course.goal?.[0] ?? course.title,
+    provider: {
+      '@type': 'Organization',
+      name: 'LeanMultiverse University',
+      url: 'https://leanmultiverse.com',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: course.price,
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+    },
+    ...(course.duration && { timeRequired: course.duration }),
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  )
+}
+
 export default async function DynamicCoursePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const course = careerStarterCourses.find(c => c.slug === slug)
@@ -50,9 +77,12 @@ export default async function DynamicCoursePage({ params }: { params: Promise<{ 
     notFound()
   }
 
-  return <>
-  <Navbar />
-  <DynamicCourseClient course={course} />
-  <Footer />
-  </>
+  return (
+    <>
+      <CourseJsonLd course={course} />
+      <Navbar />
+      <DynamicCourseClient course={course} />
+      <Footer />
+    </>
+  )
 }

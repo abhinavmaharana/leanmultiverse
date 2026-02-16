@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, User } from 'lucide-react'
 import { CareerStarterCourse } from '@/data/careerStarterCourses'
+import { validateEmail, validateIndianPhone } from '@/lib/validators'
 
 declare global {
   interface Window {
@@ -30,17 +31,8 @@ interface FieldProps {
   error?: string
   disabled?: boolean
   type?: 'text' | 'email' | 'tel'
-}
-
-/* -------------------- Phone Utils -------------------- */
-
-const normalizeIndianMobile = (value: string) => {
-  let digits = value.replace(/\D/g, '')
-
-  if (digits.startsWith('0')) digits = digits.slice(1)
-  if (digits.length > 10 && digits.startsWith('91')) digits = digits.slice(2)
-
-  return digits
+  autoComplete?: string
+  inputMode?: 'tel' | 'email' | 'text'
 }
 
 /* -------------------- Component -------------------- */
@@ -62,24 +54,18 @@ export default function GenericEnrollmentForm({
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
-    // Name (required)
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required'
     }
 
-    // Email (required)
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Invalid email address'
+    const emailResult = validateEmail(formData.email)
+    if (!emailResult.valid && emailResult.error) {
+      newErrors.email = emailResult.error
     }
 
-    // Phone (OPTIONAL)
-    if (formData.phone.trim()) {
-      const phone = normalizeIndianMobile(formData.phone)
-      if (!/^[6-9]\d{9}$/.test(phone)) {
-        newErrors.phone = 'Enter a valid Indian mobile number'
-      }
+    const phoneResult = validateIndianPhone(formData.phone, false)
+    if (!phoneResult.valid && phoneResult.error) {
+      newErrors.phone = phoneResult.error
     }
 
     setErrors(newErrors)
@@ -178,6 +164,7 @@ export default function GenericEnrollmentForm({
       <form onSubmit={handleSubmit} className="space-y-6">
         <Field
           label="Full Name"
+          autoComplete="name"
           icon={<User />}
           value={formData.name}
           onChange={(v) => setFormData(p => ({ ...p, name: v }))}
@@ -187,6 +174,7 @@ export default function GenericEnrollmentForm({
         <Field
           label="Email Address"
           type="email"
+          autoComplete="email"
           icon={<Mail />}
           value={formData.email}
           onChange={(v) => setFormData(p => ({ ...p, email: v }))}
@@ -196,6 +184,8 @@ export default function GenericEnrollmentForm({
         <Field
           label="Phone Number"
           type="tel"
+          autoComplete="tel"
+          inputMode="tel"
           icon={<Phone />}
           value={formData.phone}
           onChange={(v) => setFormData(p => ({ ...p, phone: v }))}
@@ -224,7 +214,9 @@ function Field({
   onChange,
   placeholder,
   error,
-  type = 'text'
+  type = 'text',
+  autoComplete,
+  inputMode,
 }: FieldProps) {
   return (
     <div>
@@ -238,6 +230,8 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          autoComplete={autoComplete}
+          inputMode={inputMode}
           className="w-full pl-12 py-3 bg-zinc-900 border border-yellow-500/20 rounded-lg text-white"
         />
       </div>

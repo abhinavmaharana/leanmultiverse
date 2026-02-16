@@ -4,6 +4,8 @@ export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 import { createCourseEnrollment } from '@/lib/db-helpers'
+import { isValidEmailFormat, normalizeIndianPhone, isValidIndianPhone } from '@/lib/validators'
+import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -22,6 +24,9 @@ export async function GET() {
 
 /* -------------------- Create Order -------------------- */
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = checkRateLimit(request, DEFAULT_LIMIT)
+  if (rateLimitResponse) return rateLimitResponse
+
   try {
     if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
       return NextResponse.json(
@@ -44,8 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     /* ---------- Email validation ---------- */
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
+    if (!isValidEmailFormat(email)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -54,25 +58,14 @@ export async function POST(request: NextRequest) {
 
     /* ---------- Phone (optional) ---------- */
     let cleanPhone: string | undefined
-
     if (phone) {
-      let digits = phone.replace(/\D/g, '')
-
-      if (digits.startsWith('91') && digits.length > 10) {
-        digits = digits.slice(2)
-      }
-      if (digits.startsWith('0')) {
-        digits = digits.slice(1)
-      }
-
-      if (!/^[6-9]\d{9}$/.test(digits)) {
+      if (!isValidIndianPhone(phone)) {
         return NextResponse.json(
           { error: 'Invalid phone number' },
           { status: 400 }
         )
       }
-
-      cleanPhone = digits
+      cleanPhone = normalizeIndianPhone(phone)
     }
 
     /* ---------- 🔴 FIX: SHORT RECEIPT ---------- */

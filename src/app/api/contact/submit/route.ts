@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { google } from 'googleapis'
+import { isValidEmailFormat } from '@/lib/validators'
+import { checkRateLimit, STRICT_LIMIT } from '@/lib/rate-limit'
 
 interface ContactFormData {
   name: string
@@ -12,6 +14,9 @@ interface ContactFormData {
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = checkRateLimit(request, STRICT_LIMIT)
+  if (rateLimitResponse) return rateLimitResponse
+
   try {
     const body: ContactFormData = await request.json()
     const { name, email, countryCode, country, phoneNumber, source, timestamp } = body
@@ -20,6 +25,13 @@ export async function POST(request: NextRequest) {
     if (!name || !email || !countryCode || !country || !phoneNumber) {
       return NextResponse.json(
         { error: 'All fields are required' },
+        { status: 400 }
+      )
+    }
+
+    if (!isValidEmailFormat(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
         { status: 400 }
       )
     }

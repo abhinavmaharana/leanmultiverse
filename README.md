@@ -38,7 +38,7 @@ A modern, high-performance web application built with Next.js 15, featuring adva
 ### Core Framework
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Type-safe development
-- **React 18** - Modern React with concurrent features
+- **React 19** - Modern React with concurrent features
 
 ### Styling & UI
 - **Tailwind CSS** - Utility-first CSS framework

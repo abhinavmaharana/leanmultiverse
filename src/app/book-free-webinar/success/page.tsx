@@ -6,21 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
-
-const ZOOM_LINKS: Record<string, string> = {
-  '31': 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ',
-  '7': 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA',
-}
-
-function getZoomLinkForDate(dateStr: string): string {
-  try {
-    const [, , day] = dateStr.split('-').map(Number)
-    const dayStr = day.toString()
-    return ZOOM_LINKS[dayStr] || ZOOM_LINKS['31'] || 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ'
-  } catch {
-    return ZOOM_LINKS['31'] || 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ'
-  }
-}
+import { getZoomLinkForDateFree } from '@/lib/webinar-config'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
@@ -29,7 +15,7 @@ function SuccessContent() {
 
   useEffect(() => {
     if (dateStr) {
-      setZoomLink(getZoomLinkForDate(dateStr))
+      setZoomLink(getZoomLinkForDateFree(dateStr))
     }
   }, [dateStr])
 
@@ -101,13 +87,17 @@ function SuccessContent() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {zoomLink && (
-            <Button
-              onClick={() => (window.location.href = zoomLink)}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all"
-            >
-              Complete Zoom Registration →
+          {zoomLink ? (
+            <Button asChild className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all">
+              <a href={zoomLink} target="_blank" rel="noopener noreferrer">
+                Complete Zoom Registration → <span className="sr-only">(Opens in new tab)</span>
+              </a>
             </Button>
+          ) : (
+            <div className="rounded-xl bg-white/10 border border-white/20 px-6 py-4 text-center">
+              <p className="text-gray-300 mb-2">Check your email for the Zoom registration link.</p>
+              <a href="mailto:operations@leanmultiverse.com" className="text-yellow-400 hover:underline text-sm">Contact support if you didn&apos;t receive it</a>
+            </div>
           )}
           <Button
             asChild

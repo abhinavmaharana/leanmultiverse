@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
+import { validateEmail, validateIndianPhone, validatePhone } from "@/lib/validators"
 
 interface ContactFormModalProps {
   isOpen: boolean
@@ -78,20 +79,17 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
       setError("Name is required")
       return false
     }
-    if (!formData.email.trim()) {
-      setError("Email is required")
+    const emailResult = validateEmail(formData.email)
+    if (!emailResult.valid) {
+      setError(emailResult.error ?? "Invalid email")
       return false
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError("Please enter a valid email address")
-      return false
-    }
-    if (!formData.phoneNumber.trim()) {
-      setError("Phone number is required")
-      return false
-    }
-    if (!/^\d{6,15}$/.test(formData.phoneNumber.replace(/\s/g, ""))) {
-      setError("Please enter a valid phone number")
+    const phoneResult =
+      formData.countryCode === "+91"
+        ? validateIndianPhone(formData.phoneNumber, true)
+        : validatePhone(formData.phoneNumber, { required: true, min: 6, max: 15 })
+    if (!phoneResult.valid) {
+      setError(phoneResult.error ?? "Invalid phone number")
       return false
     }
     return true

@@ -21,7 +21,7 @@ const ContactSupport = dynamic(() => import('@/components/landing/ContactSupport
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 
-const Certification = dynamic(() => import('@/components/landing/Certication'), {
+const Certification = dynamic(() => import('@/components/landing/Certification'), {
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
 

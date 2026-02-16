@@ -10,6 +10,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { format } from 'date-fns'
 import Navbar from '@/components/shared/Navbar'
+import {
+  getAvailableDatesPaid,
+  getZoomLinkForDatePaid,
+  WEBINAR_TIME_SLOTS as TIME_SLOTS,
+} from '@/lib/webinar-config'
 
 // Form validation schema
 const bookingSchema = z.object({
@@ -22,88 +27,13 @@ const bookingSchema = z.object({
 
 type BookingFormData = z.infer<typeof bookingSchema>
 
-// Zoom registration links by month-day (from YYYY-MM-DD: month 1–12, day 1–31)
-const ZOOM_LINKS: Record<string, string> = {
-  '2-7': 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA',   // Feb 7
-  '2-14': 'https://us06web.zoom.us/meeting/register/LG0BbP6yQsmLlwwAbJ85xg', // Feb 14
-  '2-21': 'https://us06web.zoom.us/meeting/register/eX9-EdUBSWGcVSOU__voEg', // Feb 21
-  '2-28': 'https://us06web.zoom.us/meeting/register/DbbY6tSjSh6Dq6gsR5eS-w', // Feb 28
-  '3-7': 'https://us06web.zoom.us/meeting/register/swqMuabPQQSCOM5eF7j-IA',  // Mar 7
-  '3-14': 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ', // Mar 14
-  '3-21': 'https://us06web.zoom.us/meeting/register/4ZWJwZVSTYSPbpwh5au3BA', // Mar 21
-}
-const ZOOM_LINK_FALLBACK = 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
-
-// Available time slots in IST
-const TIME_SLOTS = [
-  { value: '20:00', label: '8:00 PM IST' },
-]
-
-// Today as YYYY-MM-DD in IST
-function getTodayIST(): string {
-  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
-}
-
-// Webinar is at 8:00 PM IST. Return true if that moment has already passed.
-function isWebinarTimePast(dateStr: string): boolean {
-  const [year, month, day] = dateStr.split('-').map(Number)
-  // 8:00 PM IST = 14:30 UTC
-  const webinarAt = new Date(Date.UTC(year, month - 1, day, 14, 30, 0))
-  return webinarAt.getTime() <= Date.now()
-}
-
-// Available webinar dates: only show dates where 8:00 PM IST hasn't passed yet
-function getAvailableDates() {
-  const dates: Date[] = []
-  const todayIST = getTodayIST()
-  const currentYear = new Date().getFullYear()
-
-  const availableDatesConfig = [
-    { month: 1, day: 7 },   // Feb 7
-    { month: 1, day: 14 },  // Feb 14
-    { month: 1, day: 21 },  // Feb 21
-    { month: 1, day: 28 },  // Feb 28
-    { month: 2, day: 7 },   // Mar 7
-    { month: 2, day: 14 },  // Mar 14
-    { month: 2, day: 21 },  // Mar 21
-  ]
-
-  availableDatesConfig.forEach(({ month, day }) => {
-    let date = new Date(currentYear, month, day)
-    let dateStr = format(date, 'yyyy-MM-dd')
-
-    if (dateStr < todayIST) {
-      date = new Date(currentYear + 1, month, day)
-      dateStr = format(date, 'yyyy-MM-dd')
-    }
-
-    if (dateStr >= todayIST && !isWebinarTimePast(dateStr)) {
-      dates.push(date)
-    }
-  })
-
-  dates.sort((a, b) => a.getTime() - b.getTime())
-  return dates
-}
-
-// Get Zoom link for a specific date (YYYY-MM-DD); keys are "month-day" (1–12, 1–31)
-function getZoomLinkForDate(dateStr: string): string {
-  try {
-    const [, month, day] = dateStr.split('-').map(Number)
-    const key = `${month}-${day}`
-    return ZOOM_LINKS[key] ?? ZOOM_LINK_FALLBACK
-  } catch {
-    return ZOOM_LINK_FALLBACK
-  }
-}
-
 export default function BookWebinarClient() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   const [currentStep, setCurrentStep] = useState(1) // 1: Date, 2: Time, 3: Info
   const scriptLoadedRef = useRef(false)
-  const availableDates = useMemo(() => getAvailableDates(), [])
+  const availableDates = useMemo(() => getAvailableDatesPaid(), [])
 
   const {
     register,
@@ -207,7 +137,7 @@ export default function BookWebinarClient() {
 
     try {
       // Get the appropriate Zoom link for the selected date
-      const zoomLink = getZoomLinkForDate(data.selected_date)
+      const zoomLink = getZoomLinkForDatePaid(data.selected_date)
       
       // Create booking and get Razorpay order
       const response = await fetch('/api/razorpay/create-order', {
@@ -393,10 +323,18 @@ export default function BookWebinarClient() {
               <input type="hidden" {...register('selected_time')} />
 
               {/* Progress Indicator */}
-              <div className="flex items-center justify-center gap-2 mb-8">
+              <div
+                className="flex items-center justify-center gap-2 mb-8"
+                role="progressbar"
+                aria-valuenow={currentStep}
+                aria-valuemin={1}
+                aria-valuemax={3}
+                aria-label="Booking progress"
+              >
                 {[1, 2, 3].map((step) => (
                   <div
                     key={step}
+                    aria-current={currentStep === step ? 'step' : undefined}
                     className={`h-2 rounded-full transition-all ${
                       currentStep >= step
                         ? 'bg-yellow-400 w-8'
@@ -422,40 +360,49 @@ export default function BookWebinarClient() {
                     <Label htmlFor="date" className="text-white mb-4 block text-2xl font-semibold">
                       Select your preferred date <span className="text-red-400">*</span>
                     </Label>
-                    <select
-                      id="date"
-                      value={selectedDate || ''}
-                      onChange={handleDateChange}
-                      className="w-full bg-white/10 border-2 border-white/20 text-white rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50 transition-all appearance-none cursor-pointer"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3C/polyline%3E%3C/svg%3E")`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'right 1rem center',
-                        backgroundSize: '1.5rem',
-                        paddingRight: '3rem',
-                      }}
-                    >
-                      <option value="" className="bg-gray-800 text-white">
-                        Choose a date...
-                      </option>
-                      {availableDates.map((date) => {
-                        const dateStr = format(date, 'yyyy-MM-dd')
-                        const dayName = format(date, 'EEEE')
-                        const dayNum = format(date, 'd')
-                        const month = format(date, 'MMMM yyyy')
-                        return (
-                          <option key={dateStr} value={dateStr} className="bg-gray-800 text-white">
-                            {dayName}, {dayNum} {month}
+                    {availableDates.length === 0 ? (
+                      <div className="rounded-xl bg-white/10 border-2 border-white/20 p-6 text-center">
+                        <p className="text-gray-300 mb-2">No upcoming webinars at the moment.</p>
+                        <p className="text-gray-400 text-sm">Check back soon or <a href="mailto:operations@leanmultiverse.com" className="text-yellow-400 hover:underline">contact us</a> for future dates.</p>
+                      </div>
+                    ) : (
+                      <>
+                        <select
+                          id="date"
+                          value={selectedDate || ''}
+                          onChange={handleDateChange}
+                          className="w-full bg-white/10 border-2 border-white/20 text-white rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50 transition-all appearance-none cursor-pointer"
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3C/polyline%3E%3C/svg%3E")`,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'right 1rem center',
+                            backgroundSize: '1.5rem',
+                            paddingRight: '3rem',
+                          }}
+                        >
+                          <option value="" className="bg-gray-800 text-white">
+                            Choose a date...
                           </option>
-                        )
-                      })}
-                    </select>
-                    {errors.selected_date && (
-                      <p className="text-red-400 text-sm mt-2">{errors.selected_date.message}</p>
+                          {availableDates.map((date) => {
+                            const dateStr = format(date, 'yyyy-MM-dd')
+                            const dayName = format(date, 'EEEE')
+                            const dayNum = format(date, 'd')
+                            const month = format(date, 'MMMM yyyy')
+                            return (
+                              <option key={dateStr} value={dateStr} className="bg-gray-800 text-white">
+                                {dayName}, {dayNum} {month}
+                              </option>
+                            )
+                          })}
+                        </select>
+                        {errors.selected_date && (
+                          <p className="text-red-400 text-sm mt-2">{errors.selected_date.message}</p>
+                        )}
+                      </>
                     )}
                   </div>
                   
-                  {selectedDate && (
+                  {selectedDate && availableDates.length > 0 && (
                     <motion.div
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -487,11 +434,13 @@ export default function BookWebinarClient() {
                     <Label htmlFor="time" className="text-white mb-4 block text-2xl font-semibold">
                       Select your preferred time <span className="text-red-400">*</span>
                     </Label>
-                    <div className="grid grid-cols-1 gap-3">
+                    <div className="grid grid-cols-1 gap-3" role="radiogroup" aria-label="Select your preferred time">
                       {TIME_SLOTS.map((slot) => (
                         <button
                           key={slot.value}
                           type="button"
+                          role="radio"
+                          aria-checked={selectedTime === slot.value}
                           onClick={() => {
                             setValue('selected_time', slot.value, { shouldValidate: true })
                           }}
@@ -572,6 +521,7 @@ export default function BookWebinarClient() {
                       <Input
                         id="user_name"
                         {...register('user_name')}
+                        autoComplete="name"
                         className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
                         placeholder="Enter your full name"
                       />
@@ -588,6 +538,7 @@ export default function BookWebinarClient() {
                         id="user_email"
                         type="email"
                         {...register('user_email')}
+                        autoComplete="email"
                         className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
                         placeholder="your.email@example.com"
                       />
@@ -604,6 +555,8 @@ export default function BookWebinarClient() {
                         id="user_phone"
                         type="tel"
                         {...register('user_phone')}
+                        autoComplete="tel"
+                        inputMode="tel"
                         className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
                         placeholder="+91 9876543210"
                       />

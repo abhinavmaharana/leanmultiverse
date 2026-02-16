@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { google } from 'googleapis'
+import { isValidEmailFormat, isValidIndianPhone } from '@/lib/validators'
+import { checkRateLimit, STRICT_LIMIT } from '@/lib/rate-limit'
 
 interface QuotationFormData {
   name: string
@@ -17,6 +19,9 @@ interface QuotationFormData {
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = checkRateLimit(request, STRICT_LIMIT)
+  if (rateLimitResponse) return rateLimitResponse
+
   try {
     const body: QuotationFormData = await request.json()
     const { 
@@ -38,6 +43,28 @@ export async function POST(request: NextRequest) {
     if (!name || !email || !countryCode || !country || !phoneNumber || !projectType || !description) {
       return NextResponse.json(
         { error: 'Required fields are missing' },
+        { status: 400 }
+      )
+    }
+
+    if (!isValidEmailFormat(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email address' },
+        { status: 400 }
+      )
+    }
+
+    const digits = (String(phoneNumber ?? '')).replace(/\D/g, '')
+    if (countryCode === '+91') {
+      if (!isValidIndianPhone(phoneNumber)) {
+        return NextResponse.json(
+          { error: 'Invalid Indian phone number' },
+          { status: 400 }
+        )
+      }
+    } else if (digits.length < 6 || digits.length > 15) {
+      return NextResponse.json(
+        { error: 'Invalid phone number (must be 6–15 digits)' },
         { status: 400 }
       )
     }

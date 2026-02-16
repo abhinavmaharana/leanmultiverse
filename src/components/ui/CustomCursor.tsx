@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import { useHasFinePointer } from "@/hooks/useHasFinePointer"
 
 export default function CustomCursor() {
+  const hasFinePointer = useHasFinePointer()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
   const [isClicking, setIsClicking] = useState(false)
@@ -44,6 +46,8 @@ export default function CustomCursor() {
       window.removeEventListener('mouseup', handleMouseUp)
     }
   }, [])
+
+  if (!hasFinePointer) return null
 
   return (
     <>

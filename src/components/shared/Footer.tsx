@@ -41,23 +41,21 @@ const QUICK_LINKS = [
 ]
 
 const PROGRAM_LINKS = [
-  { href: "#courses", text: "Webinar" },
-  { href: "#courses", text: "Foundation Courses" },
-  { href: "#courses", text: "Professional Courses" },
-  { href: "#courses", text: "Career Accelerator" },
-  { href: "#courses", text: "Dual Programs" }
+  { href: "#courses", text: "Courses" },
+  { href: "/book-webinar", text: "Book Webinar" },
 ]
 
 const SUPPORT_LINKS = [
   { href: "tel:+918062177938", text: "Talk to Expert" },
   { href: "mailto:operations@leanmultiverse.com", text: "Email Operations" },
+  { href: "/refund-policy", text: "Refund Policy" },
   { href: "/privacy-policy", text: "Privacy Policy" },
   { href: "/terms-of-service", text: "Terms of Service" },
-  { href: "/cookie-policy", text: "Cookie Policy" }
+  { href: "/cookie-policy", text: "Cookie Policy" },
+  { href: "/accessibility", text: "Accessibility" }
 ]
 
 export default function Footer() {
-
   return (
     <footer className="bg-black mt-auto">
       {/* Main Footer Content */}
@@ -72,7 +70,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
               Transforming careers through enterprise agility and digital transformation education. 
-              Join 6,00,000+ professionals who have advanced their careers with us.
+              Join 600,000+ professionals who have advanced their careers with us.
             </p>
             <div className="flex flex-col gap-2 text-sm sm:text-base">
               <a
@@ -190,42 +188,17 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Newsletter Signup */}
-        {/* <div className="border-t border-white/10 pt-8 mb-8">
-          <div className="max-w-2xl mx-auto text-center">
-            <h3 className="text-white font-semibold text-lg mb-4">Stay Updated</h3>
-            <p className="text-gray-300 mb-6">
-              Get the latest course updates, industry insights, and career tips delivered to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/50"
-              />
-              <Button className="bg-yellow-400 text-black hover:bg-yellow-500 rounded-full px-6 py-3 font-semibold">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </div> */}
-
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm mb-4 md:mb-0">
-              © {new Date().getFullYear()} Lean Multiverse Consultancy Pvt Ltd. All Rights Reserved.
+              © 2025 Lean Multiverse Consultancy Pvt Ltd. All Rights Reserved.
             </div>
-            <div className="flex space-x-6 text-sm">
-              {["/privacy-policy", "/terms-of-service", "/cookie-policy"].map((href, index) => (
-                <div key={index}>
-                  <Link 
-                    href={href} 
-                    className="text-gray-400 hover:text-yellow-400 transition-colors"
-                  >
-                    {href === "/privacy-policy" ? "Privacy Policy" : href === "/terms-of-service" ? "Terms of Service" : "Cookie Policy"}
-                  </Link>
-                </div>
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+              {SUPPORT_LINKS.filter((l) => l.href.startsWith("/")).map((link) => (
+                <Link key={link.href} href={link.href} className="text-gray-400 hover:text-yellow-400 transition-colors">
+                  {link.text}
+                </Link>
               ))}
             </div>
           </div>

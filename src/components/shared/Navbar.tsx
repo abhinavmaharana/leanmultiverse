@@ -3,15 +3,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { useState, useEffect, useCallback, memo } from 'react'
+import { useState, useEffect, useCallback, useRef, memo } from 'react'
 
 function Navbar() {
   const [open, setOpen] = useState(false)
   const [isTransparent, setIsTransparent] = useState(true)
   const [mounted, setMounted] = useState(false)
-
-  const SHOW_WEBINAR_CTA = true
-  const SHOW_PAID_WEBINAR_CTA = true
 
   const handleScroll = useCallback(() => {
     const heroHeight = window.innerHeight * 0.8
@@ -44,6 +41,26 @@ function Navbar() {
     return () => window.removeEventListener('scroll', throttledScroll)
   }, [handleScroll])
 
+  // Close mobile menu on Escape or click outside
+  const mobileMenuRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (!open) return
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node
+      if (mobileMenuRef.current?.contains(target) || (e.target as HTMLElement).closest('#mobile-menu-button')) return
+      setOpen(false)
+    }
+    document.addEventListener('keydown', handleEscape)
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [open])
+
   const navbarClassName = mounted
     ? isTransparent
       ? 'bg-transparent'
@@ -53,6 +70,7 @@ function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 transition-all ${navbarClassName}`}
+      aria-label="Main navigation"
     >
       {/* Logo */}
       <Link href="/" className="hover:opacity-80 transition">
@@ -68,59 +86,6 @@ function Navbar() {
       {/* Desktop Nav */}
       <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-white bg-transparent">
         <Link href="#home" className="hover:opacity-80">Home</Link>
-
-        {/* Courses Dropdown */}
-        <div className="relative group">
-          <button className="flex items-center gap-1 hover:opacity-80">
-            Courses
-            <span className="text-xs">▾</span>
-          </button>
-
-          <div
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64
-                       bg-black/95 border border-white/20 rounded-2xl p-4
-                       opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                       transition-all duration-200 z-50"
-          >
-            <div className="space-y-1">
-              <Link
-                href="/courses/ai-ml-foundation"
-                className="block px-4 py-2 rounded-lg hover:bg-white/10 transition"
-              >
-                AI & ML Career Foundation
-              </Link>
-
-              <Link
-                href="/courses/cloud-devops-career-starter"
-                className="block px-4 py-2 rounded-lg hover:bg-white/10 transition"
-              >
-                Cloud & DevOps Career Starter
-              </Link>
-
-              <Link
-                href="/courses/business-analyst-career-starter"
-                className="block px-4 py-2 rounded-lg hover:bg-white/10 transition"
-              >
-                Business Analyst Career Starter
-              </Link>
-
-              <Link
-                href="/courses/ai-product-management-career-starter"
-                className="block px-4 py-2 rounded-lg hover:bg-white/10 transition"
-              >
-                AI Product Management Career Starter
-              </Link>
-
-              <Link
-                href="/courses/ai-project-management-career-starter"
-                className="block px-4 py-2 rounded-lg hover:bg-white/10 transition"
-              >
-                AI Project Management Career Starter
-              </Link>
-            </div>
-          </div>
-        </div>
-
         <Link href="#stories" className="hover:opacity-80">Success Stories</Link>
         <Link href="/services" className="hover:opacity-80">Services</Link>
         <Link href="#contact" className="hover:opacity-80">Contact</Link>
@@ -128,31 +93,71 @@ function Navbar() {
 
       {/* CTA */}
       <div className="flex items-center gap-3">
-        {SHOW_WEBINAR_CTA && (
-          <>
-            {SHOW_PAID_WEBINAR_CTA ? (
-              <Link href="/book-webinar">
-                <Button className="hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white">
-                  Book Webinar
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/book-webinar">
-                <Button className="hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white">
-                  Book Webinar
-                </Button>
-              </Link>
-            )}
-          </>
-        )}
+        <Link href="/book-webinar">
+          <Button className="hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white">
+            Book Webinar
+          </Button>
+        </Link>
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden h-12 w-12 rounded-full bg-white/20 border border-white/30 text-white"
-          onClick={() => setOpen(v => !v)}
+          type="button"
+          id="mobile-menu-button"
+          aria-controls="mobile-menu"
+          aria-expanded={open}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          className="md:hidden h-12 w-12 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center"
+          onClick={() => setOpen((v) => !v)}
         >
           {open ? '✕' : '☰'}
         </button>
+      </div>
+
+      {/* Mobile Menu Panel */}
+      <div
+        ref={mobileMenuRef}
+        id="mobile-menu"
+        role="dialog"
+        aria-labelledby="mobile-menu-button"
+        className={`md:hidden absolute top-full left-0 right-0 mt-0 bg-black/98 backdrop-blur-md border-b border-white/10 overflow-hidden transition-all duration-200 z-40 ${
+          open ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="px-6 py-6 flex flex-col gap-1">
+          <Link
+            href="#home"
+            className="block py-3 text-white font-semibold hover:text-yellow-400 transition"
+            onClick={() => setOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            href="#stories"
+            className="block py-3 text-white font-semibold hover:text-yellow-400 transition"
+            onClick={() => setOpen(false)}
+          >
+            Success Stories
+          </Link>
+          <Link
+            href="/services"
+            className="block py-3 text-white font-semibold hover:text-yellow-400 transition"
+            onClick={() => setOpen(false)}
+          >
+            Services
+          </Link>
+          <Link
+            href="#contact"
+            className="block py-3 text-white font-semibold hover:text-yellow-400 transition"
+            onClick={() => setOpen(false)}
+          >
+            Contact
+          </Link>
+          <Link href="/book-webinar" className="mt-2" onClick={() => setOpen(false)}>
+            <Button className="w-full rounded-full bg-white/20 border border-white/30 text-white">
+              Book Webinar
+            </Button>
+          </Link>
+        </div>
       </div>
     </nav>
   )

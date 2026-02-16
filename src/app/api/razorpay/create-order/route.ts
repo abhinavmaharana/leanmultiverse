@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Razorpay from 'razorpay'
 import { createBooking } from '@/lib/db-helpers'
+import { isValidEmailFormat, isValidIndianPhone, normalizeIndianPhone } from '@/lib/validators'
+import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -8,6 +10,9 @@ const razorpay = new Razorpay({
 })
 
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = checkRateLimit(request, DEFAULT_LIMIT)
+  if (rateLimitResponse) return rateLimitResponse
+
   try {
     const body = await request.json()
     const { user_name, user_email, user_phone, selected_date, selected_time, zoom_registration_link } = body
@@ -20,6 +25,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (!isValidEmailFormat(String(user_email))) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
+
+    if (!isValidIndianPhone(String(user_phone), true)) {
+      return NextResponse.json(
+        { error: 'Invalid phone number. Use a valid 10-digit Indian mobile number.' },
+        { status: 400 }
+      )
+    }
+
+    const cleanPhone = normalizeIndianPhone(String(user_phone))
+
     // Create Razorpay order
     const order = await razorpay.orders.create({
       amount: 5782, // ₹49 + 18% GST in paise
@@ -28,7 +49,7 @@ export async function POST(request: NextRequest) {
       notes: {
         user_name,
         user_email,
-        user_phone,
+        user_phone: cleanPhone,
         selected_date,
         selected_time,
         zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK,
@@ -49,7 +70,7 @@ export async function POST(request: NextRequest) {
       } = {
         user_name,
         user_email,
-        user_phone,
+        user_phone: cleanPhone,
         selected_date,
         selected_time,
         razorpay_order_id: order.id,

@@ -5,12 +5,8 @@ import CustomCursor from "@/components/ui/CustomCursor"
 import LenisProvider from "@/components/providers/LenisProvider"
 // import LoadingProvider from "@/components/providers/LoadingProvider"
 import ErrorBoundary from "@/components/ErrorBoundary"
+import CookieConsent from "@/components/CookieConsent"
 import "./globals.css"
-
-// Lazy load non-critical components - removed ssr: false for Server Components compatibility
-const Analytics = dynamic(() => import("@vercel/analytics/react").then(mod => ({ default: mod.Analytics })))
-
-const SpeedInsights = dynamic(() => import("@vercel/speed-insights/next").then(mod => ({ default: mod.SpeedInsights })))
 
 const PerfectChatbot = dynamic(() => import("@/components/ui/PerfectChatbot"), {
   loading: () => null,
@@ -104,12 +100,16 @@ export const metadata: Metadata = {
     ],
     shortcut: "/logo.svg",
   },
-  verification: {
-    google: "your-google-verification-code-here",
-    other: {
-      "google-site-verification": "your-google-verification-code-here",
-    },
-  },
+  ...(process.env.GOOGLE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.GOOGLE_VERIFICATION,
+          other: {
+            "google-site-verification": process.env.GOOGLE_VERIFICATION,
+          },
+        },
+      }
+    : {}),
 }
 
 export default function RootLayout({
@@ -171,6 +171,7 @@ export default function RootLayout({
       </head>
       <body className={`${raleway.variable} font-sans antialiased bg-black`}>
         <ErrorBoundary>
+          {/* LoadingProvider disabled; re-enable when full-page loading screen is desired */}
           {/* <LoadingProvider> */}
             <LenisProvider>
               {children}
@@ -180,9 +181,7 @@ export default function RootLayout({
             </LenisProvider>
           {/* </LoadingProvider> */}
         </ErrorBoundary>
-        {/* Defer analytics loading until after page is interactive */}
-        <Analytics />
-        <SpeedInsights />
+        <CookieConsent />
       </body>
     </html>
   )

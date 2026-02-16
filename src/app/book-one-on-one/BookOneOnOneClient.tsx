@@ -653,6 +653,7 @@ export default function BookOneOnOneClient() {
                       <Input
                         id="user_name"
                         {...register('user_name')}
+                        autoComplete="name"
                         className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
                         placeholder="Enter your full name"
                       />
@@ -669,6 +670,7 @@ export default function BookOneOnOneClient() {
                         id="user_email"
                         type="email"
                         {...register('user_email')}
+                        autoComplete="email"
                         className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
                         placeholder="your.email@example.com"
                       />
@@ -685,6 +687,8 @@ export default function BookOneOnOneClient() {
                         id="user_phone"
                         type="tel"
                         {...register('user_phone')}
+                        autoComplete="tel"
+                        inputMode="tel"
                         className="bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/50"
                         placeholder="+91 9876543210"
                       />

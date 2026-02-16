@@ -2,24 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createFreeWebinarBooking, updateBooking } from '@/lib/db-helpers'
 import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
-
-// Zoom registration links by day (must match BookFreeWebinarClient)
-const ZOOM_LINKS: Record<string, string> = {
-  '31': 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ',
-  '7': 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA',
-}
-
-function getZoomLinkForDate(dateStr: string): string {
-  try {
-    const [, , day] = dateStr.split('-').map(Number)
-    const dayStr = day.toString()
-    return ZOOM_LINKS[dayStr] || ZOOM_LINKS['31'] || 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ'
-  } catch {
-    return ZOOM_LINKS['31'] || 'https://us06web.zoom.us/meeting/register/8b3eEOuxSvaefhcK1vmWpQ'
-  }
-}
+import { getZoomLinkForDateFree } from '@/lib/webinar-config'
+import { isValidEmailFormat, isValidIndianPhone, normalizeIndianPhone } from '@/lib/validators'
+import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
+  const rateLimitResponse = checkRateLimit(request, DEFAULT_LIMIT)
+  if (rateLimitResponse) return rateLimitResponse
+
   try {
     const body = await request.json()
     const { user_name, user_email, user_phone, selected_date, selected_time, zoom_registration_link: zoomFromClient } = body
@@ -31,7 +21,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const zoom_registration_link = zoomFromClient || getZoomLinkForDate(selected_date)
+    if (!isValidEmailFormat(String(user_email))) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
+
+    if (!isValidIndianPhone(String(user_phone), true)) {
+      return NextResponse.json(
+        { error: 'Invalid phone number. Use a valid 10-digit Indian mobile number.' },
+        { status: 400 }
+      )
+    }
+
+    const zoom_registration_link = zoomFromClient || getZoomLinkForDateFree(selected_date)
 
     const booking = await createFreeWebinarBooking({
       user_name,
