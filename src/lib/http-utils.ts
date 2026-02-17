@@ -1,6 +1,9 @@
 /**
  * Timeout and retry helpers for external API calls (Sheets, Razorpay, Resend).
  * Use timeouts to avoid hanging; use retries only for idempotent operations.
+ *
+ * API routes that catch errors should report them with Sentry.captureException(error)
+ * before returning a generic response to the client (see OPERATIONS.md).
  */
 
 const DEFAULT_TIMEOUT_MS = 15_000

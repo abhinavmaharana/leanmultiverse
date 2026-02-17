@@ -52,7 +52,8 @@ export default function CookieConsent() {
         <div
           role="dialog"
           aria-label="Cookie consent"
-          className="fixed bottom-0 left-0 right-0 z-[200] border-t border-white/10 bg-black/95 backdrop-blur-md p-4 shadow-lg"
+          className="fixed bottom-0 left-0 right-0 z-[2000] border-t border-white/10 bg-black/95 backdrop-blur-md p-4 shadow-lg isolate"
+          style={{ transform: 'translateZ(0)' }}
         >
           <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <p className="text-gray-300 text-sm flex-1">
@@ -70,14 +71,14 @@ export default function CookieConsent() {
               <button
                 type="button"
                 onClick={() => setStoredConsent('decline')}
-                className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-white/20 text-gray-300 hover:bg-white/10 transition text-sm font-medium"
+                className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-white/20 text-gray-300 hover:bg-white/10 transition text-sm font-medium cursor-pointer touch-manipulation"
               >
                 Decline
               </button>
               <button
                 type="button"
                 onClick={() => setStoredConsent('accept')}
-                className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition text-sm"
+                className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-yellow-400 text-black font-semibold hover:bg-yellow-500 transition text-sm cursor-pointer touch-manipulation"
               >
                 Accept
               </button>

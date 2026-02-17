@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminUser, getAdminByUsername, getAdminByEmail, hashPassword } from '@/lib/admin-auth'
+import { withAdminAuth } from '@/lib/admin-middleware'
 import { supabase } from '@/lib/db'
 
 /**
- * Create or update admin user
- * This is a utility endpoint to help set up admin users
+ * Create or update admin user (admin-only).
+ * Requires an authenticated admin via admin_token cookie.
  */
-export async function POST(request: NextRequest) {
+async function handler(request: NextRequest): Promise<NextResponse> {
   try {
     const body = await request.json()
     const { username, password, email } = body
@@ -65,4 +66,6 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+export const POST = withAdminAuth(handler)
 

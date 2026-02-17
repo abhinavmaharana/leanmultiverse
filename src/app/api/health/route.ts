@@ -1,11 +1,25 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/db'
+import { validateServerEnv } from '@/lib/env'
 
 /**
  * Lightweight health check for load balancers and monitoring.
  * Returns 200; optionally pings Supabase. Kept fast — no heavy checks.
+ * Query ?check=env: in production, validates required env vars; returns 503 if missing.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url)
+  if (searchParams.get('check') === 'env') {
+    const result = validateServerEnv()
+    if (!result.success) {
+      return NextResponse.json(
+        { status: 'error', message: 'Missing required env', missing: result.missing },
+        { status: 503 }
+      )
+    }
+    return NextResponse.json({ status: 'ok', env: 'valid' }, { status: 200 })
+  }
+
   try {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY

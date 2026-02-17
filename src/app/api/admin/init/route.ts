@@ -1,17 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { initializeDefaultAdmin, getAdminByUsername, hashPassword } from '@/lib/admin-auth'
 import { supabase } from '@/lib/db'
+import { requireAdminInitSecret } from '@/lib/production-guard'
 
 /**
  * Initialize default admin user
  * This endpoint should be called once to create the default admin user
  * It's safe to call multiple times - it won't create duplicate users
- * 
+ *
  * If force=true, it will reset the password even if user exists
+ * In production: set ADMIN_INIT_SECRET and send it in x-admin-init-secret header or body.adminInitSecret
  */
 export async function POST(request: NextRequest) {
+  const body = await request.json().catch(() => ({})) as Record<string, unknown>
+  const initGuard = requireAdminInitSecret(request, body)
+  if (initGuard) return initGuard
+
   try {
-    const body = await request.json().catch(() => ({}))
     const force = body.force === true
 
     const defaultUsername = process.env.ADMIN_DEFAULT_USERNAME || 'admin'
@@ -74,8 +79,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Also allow GET for convenience
-export async function GET() {
+// Also allow GET for convenience (production: requires x-admin-init-secret header)
+export async function GET(request: NextRequest) {
+  const initGuard = requireAdminInitSecret(request, {})
+  if (initGuard) return initGuard
+
   try {
     const defaultUsername = process.env.ADMIN_DEFAULT_USERNAME || 'admin'
     const defaultPassword = process.env.ADMIN_DEFAULT_PASSWORD

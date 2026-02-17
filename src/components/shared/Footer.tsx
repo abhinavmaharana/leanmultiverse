@@ -65,7 +65,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div>
               <Link href="/" className="cursor-pointer hover:opacity-80 transition-opacity duration-300">
-                <Image src="/logo.svg" alt="Lean Multiverse Logo" width={160} height={44} className="h-8 sm:h-10 md:h-11 w-auto mb-4 sm:mb-6" />
+                <Image src="/logo.svg" alt="Lean Multiverse" width={160} height={44} className="h-8 sm:h-10 md:h-11 w-auto mb-4 sm:mb-6" />
               </Link>
             </div>
             <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">

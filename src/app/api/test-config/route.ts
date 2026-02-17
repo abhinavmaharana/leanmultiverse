@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
+import { requireProductionDisabled } from '@/lib/production-guard'
 
 export async function GET() {
+  const disabled = requireProductionDisabled()
+  if (disabled) return disabled
+
   const config = {
     database: {
       supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ Configured' : '❌ Missing',

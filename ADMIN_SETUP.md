@@ -51,6 +51,8 @@ ADMIN_DEFAULT_PASSWORD=your-secure-password-here
 - `ADMIN_DEFAULT_PASSWORD`: Choose a strong password
 - Never commit `.env.local` to version control
 
+**Production:** To allow initializing or resetting the default admin in production, set `ADMIN_INIT_SECRET` and send it in the `x-admin-init-secret` header (or in the request body as `adminInitSecret`) when calling `POST /api/admin/init`. If `ADMIN_INIT_SECRET` is not set in production, the init endpoint returns 404.
+
 ## Step 3: Initialize Admin User
 
 After setting the environment variables, initialize the default admin user:

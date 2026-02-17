@@ -191,6 +191,11 @@ GOOGLE_ANALYTICS_ID=your-ga-id
 GOOGLE_VERIFICATION=your-verification-code
 ```
 
+### Monitoring
+- Use **`GET /api/health`** as the liveness/readiness endpoint for load balancers or uptime checks.
+- Optional: **`GET /api/health?check=env`** in production to validate required env vars (returns 503 if any are missing).
+- See [OPERATIONS.md](OPERATIONS.md) for health endpoint details and Sentry usage in API routes.
+
 ## 📊 Performance Features
 
 ### Core Web Vitals

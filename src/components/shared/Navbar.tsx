@@ -76,7 +76,7 @@ function Navbar() {
       <Link href="/" className="hover:opacity-80 transition">
         <Image
           src="/logo.svg"
-          alt="Lean Multiverse Logo"
+          alt="Lean Multiverse"
           width={160}
           height={44}
           priority

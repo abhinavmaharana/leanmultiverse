@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireProductionDisabled } from '@/lib/production-guard'
 
 export async function POST(request: NextRequest) {
+  const disabled = requireProductionDisabled()
+  if (disabled) return disabled
+
   try {
     const body = await request.json()
     const { to } = body
