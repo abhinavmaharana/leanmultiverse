@@ -59,14 +59,14 @@ async function handler(request: NextRequest) {
 
       if (existing) {
         existing.webinarCount += 1
-        existing.totalSpent += 49 // ₹49 per webinar
+        existing.totalSpent += 99 // ₹99 per webinar
         existing.bookings.push({
           id: booking.id,
           type: 'webinar',
           date: booking.selected_date,
           time: booking.selected_time,
           status: booking.payment_status,
-          amount: 49,
+          amount: 99,
         })
         if (!existing.purchaseTypes.includes('webinar')) {
           existing.purchaseTypes.push('webinar')
@@ -81,7 +81,7 @@ async function handler(request: NextRequest) {
           phone: booking.user_phone,
           webinarCount: 1,
           oneOnOneCount: 0,
-          totalSpent: 49,
+          totalSpent: 99,
           lastPurchaseDate: booking.created_at,
           purchaseTypes: ['webinar'],
           bookings: [
@@ -91,7 +91,7 @@ async function handler(request: NextRequest) {
               date: booking.selected_date,
               time: booking.selected_time,
               status: booking.payment_status,
-              amount: 49,
+              amount: 99,
             },
           ],
         })
