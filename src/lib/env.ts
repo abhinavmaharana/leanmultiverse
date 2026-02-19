@@ -39,10 +39,12 @@ export function validateServerEnv(): { success: true; env: ServerEnv } | { succe
   if (process.env.NODE_ENV !== 'production') {
     return { success: true, env }
   }
-  const missing = REQUIRED_IN_PRODUCTION.filter((key) => {
-    const v = env[key as keyof ServerEnv]
-    return v === undefined || v === ''
-  })
+  const missing: string[] = [
+    ...REQUIRED_IN_PRODUCTION.filter((key) => {
+      const v = env[key as keyof ServerEnv]
+      return v === undefined || v === ''
+    }),
+  ]
   if (env.NEXT_PUBLIC_SUPABASE_URL) {
     const hasKey = SUPABASE_KEYS.some((k) => env[k as keyof ServerEnv])
     if (!hasKey) missing.push('SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY')
