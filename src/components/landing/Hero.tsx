@@ -50,23 +50,6 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center">
-            <div className="relative group w-full sm:w-auto">
-              {!isMobile && (
-                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
-              )}
-              <Button
-                className={`relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-black rounded-full px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg font-bold transition-all duration-300 border-2 border-yellow-400/30 w-full sm:w-auto ${isMobile ? 'shadow-lg' : 'shadow-2xl hover:shadow-yellow-400/50 hover:from-yellow-500 hover:to-yellow-600'}`}
-                data-cursor-hover
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  Explore Courses
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </span>
-              </Button>
-            </div>
-
             {SHOW_WEBINAR_CTA && (
               <div className="relative group w-full sm:w-auto">
                 {!isMobile && (

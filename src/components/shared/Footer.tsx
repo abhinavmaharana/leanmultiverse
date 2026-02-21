@@ -33,7 +33,6 @@ const SOCIAL_LINKS = [
 
 const QUICK_LINKS = [
   { href: "#home", text: "Home" },
-  { href: "#courses", text: "Courses" },
   { href: "#stories", text: "Success Stories" },
   { href: "/services", text: "Services" },
   { href: "#contact", text: "Contact" },
@@ -41,7 +40,6 @@ const QUICK_LINKS = [
 ]
 
 const PROGRAM_LINKS = [
-  { href: "#courses", text: "Courses" },
   { href: "/book-webinar", text: "Book Webinar" },
 ]
 

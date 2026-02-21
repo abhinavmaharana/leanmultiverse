@@ -8,11 +8,7 @@ import Navbar from '../components/shared/Navbar'
 import Hero from '../components/landing/Hero'
 
 // Lazy load heavy components - will be loaded via intersection observer
-// Removed ssr: false for Server Components compatibility - intersection observer handles client-side lazy loading
-const Courses = dynamic(() => import('@/components/landing/Courses'), {
-  loading: () => <div className="h-96 bg-black animate-pulse" />
-})
-
+// Courses section hidden for now
 const SuccessStories = dynamic(() => import('@/components/landing/SuccessStories'), {
   loading: () => <div className="h-96 bg-black animate-pulse" />
 })
@@ -94,11 +90,9 @@ export default function LandingPage() {
           <SuccessStories />
         </LazySection>
         
-        {/* Courses section hidden - will add new courses later */}
-        <LazySection id="courses">
-          <Courses />
-        </LazySection>
-        
+        {/* Courses section hidden for now */}
+        {/* <LazySection id="courses"><Courses /></LazySection> */}
+
         <LazySection id="contact">
           <ContactSupport />
         </LazySection>

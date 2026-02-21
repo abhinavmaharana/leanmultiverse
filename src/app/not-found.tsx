@@ -22,7 +22,7 @@ export default function NotFound() {
             variant="outline"
             className="border-white/20 bg-white/10 text-white hover:bg-white/20 rounded-full px-8 py-6 font-semibold"
           >
-            <Link href="/courses">Browse Courses</Link>
+            <Link href="/services">Services</Link>
           </Button>
         </div>
         <p className="text-gray-500 text-sm mt-8">
