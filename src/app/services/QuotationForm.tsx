@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { validateEmail, validateIndianPhone, validatePhone } from "@/lib/validators"
 import { trackMetaEvent } from "@/lib/meta-pixel"
+import { trackGA4Event } from "@/lib/ga4"
+import { getAttributionForEvents } from "@/lib/attribution"
 
 const countries = [
   { code: "+91", name: "India", flag: "🇮🇳" },
@@ -168,7 +170,9 @@ export default function QuotationForm() {
         throw new Error("Failed to submit quotation request")
       }
 
-      trackMetaEvent("Lead")
+      const attribution = getAttributionForEvents()
+      trackMetaEvent("Lead", attribution)
+      trackGA4Event("generate_lead", attribution)
       // Show success alert immediately
       setShowSuccessAlert(true)
       setIsSubmitted(true)

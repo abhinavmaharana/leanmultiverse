@@ -8,6 +8,8 @@ import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
 import { getZoomLinkForDateFree } from '@/lib/webinar-config'
 import { trackMetaEvent } from '@/lib/meta-pixel'
+import { trackGA4Event } from '@/lib/ga4'
+import { getAttributionForEvents } from '@/lib/attribution'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
@@ -15,8 +17,11 @@ function SuccessContent() {
   const dateStr = searchParams.get('date')
 
   useEffect(() => {
-    trackMetaEvent('Schedule')
-    trackMetaEvent('Lead')
+    const attribution = getAttributionForEvents()
+    trackMetaEvent('Schedule', attribution)
+    trackMetaEvent('Lead', attribution)
+    trackGA4Event('schedule', attribution)
+    trackGA4Event('generate_lead', attribution)
   }, [])
 
   useEffect(() => {

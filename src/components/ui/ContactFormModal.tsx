@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { validateEmail, validateIndianPhone, validatePhone } from "@/lib/validators"
 import { trackMetaEvent } from "@/lib/meta-pixel"
+import { trackGA4Event } from "@/lib/ga4"
+import { getAttributionForEvents } from "@/lib/attribution"
 
 interface ContactFormModalProps {
   isOpen: boolean
@@ -127,7 +129,9 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
         throw new Error("Failed to submit form")
       }
 
-      trackMetaEvent("Lead")
+      const attribution = getAttributionForEvents()
+      trackMetaEvent("Lead", attribution)
+      trackGA4Event("generate_lead", attribution)
       setIsSubmitted(true)
       
       // Call onSubmit callback if provided

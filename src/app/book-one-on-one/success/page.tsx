@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
 import { trackMetaEvent } from '@/lib/meta-pixel'
+import { trackGA4Event } from '@/lib/ga4'
+import { getAttributionForEvents } from '@/lib/attribution'
 
 // Time slot labels
 const TIME_SLOTS: Record<string, string> = {
@@ -29,8 +31,12 @@ function SuccessContent() {
   const timeStr = searchParams.get('time')
 
   useEffect(() => {
-    trackMetaEvent('Purchase', { value: 1000, currency: 'INR' })
-    trackMetaEvent('Lead')
+    const attribution = getAttributionForEvents()
+    const purchaseParams = { value: 1000, currency: 'INR', ...attribution }
+    trackMetaEvent('Purchase', purchaseParams)
+    trackMetaEvent('Lead', attribution)
+    trackGA4Event('purchase', purchaseParams)
+    trackGA4Event('generate_lead', attribution)
   }, [])
 
   useEffect(() => {

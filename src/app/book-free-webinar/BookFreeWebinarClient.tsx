@@ -16,6 +16,8 @@ import {
   WEBINAR_TIME_SLOTS as TIME_SLOTS,
 } from '@/lib/webinar-config'
 import { trackMetaEvent } from '@/lib/meta-pixel'
+import { trackGA4Event } from '@/lib/ga4'
+import { getAttributionForEvents } from '@/lib/attribution'
 
 const bookingSchema = z.object({
   user_name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -98,7 +100,9 @@ export default function BookFreeWebinarClient() {
         throw new Error(errorData.error || 'Registration failed')
       }
 
-      trackMetaEvent('Lead')
+      const attribution = getAttributionForEvents()
+      trackMetaEvent('Lead', attribution)
+      trackGA4Event('generate_lead', attribution)
 
       const successUrl = new URL('/book-free-webinar/success', window.location.origin)
       successUrl.searchParams.set('date', data.selected_date)

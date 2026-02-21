@@ -6,6 +6,7 @@ import DynamicCustomCursor from "@/components/DynamicCustomCursor"
 import DeferredPerfectChatbot from "@/components/DeferredPerfectChatbot"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import CookieConsent from "@/components/CookieConsent"
+import AttributionCapture from "@/components/AttributionCapture"
 import "./globals.css"
 
 // Load Raleway font with optimization - reduced weights for better performance
@@ -217,6 +218,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
         ) : null}
       </head>
       <body className={`${raleway.variable} font-sans antialiased bg-black`}>
+        <AttributionCapture />
         <ErrorBoundary>
           {/* LoadingProvider disabled; re-enable when full-page loading screen is desired */}
           {/* <LoadingProvider> */}

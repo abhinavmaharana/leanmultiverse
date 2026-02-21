@@ -9,6 +9,8 @@ import { format } from 'date-fns'
 
 import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
 import { trackMetaEvent } from '@/lib/meta-pixel'
+import { trackGA4Event } from '@/lib/ga4'
+import { getAttributionForEvents } from '@/lib/attribution'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
@@ -19,8 +21,12 @@ function SuccessContent() {
   const dateStr = searchParams.get('date')
 
   useEffect(() => {
-    trackMetaEvent('Purchase', { value: 99, currency: 'INR' })
-    trackMetaEvent('Lead')
+    const attribution = getAttributionForEvents()
+    const purchaseParams = { value: 99, currency: 'INR', ...attribution }
+    trackMetaEvent('Purchase', purchaseParams)
+    trackMetaEvent('Lead', attribution)
+    trackGA4Event('purchase', purchaseParams)
+    trackGA4Event('generate_lead', attribution)
   }, [])
 
   useEffect(() => {
