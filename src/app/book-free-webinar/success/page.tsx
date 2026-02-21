@@ -16,6 +16,7 @@ function SuccessContent() {
 
   useEffect(() => {
     trackMetaEvent('Schedule')
+    trackMetaEvent('Lead')
   }, [])
 
   useEffect(() => {

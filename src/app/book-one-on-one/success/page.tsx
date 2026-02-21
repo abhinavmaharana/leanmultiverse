@@ -30,6 +30,7 @@ function SuccessContent() {
 
   useEffect(() => {
     trackMetaEvent('Purchase', { value: 1000, currency: 'INR' })
+    trackMetaEvent('Lead')
   }, [])
 
   useEffect(() => {
