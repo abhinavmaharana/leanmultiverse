@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Raleway } from "next/font/google"
+import Script from "next/script"
 import DeferredLenisWrapper from "@/components/providers/DeferredLenisWrapper"
 import DynamicCustomCursor from "@/components/DynamicCustomCursor"
 import DeferredPerfectChatbot from "@/components/DeferredPerfectChatbot"
@@ -193,14 +194,12 @@ fbq('track', 'PageView');
             </noscript>
           </>
         ) : null}
-        {/* Google tag (gtag.js) - GA4 */}
+        {/* Google tag (gtag.js) - GA4; next/script so it loads and verifies reliably */}
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
           <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-            />
-            <script
+            <Script
+              id="gtag-init"
+              strategy="beforeInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
 window.dataLayer = window.dataLayer || [];
@@ -209,6 +208,10 @@ gtag('js', new Date());
 gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
 `,
               }}
+            />
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
             />
           </>
         ) : null}
