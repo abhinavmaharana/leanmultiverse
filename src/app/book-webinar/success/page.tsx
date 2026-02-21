@@ -8,14 +8,19 @@ import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
 
 import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
+import { trackMetaEvent } from '@/lib/meta-pixel'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
   const [zoomLink, setZoomLink] = useState<string | null>(null)
-  
+
   const paymentId = searchParams.get('payment_id')
   const orderId = searchParams.get('order_id')
   const dateStr = searchParams.get('date')
+
+  useEffect(() => {
+    trackMetaEvent('Purchase', { value: 99, currency: 'INR' })
+  }, [])
 
   useEffect(() => {
     if (dateStr) {

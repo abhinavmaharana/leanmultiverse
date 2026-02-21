@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { validateEmail, validateIndianPhone, validatePhone } from "@/lib/validators"
+import { trackMetaEvent } from "@/lib/meta-pixel"
 
 interface ContactFormModalProps {
   isOpen: boolean
@@ -126,6 +127,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
         throw new Error("Failed to submit form")
       }
 
+      trackMetaEvent("Lead")
       setIsSubmitted(true)
       
       // Call onSubmit callback if provided

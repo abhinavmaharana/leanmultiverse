@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { format, addDays, isWeekend, startOfWeek, addWeeks } from 'date-fns'
 import Navbar from '@/components/shared/Navbar'
+import { trackMetaEvent } from '@/lib/meta-pixel'
 
 // Form validation schema
 const bookingSchema = z.object({
@@ -159,6 +160,13 @@ export default function BookOneOnOneClient() {
 
   // Check if form is ready for submission
   const isFormReady = selectedDate && selectedTime && userName && userEmail && userPhone && isValid
+
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_name: 'One-on-One Session Booking',
+      content_type: 'product',
+    })
+  }, [])
 
   // Preload Razorpay script on component mount for faster checkout
   useEffect(() => {
@@ -320,6 +328,8 @@ export default function BookOneOnOneClient() {
 
       // Wait for Razorpay to be ready
       await waitForRazorpay()
+
+      trackMetaEvent('InitiateCheckout')
 
       // Initialize Razorpay checkout
       const Razorpay = (window as typeof window & { Razorpay: new (options: unknown) => { open: () => void } }).Razorpay

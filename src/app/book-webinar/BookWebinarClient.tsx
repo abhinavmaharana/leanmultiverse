@@ -15,6 +15,7 @@ import {
   getZoomLinkForDatePaid,
   WEBINAR_TIME_SLOTS as TIME_SLOTS,
 } from '@/lib/webinar-config'
+import { trackMetaEvent } from '@/lib/meta-pixel'
 
 // Form validation schema
 const bookingSchema = z.object({
@@ -98,6 +99,14 @@ export default function BookWebinarClient() {
     return () => {
       // Cleanup: don't remove script on unmount as it might be used by other components
     }
+  }, [])
+
+  // Meta pixel: ViewContent for paid webinar booking page
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_name: 'Paid Webinar Booking',
+      content_type: 'product',
+    })
   }, [])
 
   // Auto-select time if only one option is available
@@ -212,6 +221,8 @@ export default function BookWebinarClient() {
 
       // Wait for Razorpay to be ready
       await waitForRazorpay()
+
+      trackMetaEvent('InitiateCheckout')
 
       // Initialize Razorpay checkout
       const Razorpay = (window as typeof window & { Razorpay: new (options: unknown) => { open: () => void } }).Razorpay

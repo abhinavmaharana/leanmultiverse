@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
+import { trackMetaEvent } from '@/lib/meta-pixel'
 
 // Time slot labels
 const TIME_SLOTS: Record<string, string> = {
@@ -26,6 +27,10 @@ function SuccessContent() {
   const orderId = searchParams.get('order_id')
   const dateStr = searchParams.get('date')
   const timeStr = searchParams.get('time')
+
+  useEffect(() => {
+    trackMetaEvent('Purchase', { value: 1000, currency: 'INR' })
+  }, [])
 
   useEffect(() => {
     // Default Outlook booking link for one-on-one sessions

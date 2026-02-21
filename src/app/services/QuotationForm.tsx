@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { validateEmail, validateIndianPhone, validatePhone } from "@/lib/validators"
+import { trackMetaEvent } from "@/lib/meta-pixel"
 
 const countries = [
   { code: "+91", name: "India", flag: "🇮🇳" },
@@ -167,6 +168,7 @@ export default function QuotationForm() {
         throw new Error("Failed to submit quotation request")
       }
 
+      trackMetaEvent("Lead")
       // Show success alert immediately
       setShowSuccessAlert(true)
       setIsSubmitted(true)

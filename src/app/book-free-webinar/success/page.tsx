@@ -7,11 +7,16 @@ import { Button } from '@/components/ui/button'
 import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
 import { getZoomLinkForDateFree } from '@/lib/webinar-config'
+import { trackMetaEvent } from '@/lib/meta-pixel'
 
 function SuccessContent() {
   const searchParams = useSearchParams()
   const [zoomLink, setZoomLink] = useState<string | null>(null)
   const dateStr = searchParams.get('date')
+
+  useEffect(() => {
+    trackMetaEvent('Schedule')
+  }, [])
 
   useEffect(() => {
     if (dateStr) {
