@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { user_name, user_email, user_phone, selected_date, selected_time, zoom_registration_link } = body
+    const { user_name, user_email, user_phone, hear_from, selected_date, selected_time, zoom_registration_link } = body
 
     // Validate required fields
     if (!user_name || !user_email || !user_phone || !selected_date || !selected_time) {
@@ -48,13 +48,14 @@ export async function POST(request: NextRequest) {
       () =>
         withTimeout(
           razorpay.orders.create({
-            amount: 11682,
+            amount: 9900, // ₹99 inclusive of GST
             currency: 'INR',
             receipt: `webinar_${Date.now()}`,
             notes: {
               user_name,
               user_email,
               user_phone: cleanPhone,
+              ...(hear_from && { hear_from: String(hear_from) }),
               selected_date,
               selected_time,
               zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK,

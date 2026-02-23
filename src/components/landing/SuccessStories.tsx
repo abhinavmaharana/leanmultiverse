@@ -51,7 +51,8 @@ const getDriveImageUrl = (driveUrl: string): string => {
 // Placeholder image for when Google Drive images fail to load
 const PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23fbbf24'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='14' fill='%23000'%3E%3C/text%3E%3C/svg%3E"
 
-const testimonials: Testimonial[] = [
+export type { Testimonial }
+export const testimonials: Testimonial[] = [
   {
     id: "1",
     name: "Saurabh Gurav",

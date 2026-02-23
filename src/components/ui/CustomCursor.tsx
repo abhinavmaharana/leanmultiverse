@@ -1,8 +1,11 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
 import { useHasFinePointer } from "@/hooks/useHasFinePointer"
+
+const cursorStyle = {
+  transition: "transform 0.15s ease-out, opacity 0.2s ease-out",
+} as const
 
 export default function CustomCursor() {
   const hasFinePointer = useHasFinePointer()
@@ -49,67 +52,54 @@ export default function CustomCursor() {
 
   if (!hasFinePointer) return null
 
+  const mainScale = isHovering ? 1.5 : 1
+  const ringScale = isHovering ? 2 : 1
+  const ringOpacity = isHovering ? 0.8 : 0.4
+  const clickScale = isClicking ? 1.5 : 0
+  const clickOpacity = isClicking ? 1 : 0
+
   return (
     <>
       {/* Main cursor */}
-      <motion.div
+      <div
         className="fixed top-0 left-0 w-4 h-4 bg-yellow-400 rounded-full pointer-events-none z-[9999] mix-blend-difference"
-        animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-          scale: isHovering ? 1.5 : 1,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28
+        style={{
+          ...cursorStyle,
+          transform: `translate(${mousePosition.x - 8}px, ${mousePosition.y - 8}px) scale(${mainScale})`,
         }}
       />
 
       {/* Cursor ring */}
-      <motion.div
+      <div
         className="fixed top-0 left-0 w-12 h-12 border-2 border-yellow-400/30 rounded-full pointer-events-none z-[9998]"
-        animate={{
-          x: mousePosition.x - 24,
-          y: mousePosition.y - 24,
-          scale: isHovering ? 2 : 1,
-          opacity: isHovering ? 0.8 : 0.4,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 150,
-          damping: 20
+        style={{
+          ...cursorStyle,
+          transform: `translate(${mousePosition.x - 24}px, ${mousePosition.y - 24}px) scale(${ringScale})`,
+          opacity: ringOpacity,
         }}
       />
 
       {/* Click effect */}
-      <motion.div
+      <div
         className="fixed top-0 left-0 w-20 h-20 border border-yellow-400/20 rounded-full pointer-events-none z-[9997]"
-        animate={{
-          x: mousePosition.x - 40,
-          y: mousePosition.y - 40,
-          scale: isClicking ? 1.5 : 0,
-          opacity: isClicking ? 1 : 0,
-        }}
-        transition={{
-          duration: 0.2
+        style={{
+          transition: "transform 0.2s ease-out, opacity 0.2s ease-out",
+          transform: `translate(${mousePosition.x - 40}px, ${mousePosition.y - 40}px) scale(${clickScale})`,
+          opacity: clickOpacity,
         }}
       />
 
       {/* Hover text */}
       {isHovering && (
-        <motion.div
+        <div
           className="fixed top-0 left-0 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-medium pointer-events-none z-[9999]"
-          animate={{
-            x: mousePosition.x + 20,
-            y: mousePosition.y - 10,
-            opacity: 1,
+          style={{
+            transform: `translate(${mousePosition.x + 20}px, ${mousePosition.y - 10}px)`,
+            transition: "opacity 0.2s ease-out",
           }}
-          initial={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
         >
           Click me
-        </motion.div>
+        </div>
       )}
     </>
   )

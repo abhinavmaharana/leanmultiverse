@@ -172,7 +172,7 @@
 }
 
 @media (max-width: 768px) {
-  body {
+  html {
     scroll-behavior: auto;
   }
 
