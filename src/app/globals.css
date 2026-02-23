@@ -1,11 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Smooth scrolling for anchor links and scrollIntoView */
-html {
-  scroll-behavior: smooth;
-}
-
 /* FlowingMenu marquee animation */
 @keyframes marquee {
   from { transform: translateX(0%); }
@@ -177,7 +172,7 @@ html {
 }
 
 @media (max-width: 768px) {
-  body {
+  html {
     scroll-behavior: auto;
   }
 
