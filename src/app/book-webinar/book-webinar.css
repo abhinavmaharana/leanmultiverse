@@ -6,6 +6,7 @@
   background-color: #070709;
   color: #fff;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 .book-webinar-page::before {
@@ -788,6 +789,29 @@
   gap: 1.25rem 2rem;
 }
 
+/* Horizontal scrolling logos (above form) */
+.book-webinar-trusted-row-horizontal {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-bottom: 0.5rem;
+}
+
+.book-webinar-trusted-row-horizontal::-webkit-scrollbar {
+  height: 6px;
+}
+
+.book-webinar-trusted-row-horizontal::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.book-webinar-trusted-row-horizontal::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
 .book-webinar-trusted-company {
   font-size: 1rem;
   font-weight: 500;
@@ -804,6 +828,22 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+}
+
+/* Testimonials marquee */
+.book-webinar-testimonials-marquee {
+  overflow: hidden;
+  width: 100%;
+}
+
+.book-webinar-testimonial-card {
+  min-height: 220px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.book-webinar-testimonial-card:hover {
+  border-color: rgba(198, 157, 68, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .book-webinar-trusted-accenture::before {
@@ -920,6 +960,15 @@
   color: #d1d5db;
   margin: 0;
   text-align: center;
+}
+
+/* Form + What You'll Learn two-column section */
+.book-webinar-form-and-learn {
+  scroll-behavior: smooth;
+}
+
+.book-webinar-learn-panel {
+  will-change: auto;
 }
 
 /* Form section */

@@ -15,6 +15,7 @@ import {
   WEBINAR_TIME_SLOTS as TIME_SLOTS,
 } from '@/lib/webinar-config'
 import { trackMetaEvent } from '@/lib/meta-pixel'
+import Marquee from 'react-fast-marquee'
 import { testimonials as landingTestimonials } from '@/components/landing/SuccessStories'
 
 const HEAR_FROM_OPTIONS = [
@@ -64,9 +65,9 @@ export default function BookWebinarClient() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
-  const [testimonialIndex, setTestimonialIndex] = useState(0)
   const [logoErrors, setLogoErrors] = useState<Record<number, boolean>>({})
   const [countdown, setCountdown] = useState<{ d: number; h: number; m: number; s: number } | null>(null)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const scriptLoadedRef = useRef(false)
   const formSectionRef = useRef<HTMLDivElement>(null)
   const tedxSectionRef = useRef<HTMLDivElement>(null)
@@ -96,6 +97,15 @@ export default function BookWebinarClient() {
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setPrefersReducedMotion(mq.matches)
+    const handler = () => setPrefersReducedMotion(mq.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   }, [])
 
   const selectedDate = watch('selected_date')
@@ -153,6 +163,10 @@ export default function BookWebinarClient() {
     const tick = () => {
       const now = Date.now()
       const diff = Math.max(0, countdownTarget.getTime() - now)
+      if (diff === 0) {
+        setCountdown(null)
+        return
+      }
       const d = Math.floor(diff / (1000 * 60 * 60 * 24))
       const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
       const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
@@ -361,39 +375,6 @@ export default function BookWebinarClient() {
             </div>
           </section>
 
-          {/* Trusted by */}
-          <section className="book-webinar-trusted">
-            <p className="book-webinar-trusted-headline">
-              Professionals from India’s top companies trust Lean Multiverse.
-            </p>
-            <div className="book-webinar-trusted-row flex flex-wrap justify-center items-center gap-6 sm:gap-10">
-              {mounted && TRUSTED_COMPANIES.map((c, index) => (
-                <a
-                  key={`trusted-${index}-${c.domain}`}
-                  href={`https://${c.domain}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center min-w-[100px] h-9 px-4 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm font-medium hover:border-amber-500/40 hover:text-amber-400/90 transition-all duration-200"
-                  aria-label={c.name}
-                >
-                  {logoErrors[index] ? (
-                    <span>{c.name}</span>
-                  ) : (
-                    <Image
-                      src={`https://logo.clearbit.com/${c.domain}`}
-                      alt={`${c.name} logo`}
-                      width={120}
-                      height={32}
-                      className="h-6 w-auto object-contain opacity-90 hover:opacity-100 max-h-8"
-                      unoptimized
-                      onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
-                    />
-                  )}
-                </a>
-              ))}
-            </div>
-          </section>
-
           {/* TEDx + Value: two columns */}
           <section ref={tedxSectionRef} className="book-webinar-value-guarantee">
             <div className="book-webinar-value-left">
@@ -409,14 +390,15 @@ export default function BookWebinarClient() {
                   </li>
                 ))}
               </ul>
-              <button
-                type="button"
-                onClick={scrollToForm}
+              <a
+                href={tedxVideoId ? `https://www.youtube.com/watch?v=${tedxVideoId}` : '#'}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="book-webinar-cta book-webinar-cta-primary mt-4"
               >
                 <span className="book-webinar-cta-icon" aria-hidden>▶</span>
-                Watch Full Webinar
-              </button>
+                Watch TEDx talk
+              </a>
             </div>
             <div className="book-webinar-value-right">
               <div className="book-webinar-video-wrap w-full">
@@ -431,95 +413,102 @@ export default function BookWebinarClient() {
                 )}
               </div>
               <p className="text-gray-400 text-sm mt-3">300K+ Views</p>
-              <button
-                type="button"
-                onClick={scrollToForm}
+              <a
+                href={tedxVideoId ? `https://www.youtube.com/watch?v=${tedxVideoId}` : '#'}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="book-webinar-cta book-webinar-cta-primary mt-2"
               >
                 <span className="book-webinar-cta-icon" aria-hidden>▶</span>
-                Watch Full Webinar
-              </button>
+                Watch TEDx talk
+              </a>
             </div>
           </section>
 
-          {/* Testimonials carousel (client-only to avoid hydration mismatch with array length) */}
-          <section className="mb-20 scroll-mt-24">
-            <h2 className="book-webinar-section-label text-gray-400 mb-6">What participants say</h2>
-            <div className="relative max-w-3xl mx-auto">
-              {mounted ? (
-                <>
-                  <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-6 sm:p-10 text-left min-h-[240px] flex flex-col shadow-xl shadow-black/20 overflow-hidden">
-                    <div className="absolute right-4 top-4 flex gap-0.5" aria-hidden>
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <span key={star} className="text-amber-400/70 text-sm">★</span>
-                      ))}
-                    </div>
-                    <span className="text-amber-400/50 text-5xl font-serif leading-none select-none block" aria-hidden>&ldquo;</span>
-                    <p className="text-gray-200 text-sm sm:text-base leading-[1.7] -mt-8 mb-6 flex-grow pl-1 pr-8">
-                      {landingTestimonials[testimonialIndex]?.quote}
-                    </p>
-                    <div className="flex items-center justify-between gap-4 flex-wrap border-t border-white/10 pt-5">
-                      <div>
-                        <p className="text-white font-semibold text-base">{landingTestimonials[testimonialIndex]?.name}</p>
-                        <p className="text-gray-400 text-xs mt-0.5">
-                          {landingTestimonials[testimonialIndex]?.role}
-                          {landingTestimonials[testimonialIndex]?.company ? ` · ${landingTestimonials[testimonialIndex].company}` : ''}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={() => setTestimonialIndex((i) => (i === 0 ? landingTestimonials.length - 1 : i - 1))}
-                          className="w-11 h-11 rounded-full border border-white/20 bg-white/5 text-white flex items-center justify-center hover:bg-amber-500/20 hover:border-amber-500/40 transition-all duration-200 text-xl font-light"
-                          aria-label="Previous testimonial"
-                        >
-                          ‹
-                        </button>
-                        <span className="text-gray-500 text-xs tabular-nums min-w-[3ch] text-center">
-                          {testimonialIndex + 1} / {landingTestimonials.length}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setTestimonialIndex((i) => (i === landingTestimonials.length - 1 ? 0 : i + 1))}
-                          className="w-11 h-11 rounded-full border border-white/20 bg-white/5 text-white flex items-center justify-center hover:bg-amber-500/20 hover:border-amber-500/40 transition-all duration-200 text-xl font-light"
-                          aria-label="Next testimonial"
-                        >
-                          ›
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-center gap-2 mt-6 flex-wrap">
-                    {landingTestimonials.map((t, i) => (
-                      <button
-                        key={`testimonial-dot-${t.id}-${i}`}
-                        type="button"
-                        onClick={() => setTestimonialIndex(i)}
-                        className={`h-2 rounded-full transition-all duration-200 ${i === testimonialIndex ? 'w-6 bg-amber-400' : 'w-2 bg-white/30 hover:bg-white/50'}`}
-                        aria-label={`Go to testimonial ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <div className="bg-[#1e1f28] border border-white/10 rounded-2xl p-6 sm:p-10 text-left min-h-[240px] flex flex-col items-center justify-center" aria-hidden>
-                  <p className="text-gray-500 text-sm">Loading...</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Booking form */}
-          <section ref={formSectionRef} className="max-w-2xl mx-auto scroll-mt-24">
-          <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-6 sm:p-10 shadow-xl shadow-black/20 overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
-            <div className="pl-1">
-            <h2 className="text-xl sm:text-2xl font-semibold text-white mb-1">Reserve your webinar seat</h2>
-            <p className="text-gray-400 text-sm mb-6">
-              {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST
+          {/* Company logos: marquee above form */}
+          <section className="book-webinar-trusted mb-8 overflow-hidden">
+            <p className="book-webinar-trusted-headline mb-4">
+              Professionals from India’s top companies trust Lean Multiverse.
             </p>
+            {mounted && (
+              prefersReducedMotion ? (
+                <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 py-2">
+                  {TRUSTED_COMPANIES.map((c, index) => (
+                    <a
+                      key={`trusted-${index}-${c.domain}`}
+                      href={`https://${c.domain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center shrink-0 min-w-[100px] h-9 px-4 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm font-medium hover:border-amber-500/40 hover:text-amber-400/90 transition-all duration-200"
+                      aria-label={c.name}
+                    >
+                      {logoErrors[index] ? (
+                        <span>{c.name}</span>
+                      ) : (
+                        <Image
+                          src={`https://logo.clearbit.com/${c.domain}`}
+                          alt={`${c.name} logo`}
+                          width={120}
+                          height={32}
+                          className="h-6 w-auto object-contain opacity-90 hover:opacity-100 max-h-8"
+                          unoptimized
+                          onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
+                        />
+                      )}
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <Marquee speed={40} pauseOnHover gradient={false} className="py-2">
+                  {[...TRUSTED_COMPANIES, ...TRUSTED_COMPANIES].map((c, i) => {
+                    const index = i % TRUSTED_COMPANIES.length
+                    return (
+                      <a
+                        key={`trusted-${i}-${c.domain}`}
+                        href={`https://${c.domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center shrink-0 min-w-[100px] h-9 px-4 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm font-medium hover:border-amber-500/40 hover:text-amber-400/90 transition-all duration-200 mx-4"
+                        aria-label={c.name}
+                      >
+                        {logoErrors[index] ? (
+                          <span>{c.name}</span>
+                        ) : (
+                          <Image
+                            src={`https://logo.clearbit.com/${c.domain}`}
+                            alt={`${c.name} logo`}
+                            width={120}
+                            height={32}
+                            className="h-6 w-auto object-contain opacity-90 hover:opacity-100 max-h-8"
+                            unoptimized
+                            onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
+                          />
+                        )}
+                      </a>
+                    )
+                  })}
+                </Marquee>
+              )
+            )}
+          </section>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Form + What You'll Learn: two columns */}
+          <section
+            ref={formSectionRef}
+            className="book-webinar-form-and-learn scroll-mt-24 mb-16"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+              {/* Form column: first on mobile, right on desktop */}
+              <div className="lg:col-start-2">
+                <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-6 sm:p-10 shadow-xl shadow-black/20 overflow-hidden transition-all duration-300 hover:border-white/15">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
+                  <div className="pl-1">
+                    <h2 className="text-xl sm:text-2xl font-semibold text-white mb-1">Reserve your webinar seat</h2>
+                    <p className="text-gray-400 text-sm mb-6">
+                      {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST
+                    </p>
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <input type="hidden" {...register('selected_date')} />
               <input type="hidden" {...register('selected_time')} />
 
@@ -574,6 +563,8 @@ export default function BookWebinarClient() {
                   type="tel"
                   {...register('user_phone')}
                   placeholder="9876543210"
+                  inputMode="numeric"
+                  autoComplete="tel"
                   className="mt-1.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-4 py-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-shadow"
                 />
                 {errors.user_phone && <p className="text-red-400 text-xs mt-1">{errors.user_phone.message}</p>}
@@ -599,9 +590,9 @@ export default function BookWebinarClient() {
               </div>
 
               {error && (
-                <p className="text-red-400 text-sm bg-red-400/10 border border-red-400/30 rounded-lg px-3 py-2">
-                  {error}
-                </p>
+                <div role="alert" className="rounded-lg px-3 py-2 bg-red-400/10 border border-red-400/30">
+                  <p className="text-red-400 text-sm">{error}</p>
+                </div>
               )}
 
               <div className="pt-6 flex flex-col gap-3">
@@ -615,18 +606,104 @@ export default function BookWebinarClient() {
                 >
                   {isSubmitting ? 'Opening payment...' : 'Reserve my seat'}
                 </button>
+                {!isFormReady && !isSubmitting && (
+                  <p className="text-center text-gray-500 text-xs">Fill all fields to continue</p>
+                )}
               </div>
-            </form>
-            </div>
-          </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
 
-          <p className="text-center text-gray-500 text-xs mt-6">
+              {/* What You'll Learn: second on mobile, left on desktop */}
+              <div className="lg:col-start-1 lg:row-start-1">
+                <div className="book-webinar-learn-panel rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28]/80 to-[#18191f]/80 p-6 sm:p-8 transition-all duration-300 hover:border-white/15 sticky lg:top-28">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-[#C69D44] mb-6">What You&apos;ll Learn</h2>
+                  <ul className="space-y-4">
+                    {VALUE_BULLETS.map((text, i) => (
+                      <li
+                        key={i}
+                        className="book-webinar-learn-item flex gap-4 items-start p-4 rounded-xl bg-white/[0.04] border border-white/5 transition-all duration-200 hover:border-amber-500/20 hover:bg-white/[0.06]"
+                      >
+                        <span className="shrink-0 w-8 h-8 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center text-sm font-bold" aria-hidden>✓</span>
+                        <span className="text-gray-200 text-sm sm:text-base leading-relaxed">{text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-center text-gray-500 text-xs mt-8">
             Professionals from Deloitte, JPMorgan, Accenture, Infosys, TCS and other top companies have joined our programs.
           </p>
 
           <p className="text-center text-gray-600 text-xs mt-4">
             After payment you’ll receive the Zoom link by email. All times in IST.
           </p>
+          </section>
+
+          {/* Testimonials marquee (below form) */}
+          <section className="mb-20 scroll-mt-24 mt-16 overflow-hidden">
+            <h2 className="book-webinar-section-label text-gray-400 mb-8">What participants say</h2>
+            {mounted && (
+              prefersReducedMotion ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                  {landingTestimonials.slice(0, 6).map((t, i) => (
+                    <div
+                      key={`${t.id}-${i}`}
+                      className="book-webinar-testimonial-card rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28] to-[#18191f] p-6 shadow-xl shadow-black/20 flex flex-col text-left"
+                    >
+                      <div className="flex gap-0.5 mb-4" aria-hidden>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span key={star} className="text-amber-400/80 text-sm">★</span>
+                        ))}
+                      </div>
+                      <p className="text-gray-200 text-sm leading-[1.7] flex-grow line-clamp-5 mb-5">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                      <div className="border-t border-white/10 pt-4">
+                        <p className="text-white font-semibold text-base">{t.name}</p>
+                        <p className="text-gray-400 text-xs mt-0.5">
+                          {t.role}{t.company ? ` · ${t.company}` : ''}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="book-webinar-testimonials-marquee">
+                  <Marquee
+                    speed={30}
+                    pauseOnHover
+                    gradient={false}
+                    className="py-2"
+                  >
+                    {[...landingTestimonials, ...landingTestimonials].map((t, i) => (
+                      <div
+                        key={`${t.id}-${i}`}
+                        className="book-webinar-testimonial-card mx-4 flex-shrink-0 w-[340px] sm:w-[380px] rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28] to-[#18191f] p-6 shadow-xl shadow-black/20 flex flex-col text-left"
+                      >
+                        <div className="flex gap-0.5 mb-4" aria-hidden>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <span key={star} className="text-amber-400/80 text-sm">★</span>
+                          ))}
+                        </div>
+                        <p className="text-gray-200 text-sm leading-[1.7] flex-grow line-clamp-5 mb-5">
+                          &ldquo;{t.quote}&rdquo;
+                        </p>
+                        <div className="border-t border-white/10 pt-4">
+                          <p className="text-white font-semibold text-base">{t.name}</p>
+                          <p className="text-gray-400 text-xs mt-0.5">
+                            {t.role}{t.company ? ` · ${t.company}` : ''}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </Marquee>
+                </div>
+              )
+            )}
           </section>
         </div>
 
