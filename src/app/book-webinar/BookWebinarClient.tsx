@@ -365,7 +365,7 @@ export default function BookWebinarClient() {
             <div className="book-webinar-hero-right">
               <div className="book-webinar-speaker-wrap relative w-full max-w-xl aspect-[3/4] mx-auto">
                 <Image
-                  src="/nitesh-prasad-updated-pic.png"
+                  src="/nitesh-updated-image-area.png"
                   alt="Nitesh Prasad"
                   fill
                   className="object-contain object-top"
