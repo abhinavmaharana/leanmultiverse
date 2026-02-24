@@ -13,10 +13,14 @@ CREATE TABLE IF NOT EXISTS webinar_bookings (
   payment_status VARCHAR(20) DEFAULT 'pending' CHECK (payment_status IN ('pending', 'paid', 'failed')),
   meet_link TEXT,
   zoom_registration_link TEXT,
+  order_notes JSONB,
   calendar_invite_sent BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Add order_notes if table already exists (run once if you created webinar_bookings before this column existed):
+-- ALTER TABLE webinar_bookings ADD COLUMN IF NOT EXISTS order_notes JSONB;
 
 -- Create index on email for faster lookups
 CREATE INDEX IF NOT EXISTS idx_webinar_bookings_email ON webinar_bookings(user_email);

@@ -1,11 +1,23 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useHasFinePointer } from "@/hooks/useHasFinePointer"
 
 const cursorStyle = {
   transition: "transform 0.15s ease-out, opacity 0.2s ease-out",
 } as const
+
+function useHasFinePointer() {
+  const [hasFinePointer, setHasFinePointer] = useState(false)
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const mq = window.matchMedia("(pointer: fine)")
+    const update = () => setHasFinePointer(mq.matches)
+    update()
+    mq.addEventListener?.("change", update)
+    return () => mq.removeEventListener?.("change", update)
+  }, [])
+  return hasFinePointer
+}
 
 export default function CustomCursor() {
   const hasFinePointer = useHasFinePointer()

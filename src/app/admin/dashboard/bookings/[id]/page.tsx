@@ -18,6 +18,7 @@ interface Booking {
   razorpay_payment_id: string | null
   meet_link: string | null
   zoom_registration_link?: string | null
+  order_notes?: Record<string, string> | null
   calendar_invite_sent: boolean
   created_at: string
   updated_at: string
@@ -235,6 +236,19 @@ export default function BookingDetailPage() {
                 >
                   {booking.zoom_registration_link}
                 </a>
+              </div>
+            )}
+            {booking.order_notes && Object.keys(booking.order_notes).length > 0 && (
+              <div>
+                <label className="text-gray-400 text-sm">Order notes (Razorpay)</label>
+                <div className="mt-2 rounded-lg bg-white/5 border border-white/10 p-4 space-y-2">
+                  {Object.entries(booking.order_notes).map(([key, value]) => (
+                    <div key={key} className="flex gap-2 text-sm">
+                      <span className="text-gray-500 font-medium min-w-[140px]">{key.replace(/_/g, ' ')}</span>
+                      <span className="text-white break-all">{value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
             <div>
