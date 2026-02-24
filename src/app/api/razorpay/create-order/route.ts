@@ -68,6 +68,16 @@ export async function POST(request: NextRequest) {
     // Create booking in database (with error handling)
     let booking
     try {
+      const orderNotes: Record<string, string> = {
+        user_name,
+        user_email,
+        user_phone: cleanPhone,
+        selected_date,
+        selected_time,
+        zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK || '',
+      }
+      if (hear_from) orderNotes.hear_from = String(hear_from)
+
       const bookingData: {
         user_name: string
         user_email: string
@@ -76,6 +86,7 @@ export async function POST(request: NextRequest) {
         selected_time: string
         razorpay_order_id: string
         zoom_registration_link?: string
+        order_notes?: Record<string, string>
       } = {
         user_name,
         user_email,
@@ -83,13 +94,12 @@ export async function POST(request: NextRequest) {
         selected_date,
         selected_time,
         razorpay_order_id: order.id,
+        order_notes: orderNotes,
       }
-      
-      // Include zoom_registration_link if provided
       if (zoom_registration_link) {
         bookingData.zoom_registration_link = zoom_registration_link
       }
-      
+
       booking = await createBooking(bookingData)
     } catch (dbError) {
       console.error('Database error (continuing with order creation):', dbError)

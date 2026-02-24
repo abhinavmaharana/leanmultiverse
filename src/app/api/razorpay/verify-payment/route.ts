@@ -102,6 +102,7 @@ export async function POST(request: NextRequest) {
               selected_time: orderNotes.selected_time,
               razorpay_order_id: razorpay_order_id,
               zoom_registration_link: orderNotes.zoom_registration_link || undefined,
+              order_notes: orderNotes,
             })
             console.log('Created booking from Razorpay order notes:', booking.id)
           } catch (createError) {

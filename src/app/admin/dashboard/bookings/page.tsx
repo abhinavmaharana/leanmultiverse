@@ -18,6 +18,7 @@ interface Booking {
   payment_status: 'pending' | 'paid' | 'failed'
   razorpay_order_id: string | null
   razorpay_payment_id: string | null
+  order_notes?: Record<string, string> | null
   created_at: string
 }
 
@@ -162,6 +163,7 @@ export default function BookingsPage() {
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Type</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Date</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Time</th>
+                  <th className="text-left py-4 px-6 text-gray-400 font-medium">Hear from</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Status</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Actions</th>
                 </tr>
@@ -187,6 +189,9 @@ export default function BookingsPage() {
                       {new Date(booking.selected_date).toLocaleDateString()}
                     </td>
                     <td className="py-4 px-6 text-gray-300">{booking.selected_time}</td>
+                    <td className="py-4 px-6 text-gray-300">
+                      {booking.order_notes?.hear_from ?? '—'}
+                    </td>
                     <td className="py-4 px-6">
                       <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(booking.payment_status)}`}>
                         {booking.payment_status}

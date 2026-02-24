@@ -34,6 +34,7 @@ export interface WebinarBooking {
   payment_status: 'pending' | 'paid' | 'failed'
   meet_link: string | null
   zoom_registration_link?: string | null
+  order_notes?: Record<string, string> | null
   calendar_invite_sent: boolean
   created_at: string
   updated_at: string
@@ -47,6 +48,7 @@ export interface CreateBookingData {
   selected_time: string
   razorpay_order_id?: string
   zoom_registration_link?: string
+  order_notes?: Record<string, string>
 }
 
 // AI/ML Course Enrollment types

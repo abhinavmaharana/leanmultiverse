@@ -38,23 +38,24 @@ export async function createBooking(data: CreateBookingData) {
     .single()
 
   if (error) {
-    // If error is about missing zoom_registration_link column, retry without it
-    if (error.message?.includes('zoom_registration_link') && 'zoom_registration_link' in data) {
+    // Retry without optional columns if they don't exist
+    const hasOptional = 'zoom_registration_link' in data || 'order_notes' in data
+    if (hasOptional && (error.message?.includes('zoom_registration_link') || error.message?.includes('order_notes'))) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { zoom_registration_link: _zoomLink, ...dataWithoutZoom } = data
+      const { zoom_registration_link: _zoomLink, order_notes: _orderNotes, ...dataWithoutOptional } = data
       const { data: retryBooking, error: retryError } = await supabase
         .from('webinar_bookings')
-        .insert([dataWithoutZoom])
+        .insert([dataWithoutOptional])
         .select()
         .single()
-      
+
       if (retryError) {
         throw new Error(`Failed to create booking: ${retryError.message}`)
       }
-      
+
       return retryBooking as WebinarBooking
     }
-    
+
     throw new Error(`Failed to create booking: ${error.message}`)
   }
 
