@@ -312,7 +312,7 @@ export default function BookWebinarClient() {
               <p className="book-webinar-hero-sub">
                 Learn What Top Companies Actually Hire For — Product. Project. AI.
               </p>
-              <p className="book-webinar-hero-creds">Corporate YouTuber | 68K+ Instagram Community</p>
+              <p className="book-webinar-hero-creds">Corporate YouTuber | 680k+ Instagram Community</p>
               <p className="book-webinar-hero-badge">Mentor to 1000+ Professionals</p>
               <div className="flex flex-wrap items-start gap-4 mt-2">
                 <button
