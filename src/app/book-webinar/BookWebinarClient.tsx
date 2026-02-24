@@ -18,6 +18,8 @@ import { trackMetaEvent } from '@/lib/meta-pixel'
 import Marquee from 'react-fast-marquee'
 import { testimonials as landingTestimonials } from '@/components/landing/SuccessStories'
 
+const safeTestimonials = Array.isArray(landingTestimonials) ? landingTestimonials : []
+
 const HEAR_FROM_OPTIONS = [
   { value: '', label: 'Select one' },
   { value: 'instagram', label: 'Instagram' },
@@ -361,16 +363,16 @@ export default function BookWebinarClient() {
               </div> */}
             </div>
             <div className="book-webinar-hero-right">
-              <div className="book-webinar-speaker-wrap relative w-full max-w-md aspect-[3/4] mx-auto">
+              <div className="book-webinar-speaker-wrap relative w-full max-w-xl aspect-[3/4] mx-auto">
                 <Image
-                  src="/nitesh-prasad-3.png"
+                  src="/nitesh-prasad-updated-pic.png"
                   alt="Nitesh Prasad"
                   fill
                   className="object-contain object-top"
                   priority
-                  sizes="(max-width: 1024px) 90vw, 42rem"
+                  sizes="(max-width: 1024px) 95vw, 52rem"
                 />
-                <span className="book-webinar-signature">Nitesh Prasad</span>
+                {/* <span className="book-webinar-signature">Nitesh Prasad</span> */}
               </div>
             </div>
           </section>
@@ -649,7 +651,7 @@ export default function BookWebinarClient() {
             {mounted && (
               prefersReducedMotion ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                  {landingTestimonials.slice(0, 6).map((t, i) => (
+                  {safeTestimonials.slice(0, 6).map((t, i) => (
                     <div
                       key={`${t.id}-${i}`}
                       className="book-webinar-testimonial-card rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28] to-[#18191f] p-6 shadow-xl shadow-black/20 flex flex-col text-left"
@@ -679,7 +681,7 @@ export default function BookWebinarClient() {
                     gradient={false}
                     className="py-2"
                   >
-                    {[...landingTestimonials, ...landingTestimonials].map((t, i) => (
+                    {[...safeTestimonials, ...safeTestimonials].map((t, i) => (
                       <div
                         key={`${t.id}-${i}`}
                         className="book-webinar-testimonial-card mx-4 flex-shrink-0 w-[340px] sm:w-[380px] rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28] to-[#18191f] p-6 shadow-xl shadow-black/20 flex flex-col text-left"
