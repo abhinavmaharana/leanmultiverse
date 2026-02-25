@@ -384,6 +384,17 @@
   margin-right: auto;
 }
 
+.book-webinar-trusted-logo-card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+}
+
+.book-webinar-trusted-logo-card:hover {
+  border-color: rgba(198, 157, 68, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
 @media (min-width: 640px) {
   .book-webinar-trusted-headline {
     font-size: 1.5rem;

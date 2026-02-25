@@ -217,7 +217,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
           </>
         ) : null}
       </head>
-      <body className={`${raleway.variable} font-sans antialiased bg-black`}>
+      <body className={`${raleway.variable} font-sans antialiased bg-black`} suppressHydrationWarning>
         <AttributionCapture />
         <ErrorBoundary>
           {/* LoadingProvider disabled; re-enable when full-page loading screen is desired */}

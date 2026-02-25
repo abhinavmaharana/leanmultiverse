@@ -36,12 +36,13 @@ function getTEDxVideoId(): string | null {
 }
 
 const TRUSTED_COMPANIES = [
-  { name: 'Deloitte', domain: 'deloitte.com' },
-  { name: 'JPMorgan', domain: 'jpmorganchase.com' },
-  { name: 'Accenture', domain: 'accenture.com' },
-  { name: 'Infosys', domain: 'infosys.com' },
-  { name: 'TCS', domain: 'tcs.com' },
-  { name: 'Cognizant', domain: 'cognizant.com' },
+  { name: 'Deloitte', domain: 'deloitte.com', logo: '/DeloitteLOGO.png' },
+  { name: 'JPMorgan', domain: 'jpmorganchase.com', logo: '/J_P_Morgan.png' },
+  { name: 'Accenture', domain: 'accenture.com', logo: '/AccentureLOGO.png' },
+  { name: 'Infosys', domain: 'infosys.com', logo: '/Infosys_logo.png' },
+  { name: 'TCS', domain: 'tcs.com', logo: '/Tata_Consultancy.png' },
+  { name: 'Cognizant', domain: 'cognizant.com', logo: '/CognizanTLOGO.png' },
+  { name: 'PwC', domain: 'pwc.com', logo: '/pwcLOGO.png' },
 ]
 
 const VALUE_BULLETS = [
@@ -441,19 +442,18 @@ export default function BookWebinarClient() {
                       href={`https://${c.domain}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center shrink-0 min-w-[100px] h-9 px-4 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm font-medium hover:border-amber-500/40 hover:text-amber-400/90 transition-all duration-200"
+                      className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[120px] h-12 px-5 rounded-lg text-sm font-medium transition-all duration-200"
                       aria-label={c.name}
                     >
                       {logoErrors[index] ? (
                         <span>{c.name}</span>
                       ) : (
                         <Image
-                          src={`https://logo.clearbit.com/${c.domain}`}
+                          src={c.logo}
                           alt={`${c.name} logo`}
-                          width={120}
-                          height={32}
-                          className="h-6 w-auto object-contain opacity-90 hover:opacity-100 max-h-8"
-                          unoptimized
+                          width={160}
+                          height={44}
+                          className="h-9 w-auto object-contain opacity-90 hover:opacity-100 max-h-11"
                           onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
                         />
                       )}
@@ -470,19 +470,18 @@ export default function BookWebinarClient() {
                         href={`https://${c.domain}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center shrink-0 min-w-[100px] h-9 px-4 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm font-medium hover:border-amber-500/40 hover:text-amber-400/90 transition-all duration-200 mx-4"
+                        className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[120px] h-12 px-5 rounded-lg text-sm font-medium transition-all duration-200 mx-4"
                         aria-label={c.name}
                       >
                         {logoErrors[index] ? (
                           <span>{c.name}</span>
                         ) : (
                           <Image
-                            src={`https://logo.clearbit.com/${c.domain}`}
+                            src={c.logo}
                             alt={`${c.name} logo`}
-                            width={120}
-                            height={32}
-                            className="h-6 w-auto object-contain opacity-90 hover:opacity-100 max-h-8"
-                            unoptimized
+                            width={160}
+                            height={44}
+                            className="h-9 w-auto object-contain opacity-90 hover:opacity-100 max-h-11"
                             onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
                           />
                         )}
