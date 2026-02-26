@@ -181,9 +181,8 @@ export default function BookWebinarClient() {
     return () => clearInterval(id)
   }, [countdownTarget])
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const v = e.target.value
-    if (v) setValue('selected_date', v, { shouldValidate: true })
+  const handleDateSelect = (dateStr: string) => {
+    setValue('selected_date', dateStr, { shouldValidate: true })
   }
 
   const onSubmit = async (data: BookingFormData) => {
@@ -515,21 +514,26 @@ export default function BookWebinarClient() {
 
               {availableDates.length > 0 && (
                 <div>
-                  <label htmlFor="date" className="block text-gray-400 text-sm font-medium">Date</label>
-                  <div className="relative mt-1">
-                    <select
-                      id="date"
-                      value={selectedDate || ''}
-                      onChange={handleDateChange}
-                      className="w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-4 py-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 appearance-none cursor-pointer transition-shadow"
-                      style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1.25rem' }}
-                    >
-                    {availableDates.map((d) => (
-                      <option key={format(d, 'yyyy-MM-dd')} value={format(d, 'yyyy-MM-dd')} className="bg-gray-800">
-                        {format(d, 'EEEE, MMM d')}
-                      </option>
-                    ))}
-                  </select>
+                  <p className="text-gray-400 text-sm font-medium mb-2">Date</p>
+                  <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
+                    {availableDates.map((d) => {
+                      const dateStr = format(d, 'yyyy-MM-dd')
+                      const isSelected = selectedDate === dateStr
+                      return (
+                        <button
+                          key={dateStr}
+                          type="button"
+                          onClick={() => handleDateSelect(dateStr)}
+                          className={`rounded-xl px-4 py-3 text-sm font-medium transition-all border ${
+                            isSelected
+                              ? 'bg-amber-500/20 border-amber-500/60 text-amber-400'
+                              : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30 hover:bg-gray-800'
+                          }`}
+                        >
+                          {format(d, 'EEEE, MMM d')} · 8:00 PM IST
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               )}

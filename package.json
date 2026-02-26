@@ -16,6 +16,7 @@
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.1",
+    "@microsoft/clarity": "^1.0.2",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@sentry/nextjs": "^10.39.0",

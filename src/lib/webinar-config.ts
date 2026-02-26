@@ -47,19 +47,15 @@ export function getAvailableDatesPaid(): Date[] {
   const currentYear = new Date().getFullYear()
 
   PAID_DATES_CONFIG.forEach(({ month, day }) => {
-    let date = new Date(currentYear, month, day)
-    let dateStr = format(date, 'yyyy-MM-dd')
-    if (dateStr < todayIST) {
-      date = new Date(currentYear + 1, month, day)
-      dateStr = format(date, 'yyyy-MM-dd')
-    }
+    const date = new Date(currentYear, month, day)
+    const dateStr = format(date, 'yyyy-MM-dd')
     if (dateStr >= todayIST && !isWebinarTimePast(dateStr)) {
       dates.push(date)
     }
   })
 
   dates.sort((a, b) => a.getTime() - b.getTime())
-  return dates
+  return dates.length > 0 ? [dates[0]] : []
 }
 
 export function getZoomLinkForDatePaid(dateStr: string): string {
