@@ -73,7 +73,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative w-full h-[420px] sm:h-[600px] lg:h-[700px] xl:h-[800px] order-1 lg:order-2 flex items-center justify-center">
+        <div className="relative w-full h-[420px] sm:h-[600px] lg:h-[700px] xl:h-[800px] order-1 lg:order-2 hidden lg:flex items-center justify-center">
           <div className="relative w-full h-full rounded-3xl overflow-hidden">
             <Image
               src="/nitesh-prasad-3.png"
