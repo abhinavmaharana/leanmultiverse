@@ -90,13 +90,12 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logo.svg", type: "image/svg+xml" },
-      { url: "/logo.svg", type: "image/svg+xml", sizes: "any" },
+      { url: "/logofavicon.PNG", type: "image/png" },
     ],
     apple: [
-      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/logofavicon.PNG", type: "image/png" },
     ],
-    shortcut: "/logo.svg",
+    shortcut: "/logofavicon.PNG",
   },
   ...(process.env.GOOGLE_VERIFICATION
     ? {
@@ -160,9 +159,9 @@ export default function RootLayout({
         <link rel="preload" href="/nitesh-prasad-3.png" as="image" />
         
         {/* Icons */}
-        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/logo.svg" />
-        <link rel="shortcut icon" href="/logo.svg" type="image/svg+xml" />
+        <link rel="icon" href="/logofavicon.PNG" type="image/png" />
+        <link rel="apple-touch-icon" href="/logofavicon.PNG" />
+        <link rel="shortcut icon" href="/logofavicon.PNG" type="image/png" />
         
         {/* Structured Data */}
         <script
