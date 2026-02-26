@@ -478,3 +478,93 @@
   color: #000;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+/* Booking Modal */
+.bw-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  padding: 1rem;
+  animation: bw-fade-in 0.2s ease-out;
+}
+
+@keyframes bw-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bw-slide-up {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.bw-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 56rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  background: linear-gradient(to bottom, #141518, #0e0f12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  animation: bw-slide-up 0.25s ease-out;
+}
+
+@media (min-width: 640px) {
+  .bw-modal-container {
+    padding: 2rem;
+  }
+}
+
+.bw-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .bw-modal-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+.bw-modal-learn {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 767px) {
+  .bw-modal-learn {
+    display: none;
+  }
+}
+
+.bw-modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar styling for modal */
+.bw-modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bw-modal-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bw-modal-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.bw-modal-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}

@@ -71,12 +71,13 @@ export default function BookWebinarClient() {
   const [logoErrors, setLogoErrors] = useState<Record<number, boolean>>({})
   const [countdown, setCountdown] = useState<{ d: number; h: number; m: number; s: number } | null>(null)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const scriptLoadedRef = useRef(false)
-  const formSectionRef = useRef<HTMLDivElement>(null)
+  const autoOpenedRef = useRef(false)
   const tedxSectionRef = useRef<HTMLDivElement>(null)
+  const testimonialsSectionRef = useRef<HTMLDivElement>(null)
   const availableDates = useMemo(() => getAvailableDatesPaid(), [])
 
-  // Countdown target: first webinar date at 8:00 PM IST (14:30 UTC)
   const countdownTarget = useMemo(() => {
     if (availableDates.length === 0) return null
     const d = availableDates[0]
@@ -98,9 +99,7 @@ export default function BookWebinarClient() {
     },
   })
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  useEffect(() => { setMounted(true) }, [])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -166,10 +165,7 @@ export default function BookWebinarClient() {
     const tick = () => {
       const now = Date.now()
       const diff = Math.max(0, countdownTarget.getTime() - now)
-      if (diff === 0) {
-        setCountdown(null)
-        return
-      }
+      if (diff === 0) { setCountdown(null); return }
       const d = Math.floor(diff / (1000 * 60 * 60 * 24))
       const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
       const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
@@ -180,6 +176,50 @@ export default function BookWebinarClient() {
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
   }, [countdownTarget])
+
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [showModal])
+
+  useEffect(() => {
+    if (!showModal) return
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowModal(false) }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [showModal])
+
+  // Auto-open modal after 5 seconds (once)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!autoOpenedRef.current) {
+        autoOpenedRef.current = true
+        setShowModal(true)
+      }
+    }, 5000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Auto-open modal when user scrolls past testimonials section (once)
+  useEffect(() => {
+    const el = testimonialsSectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 0 && !autoOpenedRef.current) {
+          autoOpenedRef.current = true
+          setShowModal(true)
+        }
+      },
+      { threshold: 0 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [mounted])
 
   const handleDateSelect = (dateStr: string) => {
     setValue('selected_date', dateStr, { shouldValidate: true })
@@ -217,10 +257,7 @@ export default function BookWebinarClient() {
                 resolve()
               }
             }, 100)
-            setTimeout(() => {
-              clearInterval(id)
-              reject(new Error('Razorpay load timeout'))
-            }, 10000)
+            setTimeout(() => { clearInterval(id); reject(new Error('Razorpay load timeout')) }, 10000)
             s.addEventListener('load', () => {
               clearInterval(id)
               scriptLoadedRef.current = true
@@ -232,11 +269,7 @@ export default function BookWebinarClient() {
           const script = document.createElement('script')
           script.src = 'https://checkout.razorpay.com/v1/checkout.js'
           script.async = true
-          script.onload = () => {
-            scriptLoadedRef.current = true
-            setRazorpayLoaded(true)
-            resolve()
-          }
+          script.onload = () => { scriptLoadedRef.current = true; setRazorpayLoaded(true); resolve() }
           script.onerror = () => reject(new Error('Razorpay failed'))
           document.body.appendChild(script)
         })
@@ -293,15 +326,14 @@ export default function BookWebinarClient() {
   }
 
   const tedxVideoId = getTEDxVideoId()
-  const scrollToForm = () => formSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
-  const scrollToTEDx = () => tedxSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
+  const openModal = () => setShowModal(true)
 
   return (
     <>
       <Navbar />
       <main className="book-webinar-page min-h-screen text-white pt-24 pb-16 px-4 sm:px-6">
         <div className="book-webinar-content max-w-6xl mx-auto">
-          {/* Hero: two columns */}
+          {/* Hero */}
           <section className="book-webinar-hero-grid relative">
             <div className="book-webinar-hero-glow" aria-hidden />
             <div className="book-webinar-hero-left">
@@ -315,14 +347,13 @@ export default function BookWebinarClient() {
               <p className="book-webinar-hero-creds">Corporate YouTuber | 680k+ Instagram Community</p>
               <p className="book-webinar-hero-badge">Mentor to 1000+ Professionals</p>
               <div className="flex flex-wrap items-start gap-4 mt-2">
-                <button
-                  type="button"
-                  onClick={scrollToForm}
-                  className="book-webinar-cta book-webinar-cta-primary"
-                >
-                  Reserve My Spot Now
-                  <span className="book-webinar-cta-arrow" aria-hidden>→</span>
-                </button>
+                <div className="flex flex-col items-start gap-2">
+                  <button type="button" onClick={openModal} className="book-webinar-cta book-webinar-cta-primary">
+                    Reserve My Spot Now
+                    <span className="book-webinar-cta-arrow" aria-hidden>→</span>
+                  </button>
+                  <p className="text-gray-400 text-sm ml-1">₹99 inclusive of GST · Limited seats available</p>
+                </div>
                 {mounted && countdown !== null && (
                   <div className="rounded-xl bg-gray-900/80 border border-white/10 px-6 sm:px-8 py-5 flex flex-col">
                     <p className="text-white text-sm font-medium mb-4">Limited Seats – Starting In:</p>
@@ -344,23 +375,6 @@ export default function BookWebinarClient() {
                   </div>
                 )}
               </div>
-              {/* <div className="book-webinar-hero-ctas mt-6">
-                <button
-                  type="button"
-                  onClick={scrollToTEDx}
-                  className="book-webinar-cta book-webinar-cta-outline"
-                >
-                  <span className="book-webinar-cta-icon" aria-hidden>▶</span>
-                  Watch Free Webinar
-                </button>
-                <Link
-                  href="/#contact"
-                  className="book-webinar-cta book-webinar-cta-outline"
-                >
-                  Book Strategy Call
-                  <span className="book-webinar-cta-arrow" aria-hidden>→</span>
-                </Link>
-              </div> */}
             </div>
             <div className="book-webinar-hero-right">
               <div className="book-webinar-speaker-wrap relative w-full max-w-xl aspect-[3/4] mx-auto">
@@ -372,12 +386,11 @@ export default function BookWebinarClient() {
                   priority
                   sizes="(max-width: 1024px) 95vw, 52rem"
                 />
-                {/* <span className="book-webinar-signature">Nitesh Prasad</span> */}
               </div>
             </div>
           </section>
 
-          {/* TEDx + Value: two columns */}
+          {/* TEDx + Value */}
           <section ref={tedxSectionRef} className="book-webinar-value-guarantee">
             <div className="book-webinar-value-left">
               <h2 className="book-webinar-value-heading book-webinar-benefits-headline">
@@ -427,10 +440,10 @@ export default function BookWebinarClient() {
             </div>
           </section>
 
-          {/* Company logos: marquee above form */}
+          {/* Company logos marquee */}
           <section className="book-webinar-trusted mb-8 overflow-hidden">
             <p className="book-webinar-trusted-headline mb-4">
-              Professionals from India’s top companies trust Lean Multiverse.
+              Professionals from India&apos;s top companies trust Lean Multiverse.
             </p>
             {mounted && (
               prefersReducedMotion ? (
@@ -492,164 +505,21 @@ export default function BookWebinarClient() {
             )}
           </section>
 
-          {/* Form + What You'll Learn: two columns */}
-          <section
-            ref={formSectionRef}
-            className="book-webinar-form-and-learn scroll-mt-24 mb-16"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
-              {/* Form column: first on mobile, right on desktop */}
-              <div className="lg:col-start-2">
-                <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-6 sm:p-10 shadow-xl shadow-black/20 overflow-hidden transition-all duration-300 hover:border-white/15">
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
-                  <div className="pl-1">
-                    <h2 className="text-xl sm:text-2xl font-semibold text-white mb-1">Reserve your webinar seat</h2>
-                    <p className="text-gray-400 text-sm mb-6">
-                      {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST
-                    </p>
+          {/* CTA button */}
+          {/* <section className="text-center mb-16">
+            <button
+              type="button"
+              onClick={openModal}
+              className="book-webinar-cta book-webinar-cta-primary text-lg px-10 py-5 rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-shadow"
+            >
+              Reserve My Spot Now
+              <span className="book-webinar-cta-arrow" aria-hidden>→</span>
+            </button>
+            <p className="text-gray-500 text-xs mt-4">₹99 inclusive of GST · Limited seats available</p>
+          </section> */}
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              <input type="hidden" {...register('selected_date')} />
-              <input type="hidden" {...register('selected_time')} />
-
-              {availableDates.length > 0 && (
-                <div>
-                  <p className="text-gray-400 text-sm font-medium mb-2">Date</p>
-                  <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
-                    {availableDates.map((d) => {
-                      const dateStr = format(d, 'yyyy-MM-dd')
-                      const isSelected = selectedDate === dateStr
-                      return (
-                        <button
-                          key={dateStr}
-                          type="button"
-                          onClick={() => handleDateSelect(dateStr)}
-                          className={`rounded-xl px-4 py-3 text-sm font-medium transition-all border ${
-                            isSelected
-                              ? 'bg-amber-500/20 border-amber-500/60 text-amber-400'
-                              : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30 hover:bg-gray-800'
-                          }`}
-                        >
-                          {format(d, 'EEEE, MMM d')} · 8:00 PM IST
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label htmlFor="name" className="block text-gray-400 text-sm font-medium">Full name</label>
-                <input
-                  id="name"
-                  {...register('user_name')}
-                  placeholder="Your full name"
-                  className="mt-1.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-4 py-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-shadow"
-                />
-                {errors.user_name && <p className="text-red-400 text-xs mt-1">{errors.user_name.message}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-gray-400 text-sm font-medium">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  {...register('user_email')}
-                  placeholder="you@example.com"
-                  className="mt-1.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-4 py-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-shadow"
-                />
-                {errors.user_email && <p className="text-red-400 text-xs mt-1">{errors.user_email.message}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-gray-400 text-sm font-medium">Mobile (+91)</label>
-                <input
-                  id="phone"
-                  type="tel"
-                  {...register('user_phone')}
-                  placeholder="9876543210"
-                  inputMode="numeric"
-                  autoComplete="tel"
-                  className="mt-1.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-4 py-3 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-shadow"
-                />
-                {errors.user_phone && <p className="text-red-400 text-xs mt-1">{errors.user_phone.message}</p>}
-              </div>
-
-              <div>
-                <label htmlFor="hear_from" className="block text-gray-400 text-sm font-medium">
-                  Where did you hear us?
-                </label>
-                <select
-                  id="hear_from"
-                  {...register('hear_from')}
-                  className="mt-1.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-4 py-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 appearance-none cursor-pointer transition-shadow"
-                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1.25rem' }}
-                >
-                  {HEAR_FROM_OPTIONS.map((opt) => (
-                    <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-                {errors.hear_from && <p className="text-red-400 text-xs mt-1">{errors.hear_from.message}</p>}
-              </div>
-
-              {error && (
-                <div role="alert" className="rounded-lg px-3 py-2 bg-red-400/10 border border-red-400/30">
-                  <p className="text-red-400 text-sm">{error}</p>
-                </div>
-              )}
-
-              <div className="pt-6 flex flex-col gap-3">
-                <p className="text-center text-gray-400 text-sm">
-                  ₹99 inclusive of GST · Secure payment via Razorpay
-                </p>
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !isFormReady}
-                  className="book-webinar-cta book-webinar-cta-primary w-full py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-base font-semibold shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-shadow"
-                >
-                  {isSubmitting ? 'Opening payment...' : 'Reserve my seat'}
-                </button>
-                {!isFormReady && !isSubmitting && (
-                  <p className="text-center text-gray-500 text-xs">Fill all fields to continue</p>
-                )}
-              </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-
-              {/* What You'll Learn: second on mobile, left on desktop */}
-              <div className="lg:col-start-1 lg:row-start-1">
-                <div className="book-webinar-learn-panel rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28]/80 to-[#18191f]/80 p-6 sm:p-8 transition-all duration-300 hover:border-white/15 sticky lg:top-28">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-[#C69D44] mb-6">What You&apos;ll Learn</h2>
-                  <ul className="space-y-4">
-                    {VALUE_BULLETS.map((text, i) => (
-                      <li
-                        key={i}
-                        className="book-webinar-learn-item flex gap-4 items-start p-4 rounded-xl bg-white/[0.04] border border-white/5 transition-all duration-200 hover:border-amber-500/20 hover:bg-white/[0.06]"
-                      >
-                        <span className="shrink-0 w-8 h-8 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center text-sm font-bold" aria-hidden>✓</span>
-                        <span className="text-gray-200 text-sm sm:text-base leading-relaxed">{text}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-center text-gray-500 text-xs mt-8">
-            Professionals from Deloitte, JPMorgan, Accenture, Infosys, TCS and other top companies have joined our programs.
-          </p>
-
-          <p className="text-center text-gray-600 text-xs mt-4">
-            After payment you’ll receive the Zoom link by email. All times in IST.
-          </p>
-          </section>
-
-          {/* Testimonials marquee (below form) */}
-          <section className="mb-20 scroll-mt-24 mt-16 overflow-hidden">
+          {/* Testimonials marquee */}
+          <section ref={testimonialsSectionRef} className="mb-10 scroll-mt-24 mt-16 overflow-hidden">
             <h2 className="book-webinar-section-label text-gray-400 mb-8">What participants say</h2>
             {mounted && (
               prefersReducedMotion ? (
@@ -678,12 +548,7 @@ export default function BookWebinarClient() {
                 </div>
               ) : (
                 <div className="book-webinar-testimonials-marquee">
-                  <Marquee
-                    speed={30}
-                    pauseOnHover
-                    gradient={false}
-                    className="py-2"
-                  >
+                  <Marquee speed={30} pauseOnHover gradient={false} className="py-2">
                     {[...safeTestimonials, ...safeTestimonials].map((t, i) => (
                       <div
                         key={`${t.id}-${i}`}
@@ -712,19 +577,184 @@ export default function BookWebinarClient() {
           </section>
         </div>
 
-        {/* Floating contact button (WhatsApp is in Footer + chatbot; avoid triple WhatsApp) */}
+        {/* Floating contact button */}
         {mounted && (
-        <div className="book-webinar-float-buttons">
-          <Link
-            href="/#contact"
-            className="book-webinar-float-contact w-12 h-12 p-0 rounded-full flex items-center justify-center shrink-0"
-            aria-label="Contact us"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-          </Link>
-        </div>
+          <div className="book-webinar-float-buttons">
+            <Link
+              href="/#contact"
+              className="book-webinar-float-contact w-12 h-12 p-0 rounded-full flex items-center justify-center shrink-0"
+              aria-label="Contact us"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+            </Link>
+          </div>
         )}
       </main>
+
+      {/* Booking Modal */}
+      {showModal && (
+        <div
+          className="bw-modal-backdrop"
+          onClick={(e) => { if (e.target === e.currentTarget) setShowModal(false) }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Book webinar"
+        >
+          <div className="bw-modal-container">
+            <button
+              type="button"
+              onClick={() => setShowModal(false)}
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+              aria-label="Close"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
+            <div className="bw-modal-grid">
+              {/* Left: What You'll Learn */}
+              <div className="bw-modal-learn">
+                <h2 className="text-xl sm:text-2xl font-semibold text-[#C69D44] mb-2">What You&apos;ll Learn</h2>
+                <p className="text-gray-400 text-sm mb-6">In this 90-minute live webinar</p>
+                <ul className="space-y-3">
+                  {VALUE_BULLETS.map((text, i) => (
+                    <li key={i} className="flex gap-3 items-start p-3 rounded-xl bg-white/[0.04] border border-white/5">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-amber-400/20 text-amber-400 flex items-center justify-center text-xs font-bold" aria-hidden>✓</span>
+                      <span className="text-gray-200 text-sm leading-relaxed">{text}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 pt-5 border-t border-white/10">
+                  <p className="text-gray-400 text-xs">
+                    Professionals from Deloitte, JPMorgan, Accenture, Infosys, TCS and other top companies have joined our programs.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right: Booking Form */}
+              <div className="bw-modal-form">
+                <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-5 sm:p-7 shadow-xl shadow-black/20 overflow-hidden">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
+                  <div className="pl-1">
+                    <h2 className="text-lg sm:text-xl font-semibold text-white mb-1">Reserve your webinar seat</h2>
+                    <p className="text-gray-400 text-sm mb-5">
+                      {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST
+                    </p>
+
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                      <input type="hidden" {...register('selected_date')} />
+                      <input type="hidden" {...register('selected_time')} />
+
+                      {availableDates.length > 0 && (
+                        <div>
+                          <p className="text-gray-400 text-xs font-medium mb-1.5">Date</p>
+                          <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
+                            {availableDates.map((d) => {
+                              const dateStr = format(d, 'yyyy-MM-dd')
+                              const isSelected = selectedDate === dateStr
+                              return (
+                                <button
+                                  key={dateStr}
+                                  type="button"
+                                  onClick={() => handleDateSelect(dateStr)}
+                                  className={`rounded-xl px-3 py-2.5 text-sm font-medium transition-all border ${
+                                    isSelected
+                                      ? 'bg-amber-500/20 border-amber-500/60 text-amber-400'
+                                      : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30 hover:bg-gray-800'
+                                  }`}
+                                >
+                                  {format(d, 'EEEE, MMM d')} · 8:00 PM IST
+                                </button>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      <div>
+                        <label htmlFor="modal-name" className="block text-gray-400 text-xs font-medium">Full name</label>
+                        <input
+                          id="modal-name"
+                          {...register('user_name')}
+                          placeholder="Your full name"
+                          className="mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-shadow"
+                        />
+                        {errors.user_name && <p className="text-red-400 text-xs mt-1">{errors.user_name.message}</p>}
+                      </div>
+
+                      <div>
+                        <label htmlFor="modal-email" className="block text-gray-400 text-xs font-medium">Email</label>
+                        <input
+                          id="modal-email"
+                          type="email"
+                          {...register('user_email')}
+                          placeholder="you@example.com"
+                          className="mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-shadow"
+                        />
+                        {errors.user_email && <p className="text-red-400 text-xs mt-1">{errors.user_email.message}</p>}
+                      </div>
+
+                      <div>
+                        <label htmlFor="modal-phone" className="block text-gray-400 text-xs font-medium">Mobile (+91)</label>
+                        <input
+                          id="modal-phone"
+                          type="tel"
+                          {...register('user_phone')}
+                          placeholder="9876543210"
+                          inputMode="numeric"
+                          autoComplete="tel"
+                          className="mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 transition-shadow"
+                        />
+                        {errors.user_phone && <p className="text-red-400 text-xs mt-1">{errors.user_phone.message}</p>}
+                      </div>
+
+                      <div>
+                        <label htmlFor="modal-hear_from" className="block text-gray-400 text-xs font-medium">Where did you hear us?</label>
+                        <select
+                          id="modal-hear_from"
+                          {...register('hear_from')}
+                          className="mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 appearance-none cursor-pointer transition-shadow"
+                          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1.25rem' }}
+                        >
+                          {HEAR_FROM_OPTIONS.map((opt) => (
+                            <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.hear_from && <p className="text-red-400 text-xs mt-1">{errors.hear_from.message}</p>}
+                      </div>
+
+                      {error && (
+                        <div role="alert" className="rounded-lg px-3 py-2 bg-red-400/10 border border-red-400/30">
+                          <p className="text-red-400 text-sm">{error}</p>
+                        </div>
+                      )}
+
+                      <div className="pt-4 flex flex-col gap-2">
+                        <p className="text-center text-gray-400 text-xs">₹99 inclusive of GST · Secure payment via Razorpay</p>
+                        <button
+                          type="submit"
+                          disabled={isSubmitting || !isFormReady}
+                          className="book-webinar-cta book-webinar-cta-primary w-full py-3.5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-base font-semibold shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-shadow"
+                        >
+                          {isSubmitting ? 'Opening payment...' : 'Reserve my seat'}
+                        </button>
+                        {!isFormReady && !isSubmitting && (
+                          <p className="text-center text-gray-500 text-xs">Fill all fields to continue</p>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <p className="text-center text-gray-600 text-xs mt-3">
+                  After payment you&apos;ll receive the Zoom link by email. All times in IST.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   )
