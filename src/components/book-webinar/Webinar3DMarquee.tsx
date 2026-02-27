@@ -14,8 +14,8 @@ const WEBINAR_PICS = [
   "/webinar-pics/WhatsApp%20Image%202026-02-27%20at%2008.57.39%20(1).jpeg",
 ];
 
-// Duplicate for better marquee fill (4 columns)
-const IMAGES = [...WEBINAR_PICS, ...WEBINAR_PICS];
+// Repeat many times to fill all 4 columns and eliminate empty spaces
+const IMAGES = Array(6).fill(WEBINAR_PICS).flat();
 
 type Webinar3DMarqueeProps = {
   onReserveSpot: () => void;
@@ -23,7 +23,7 @@ type Webinar3DMarqueeProps = {
 
 export function Webinar3DMarquee({ onReserveSpot }: Webinar3DMarqueeProps) {
   return (
-    <div className="relative mx-auto my-10 flex min-h-[480px] w-full max-w-7xl flex-col items-center justify-center overflow-hidden rounded-3xl">
+    <div className="relative mx-auto my-10 flex min-h-[560px] w-full max-w-7xl flex-col items-center justify-center overflow-hidden rounded-3xl">
       <h2 className="relative z-20 mx-auto max-w-4xl text-center text-2xl font-bold text-balance text-white md:text-4xl lg:text-5xl">
         Join professionals who are{" "}
         <span className="relative z-20 inline-block rounded-xl bg-amber-500/40 px-4 py-1 text-white underline decoration-amber-400 decoration-[6px] underline-offset-[16px] backdrop-blur-sm">
@@ -50,6 +50,9 @@ export function Webinar3DMarquee({ onReserveSpot }: Webinar3DMarqueeProps) {
       <ThreeDMarquee
         className="pointer-events-none absolute inset-0 h-full w-full"
         images={IMAGES}
+        scale={1.35}
+        baseSize={2200}
+        gap={4}
       />
     </div>
   );

@@ -5,9 +5,15 @@ import { cn } from "@/lib/utils";
 export const ThreeDMarquee = ({
   images,
   className,
+  scale = 1,
+  baseSize = 1720,
+  gap = 8,
 }: {
   images: string[];
   className?: string;
+  scale?: number;
+  baseSize?: number;
+  gap?: number;
 }) => {
   // Split the images array into 4 equal parts
   const chunkSize = Math.ceil(images.length / 4);
@@ -23,23 +29,37 @@ export const ThreeDMarquee = ({
       )}
     >
       <div className="flex size-full items-center justify-center">
-        <div className="size-[1720px] shrink-0 scale-50 sm:scale-75 lg:scale-100">
+        <div
+          className={cn(
+            "relative shrink-0",
+            scale > 1
+              ? "scale-65 sm:scale-90 lg:scale-[1.35]"
+              : "scale-50 sm:scale-75 lg:scale-100"
+          )}
+          style={{
+            width: baseSize,
+            height: baseSize,
+          }}
+        >
           <div
             style={{
-              transform: "rotateX(55deg) rotateY(0deg) rotateZ(-45deg)",
+              transform: "translate(-50%, -50%) rotateX(55deg) rotateY(0deg) rotateZ(-45deg)",
+              transformOrigin: "center center",
+              gap: `${gap}px`,
             }}
-            className="relative top-96 right-[50%] grid size-full origin-top-left grid-cols-4 gap-8 transform-3d"
+            className="absolute left-1/2 top-1/2 grid size-full grid-cols-4 transform-3d"
           >
             {chunks.map((subarray, colIndex) => (
               <motion.div
-                animate={{ y: colIndex % 2 === 0 ? 100 : -100 }}
+                animate={{ y: colIndex % 2 === 0 ? 180 : -180 }}
                 transition={{
-                  duration: colIndex % 2 === 0 ? 10 : 15,
+                  duration: colIndex % 2 === 0 ? 12 : 18,
                   repeat: Infinity,
                   repeatType: "reverse",
                 }}
                 key={colIndex + "marquee"}
-                className="flex flex-col items-start gap-8"
+                className="flex flex-col items-start"
+                style={{ gap: `${gap}px` }}
               >
                 <GridLineVertical className="-left-4" offset="80px" />
                 {subarray.map((image, imageIndex) => (

@@ -58,7 +58,7 @@ export default function PerfectChatbot() {
 
           <motion.button
             onClick={handlePhoneClick}
-            className="relative inline-flex justify-center items-center gap-0 sm:gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-full w-10 h-10 sm:w-auto sm:h-auto sm:px-6 sm:py-3 shadow-2xl hover:shadow-yellow-400/40 border border-yellow-400/40 focus:outline-none focus:ring-4 focus:ring-yellow-300 transition-all cursor-pointer overflow-hidden"
+            className="relative hidden sm:inline-flex justify-center items-center gap-0 sm:gap-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-full w-10 h-10 sm:w-auto sm:h-auto sm:px-6 sm:py-3 shadow-2xl hover:shadow-yellow-400/40 border border-yellow-400/40 focus:outline-none focus:ring-4 focus:ring-yellow-300 transition-all cursor-pointer overflow-hidden"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.97 }}
           >
