@@ -81,8 +81,6 @@ export default function BookWebinarClient() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const scriptLoadedRef = useRef(false)
-  const autoOpenedRef = useRef(false)
-  const modalHasBeenShownRef = useRef(false)
   const tedxSectionRef = useRef<HTMLDivElement>(null)
   const testimonialsSectionRef = useRef<HTMLDivElement>(null)
   const availableDates = useMemo(() => getAvailableDatesPaid(), [])
@@ -201,40 +199,6 @@ export default function BookWebinarClient() {
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
   }, [showModal])
-
-  // First popup after 7 seconds
-  useEffect(() => {
-    const id = setTimeout(() => {
-      modalHasBeenShownRef.current = true
-      setShowModal(true)
-    }, 7000)
-    return () => clearTimeout(id)
-  }, [])
-
-  // After user closes, show again after 8 seconds
-  useEffect(() => {
-    if (!showModal && modalHasBeenShownRef.current) {
-      const id = setTimeout(() => setShowModal(true), 7000)
-      return () => clearTimeout(id)
-    }
-  }, [showModal])
-
-  // Auto-open modal when user scrolls past testimonials section (once)
-  useEffect(() => {
-    const el = testimonialsSectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting && entry.boundingClientRect.top < 0 && !autoOpenedRef.current) {
-          autoOpenedRef.current = true
-          setShowModal(true)
-        }
-      },
-      { threshold: 0 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [mounted])
 
   const handleDateSelect = (dateStr: string) => {
     setValue('selected_date', dateStr, { shouldValidate: true })
