@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { format } from 'date-fns'
 import Image from 'next/image'
-import Link from 'next/link'
 import Navbar from '@/components/shared/Navbar'
 import Footer from '@/components/shared/Footer'
 import {
@@ -912,19 +911,6 @@ export default function BookWebinarClient() {
             <Webinar3DMarquee onReserveSpot={openModal} />
           </section> */}
         </div>
-
-        {/* Floating contact button (hidden on mobile to avoid overlap with PerfectChatbot) */}
-        {mounted && (
-          <div className="book-webinar-float-buttons hidden lg:flex">
-            <Link
-              href="/#contact"
-              className="book-webinar-float-contact w-12 h-12 p-0 rounded-full flex items-center justify-center shrink-0"
-              aria-label="Contact us"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-            </Link>
-          </div>
-        )}
       </main>
 
       <Footer />
