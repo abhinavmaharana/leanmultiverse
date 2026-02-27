@@ -54,9 +54,10 @@
 
 @media (min-width: 1024px) {
   .book-webinar-hero-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1.2fr;
     gap: 3rem;
-    min-height: 28rem;
+    min-height: 36rem;
+    align-items: center;
   }
 }
 
@@ -234,13 +235,13 @@
     margin-left: 0;
     margin-right: 0;
     aspect-ratio: auto;
-    min-height: 42rem;
+    min-height: 48rem;
   }
 }
 
 .book-webinar-speaker-wrap img {
-  object-position: top center;
-  object-fit: contain;
+  object-position: center 15%;
+  object-fit: cover;
 }
 
 .book-webinar-signature {

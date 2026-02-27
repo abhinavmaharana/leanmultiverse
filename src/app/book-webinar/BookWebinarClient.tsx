@@ -80,6 +80,7 @@ export default function BookWebinarClient() {
   const [showModal, setShowModal] = useState(false)
   const scriptLoadedRef = useRef(false)
   const autoOpenedRef = useRef(false)
+  const modalHasBeenShownRef = useRef(false)
   const tedxSectionRef = useRef<HTMLDivElement>(null)
   const testimonialsSectionRef = useRef<HTMLDivElement>(null)
   const availableDates = useMemo(() => getAvailableDatesPaid(), [])
@@ -199,16 +200,22 @@ export default function BookWebinarClient() {
     return () => window.removeEventListener('keydown', handleKey)
   }, [showModal])
 
-  // Auto-open modal after 5 seconds (once)
+  // First popup after 5 seconds
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!autoOpenedRef.current) {
-        autoOpenedRef.current = true
-        setShowModal(true)
-      }
+    const id = setTimeout(() => {
+      modalHasBeenShownRef.current = true
+      setShowModal(true)
     }, 5000)
-    return () => clearTimeout(timer)
+    return () => clearTimeout(id)
   }, [])
+
+  // After user closes, show again after 8 seconds
+  useEffect(() => {
+    if (!showModal && modalHasBeenShownRef.current) {
+      const id = setTimeout(() => setShowModal(true), 8000)
+      return () => clearTimeout(id)
+    }
+  }, [showModal])
 
   // Auto-open modal when user scrolls past testimonials section (once)
   useEffect(() => {
@@ -469,11 +476,76 @@ export default function BookWebinarClient() {
             <p className="text-gray-500 text-xs mt-3 text-center">Your information is safe. We never Share any data.</p>
           </div>
 
+          {/* Company logos (after form on mobile) */}
+          <section className="book-webinar-trusted mb-8 overflow-hidden">
+            <p className="book-webinar-trusted-headline mb-4">
+              Professionals from India&apos;s top companies trust Lean Multiverse.
+            </p>
+            {mounted && (
+              prefersReducedMotion ? (
+                <div className="flex flex-wrap justify-center items-center gap-4 py-2">
+                  {TRUSTED_COMPANIES.map((c, index) => (
+                    <a
+                      key={`mobile-logo-${index}-${c.domain}`}
+                      href={`https://${c.domain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[100px] h-10 px-4 rounded-lg text-sm font-medium transition-all duration-200"
+                      aria-label={c.name}
+                    >
+                      {logoErrors[index] ? (
+                        <span>{c.name}</span>
+                      ) : (
+                        <Image
+                          src={c.logo}
+                          alt={`${c.name} logo`}
+                          width={120}
+                          height={36}
+                          className="h-8 w-auto object-contain opacity-90 hover:opacity-100 max-h-9"
+                          onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
+                        />
+                      )}
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <Marquee speed={40} pauseOnHover gradient={false} className="py-2">
+                  {[...TRUSTED_COMPANIES, ...TRUSTED_COMPANIES].map((c, i) => {
+                    const index = i % TRUSTED_COMPANIES.length
+                    return (
+                      <a
+                        key={`mobile-logo-${i}-${c.domain}`}
+                        href={`https://${c.domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[100px] h-10 px-4 rounded-lg text-sm font-medium transition-all duration-200 mx-3"
+                        aria-label={c.name}
+                      >
+                        {logoErrors[index] ? (
+                          <span>{c.name}</span>
+                        ) : (
+                          <Image
+                            src={c.logo}
+                            alt={`${c.name} logo`}
+                            width={120}
+                            height={36}
+                            className="h-8 w-auto object-contain opacity-90 hover:opacity-100 max-h-9"
+                            onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
+                          />
+                        )}
+                      </a>
+                    )
+                  })}
+                </Marquee>
+              )
+            )}
+          </section>
+
           {/* Speaker profile */}
           <div className="bw-mobile-speaker-card rounded-2xl border border-white/10 p-5 mb-6">
             <div className="flex flex-col items-center text-center">
               <div className="relative w-56 h-56 rounded-full overflow-hidden mb-3">
-                <Image src="/nitesh-updated-image-area.png" alt="Nitesh Prasad" fill className="object-cover object-top" sizes="144px" />
+                <Image src="/nitesh-prasad-updated-photo-image.png" alt="Nitesh Prasad" fill className="object-cover object-top" sizes="144px" />
               </div>
               <p className="text-white font-semibold text-lg">Nitesh Prasad</p>
               <p className="text-gray-400 text-xs mb-2">@CorporateWalaYoutuber</p>
@@ -565,71 +637,6 @@ export default function BookWebinarClient() {
               )
             )}
           </section>
-
-          {/* Company logos (same as web) */}
-          <section className="book-webinar-trusted mb-8 overflow-hidden">
-            <p className="book-webinar-trusted-headline mb-4">
-              Professionals from India&apos;s top companies trust Lean Multiverse.
-            </p>
-            {mounted && (
-              prefersReducedMotion ? (
-                <div className="flex flex-wrap justify-center items-center gap-4 py-2">
-                  {TRUSTED_COMPANIES.map((c, index) => (
-                    <a
-                      key={`mobile-logo-${index}-${c.domain}`}
-                      href={`https://${c.domain}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[100px] h-10 px-4 rounded-lg text-sm font-medium transition-all duration-200"
-                      aria-label={c.name}
-                    >
-                      {logoErrors[index] ? (
-                        <span>{c.name}</span>
-                      ) : (
-                        <Image
-                          src={c.logo}
-                          alt={`${c.name} logo`}
-                          width={120}
-                          height={36}
-                          className="h-8 w-auto object-contain opacity-90 hover:opacity-100 max-h-9"
-                          onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
-                        />
-                      )}
-                    </a>
-                  ))}
-                </div>
-              ) : (
-                <Marquee speed={40} pauseOnHover gradient={false} className="py-2">
-                  {[...TRUSTED_COMPANIES, ...TRUSTED_COMPANIES].map((c, i) => {
-                    const index = i % TRUSTED_COMPANIES.length
-                    return (
-                      <a
-                        key={`mobile-logo-${i}-${c.domain}`}
-                        href={`https://${c.domain}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[100px] h-10 px-4 rounded-lg text-sm font-medium transition-all duration-200 mx-3"
-                        aria-label={c.name}
-                      >
-                        {logoErrors[index] ? (
-                          <span>{c.name}</span>
-                        ) : (
-                          <Image
-                            src={c.logo}
-                            alt={`${c.name} logo`}
-                            width={120}
-                            height={36}
-                            className="h-8 w-auto object-contain opacity-90 hover:opacity-100 max-h-9"
-                            onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
-                          />
-                        )}
-                      </a>
-                    )
-                  })}
-                </Marquee>
-              )
-            )}
-          </section>
         </div>
 
         <div className="book-webinar-content max-w-6xl mx-auto hidden lg:block">
@@ -679,12 +686,12 @@ export default function BookWebinarClient() {
             <div className="book-webinar-hero-right">
               <div className="book-webinar-speaker-wrap relative w-full max-w-xl aspect-[3/4] mx-auto">
                 <Image
-                  src="/nitesh-updated-image-area.png"
+                  src="/nitesh-prasad-updated-photo-image.png"
                   alt="Nitesh Prasad"
                   fill
-                  className="object-contain object-top"
+                  className="object-cover"
                   priority
-                  sizes="(max-width: 1024px) 95vw, 52rem"
+                  sizes="(max-width: 1024px) 95vw, 56rem"
                 />
               </div>
             </div>
@@ -877,9 +884,9 @@ export default function BookWebinarClient() {
           </section>
         </div>
 
-        {/* Floating contact button */}
+        {/* Floating contact button (hidden on mobile to avoid overlap with PerfectChatbot) */}
         {mounted && (
-          <div className="book-webinar-float-buttons">
+          <div className="book-webinar-float-buttons hidden lg:flex">
             <Link
               href="/#contact"
               className="book-webinar-float-contact w-12 h-12 p-0 rounded-full flex items-center justify-center shrink-0"
