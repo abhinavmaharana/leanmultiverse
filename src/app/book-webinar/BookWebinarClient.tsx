@@ -661,46 +661,116 @@ export default function BookWebinarClient() {
               </p>
               <p className="book-webinar-hero-creds">Corporate YouTuber | 680k+ Instagram Community</p>
               <p className="book-webinar-hero-badge">Mentor to 1000+ Professionals</p>
-              <div className="flex flex-wrap items-start gap-4 mt-2">
-                <div className="flex flex-col items-start gap-2">
-                  <button type="button" onClick={openModal} className="book-webinar-cta book-webinar-cta-primary">
-                    Reserve My Spot Now
-                    <span className="book-webinar-cta-arrow" aria-hidden>→</span>
-                  </button>
-                  <p className="text-gray-400 text-sm ml-1">₹99 inclusive of GST · Limited seats available</p>
-                </div>
-                {mounted && countdown !== null && (
-                  <div className="rounded-xl bg-gray-900/80 border border-white/10 px-6 sm:px-8 py-5 flex flex-col">
-                    <p className="text-white text-sm font-medium mb-4">Limited Seats – Starting In:</p>
-                    <div className="flex gap-4 sm:gap-8">
-                      {[
-                        { value: countdown.d, label: 'Days' },
-                        { value: countdown.h, label: 'Hrs' },
-                        { value: countdown.m, label: 'Mins' },
-                        { value: countdown.s, label: 'Sec' },
-                      ].map(({ value, label }) => (
-                        <div key={label} className="flex flex-col items-center min-w-[3rem]">
-                          <span className="text-[#C69D44] font-bold text-2xl sm:text-3xl tabular-nums">
-                            {String(value).padStart(2, '0')}
-                          </span>
-                          <span className="text-gray-400 text-xs mt-1.5">{label}</span>
-                        </div>
-                      ))}
-                    </div>
+              {mounted && countdown !== null && (
+                <div className="rounded-xl bg-gray-900/80 border border-white/10 px-6 sm:px-8 py-5 flex flex-col mt-4">
+                  <p className="text-white text-sm font-medium mb-4">Limited Seats – Starting In:</p>
+                  <div className="flex gap-4 sm:gap-8">
+                    {[
+                      { value: countdown.d, label: 'Days' },
+                      { value: countdown.h, label: 'Hrs' },
+                      { value: countdown.m, label: 'Mins' },
+                      { value: countdown.s, label: 'Sec' },
+                    ].map(({ value, label }) => (
+                      <div key={label} className="flex flex-col items-center min-w-[3rem]">
+                        <span className="text-[#C69D44] font-bold text-2xl sm:text-3xl tabular-nums">
+                          {String(value).padStart(2, '0')}
+                        </span>
+                        <span className="text-gray-400 text-xs mt-1.5">{label}</span>
+                      </div>
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
             <div className="book-webinar-hero-right">
-              <div className="book-webinar-speaker-wrap relative w-full max-w-xl aspect-[3/4] mx-auto">
+              <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl shadow-black/20">
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
+                <div className="pl-1">
+                  <h2 className="text-lg font-semibold text-white mb-1">Reserve your webinar seat</h2>
+                  <p className="text-gray-400 text-sm mb-4">
+                    {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹99
+                  </p>
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                    <input type="hidden" {...register('selected_date')} />
+                    <input type="hidden" {...register('selected_time')} />
+                    {availableDates.length > 0 && (
+                      <div>
+                        <p className="text-gray-400 text-xs font-medium mb-1">Date</p>
+                        <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
+                          {availableDates.map((d) => {
+                            const dateStr = format(d, 'yyyy-MM-dd')
+                            const isSelected = selectedDate === dateStr
+                            return (
+                              <button
+                                key={dateStr}
+                                type="button"
+                                onClick={() => handleDateSelect(dateStr)}
+                                className={`rounded-lg px-2.5 py-2 text-xs font-medium transition-all border ${
+                                  isSelected ? 'bg-amber-500/20 border-amber-500/60 text-amber-400' : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30'
+                                }`}
+                              >
+                                {format(d, 'EEE, MMM d')}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    <div>
+                      <label htmlFor="hero-name" className="block text-gray-400 text-xs font-medium">Full name</label>
+                      <input id="hero-name" {...register('user_name')} placeholder="Your full name" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                      {errors.user_name && <p className="text-red-400 text-xs mt-0.5">{errors.user_name.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="hero-email" className="block text-gray-400 text-xs font-medium">Email</label>
+                      <input id="hero-email" type="email" {...register('user_email')} placeholder="you@example.com" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                      {errors.user_email && <p className="text-red-400 text-xs mt-0.5">{errors.user_email.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="hero-phone" className="block text-gray-400 text-xs font-medium">Mobile (+91)</label>
+                      <input id="hero-phone" type="tel" {...register('user_phone')} placeholder="9876543210" inputMode="numeric" autoComplete="tel" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                      {errors.user_phone && <p className="text-red-400 text-xs mt-0.5">{errors.user_phone.message}</p>}
+                    </div>
+                    <div>
+                      <label htmlFor="hero-hear_from" className="block text-gray-400 text-xs font-medium">Where did you hear us? (optional)</label>
+                      <select id="hero-hear_from" {...register('hear_from')} className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 appearance-none cursor-pointer" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}>
+                        {HEAR_FROM_OPTIONS.map((opt) => (
+                          <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    {error && <p className="text-red-400 text-xs">{error}</p>}
+                    <p className="text-amber-400/90 text-xs">100% value satisfaction · Secure payment via Razorpay</p>
+                    <button type="submit" disabled={isSubmitting || !isFormReady} className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold">
+                      {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 99'}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* About Speaker */}
+          <section className="mb-12 mt-16">
+            <h2 className="book-webinar-section-label text-gray-400 mb-6">About Speaker</h2>
+            <div className="flex flex-col sm:flex-row gap-8 sm:gap-10 items-center sm:items-start max-w-4xl">
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56 shrink-0 rounded-2xl overflow-hidden border border-white/10 bg-gray-900/50 shadow-xl">
                 <Image
                   src="/nitesh-prasad-updated-photo-image.png"
                   alt="Nitesh Prasad"
                   fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 95vw, 56rem"
+                  className="object-cover object-[center_20%]"
+                  sizes="14rem"
                 />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[#C69D44] font-semibold text-lg mb-2">Nitesh Prasad</p>
+                <p className="text-gray-200 text-sm leading-relaxed mb-4">
+                  Corporate YouTuber with 680k+ Instagram community. Mentor to 1000+ professionals who have transitioned into Product, Project and AI roles at top companies like Deloitte, JPMorgan, Accenture and Infosys.
+                </p>
+                <p className="text-gray-400 text-sm">
+                  His TEDx talk on career acceleration has 300K+ views. He brings practical frameworks used by professionals at leading MNCs.
+                </p>
               </div>
             </div>
           </section>
@@ -1057,7 +1127,7 @@ export default function BookWebinarClient() {
                           disabled={isSubmitting || !isFormReady}
                           className="book-webinar-cta book-webinar-cta-primary w-full py-3.5 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-base font-semibold shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-shadow"
                         >
-                          {isSubmitting ? 'Opening payment...' : 'Reserve my seat'}
+                          {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 99'}
                         </button>
                         {!isFormReady && !isSubmitting && (
                           <p className="text-center text-gray-500 text-xs">Fill all fields to continue</p>
