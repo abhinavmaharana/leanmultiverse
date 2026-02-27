@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { user_name, user_email, user_phone, hear_from, selected_date, selected_time, zoom_registration_link } = body
+    const { user_name, user_email, user_phone, hear_from, selected_date, selected_time, zoom_registration_link, utm } = body
 
     // Validate required fields
     if (!user_name || !user_email || !user_phone || !selected_date || !selected_time) {
@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
               selected_date,
               selected_time,
               zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK,
+              ...(utm && typeof utm === 'object' && Object.keys(utm).length > 0 && utm),
             },
           })
         ),
@@ -77,6 +78,11 @@ export async function POST(request: NextRequest) {
         zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK || '',
       }
       if (hear_from) orderNotes.hear_from = String(hear_from)
+      if (utm && typeof utm === 'object') {
+        for (const [k, v] of Object.entries(utm)) {
+          if (typeof v === 'string' && v.trim()) orderNotes[k] = v
+        }
+      }
 
       const bookingData: {
         user_name: string

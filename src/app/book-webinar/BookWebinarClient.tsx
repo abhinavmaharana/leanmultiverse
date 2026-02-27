@@ -15,6 +15,7 @@ import {
   WEBINAR_TIME_SLOTS as TIME_SLOTS,
 } from '@/lib/webinar-config'
 import { trackMetaEvent } from '@/lib/meta-pixel'
+import { getAttributionForApi } from '@/lib/attribution'
 import Marquee from 'react-fast-marquee'
 import { testimonials as landingTestimonials } from '@/components/landing/SuccessStories'
 // import { Webinar3DMarquee } from '@/components/book-webinar/Webinar3DMarquee'
@@ -244,10 +245,11 @@ export default function BookWebinarClient() {
     setError(null)
     try {
       const zoomLink = getZoomLinkForDatePaid(data.selected_date)
+      const utm = getAttributionForApi()
       const response = await fetch('/api/razorpay/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, zoom_registration_link: zoomLink }),
+        body: JSON.stringify({ ...data, zoom_registration_link: zoomLink, utm: Object.keys(utm).length > 0 ? utm : undefined }),
       })
       if (!response.ok) {
         const err = await response.json()

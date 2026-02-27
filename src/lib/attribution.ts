@@ -78,6 +78,22 @@ export function getStoredAttribution(): AttributionData | null {
 }
 
 /**
+ * Return UTM params for API payload (e.g. order_notes). Only non-empty string fields.
+ */
+export function getAttributionForApi(): Record<string, string> {
+  const a = getStoredAttribution()
+  if (!a) return {}
+  const out: Record<string, string> = {}
+  if (a.utm_source) out.utm_source = a.utm_source
+  if (a.utm_medium) out.utm_medium = a.utm_medium
+  if (a.utm_campaign) out.utm_campaign = a.utm_campaign
+  if (a.utm_content) out.utm_content = a.utm_content
+  if (a.utm_term) out.utm_term = a.utm_term
+  if (a.referrer) out.referrer = a.referrer
+  return out
+}
+
+/**
  * Return an object suitable to merge into Meta/GA4 event params (only non-empty fields).
  */
 export function getAttributionForEvents(): Record<string, string | number | undefined> {
