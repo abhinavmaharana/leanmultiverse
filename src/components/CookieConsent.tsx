@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
@@ -15,6 +16,7 @@ const SpeedInsights = dynamic(() =>
 )
 
 export default function CookieConsent() {
+  const pathname = usePathname()
   const [consent, setConsent] = useState<Consent>(null)
   const [mounted, setMounted] = useState(false)
 
@@ -26,6 +28,8 @@ export default function CookieConsent() {
     }
     setMounted(true)
   }, [])
+
+  const hideBanner = pathname?.startsWith('/book-webinar')
 
   const setStoredConsent = (value: 'accept' | 'decline') => {
     if (typeof window === 'undefined') return
@@ -47,8 +51,8 @@ export default function CookieConsent() {
         </>
       )}
 
-      {/* Banner: show only when consent not yet given */}
-      {consent === null && (
+      {/* Banner: show only when consent not yet given; hidden on book-webinar to avoid blocking form on mobile */}
+      {consent === null && !hideBanner && (
         <div
           role="dialog"
           aria-label="Cookie consent"

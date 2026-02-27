@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { Raleway } from "next/font/google"
 import Script from "next/script"
 import DeferredLenisWrapper from "@/components/providers/DeferredLenisWrapper"
-import DynamicCustomCursor from "@/components/DynamicCustomCursor"
+import ConditionalCustomCursor from "@/components/ConditionalCustomCursor"
 import DeferredPerfectChatbot from "@/components/DeferredPerfectChatbot"
 import ErrorBoundary from "@/components/ErrorBoundary"
 import CookieConsent from "@/components/CookieConsent"
@@ -225,7 +225,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
           {/* <LoadingProvider> */}
             <DeferredLenisWrapper>
               {children}
-              <DynamicCustomCursor />
+              <ConditionalCustomCursor />
               {/* Lazy load chatbot - only loads when user scrolls or interacts */}
               <DeferredPerfectChatbot />
             </DeferredLenisWrapper>

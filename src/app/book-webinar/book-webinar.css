@@ -1,4 +1,14 @@
 /* Book webinar page: guaranteed base styles so CSS always shows */
+/* Override for book-webinar: avoid scroll-smooth and use clip to reduce scroll container issues */
+@media (max-width: 1023px) {
+  html.book-webinar-active {
+    scroll-behavior: auto;
+  }
+  body.book-webinar-active {
+    overflow-x: clip;
+  }
+}
+/* Avoid overflow scroll container on main - iOS Safari has touch issues with inputs inside overflow:auto */
 .book-webinar-page {
   position: relative;
   width: 100%;
@@ -6,6 +16,7 @@
   background-color: #080809;
   color: #fff;
   overflow-x: hidden;
+  overflow-y: visible;
   scroll-behavior: smooth;
 }
 
@@ -15,6 +26,7 @@
   inset: 0;
   background: #0E0B0A;
   pointer-events: none;
+  z-index: -1;
 }
 
 .book-webinar-page * {
@@ -584,6 +596,42 @@
 
 .bw-mobile-form-card {
   background: linear-gradient(to bottom, #1e1f28, #18191f);
+}
+
+
+/* Mobile form inputs: ensure touch works and no overflow */
+/* ===== MOBILE FORM HARD FIX ===== */
+
+@media (max-width: 1023px) {
+
+  .bw-mobile-form-card {
+    position: relative;
+    isolation: isolate;
+    z-index: 20;
+    pointer-events: auto;
+  }
+
+  .bw-mobile-form-card input,
+  .bw-mobile-form-card select {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+    box-sizing: border-box;
+
+    touch-action: manipulation;
+    -webkit-user-select: text;
+    user-select: text;
+
+    -webkit-tap-highlight-color: rgba(198, 157, 68, 0.2);
+    font-size: 16px; /* prevents iOS zoom */
+  }
+
+}
+
+/* Ensure decorative layers never block touch */
+.book-webinar-hero-glow,
+.book-webinar-page::before {
+  pointer-events: none;
 }
 
 .bw-mobile-input:focus {
