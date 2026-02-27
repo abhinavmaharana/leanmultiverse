@@ -317,7 +317,7 @@ export default function BookWebinarClient() {
           )}
 
           {/* Registration form */}
-          <div className="bw-mobile-form-card rounded-2xl border border-white/10 p-5 mb-6">
+          <div className="bw-mobile-form-card rounded-2xl border border-white/10 p-5 mb-6 relative z-10">
             <p className="text-white text-sm font-medium mb-1">Reserve Your Spot Now <span className="text-[#C69D44]">|For ₹99|</span></p>
             <p className="text-gray-400 text-xs mb-4">
               {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} | 8:00 PM IST
@@ -359,7 +359,7 @@ export default function BookWebinarClient() {
                   id="mobile-name"
                   {...register('user_name')}
                   placeholder="Your full name"
-                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500"
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-3 text-base min-h-[44px] placeholder:text-gray-500"
                 />
                 {errors.user_name && <p className="text-red-400 text-xs mt-1">{errors.user_name.message}</p>}
               </div>
@@ -371,7 +371,7 @@ export default function BookWebinarClient() {
                   type="email"
                   {...register('user_email')}
                   placeholder="you@example.com"
-                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500"
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-3 text-base min-h-[44px] placeholder:text-gray-500"
                 />
                 {errors.user_email && <p className="text-red-400 text-xs mt-1">{errors.user_email.message}</p>}
               </div>
@@ -385,7 +385,7 @@ export default function BookWebinarClient() {
                   placeholder="9876543210"
                   inputMode="numeric"
                   autoComplete="tel"
-                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500"
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-3 text-base min-h-[44px] placeholder:text-gray-500"
                 />
                 {errors.user_phone && <p className="text-red-400 text-xs mt-1">{errors.user_phone.message}</p>}
               </div>
@@ -395,7 +395,7 @@ export default function BookWebinarClient() {
                 <select
                   id="mobile-hear_from"
                   {...register('hear_from')}
-                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 appearance-none cursor-pointer"
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-3 pr-10 text-base min-h-[44px] focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 appearance-none cursor-pointer"
                   style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1.25rem' }}
                 >
                   {HEAR_FROM_OPTIONS.map((opt) => (
