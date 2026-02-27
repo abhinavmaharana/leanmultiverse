@@ -52,6 +52,12 @@ const VALUE_BULLETS = [
   'Practical frameworks used by professionals at firms like Deloitte and JPMorgan.',
 ]
 
+const MOBILE_VALUE_BULLETS = [
+  'Transition to Lucrative Product/ Project Roles',
+  'Powerful AI & Strategic Skills for Tech Roles',
+  'Proven Resume & Linkedin Positioning Strategy',
+]
+
 const bookingSchema = z.object({
   user_name: z.string().min(2, 'Name must be at least 2 characters'),
   user_email: z.string().email('Invalid email address'),
@@ -332,7 +338,301 @@ export default function BookWebinarClient() {
     <>
       <Navbar />
       <main className="book-webinar-page min-h-screen text-white pt-24 pb-16 px-4 sm:px-6">
-        <div className="book-webinar-content max-w-6xl mx-auto">
+        {/* Mobile layout (Figma design) */}
+        <div className="block lg:hidden max-w-lg mx-auto">
+          {/* Webinar banner */}
+          <div className="bw-mobile-banner rounded-lg px-4 py-2.5 mb-4">
+            <p className="text-white text-xs font-medium tracking-wide">
+              LIVE WEBINAR · {availableDates[0] ? format(availableDates[0], 'EEEE, MMM d') : 'Saturday, Feb 28'} · 8:00 PM IST
+            </p>
+          </div>
+
+          {/* Main title */}
+          <h1 className="text-xl font-bold text-white leading-tight mb-4">
+            How Seasoned Professionals Break Into Product, Project & AI Roles
+          </h1>
+
+          {/* Countdown */}
+          {mounted && countdown !== null && (
+            <div className="bw-mobile-countdown rounded-xl px-6 py-4 mb-6 flex justify-center gap-1">
+              <span className="text-[#C69D44] font-bold text-lg tabular-nums">
+                {String(countdown.d).padStart(2, '0')} : {String(countdown.h).padStart(2, '0')} : {String(countdown.m).padStart(2, '0')} : {String(countdown.s).padStart(2, '0')}
+              </span>
+            </div>
+          )}
+
+          {/* Registration form */}
+          <div className="bw-mobile-form-card rounded-2xl border border-white/10 p-5 mb-6">
+            <p className="text-white text-sm font-medium mb-1">Reserve Your Spot Now <span className="text-[#C69D44]">|For ₹99|</span></p>
+            <p className="text-gray-400 text-xs mb-4">
+              {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} | 8:00 PM IST
+            </p>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <input type="hidden" {...register('selected_date')} />
+              <input type="hidden" {...register('selected_time')} />
+
+              {availableDates.length > 0 && (
+                <div>
+                  <p className="text-gray-400 text-xs font-medium mb-1.5">Date</p>
+                  <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
+                    {availableDates.map((d) => {
+                      const dateStr = format(d, 'yyyy-MM-dd')
+                      const isSelected = selectedDate === dateStr
+                      return (
+                        <button
+                          key={dateStr}
+                          type="button"
+                          onClick={() => handleDateSelect(dateStr)}
+                          className={`rounded-xl px-3 py-2.5 text-sm font-medium transition-all border ${
+                            isSelected
+                              ? 'bg-amber-500/20 border-amber-500/60 text-amber-400'
+                              : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30 hover:bg-gray-800'
+                          }`}
+                        >
+                          {format(d, 'EEEE, MMM d')} · 8:00 PM IST
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label htmlFor="mobile-name" className="block text-gray-400 text-xs font-medium">Full name</label>
+                <input
+                  id="mobile-name"
+                  {...register('user_name')}
+                  placeholder="Your full name"
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500"
+                />
+                {errors.user_name && <p className="text-red-400 text-xs mt-1">{errors.user_name.message}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="mobile-email" className="block text-gray-400 text-xs font-medium">Email</label>
+                <input
+                  id="mobile-email"
+                  type="email"
+                  {...register('user_email')}
+                  placeholder="you@example.com"
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500"
+                />
+                {errors.user_email && <p className="text-red-400 text-xs mt-1">{errors.user_email.message}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="mobile-phone" className="block text-gray-400 text-xs font-medium">Mobile (+91)</label>
+                <input
+                  id="mobile-phone"
+                  type="tel"
+                  {...register('user_phone')}
+                  placeholder="9876543210"
+                  inputMode="numeric"
+                  autoComplete="tel"
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 text-sm placeholder:text-gray-500"
+                />
+                {errors.user_phone && <p className="text-red-400 text-xs mt-1">{errors.user_phone.message}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="mobile-hear_from" className="block text-gray-400 text-xs font-medium">Where did you hear us?</label>
+                <select
+                  id="mobile-hear_from"
+                  {...register('hear_from')}
+                  className="bw-mobile-input mt-1 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3.5 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 appearance-none cursor-pointer"
+                  style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1.25rem' }}
+                >
+                  {HEAR_FROM_OPTIONS.map((opt) => (
+                    <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.hear_from && <p className="text-red-400 text-xs mt-1">{errors.hear_from.message}</p>}
+              </div>
+
+              {error && (
+                <div role="alert" className="rounded-lg px-3 py-2 bg-red-400/10 border border-red-400/30">
+                  <p className="text-red-400 text-xs">{error}</p>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={isSubmitting || !isFormReady}
+                className="book-webinar-cta book-webinar-cta-primary w-full py-4 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+              >
+                {isSubmitting ? 'Opening payment...' : 'Reserve My Spot Now'}
+              </button>
+            </form>
+            <p className="text-gray-500 text-xs mt-3 text-center">Your information is safe. We never Share any data.</p>
+          </div>
+
+          {/* Speaker profile */}
+          <div className="bw-mobile-speaker-card rounded-2xl border border-white/10 p-5 mb-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="relative w-56 h-56 rounded-full overflow-hidden mb-3">
+                <Image src="/nitesh-updated-image-area.png" alt="Nitesh Prasad" fill className="object-cover object-top" sizes="144px" />
+              </div>
+              <p className="text-white font-semibold text-lg">Nitesh Prasad</p>
+              <p className="text-gray-400 text-xs mb-2">@CorporateWalaYoutuber</p>
+              <p className="text-gray-300 text-xs mb-2">TOP SPEAKER | Ex-Microsoft | Ex-PwC | SAFe SPC | PMP | CSM | MCT AI</p>
+              <ul className="text-gray-400 text-xs space-y-1 text-left w-full">
+                <li>• 1500+ professionals mentored</li>
+                <li>• 1M+ followers across Instagram</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* What You'll Learn */}
+          <div className="bw-mobile-learn-card rounded-2xl border border-white/10 p-5 mb-6">
+            <h2 className="text-[#C69D44] text-xs font-semibold uppercase tracking-wider mb-4">What You&apos;ll Learn:</h2>
+            <ul className="space-y-3">
+              {MOBILE_VALUE_BULLETS.map((text, i) => (
+                <li key={i} className="flex gap-3 items-start">
+                  <span className="shrink-0 w-5 h-5 rounded-full bg-amber-400/20 text-[#C69D44] flex items-center justify-center text-xs font-bold" aria-hidden>✓</span>
+                  <span className="text-gray-200 text-sm">{text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Value satisfaction */}
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-12 h-12 rounded-full bg-amber-400/20 flex items-center justify-center mb-2">
+              <svg className="w-6 h-6 text-[#C69D44]" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <p className="text-[#C69D44] font-semibold text-sm">100% VALUE SATISFACTION</p>
+          </div>
+
+          {/* Testimonials (same as web) */}
+          <section className="mb-8 overflow-hidden">
+            <h2 className="book-webinar-section-label text-gray-400 mb-6">What participants say</h2>
+            {mounted && (
+              prefersReducedMotion ? (
+                <div className="grid grid-cols-1 gap-4 max-w-lg mx-auto">
+                  {safeTestimonials.slice(0, 6).map((t, i) => (
+                    <div
+                      key={`mobile-t-${t.id}-${i}`}
+                      className="book-webinar-testimonial-card rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28] to-[#18191f] p-5 shadow-xl shadow-black/20 flex flex-col text-left"
+                    >
+                      <div className="flex gap-0.5 mb-3" aria-hidden>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span key={star} className="text-amber-400/80 text-sm">★</span>
+                        ))}
+                      </div>
+                      <p className="text-gray-200 text-sm leading-[1.7] flex-grow line-clamp-5 mb-4">
+                        &ldquo;{t.quote}&rdquo;
+                      </p>
+                      <div className="border-t border-white/10 pt-3">
+                        <p className="text-white font-semibold text-sm">{t.name}</p>
+                        <p className="text-gray-400 text-xs mt-0.5">
+                          {t.role}{t.company ? ` · ${t.company}` : ''}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="book-webinar-testimonials-marquee">
+                  <Marquee speed={30} pauseOnHover gradient={false} className="py-2">
+                    {[...safeTestimonials, ...safeTestimonials].map((t, i) => (
+                      <div
+                        key={`mobile-t-${t.id}-${i}`}
+                        className="book-webinar-testimonial-card mx-3 flex-shrink-0 w-[300px] rounded-2xl border border-white/10 bg-gradient-to-b from-[#1e1f28] to-[#18191f] p-5 shadow-xl shadow-black/20 flex flex-col text-left"
+                      >
+                        <div className="flex gap-0.5 mb-3" aria-hidden>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <span key={star} className="text-amber-400/80 text-sm">★</span>
+                          ))}
+                        </div>
+                        <p className="text-gray-200 text-sm leading-[1.7] flex-grow line-clamp-5 mb-4">
+                          &ldquo;{t.quote}&rdquo;
+                        </p>
+                        <div className="border-t border-white/10 pt-3">
+                          <p className="text-white font-semibold text-sm">{t.name}</p>
+                          <p className="text-gray-400 text-xs mt-0.5">
+                            {t.role}{t.company ? ` · ${t.company}` : ''}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </Marquee>
+                </div>
+              )
+            )}
+          </section>
+
+          {/* Company logos (same as web) */}
+          <section className="book-webinar-trusted mb-8 overflow-hidden">
+            <p className="book-webinar-trusted-headline mb-4">
+              Professionals from India&apos;s top companies trust Lean Multiverse.
+            </p>
+            {mounted && (
+              prefersReducedMotion ? (
+                <div className="flex flex-wrap justify-center items-center gap-4 py-2">
+                  {TRUSTED_COMPANIES.map((c, index) => (
+                    <a
+                      key={`mobile-logo-${index}-${c.domain}`}
+                      href={`https://${c.domain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[100px] h-10 px-4 rounded-lg text-sm font-medium transition-all duration-200"
+                      aria-label={c.name}
+                    >
+                      {logoErrors[index] ? (
+                        <span>{c.name}</span>
+                      ) : (
+                        <Image
+                          src={c.logo}
+                          alt={`${c.name} logo`}
+                          width={120}
+                          height={36}
+                          className="h-8 w-auto object-contain opacity-90 hover:opacity-100 max-h-9"
+                          onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
+                        />
+                      )}
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                <Marquee speed={40} pauseOnHover gradient={false} className="py-2">
+                  {[...TRUSTED_COMPANIES, ...TRUSTED_COMPANIES].map((c, i) => {
+                    const index = i % TRUSTED_COMPANIES.length
+                    return (
+                      <a
+                        key={`mobile-logo-${i}-${c.domain}`}
+                        href={`https://${c.domain}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="book-webinar-trusted-logo-card inline-flex items-center justify-center shrink-0 min-w-[100px] h-10 px-4 rounded-lg text-sm font-medium transition-all duration-200 mx-3"
+                        aria-label={c.name}
+                      >
+                        {logoErrors[index] ? (
+                          <span>{c.name}</span>
+                        ) : (
+                          <Image
+                            src={c.logo}
+                            alt={`${c.name} logo`}
+                            width={120}
+                            height={36}
+                            className="h-8 w-auto object-contain opacity-90 hover:opacity-100 max-h-9"
+                            onError={() => setLogoErrors((prev) => ({ ...prev, [index]: true }))}
+                          />
+                        )}
+                      </a>
+                    )
+                  })}
+                </Marquee>
+              )
+            )}
+          </section>
+        </div>
+
+        <div className="book-webinar-content max-w-6xl mx-auto hidden lg:block">
           {/* Hero */}
           <section className="book-webinar-hero-grid relative">
             <div className="book-webinar-hero-glow" aria-hidden />

@@ -569,3 +569,40 @@
 .bw-modal-container::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
 }
+
+/* Mobile layout (Figma design) */
+.bw-mobile-banner {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bw-mobile-countdown {
+  background: rgba(198, 157, 68, 0.15);
+  border: 1px solid rgba(198, 157, 68, 0.3);
+}
+
+.bw-mobile-form-card {
+  background: linear-gradient(to bottom, #1e1f28, #18191f);
+}
+
+.bw-mobile-input:focus {
+  outline: none;
+  border-color: rgba(198, 157, 68, 0.5);
+  box-shadow: 0 0 0 2px rgba(198, 157, 68, 0.2);
+}
+
+.bw-mobile-speaker-card {
+  background: linear-gradient(to bottom, #1e1f28, #18191f);
+}
+
+.bw-mobile-learn-card {
+  background: linear-gradient(to bottom, #1e1f28, #18191f);
+}
+
+.bw-mobile-testimonial {
+  background: linear-gradient(to bottom, #1e1f28, #18191f);
+}
+
+.bw-mobile-logos {
+  background: rgba(255, 255, 255, 0.02);
+}
