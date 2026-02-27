@@ -17,6 +17,7 @@ import {
 import { trackMetaEvent } from '@/lib/meta-pixel'
 import Marquee from 'react-fast-marquee'
 import { testimonials as landingTestimonials } from '@/components/landing/SuccessStories'
+// import { Webinar3DMarquee } from '@/components/book-webinar/Webinar3DMarquee'
 
 const safeTestimonials = Array.isArray(landingTestimonials) ? landingTestimonials : []
 
@@ -200,19 +201,19 @@ export default function BookWebinarClient() {
     return () => window.removeEventListener('keydown', handleKey)
   }, [showModal])
 
-  // First popup after 5 seconds
+  // First popup after 7 seconds
   useEffect(() => {
     const id = setTimeout(() => {
       modalHasBeenShownRef.current = true
       setShowModal(true)
-    }, 5000)
+    }, 7000)
     return () => clearTimeout(id)
   }, [])
 
   // After user closes, show again after 8 seconds
   useEffect(() => {
     if (!showModal && modalHasBeenShownRef.current) {
-      const id = setTimeout(() => setShowModal(true), 8000)
+      const id = setTimeout(() => setShowModal(true), 7000)
       return () => clearTimeout(id)
     }
   }, [showModal])
@@ -637,6 +638,11 @@ export default function BookWebinarClient() {
               )
             )}
           </section>
+
+          {/* 3D Marquee section (mobile) */}
+          {/* <section className="mb-8 -mx-4 sm:-mx-6">
+            <Webinar3DMarquee onReserveSpot={openModal} />
+          </section> */}
         </div>
 
         <div className="book-webinar-content max-w-6xl mx-auto hidden lg:block">
@@ -882,6 +888,11 @@ export default function BookWebinarClient() {
               )
             )}
           </section>
+
+          {/* 3D Marquee section */}
+          {/* <section className="px-4 sm:px-6">
+            <Webinar3DMarquee onReserveSpot={openModal} />
+          </section> */}
         </div>
 
         {/* Floating contact button (hidden on mobile to avoid overlap with PerfectChatbot) */}
