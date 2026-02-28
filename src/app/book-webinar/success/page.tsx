@@ -22,7 +22,7 @@ function SuccessContent() {
 
   useEffect(() => {
     const attribution = getAttributionForEvents()
-    const purchaseParams = { value: 9, currency: 'INR', ...attribution }
+    const purchaseParams = { value: 99, currency: 'INR', ...attribution }
     trackMetaEvent('Purchase', purchaseParams)
     trackMetaEvent('Lead', attribution)
     trackGA4Event('purchase', purchaseParams)
@@ -78,7 +78,7 @@ function SuccessContent() {
             </div>
             <div className="flex justify-between items-center py-2 border-b border-white/10">
               <span className="text-gray-300">Amount Paid:</span>
-              <span className="text-green-400 font-bold text-lg">₹9</span>
+              <span className="text-green-400 font-bold text-lg">₹99</span>
             </div>
             {formattedDate && (
               <div className="flex justify-between items-center py-2">
