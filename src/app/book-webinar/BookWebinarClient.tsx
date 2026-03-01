@@ -326,70 +326,69 @@ export default function BookWebinarClient() {
 
           {/* Registration form - only render on mobile to avoid duplicate inputs with same register() */}
           {isMobile && (
-          <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-5 mb-6 shadow-xl shadow-black/20">
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
-            <div className="pl-1">
-              <h2 className="text-lg font-semibold text-white mb-1">Reserve your webinar seat</h2>
-              <p className="text-gray-400 text-sm mb-4">
-                {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
-              </p>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-                <input type="hidden" {...register('selected_date')} />
-                <input type="hidden" {...register('selected_time')} />
-                {availableDates.length > 0 && (
-                  <div>
-                    <p className="text-gray-400 text-xs font-medium mb-1">Date</p>
-                    <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
-                      {availableDates.map((d) => {
-                        const dateStr = format(d, 'yyyy-MM-dd')
-                        const isSelected = selectedDate === dateStr
-                        return (
-                          <button
-                            key={dateStr}
-                            type="button"
-                            onClick={() => handleDateSelect(dateStr)}
-                            className={`rounded-lg px-2.5 py-2 text-xs font-medium transition-all border ${
-                              isSelected ? 'bg-amber-500/20 border-amber-500/60 text-amber-400' : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30'
-                            }`}
-                          >
-                            {format(d, 'EEE, MMM d')}
-                          </button>
-                        )
-                      })}
+            <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-5 mb-6 shadow-xl shadow-black/20">
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
+              <div className="pl-1">
+                <h2 className="text-lg font-semibold text-white mb-1">Reserve your webinar seat</h2>
+                <p className="text-gray-400 text-sm mb-4">
+                  {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
+                </p>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                  <input type="hidden" {...register('selected_date')} />
+                  <input type="hidden" {...register('selected_time')} />
+                  {availableDates.length > 0 && (
+                    <div>
+                      <p className="text-gray-400 text-xs font-medium mb-1">Date</p>
+                      <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
+                        {availableDates.map((d) => {
+                          const dateStr = format(d, 'yyyy-MM-dd')
+                          const isSelected = selectedDate === dateStr
+                          return (
+                            <button
+                              key={dateStr}
+                              type="button"
+                              onClick={() => handleDateSelect(dateStr)}
+                              className={`rounded-lg px-2.5 py-2 text-xs font-medium transition-all border ${isSelected ? 'bg-amber-500/20 border-amber-500/60 text-amber-400' : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30'
+                                }`}
+                            >
+                              {format(d, 'EEE, MMM d')}
+                            </button>
+                          )
+                        })}
+                      </div>
                     </div>
+                  )}
+                  <div>
+                    <label htmlFor="mobile-name" className="block text-gray-400 text-xs font-medium">Full name</label>
+                    <input id="mobile-name" {...register('user_name')} placeholder="Your full name" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                    {errors.user_name && <p className="text-red-400 text-xs mt-0.5">{errors.user_name.message}</p>}
                   </div>
-                )}
-                <div>
-                  <label htmlFor="mobile-name" className="block text-gray-400 text-xs font-medium">Full name</label>
-                  <input id="mobile-name" {...register('user_name')} placeholder="Your full name" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
-                  {errors.user_name && <p className="text-red-400 text-xs mt-0.5">{errors.user_name.message}</p>}
-                </div>
-                <div>
-                  <label htmlFor="mobile-email" className="block text-gray-400 text-xs font-medium">Email</label>
-                  <input id="mobile-email" type="email" {...register('user_email')} placeholder="you@example.com" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
-                  {errors.user_email && <p className="text-red-400 text-xs mt-0.5">{errors.user_email.message}</p>}
-                </div>
-                <div>
-                  <label htmlFor="mobile-phone" className="block text-gray-400 text-xs font-medium">Mobile (+91)</label>
-                  <input id="mobile-phone" type="tel" {...register('user_phone')} placeholder="9876543210" inputMode="numeric" autoComplete="tel" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
-                  {errors.user_phone && <p className="text-red-400 text-xs mt-0.5">{errors.user_phone.message}</p>}
-                </div>
-                <div>
-                  <label htmlFor="mobile-hear_from" className="block text-gray-400 text-xs font-medium">Where did you hear us? (optional)</label>
-                  <select id="mobile-hear_from" {...register('hear_from')} className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 appearance-none cursor-pointer" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}>
-                    {HEAR_FROM_OPTIONS.map((opt) => (
-                      <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">{opt.label}</option>
-                    ))}
-                  </select>
-                </div>
-                {error && <p className="text-red-400 text-xs">{error}</p>}
-                <p className="text-amber-400/90 text-xs">100% value satisfaction · Secure payment via Razorpay</p>
-                <button type="submit" disabled={isSubmitting || !isFormReady} className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold">
-                  {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
-                </button>
-              </form>
+                  <div>
+                    <label htmlFor="mobile-email" className="block text-gray-400 text-xs font-medium">Email</label>
+                    <input id="mobile-email" type="email" {...register('user_email')} placeholder="you@example.com" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                    {errors.user_email && <p className="text-red-400 text-xs mt-0.5">{errors.user_email.message}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="mobile-phone" className="block text-gray-400 text-xs font-medium">Mobile (+91)</label>
+                    <input id="mobile-phone" type="tel" {...register('user_phone')} placeholder="9876543210" inputMode="numeric" autoComplete="tel" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                    {errors.user_phone && <p className="text-red-400 text-xs mt-0.5">{errors.user_phone.message}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="mobile-hear_from" className="block text-gray-400 text-xs font-medium">Where did you hear us? (optional)</label>
+                    <select id="mobile-hear_from" {...register('hear_from')} className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 appearance-none cursor-pointer" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}>
+                      {HEAR_FROM_OPTIONS.map((opt) => (
+                        <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">{opt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {error && <p className="text-red-400 text-xs">{error}</p>}
+                  <p className="text-amber-400/90 text-xs">100% value satisfaction · Secure payment via Razorpay</p>
+                  <button type="submit" disabled={isSubmitting || !isFormReady} className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold">
+                    {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
+                  </button>
+                </form>
+              </div>
             </div>
-          </div>
           )}
 
           {/* Company logos (after form on mobile) */}
@@ -574,94 +573,93 @@ export default function BookWebinarClient() {
               </p>
               <p className="book-webinar-hero-creds">Corporate YouTuber | 680k+ Instagram Community</p>
               <p className="book-webinar-hero-badge">Mentor to 1000+ Professionals</p>
-                {mounted && countdown !== null && (
+              {mounted && countdown !== null && (
                 <div className="rounded-xl bg-gray-900/80 border border-white/10 px-6 sm:px-8 py-5 flex flex-col mt-4">
-                    <p className="text-white text-sm font-medium mb-4">Limited Seats – Starting In:</p>
-                    <div className="flex gap-4 sm:gap-8">
-                      {[
-                        { value: countdown.d, label: 'Days' },
-                        { value: countdown.h, label: 'Hrs' },
-                        { value: countdown.m, label: 'Mins' },
-                        { value: countdown.s, label: 'Sec' },
-                      ].map(({ value, label }) => (
-                        <div key={label} className="flex flex-col items-center min-w-[3rem]">
-                          <span className="text-[#C69D44] font-bold text-2xl sm:text-3xl tabular-nums">
-                            {String(value).padStart(2, '0')}
-                          </span>
-                          <span className="text-gray-400 text-xs mt-1.5">{label}</span>
-                        </div>
-                      ))}
-                    </div>
+                  <p className="text-white text-sm font-medium mb-4">Limited Seats – Starting In:</p>
+                  <div className="flex gap-4 sm:gap-8">
+                    {[
+                      { value: countdown.d, label: 'Days' },
+                      { value: countdown.h, label: 'Hrs' },
+                      { value: countdown.m, label: 'Mins' },
+                      { value: countdown.s, label: 'Sec' },
+                    ].map(({ value, label }) => (
+                      <div key={label} className="flex flex-col items-center min-w-[3rem]">
+                        <span className="text-[#C69D44] font-bold text-2xl sm:text-3xl tabular-nums">
+                          {String(value).padStart(2, '0')}
+                        </span>
+                        <span className="text-gray-400 text-xs mt-1.5">{label}</span>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
             </div>
             <div className="book-webinar-hero-right">
               {/* Form - only render on desktop to avoid duplicate inputs with same register() */}
               {!isMobile && (
-              <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl shadow-black/20">
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
-                <div className="pl-1">
-                  <h2 className="text-lg font-semibold text-white mb-1">Reserve your webinar seat</h2>
-                  <p className="text-gray-400 text-sm mb-4">
-                    {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
-                  </p>
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-                    <input type="hidden" {...register('selected_date')} />
-                    <input type="hidden" {...register('selected_time')} />
-                    {availableDates.length > 0 && (
-                      <div>
-                        <p className="text-gray-400 text-xs font-medium mb-1">Date</p>
-                        <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
-                          {availableDates.map((d) => {
-                            const dateStr = format(d, 'yyyy-MM-dd')
-                            const isSelected = selectedDate === dateStr
-                            return (
-                              <button
-                                key={dateStr}
-                                type="button"
-                                onClick={() => handleDateSelect(dateStr)}
-                                className={`rounded-lg px-2.5 py-2 text-xs font-medium transition-all border ${
-                                  isSelected ? 'bg-amber-500/20 border-amber-500/60 text-amber-400' : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30'
-                                }`}
-                              >
-                                {format(d, 'EEE, MMM d')}
-                              </button>
-                            )
-                          })}
+                <div className="relative bg-gradient-to-b from-[#1e1f28] to-[#18191f] border border-white/10 rounded-2xl p-5 sm:p-6 shadow-xl shadow-black/20">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-500/80 to-amber-600/50 rounded-l-2xl" aria-hidden />
+                  <div className="pl-1">
+                    <h2 className="text-lg font-semibold text-white mb-1">Reserve your webinar seat</h2>
+                    <p className="text-gray-400 text-sm mb-4">
+                      {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
+                    </p>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                      <input type="hidden" {...register('selected_date')} />
+                      <input type="hidden" {...register('selected_time')} />
+                      {availableDates.length > 0 && (
+                        <div>
+                          <p className="text-gray-400 text-xs font-medium mb-1">Date</p>
+                          <div className="flex flex-wrap gap-2" role="group" aria-label="Select date">
+                            {availableDates.map((d) => {
+                              const dateStr = format(d, 'yyyy-MM-dd')
+                              const isSelected = selectedDate === dateStr
+                              return (
+                                <button
+                                  key={dateStr}
+                                  type="button"
+                                  onClick={() => handleDateSelect(dateStr)}
+                                  className={`rounded-lg px-2.5 py-2 text-xs font-medium transition-all border ${isSelected ? 'bg-amber-500/20 border-amber-500/60 text-amber-400' : 'bg-gray-800/90 border-white/15 text-white hover:border-white/30'
+                                    }`}
+                                >
+                                  {format(d, 'EEE, MMM d')}
+                                </button>
+                              )
+                            })}
+                          </div>
                         </div>
+                      )}
+                      <div>
+                        <label htmlFor="hero-name" className="block text-gray-400 text-xs font-medium">Full name</label>
+                        <input id="hero-name" {...register('user_name')} placeholder="Your full name" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                        {errors.user_name && <p className="text-red-400 text-xs mt-0.5">{errors.user_name.message}</p>}
                       </div>
-                    )}
-                    <div>
-                      <label htmlFor="hero-name" className="block text-gray-400 text-xs font-medium">Full name</label>
-                      <input id="hero-name" {...register('user_name')} placeholder="Your full name" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
-                      {errors.user_name && <p className="text-red-400 text-xs mt-0.5">{errors.user_name.message}</p>}
-                    </div>
-                    <div>
-                      <label htmlFor="hero-email" className="block text-gray-400 text-xs font-medium">Email</label>
-                      <input id="hero-email" type="email" {...register('user_email')} placeholder="you@example.com" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
-                      {errors.user_email && <p className="text-red-400 text-xs mt-0.5">{errors.user_email.message}</p>}
-                    </div>
-                    <div>
-                      <label htmlFor="hero-phone" className="block text-gray-400 text-xs font-medium">Mobile (+91)</label>
-                      <input id="hero-phone" type="tel" {...register('user_phone')} placeholder="9876543210" inputMode="numeric" autoComplete="tel" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
-                      {errors.user_phone && <p className="text-red-400 text-xs mt-0.5">{errors.user_phone.message}</p>}
-                    </div>
-                    <div>
-                      <label htmlFor="hero-hear_from" className="block text-gray-400 text-xs font-medium">Where did you hear us? (optional)</label>
-                      <select id="hero-hear_from" {...register('hear_from')} className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 appearance-none cursor-pointer" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}>
-                        {HEAR_FROM_OPTIONS.map((opt) => (
-                          <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">{opt.label}</option>
-                        ))}
-                      </select>
-                    </div>
-                    {error && <p className="text-red-400 text-xs">{error}</p>}
-                    <p className="text-amber-400/90 text-xs">100% value satisfaction · Secure payment via Razorpay</p>
-                    <button type="submit" disabled={isSubmitting || !isFormReady} className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold">
-                      {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
-                    </button>
-                  </form>
+                      <div>
+                        <label htmlFor="hero-email" className="block text-gray-400 text-xs font-medium">Email</label>
+                        <input id="hero-email" type="email" {...register('user_email')} placeholder="you@example.com" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                        {errors.user_email && <p className="text-red-400 text-xs mt-0.5">{errors.user_email.message}</p>}
+                      </div>
+                      <div>
+                        <label htmlFor="hero-phone" className="block text-gray-400 text-xs font-medium">Mobile (+91)</label>
+                        <input id="hero-phone" type="tel" {...register('user_phone')} placeholder="9876543210" inputMode="numeric" autoComplete="tel" className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
+                        {errors.user_phone && <p className="text-red-400 text-xs mt-0.5">{errors.user_phone.message}</p>}
+                      </div>
+                      <div>
+                        <label htmlFor="hero-hear_from" className="block text-gray-400 text-xs font-medium">Where did you hear us? (optional)</label>
+                        <select id="hero-hear_from" {...register('hear_from')} className="mt-0.5 w-full rounded-xl bg-gray-800/90 border border-white/15 text-white px-3 py-2 pr-9 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 appearance-none cursor-pointer" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%239ca3af\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '1rem' }}>
+                          {HEAR_FROM_OPTIONS.map((opt) => (
+                            <option key={opt.value || 'none'} value={opt.value} className="bg-gray-800">{opt.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      {error && <p className="text-red-400 text-xs">{error}</p>}
+                      <p className="text-amber-400/90 text-xs">100% value satisfaction · Secure payment via Razorpay</p>
+                      <button type="submit" disabled={isSubmitting || !isFormReady} className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold">
+                        {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
+                      </button>
+                    </form>
+                  </div>
                 </div>
-              </div>
               )}
             </div>
           </section>
@@ -816,7 +814,7 @@ export default function BookWebinarClient() {
               Reserve My Spot Now
               <span className="book-webinar-cta-arrow" aria-hidden>→</span>
             </button>
-            <p className="text-gray-500 text-xs mt-4">₹99 inclusive of GST · Limited seats available</p>
+            <p className="text-gray-500 text-xs mt-4">₹9 inclusive of GST · Limited seats available</p>
           </section> */}
 
           {/* Testimonials marquee */}
@@ -881,7 +879,7 @@ export default function BookWebinarClient() {
           {/* <section className="px-4 sm:px-6">
             <Webinar3DMarquee onReserveSpot={openModal} />
           </section> */}
-          </div>
+        </div>
       </main>
 
       <Footer />

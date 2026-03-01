@@ -18,7 +18,7 @@ export function NewTestimonials() {
                             Our <br /> Testimonials
                         </h2>
                         <p className="text-gray-600 leading-relaxed text-lg md:text-xl font-medium">
-                            Real stories from real professionals who transformed their careers. 
+                            Real stories from real professionals who transformed their careers.
                             Our alumni work at world-class companies like Amazon, Synechron, MetLife, and Accenture.
                         </p>
                     </div>
@@ -51,13 +51,13 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
     }
 
     const fileId = getFileId(testimonial.image || '')
-    
+
     // Initial source: try lh3 link first as it's often most reliable for embeds, falling back to thumbnail
     // Using lh3.googleusercontent.com/d/ format which is very robust for next/image
-    const initialSrc = fileId 
+    const initialSrc = fileId
         ? `https://lh3.googleusercontent.com/d/${fileId}`
         : (testimonial.image || '')
-        
+
     const [imgSrc, setImgSrc] = useState(initialSrc)
     const [imgError, setImgError] = useState(false)
     const [retryCount, setRetryCount] = useState(0)
@@ -116,7 +116,7 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
                         <span className="text-amber-500">{testimonial.company}</span>
                     </p>
                 </div>
-                
+
                 <p className="text-gray-600 text-xs font-bold mb-4 italic leading-relaxed line-clamp-[8] flex-grow whitespace-normal break-words">
                     &ldquo;{testimonial.quote}&rdquo;
                 </p>

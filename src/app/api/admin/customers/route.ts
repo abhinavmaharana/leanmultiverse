@@ -52,97 +52,97 @@ async function handler(request: NextRequest) {
     // Group bookings by customer email
     const customerMap = new Map<string, CustomerPurchase>()
 
-    // Process webinar bookings
-    ;(webinarBookings || []).forEach((booking) => {
-      const email = booking.user_email.toLowerCase()
-      const existing = customerMap.get(email)
+      // Process webinar bookings
+      ; (webinarBookings || []).forEach((booking) => {
+        const email = booking.user_email.toLowerCase()
+        const existing = customerMap.get(email)
 
-      if (existing) {
-        existing.webinarCount += 1
-        existing.totalSpent += 99 // ₹99 per webinar
-        existing.bookings.push({
-          id: booking.id,
-          type: 'webinar',
-          date: booking.selected_date,
-          time: booking.selected_time,
-          status: booking.payment_status,
-          amount: 99,
-        })
-        if (!existing.purchaseTypes.includes('webinar')) {
-          existing.purchaseTypes.push('webinar')
+        if (existing) {
+          existing.webinarCount += 1
+          existing.totalSpent += 9 // ₹9 per webinar
+          existing.bookings.push({
+            id: booking.id,
+            type: 'webinar',
+            date: booking.selected_date,
+            time: booking.selected_time,
+            status: booking.payment_status,
+            amount: 9,
+          })
+          if (!existing.purchaseTypes.includes('webinar')) {
+            existing.purchaseTypes.push('webinar')
+          }
+          if (new Date(booking.created_at) > new Date(existing.lastPurchaseDate)) {
+            existing.lastPurchaseDate = booking.created_at
+          }
+        } else {
+          customerMap.set(email, {
+            email: booking.user_email,
+            name: booking.user_name,
+            phone: booking.user_phone,
+            webinarCount: 1,
+            oneOnOneCount: 0,
+            totalSpent: 9,
+            lastPurchaseDate: booking.created_at,
+            purchaseTypes: ['webinar'],
+            bookings: [
+              {
+                id: booking.id,
+                type: 'webinar',
+                date: booking.selected_date,
+                time: booking.selected_time,
+                status: booking.payment_status,
+                amount: 9,
+              },
+            ],
+          })
         }
-        if (new Date(booking.created_at) > new Date(existing.lastPurchaseDate)) {
-          existing.lastPurchaseDate = booking.created_at
-        }
-      } else {
-        customerMap.set(email, {
-          email: booking.user_email,
-          name: booking.user_name,
-          phone: booking.user_phone,
-          webinarCount: 1,
-          oneOnOneCount: 0,
-          totalSpent: 99,
-          lastPurchaseDate: booking.created_at,
-          purchaseTypes: ['webinar'],
-          bookings: [
-            {
-              id: booking.id,
-              type: 'webinar',
-              date: booking.selected_date,
-              time: booking.selected_time,
-              status: booking.payment_status,
-              amount: 99,
-            },
-          ],
-        })
-      }
-    })
+      })
 
-    // Process one-on-one bookings
-    ;(oneOnOneBookings || []).forEach((booking) => {
-      const email = booking.user_email.toLowerCase()
-      const existing = customerMap.get(email)
+      // Process one-on-one bookings
+      ; (oneOnOneBookings || []).forEach((booking) => {
+        const email = booking.user_email.toLowerCase()
+        const existing = customerMap.get(email)
 
-      if (existing) {
-        existing.oneOnOneCount += 1
-        existing.totalSpent += 1000 // ₹1000 per one-on-one
-        existing.bookings.push({
-          id: booking.id,
-          type: 'one-on-one',
-          date: booking.selected_date,
-          time: booking.selected_time,
-          status: booking.payment_status,
-          amount: 1000,
-        })
-        if (!existing.purchaseTypes.includes('one-on-one')) {
-          existing.purchaseTypes.push('one-on-one')
+        if (existing) {
+          existing.oneOnOneCount += 1
+          existing.totalSpent += 1000 // ₹1000 per one-on-one
+          existing.bookings.push({
+            id: booking.id,
+            type: 'one-on-one',
+            date: booking.selected_date,
+            time: booking.selected_time,
+            status: booking.payment_status,
+            amount: 1000,
+          })
+          if (!existing.purchaseTypes.includes('one-on-one')) {
+            existing.purchaseTypes.push('one-on-one')
+          }
+          if (new Date(booking.created_at) > new Date(existing.lastPurchaseDate)) {
+            existing.lastPurchaseDate = booking.created_at
+          }
+        } else {
+          customerMap.set(email, {
+            email: booking.user_email,
+            name: booking.user_name,
+            phone: booking.user_phone,
+            webinarCount: 0,
+            oneOnOneCount: 1,
+            totalSpent: 1000,
+            lastPurchaseDate: booking.created_at,
+            purchaseTypes: ['one-on-one'],
+            bookings: [
+              {
+                id: booking.id,
+                type: 'one-on-one',
+                date: booking.selected_date,
+                time: booking.selected_time,
+                status: booking.payment_status,
+                amount: 1000,
+              },
+            ],
+          })
         }
-        if (new Date(booking.created_at) > new Date(existing.lastPurchaseDate)) {
-          existing.lastPurchaseDate = booking.created_at
-        }
-      } else {
-        customerMap.set(email, {
-          email: booking.user_email,
-          name: booking.user_name,
-          phone: booking.user_phone,
-          webinarCount: 0,
-          oneOnOneCount: 1,
-          totalSpent: 1000,
-          lastPurchaseDate: booking.created_at,
-          purchaseTypes: ['one-on-one'],
-          bookings: [
-            {
-              id: booking.id,
-              type: 'one-on-one',
-              date: booking.selected_date,
-              time: booking.selected_time,
-              status: booking.payment_status,
-              amount: 1000,
-            },
-          ],
-        })
-      }
-    })
+      })
 
     // Convert map to array
     let customers = Array.from(customerMap.values())
