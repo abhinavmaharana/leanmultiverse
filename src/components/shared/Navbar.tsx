@@ -4,11 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect, useCallback, useRef, memo } from 'react'
+import BookWebinarModal from '@/components/webinar/BookWebinarModal'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 function Navbar() {
   const [open, setOpen] = useState(false)
   const [isTransparent, setIsTransparent] = useState(true)
   const [mounted, setMounted] = useState(false)
+
+  const isMobile = useIsMobile(1023)
 
   const handleScroll = useCallback(() => {
     const heroHeight = window.innerHeight * 0.8
@@ -93,11 +97,16 @@ function Navbar() {
 
       {/* CTA */}
       <div className="flex items-center gap-3">
-        <Link href="/book-webinar">
+        {/* <Link href="/book-webinar">
           <Button className="hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white">
             Book Webinar
           </Button>
-        </Link>
+        </Link> */}
+        {!isMobile ?
+          <BookWebinarModal 
+            source="navbar-web"
+          />
+        : "" }
 
         {/* Mobile Toggle */}
         <button
@@ -152,11 +161,14 @@ function Navbar() {
           >
             Contact
           </Link>
-          <Link href="/book-webinar" className="mt-2" onClick={() => setOpen(false)}>
+          {/* <Link href="/book-webinar" className="mt-2" onClick={() => setOpen(false)}>
             <Button className="w-full rounded-full bg-white/20 border border-white/30 text-white">
               Book Webinar
             </Button>
-          </Link>
+          </Link> */}
+          <BookWebinarModal
+            source="navbar-mob"
+          />
         </div>
       </div>
     </nav>
