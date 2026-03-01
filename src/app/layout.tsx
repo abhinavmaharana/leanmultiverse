@@ -219,7 +219,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
           </>
         ) : null}
       </head>
-      <body className={`${raleway.variable} font-sans antialiased bg-black`} suppressHydrationWarning>
+      <body className={`${raleway.variable} font-sans antialiased bg-white`} suppressHydrationWarning>
         <ClarityProvider />
         <AttributionCapture />
         <ErrorBoundary>
@@ -227,7 +227,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
           {/* <LoadingProvider> */}
             <DeferredLenisWrapper>
               {children}
-              <ConditionalCustomCursor />
+              {/* <ConditionalCustomCursor /> */}
               {/* Lazy load chatbot - only loads when user scrolls or interacts */}
               <DeferredPerfectChatbot />
             </DeferredLenisWrapper>

@@ -124,23 +124,23 @@ export default function LandingPage() {
         <NewVideoSection />
       </LazySection>
 
-      <LazySection id="services" fallback={<div className="h-96 bg-white animate-pulse" />}>
+      <LazySection id="services" fallback={<div className="h-[800px] bg-white animate-pulse" />}>
         <NewServices />
       </LazySection>
 
-      <LazySection id="steps" fallback={<div className="h-64 bg-white animate-pulse" />}>
+      <LazySection id="steps" fallback={<div className="h-[600px] bg-white animate-pulse" />}>
         <NewStepsSection />
       </LazySection>
 
-      <LazySection id="mentor" fallback={<div className="h-[600px] bg-white animate-pulse" />}>
+      <LazySection id="mentor" fallback={<div className="h-[700px] bg-white animate-pulse" />}>
         <NewMentorSection />
       </LazySection>
 
-      <LazySection id="testimonial" fallback={<div className="h-96 bg-white animate-pulse" />}>
+      <LazySection id="testimonial" fallback={<div className="h-[800px] bg-white animate-pulse" />}>
         <NewTestimonials />
       </LazySection>
 
-      <LazySection id="faq" fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
+      <LazySection id="faq" fallback={<div className="h-[500px] bg-white animate-pulse" />}>
         <NewFAQ />
       </LazySection>
 
