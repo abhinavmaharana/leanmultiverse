@@ -1,7 +1,6 @@
 'use client'
 
-import Link from 'next/link'
-import Image from 'next/image'
+import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import { CheckCircle2 } from 'lucide-react'
 
 export function NewHero() {
@@ -9,17 +8,7 @@ export function NewHero() {
         <section id="home" className="w-full pt-12 pb-10 bg-white">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 
-                {/* Brand Icon - Slightly Smaller */}
-                <div className="flex justify-center mb-6">
-                    <Image
-                        src="/IMG_5963.PNG"
-                        alt="Lean Multiverse"
-                        width={80}
-                        height={28}
-                        className="h-8 w-auto object-contain"
-                        priority
-                    />
-                </div>
+    
 
                 {/* Main Headline - Reduced font size and tighter leading */}
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-[1.15] mb-6">
@@ -57,12 +46,8 @@ export function NewHero() {
                 </div>
 
                 {/* Primary CTA - Resized for better fit and mobile responsiveness */}
-                <div className="mb-20 md:mb-24">
-                    <Link href="/book-webinar" className="inline-block w-full sm:w-auto">
-                        <button className="w-full sm:w-64 bg-amber-400 hover:bg-amber-500 text-white font-black text-base md:text-lg px-8 py-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:scale-95">
-                            Claim Your Spot
-                        </button>
-                    </Link>
+                <div className="mb-20 md:mb-24 flex justify-center">
+                    <BookWebinarModal source="new-hero" />
                 </div>
 
                 {/* Social Proof & Impact Stats - Cleaned up spacing */}

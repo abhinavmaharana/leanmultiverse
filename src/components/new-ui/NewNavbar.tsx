@@ -4,11 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, memo } from 'react'
 import { Menu, X } from 'lucide-react'
+import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 
 const navLinks = [
     { label: 'Home', href: '#home' },
     { label: 'Testimonial', href: '#testimonial' },
-    { label: 'Services', href: '#services' },
+    // { label: 'Services', href: '#services' },
     { label: 'Contact', href: '#contact' },
 ]
 
@@ -74,11 +75,7 @@ function NewNavbar() {
 
                 {/* Primary CTA - Aligned to far right */}
                 <div className="hidden md:block">
-                    <Link href="/book-webinar">
-                        <button className="bg-amber-400 hover:bg-amber-500 text-white text-[15px] font-black px-10 py-3 rounded-xl transition-all duration-200 shadow-md border border-transparent transform hover:scale-[1.02]">
-                            Claim Your Spot
-                        </button>
-                    </Link>
+                    <BookWebinarModal source="sticky-bar" />
                 </div>
 
                 {/* Mobile Navigation Toggle */}
@@ -108,11 +105,9 @@ function NewNavbar() {
                             {link.label}
                         </Link>
                     ))}
-                    <Link href="/book-webinar" className="mt-4" onClick={() => setOpen(false)}>
-                        <button className="w-full bg-amber-400 hover:bg-amber-500 text-white text-xl font-black py-5 rounded-2xl transition-all shadow-lg active:scale-95">
-                            Claim Your Spot
-                        </button>
-                    </Link>
+                    <div className="mt-4 flex flex-col" onClick={() => setOpen(false)}>
+                        <BookWebinarModal source="new-hero" />
+                    </div>
                 </div>
             </div>
         </nav>

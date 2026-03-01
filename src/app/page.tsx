@@ -106,7 +106,7 @@ export default function LandingPage() {
     // ============================================================
     // NEW UI layout
     // ============================================================
-    <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col gap-12 md:gap-20">
+    <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
       {/* Critical: render immediately */}
       <div className="flex flex-col">
         <NewAnnouncementBanner />
@@ -124,9 +124,9 @@ export default function LandingPage() {
         <NewVideoSection />
       </LazySection>
 
-      <LazySection id="services" fallback={<div className="h-[800px] bg-white animate-pulse" />}>
+      {/* <LazySection id="services" fallback={<div className="h-[800px] bg-white animate-pulse" />}>
         <NewServices />
-      </LazySection>
+      </LazySection> */}
 
       <LazySection id="steps" fallback={<div className="h-[600px] bg-white animate-pulse" />}>
         <NewStepsSection />
@@ -140,9 +140,9 @@ export default function LandingPage() {
         <NewTestimonials />
       </LazySection>
 
-      <LazySection id="faq" fallback={<div className="h-[500px] bg-white animate-pulse" />}>
+      {/* <LazySection id="faq" fallback={<div className="h-[500px] bg-white animate-pulse" />}>
         <NewFAQ />
-      </LazySection>
+      </LazySection> */}
 
      
 

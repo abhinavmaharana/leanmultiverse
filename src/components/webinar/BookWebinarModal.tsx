@@ -37,13 +37,25 @@ export default function BookWebinarModal({ source }: Props) {
                         </svg>
                     </span>
                     </Button> 
+                : source === "new-hero" ?
+                <Button
+                    className="w-full sm:w-64 bg-amber-400 hover:bg-amber-500 text-white font-black text-base md:text-lg px-8 py-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:scale-95 h-auto"
+                    onClick={() => showModal()}
+                >
+                    Claim Your Spot
+                </Button>
+                : source === "sticky-bar" ?
+                <Button
+                    onClick={() => showModal()}
+                    className="bg-amber-400 hover:bg-amber-500 text-white text-[15px] font-black px-10 py-3 rounded-xl transition-all duration-200 shadow-md border border-transparent transform hover:scale-[1.02] h-auto"
+                >
+                    Claim Your Spot
+                </Button>
                 :
                 <Button
                     onClick={() => showModal()}
                     className={
-                        source === 'sticky-bar'
-                        ? 'ml-4 flashy-gradient-btn py-2 px-5'
-                        : isMobile
+                        isMobile
                         ? 'w-full rounded-full bg-white/20 border border-white/30 text-white font-semibold py-2 px-5 shadow-md transition'
                         : 'hidden md:inline-flex rounded-full bg-white/20 border border-white/30 text-white font-semibold py-2 px-5 shadow-md transition'
                     }

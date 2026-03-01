@@ -1,8 +1,6 @@
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
-import { ChevronDown } from 'lucide-react'
 
 const companies = [
     { name: 'Accenture', logo: '/AccentureLOGO.png', width: 120, height: 40 },
@@ -15,12 +13,9 @@ const companies = [
 ]
 
 export function NewLogoStrip() {
-    const [isExpanded, setIsExpanded] = useState(false)
-
     return (
         <section 
-            className="w-full py-12 bg-white border-y border-gray-100 cursor-pointer group transition-colors hover:bg-gray-50/30"
-            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full py-12 bg-white border-y border-gray-100"
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <p className="text-center text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mb-10">
@@ -31,7 +26,7 @@ export function NewLogoStrip() {
                     {companies.map((company) => (
                         <div 
                             key={company.name} 
-                            className="flex items-center justify-center grayscale opacity-50 group-hover:opacity-80 transition-all duration-500 hover:grayscale-0 hover:opacity-100 hover:scale-110"
+                            className="flex items-center justify-center grayscale opacity-50 hover:opacity-100 transition-all duration-500 hover:grayscale-0 hover:scale-110"
                         >
                             <Image
                                 src={company.logo}
@@ -42,14 +37,10 @@ export function NewLogoStrip() {
                             />
                         </div>
                     ))}
-                    
-                    <div className="flex items-center gap-2 opacity-40 group-hover:opacity-100 transition-opacity ml-4">
-                        <ChevronDown className={`w-5 h-5 text-amber-500 transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`} />
-                    </div>
                 </div>
 
-                {/* Expanded Content */}
-                <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? 'max-h-[300px] opacity-100 mt-12' : 'max-h-0 opacity-0'}`}>
+                {/* Expanded Content - Always Visible Now */}
+                <div className="mt-12">
                     <div className="p-8 bg-amber-50/50 rounded-2xl border border-amber-100 text-center max-w-4xl mx-auto shadow-sm">
                         <h4 className="text-gray-900 font-bold text-lg mb-4 uppercase tracking-tight">Real Industry Impact</h4>
                         <p className="text-gray-700 leading-relaxed md:text-lg">

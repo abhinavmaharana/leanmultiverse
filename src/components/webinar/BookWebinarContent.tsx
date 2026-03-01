@@ -13,6 +13,7 @@ import {
 import { trackMetaEvent } from '@/lib/meta-pixel'
 import { getAttributionForApi } from '@/lib/attribution'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import { useWebinarCountdown } from '@/hooks/useWebinarCountdown'
 import './book-webinar.css'
 
 const HEAR_FROM_OPTIONS = [
@@ -40,17 +41,12 @@ export default function BookWebinarContent() {
   const [error, setError] = useState<string | null>(null)
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   const [logoErrors, setLogoErrors] = useState<Record<number, boolean>>({})
-  const [countdown, setCountdown] = useState<{ d: number; h: number; m: number; s: number } | null>(null)
+  const { countdown } = useWebinarCountdown()
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const scriptLoadedRef = useRef(false)
   const availableDates = useMemo(() => getAvailableDatesPaid(), [])
   const isMobile = useIsMobile(1023)
 
-  const countdownTarget = useMemo(() => {
-    if (availableDates.length === 0) return null
-    const d = availableDates[0]
-    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 14, 30, 0))
-  }, [availableDates])
 
   const {
     register,
@@ -132,23 +128,6 @@ export default function BookWebinarContent() {
       setValue('selected_time', TIME_SLOTS[0].value, { shouldValidate: true })
     }
   }, [availableDates, selectedDate, selectedTime, setValue])
-
-  useEffect(() => {
-    if (!countdownTarget) return
-    const tick = () => {
-      const now = Date.now()
-      const diff = Math.max(0, countdownTarget.getTime() - now)
-      if (diff === 0) { setCountdown(null); return }
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24))
-      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-      const s = Math.floor((diff % (1000 * 60)) / 1000)
-      setCountdown({ d, h, m, s })
-    }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
-  }, [countdownTarget])
 
   const handleDateSelect = (dateStr: string) => {
     setValue('selected_date', dateStr, { shouldValidate: true })
