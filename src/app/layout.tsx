@@ -225,12 +225,12 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
         <ErrorBoundary>
           {/* LoadingProvider disabled; re-enable when full-page loading screen is desired */}
           {/* <LoadingProvider> */}
-            <DeferredLenisWrapper>
+            {/* <DeferredLenisWrapper> */}
               {children}
               {/* <ConditionalCustomCursor /> */}
               {/* Lazy load chatbot - only loads when user scrolls or interacts */}
               <DeferredPerfectChatbot />
-            </DeferredLenisWrapper>
+            {/* </DeferredLenisWrapper> */}
           {/* </LoadingProvider> */}
         </ErrorBoundary>
         <CookieConsent />
