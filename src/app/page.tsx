@@ -132,7 +132,7 @@ export default function LandingPage() {
         <NewStepsSection />
       </LazySection>
 
-      <LazySection id="mentor" fallback={<div className="h-96 bg-gray-50 animate-pulse" />}>
+      <LazySection id="mentor" fallback={<div className="h-[600px] bg-white animate-pulse" />}>
         <NewMentorSection />
       </LazySection>
 
@@ -144,10 +144,7 @@ export default function LandingPage() {
         <NewFAQ />
       </LazySection>
 
-      {/* <LazySection id="contact" fallback={<div className="h-96 bg-white animate-pulse" />}>
-        <NewContactSupport />
-      </LazySection> */}
-
+     
       {/* <StickyEnrollBar /> */}
 
       <div className="mt-auto">
