@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
 import { useIsMobile } from "@/hooks/useIsMobile"
+import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 
 export default function Hero() {
   const isMobile = useIsMobile()
@@ -53,9 +54,9 @@ export default function Hero() {
             {SHOW_WEBINAR_CTA && (
               <div className="relative group w-full sm:w-auto">
                 {!isMobile && (
-                  <div className="absolute -inset-1 bg-white/20 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute bg-white/20 rounded-full blur opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 )}
-                <Link href="/book-webinar">
+                {/* <Link href="/book-webinar">
                   <Button
                     className={`relative text-white rounded-full px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg font-bold border-2 border-white/30 transition-all duration-300 w-full sm:w-auto ${isMobile ? 'bg-white/15' : 'bg-white/10 backdrop-blur-md hover:bg-white/20 hover:border-white/50 hover:shadow-2xl hover:shadow-white/20'}`}
                     data-cursor-hover
@@ -67,7 +68,11 @@ export default function Hero() {
                       </svg>
                     </span>
                   </Button>
-                </Link>
+                </Link> */}
+
+                <BookWebinarModal 
+                  source="hero"
+                />
               </div>
             )}
           </div>

@@ -8,6 +8,8 @@ import ErrorBoundary from "@/components/ErrorBoundary"
 import CookieConsent from "@/components/CookieConsent"
 import AttributionCapture from "@/components/AttributionCapture"
 import ClarityProvider from "@/components/providers/ClarityProvider"
+import StickyBookBar from "@/components/webinar/StickyBookBar"
+import "antd/dist/reset.css";
 import "./globals.css"
 
 // Load Raleway font with optimization - reduced weights for better performance
@@ -232,6 +234,7 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
           {/* </LoadingProvider> */}
         </ErrorBoundary>
         <CookieConsent />
+        <StickyBookBar />
       </body>
     </html>
   )
