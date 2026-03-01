@@ -213,7 +213,7 @@ export default function BookWebinarContent() {
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-        amount: 9900,
+        amount: 900,
         currency: 'INR',
         name: 'Lean Multiverse',
         description: 'Webinar - Strategic Career Accelerator',
@@ -325,7 +325,7 @@ export default function BookWebinarContent() {
                 {mounted && selectedDate
                   ? format(new Date(selectedDate), 'EEEE, MMM d')
                   : 'Select date'}{' '}
-                · 8:00 PM IST · ₹99
+                · 8:00 PM IST · ₹9
               </p>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                 <input type="hidden" {...register('selected_date')} />
@@ -469,15 +469,15 @@ export default function BookWebinarContent() {
                   · Secure payment via Razorpay
                 </p>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !isFormReady}
-                  className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold"
-                >
-                  {isSubmitting
-                    ? 'Opening payment...'
-                    : 'Reserve my spot at just Rs 99'}
-                </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !isFormReady}
+                    className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold"
+                  >
+                    {isSubmitting
+                      ? 'Opening payment...'
+                      : 'Reserve my spot at just Rs 9'}
+                  </button>
               </form>
             </div>
           </div>
@@ -553,7 +553,7 @@ export default function BookWebinarContent() {
                     {mounted && selectedDate
                       ? format(new Date(selectedDate), 'EEEE, MMM d')
                       : 'Select date'}{' '}
-                    · 8:00 PM IST · ₹99
+                    · 8:00 PM IST · ₹9
                   </p>
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                     <input type="hidden" {...register('selected_date')} />
@@ -704,7 +704,7 @@ export default function BookWebinarContent() {
                     >
                       {isSubmitting
                         ? 'Opening payment...'
-                        : 'Reserve my spot at just Rs 99'}
+                        : 'Reserve my spot at just Rs 9'}
                     </button>
                   </form>
                 </div>

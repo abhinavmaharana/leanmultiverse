@@ -145,7 +145,6 @@ export default function LandingPage() {
       </LazySection>
 
      
-      {/* <StickyEnrollBar /> */}
 
       <div className="mt-auto">
         <LazySection fallback={<div className="h-48 bg-[#FFC107] animate-pulse" />}>

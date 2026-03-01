@@ -4,25 +4,18 @@ import { Star, PlayCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-// Enhanced helper function to convert Google Drive sharing link to direct image URL
+// Using the most robust thumbnail format for Google Drive public files
 const getDriveImageUrl = (driveUrl: string): string => {
     if (!driveUrl) return ""
-    
-    // Extract file ID from various formats
-    let fileId = null
     const idMatch = driveUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/)
-    if (idMatch && idMatch[1]) {
-        fileId = idMatch[1]
-    } else {
+    let fileId = idMatch ? idMatch[1] : null
+    if (!fileId) {
         const dMatch = driveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/)
-        if (dMatch && dMatch[1]) {
-            fileId = dMatch[1]
-        }
+        if (dMatch) fileId = dMatch[1]
     }
     
     if (fileId) {
-        // Using thumbnail API which is most reliable for Google Drive public files
-        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`
     }
     
     return driveUrl
@@ -65,7 +58,7 @@ const testimonials = [
 
 export function NewTestimonials() {
     return (
-        <section id="testimonial" className="relative w-full py-24 bg-white overflow-hidden">
+        <section id="testimonial" className="w-full py-24 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20">
@@ -100,6 +93,7 @@ export function NewTestimonials() {
                                     fill
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
                                     sizes="(max-width: 768px) 100vw, 25vw"
+                                    unoptimized
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
