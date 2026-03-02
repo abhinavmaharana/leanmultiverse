@@ -100,7 +100,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
@@ -133,7 +133,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
       trackMetaEvent("Lead", attribution)
       trackGA4Event("generate_lead", attribution)
       setIsSubmitted(true)
-      
+
       // Call onSubmit callback if provided
       if (onSubmit) {
         onSubmit()
@@ -183,7 +183,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100]"
           />
 
           {/* Modal */}
@@ -194,17 +194,17 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
             className="fixed inset-0 z-[100] flex items-center justify-center p-4 pointer-events-none"
             onClick={(e) => e.stopPropagation()}
           >
-            <Card className="bg-gradient-to-br from-gray-900 to-black border border-white/20 rounded-3xl p-8 max-w-md w-full shadow-2xl pointer-events-auto">
+            <Card className="bg-white border border-gray-200 rounded-3xl p-8 max-w-md w-full shadow-2xl pointer-events-auto">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-2">Connect with Our Expert</h2>
-                  <p className="text-gray-400 text-sm">Before connecting, we&apos;d like some information to provide you with a better response</p>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Connect with Our Expert</h2>
+                  <p className="text-gray-500 text-sm">Before connecting, we&apos;d like some information to provide you with a better response</p>
                 </div>
                 <button
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
+                  className="text-gray-400 hover:text-gray-900 transition-colors disabled:opacity-50"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -217,7 +217,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {/* Name */}
                   <div>
-                    <Label htmlFor="name" className="text-white mb-2 block">
+                    <Label htmlFor="name" className="text-gray-900 font-semibold mb-2 block">
                       Full Name *
                     </Label>
                     <Input
@@ -226,7 +226,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
                       value={formData.name}
                       onChange={(e) => handleInputChange("name", e.target.value)}
                       placeholder="Enter your full name"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-yellow-400"
+                      className="bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400"
                       disabled={isSubmitting}
                       required
                     />
@@ -234,7 +234,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
 
                   {/* Email */}
                   <div>
-                    <Label htmlFor="email" className="text-white mb-2 block">
+                    <Label htmlFor="email" className="text-gray-900 font-semibold mb-2 block">
                       Email Address *
                     </Label>
                     <Input
@@ -243,7 +243,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
                       placeholder="your.email@example.com"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-yellow-400"
+                      className="bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400"
                       disabled={isSubmitting}
                       required
                     />
@@ -251,19 +251,19 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
 
                   {/* Country */}
                   <div>
-                    <Label htmlFor="country" className="text-white mb-2 block">
+                    <Label htmlFor="country" className="text-gray-900 font-semibold mb-2 block">
                       Country *
                     </Label>
                     <select
                       id="country"
                       value={formData.countryCode}
                       onChange={(e) => handleCountryChange(e.target.value)}
-                      className="w-full h-9 rounded-md border border-white/20 bg-white/10 text-white px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 disabled:opacity-50"
+                      className="w-full h-9 rounded-md border border-gray-200 bg-gray-50 text-gray-900 px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 disabled:opacity-50"
                       disabled={isSubmitting}
                       required
                     >
                       {countries.map((country, index) => (
-                        <option key={`${country.code}-${country.name}-${index}`} value={country.code} className="bg-gray-900">
+                        <option key={`${country.code}-${country.name}-${index}`} value={country.code} className="bg-white">
                           {country.flag} {country.name} ({country.code})
                         </option>
                       ))}
@@ -272,7 +272,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
 
                   {/* Phone Number */}
                   <div>
-                    <Label htmlFor="phone" className="text-white mb-2 block">
+                    <Label htmlFor="phone" className="text-gray-900 font-semibold mb-2 block">
                       Phone Number *
                     </Label>
                     <div className="flex gap-2">
@@ -281,7 +281,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
                           type="text"
                           value={formData.countryCode}
                           disabled
-                          className="bg-white/5 border-white/20 text-white text-center cursor-not-allowed"
+                          className="bg-gray-100 border-gray-200 text-gray-900 text-center cursor-not-allowed"
                         />
                       </div>
                       <Input
@@ -290,7 +290,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
                         value={formData.phoneNumber}
                         onChange={(e) => handleInputChange("phoneNumber", e.target.value.replace(/\D/g, ""))}
                         placeholder="1234567890"
-                        className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-gray-500 focus:border-yellow-400"
+                        className="flex-1 bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-amber-400 focus:ring-amber-400"
                         disabled={isSubmitting}
                         required
                       />
@@ -299,7 +299,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
 
                   {/* Error Message */}
                   {error && (
-                    <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg text-sm">
+                    <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
                       {error}
                     </div>
                   )}
@@ -308,7 +308,7 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-6 rounded-xl text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold py-6 rounded-xl text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
@@ -325,13 +325,13 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
                 </form>
               ) : (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Thank You!</h3>
-                  <p className="text-gray-400">Your information has been submitted successfully.</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
+                  <p className="text-gray-500">Your information has been submitted successfully.</p>
                 </div>
               )}
             </Card>
