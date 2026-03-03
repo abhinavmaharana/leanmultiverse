@@ -1,148 +1,166 @@
 'use client'
 
-import { useState } from 'react'
-import { Star, PlayCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Star } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
-import Marquee from 'react-fast-marquee'
 import { testimonials } from '@/data/testimonials'
+import { Carousel, Modal } from 'antd'
 
 export function NewTestimonials() {
+    const [slidesToShow, setSlidesToShow] = useState(3)
+    const [autoPlay, setAutoPlay] = useState(true)
+    
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setSlidesToShow(1)
+            } else {
+                setSlidesToShow(3)
+            }
+        }
+        
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+    
     return (
-        <section id="testimonial" className="w-full py-24 bg-white overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mb-16">
-                {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+        <section id="testimonial" className="w-full py-20 bg-white overflow-hidden">
+            <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mb-12">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                     <div className="max-w-3xl">
-                        <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-8 tracking-tight">
-                            Our <br /> Testimonials
+                        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+                            Our Testimonials
                         </h2>
-                        <p className="text-gray-600 leading-relaxed text-lg md:text-xl font-medium">
-                            Real stories from real professionals who transformed their careers.
-                            Our alumni work at world-class companies like Amazon, Synechron, MetLife, and Accenture.
+                        <p className="text-gray-600 text-base md:text-lg">
+                            Real stories from professionals who transformed their careers.
                         </p>
                     </div>
-                    <Link href="/testimonials">
-                        <button className="px-10 py-4 border-2 border-gray-200 rounded-2xl text-gray-900 font-black text-sm uppercase tracking-widest hover:bg-gray-50 transition-all shadow-sm active:scale-95 whitespace-nowrap">
-                            View All
-                        </button>
-                    </Link>
                 </div>
             </div>
-
-            {/* Testimonial Marquee */}
-            <div className="w-full">
-                <Marquee speed={40} pauseOnHover gradient={false} className="py-10">
+            
+            <div className="w-full px-4">
+                <Carousel
+                    dots
+                    arrows
+                    infinite
+                    autoplay={autoPlay}
+                    autoplaySpeed={3000}
+                    draggable
+                    swipeToSlide
+                    pauseOnHover
+                    slidesToShow={slidesToShow}
+                    slidesToScroll={1}
+                    afterChange={() => setAutoPlay(false)}
+                >
                     {testimonials.map((testimonial, index) => (
-                        <TestimonialCard key={index} testimonial={testimonial} />
+                        <div key={index} className="px-3">
+                            <TestimonialCard
+                                testimonial={testimonial}
+                                onInteract={() => setAutoPlay(false)}
+                            />
+                        </div>
                     ))}
-                </Marquee>
+                </Carousel>
             </div>
         </section>
     )
 }
 
-function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
-    // Extract ID initially to allow trying different formats
-    const getFileId = (url: string) => {
-        if (!url) return null
-        const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/)
-        return idMatch ? idMatch[1] : null
+function TestimonialCard({
+    testimonial,
+    onInteract,
+}: {
+    testimonial: typeof testimonials[0]
+    onInteract: () => void
+}) {
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [imageLoaded, setImageLoaded] = useState(false)
+    
+    const openModal = () => {
+        onInteract()
+        setIsModalOpen(true)
     }
-
-    const fileId = getFileId(testimonial.image || '')
-
-    // Initial source: try lh3 link first as it's often most reliable for embeds, falling back to thumbnail
-    // Using lh3.googleusercontent.com/d/ format which is very robust for next/image
-    const initialSrc = fileId
-        ? `https://lh3.googleusercontent.com/d/${fileId}`
-        : (testimonial.image || '')
-
-    const [imgSrc, setImgSrc] = useState(initialSrc)
-    const [imgError, setImgError] = useState(false)
-    const [retryCount, setRetryCount] = useState(0)
-
+    
     return (
-        <div
-            className="w-[280px] md:w-[320px] mx-4 md:mx-6 bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col h-[650px]"
-        >
-            {/* Image Container */}
-            <div className="relative h-[240px] w-full bg-gray-50 overflow-hidden shrink-0">
-                {!imgError && imgSrc ? (
-                    <>
-                        <Image
-                            src={imgSrc}
-                            alt={testimonial.name}
-                            fill
-                            className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
-                            sizes="(max-width: 768px) 100vw, 25vw"
-                            unoptimized
-                            onError={() => {
-                                if (!fileId) {
-                                    setImgError(true)
-                                    return
-                                }
-
-                                // Retry strategy
-                                if (retryCount === 0) {
-                                    // Try thumbnail format
-                                    setImgSrc(`https://drive.google.com/thumbnail?id=${fileId}&sz=w400`)
-                                    setRetryCount(1)
-                                } else if (retryCount === 1) {
-                                    // Try export view format
-                                    setImgSrc(`https://drive.google.com/uc?export=view&id=${fileId}`)
-                                    setRetryCount(2)
-                                } else {
-                                    // Give up
-                                    setImgError(true)
-                                }
-                            }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </>
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-amber-100 text-amber-500 text-6xl font-black uppercase">
-                        {testimonial.name.charAt(0)}
-                    </div>
+        <>
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition p-5 h-[420px] flex flex-col">
+            <div className="flex justify-center mb-4">
+                <div className="relative w-24 h-24 rounded-full border-2 border-amber-400 overflow-hidden bg-gray-100">
+                {!imageLoaded && testimonial.name.charAt(0)}
+                
+                {testimonial.image && (
+                    <Image
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    fill
+                    loading="lazy"
+                    className={`object-cover object-top transition-opacity duration-300 ${
+                        imageLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    onLoad={() => setImageLoaded(true)}
+                    />
                 )}
-            </div>
-
-            {/* Content Area */}
-            <div className="p-6 flex flex-col flex-1 bg-white relative">
-                <div className="mb-3">
-                    <h4 className="font-black text-gray-900 text-sm uppercase tracking-tight leading-tight line-clamp-1">{testimonial.name}</h4>
-                    <p className="text-gray-400 text-[10px] uppercase font-black mt-1 tracking-wider line-clamp-2 min-h-[2.5em]">
-                        {testimonial.role} <br />
-                        <span className="text-amber-500">{testimonial.company}</span>
-                    </p>
                 </div>
-
-                <p className="text-gray-600 text-xs font-bold mb-4 italic leading-relaxed line-clamp-[8] flex-grow whitespace-normal break-words">
-                    &ldquo;{testimonial.quote}&rdquo;
+            </div>
+            
+            <div className="text-center mb-2">
+                <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+                    {testimonial.name}
+                </h4>
+                <p className="text-xs text-gray-500">
+                    {testimonial.role}
+                    <span className="block text-amber-500 font-semibold">
+                        {testimonial.company}
+                    </span>
                 </p>
-
-                {/* Rating & Label */}
-                <div className="mt-auto pt-4 border-t border-gray-50 flex flex-col gap-2">
+            </div>
+            
+            <p className="text-gray-600 text-sm italic text-center line-clamp-4 mb-3">
+                “{testimonial.quote}”...
+            </p>
+            
+            <button
+                onClick={openModal}
+                className="text-xs text-amber-500 font-semibold hover:underline mb-4"
+            >
+                Read More
+            </button>
+            
+                {/* FOOTER */}
+                <div className="mt-auto flex flex-col items-center gap-3 pt-3 border-t border-gray-100">
                     <div className="flex gap-1">
                         {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                         ))}
                     </div>
-                    <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center shadow-sm">
-                                <PlayCircle className="w-3 h-3 text-white fill-white" />
-                            </div>
-                            <span className="text-[10px] font-black text-gray-900 uppercase tracking-widest">Success Story</span>
-                        </div>
-                        {testimonial.achievement && (
-                            <span className="text-[9px] font-bold text-amber-500 bg-amber-50 px-2 py-1 rounded-full border border-amber-100 truncate max-w-[120px]">
-                                {testimonial.achievement}
-                            </span>
-                        )}
-                    </div>
+                    
+                    {testimonial.achievement && (
+                        <span className="text-[10px] font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
+                            {testimonial.achievement}
+                        </span>
+                    )}
                 </div>
             </div>
-        </div>
+        
+            <Modal
+                open={isModalOpen}
+                footer={null}
+                onCancel={() => setIsModalOpen(false)}
+                centered
+                width={600}
+                bodyStyle={{
+                    maxHeight: '60vh',
+                    overflowY: 'auto',
+                }}
+            >
+                <h3 className="text-lg font-semibold mb-3">
+                    {testimonial.name}
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                    “{testimonial.quote}”
+                </p>
+            </Modal>
+        </>
     )
 }
