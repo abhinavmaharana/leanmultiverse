@@ -8,6 +8,7 @@ import ErrorBoundary from "@/components/ErrorBoundary"
 import CookieConsent from "@/components/CookieConsent"
 import AttributionCapture from "@/components/AttributionCapture"
 import ClarityProvider from "@/components/providers/ClarityProvider"
+import MixpanelProvider from "@/components/providers/MixpanelProvider"
 import StickyBookBar from "@/components/webinar/StickyBookBar"
 import "antd/dist/reset.css";
 import "./globals.css"
@@ -101,13 +102,13 @@ export const metadata: Metadata = {
   },
   ...(process.env.GOOGLE_VERIFICATION
     ? {
-        verification: {
-          google: process.env.GOOGLE_VERIFICATION,
-          other: {
-            "google-site-verification": process.env.GOOGLE_VERIFICATION,
-          },
+      verification: {
+        google: process.env.GOOGLE_VERIFICATION,
+        other: {
+          "google-site-verification": process.env.GOOGLE_VERIFICATION,
         },
-      }
+      },
+    }
     : {}),
 }
 
@@ -156,15 +157,15 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
         <link rel="dns-prefetch" href="https://drive.google.com" />
         <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
-        
+
         {/* Preload LCP hero image for landing */}
         <link rel="preload" href="/nitesh-prasad-3.png" as="image" />
-        
+
         {/* Icons */}
         <link rel="icon" href="/logofavicon.PNG" type="image/png" />
         <link rel="apple-touch-icon" href="/logofavicon.PNG" />
         <link rel="shortcut icon" href="/logofavicon.PNG" type="image/png" />
-        
+
         {/* Structured Data */}
         <script
           type="application/ld+json"
@@ -221,16 +222,17 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
       </head>
       <body className={`${raleway.variable} font-sans antialiased bg-white`} suppressHydrationWarning>
         <ClarityProvider />
+        <MixpanelProvider />
         <AttributionCapture />
         <ErrorBoundary>
           {/* LoadingProvider disabled; re-enable when full-page loading screen is desired */}
           {/* <LoadingProvider> */}
-            {/* <DeferredLenisWrapper> */}
-              {children}
-              {/* <ConditionalCustomCursor /> */}
-              {/* Lazy load chatbot - only loads when user scrolls or interacts */}
-              <DeferredPerfectChatbot />
-            {/* </DeferredLenisWrapper> */}
+          {/* <DeferredLenisWrapper> */}
+          {children}
+          {/* <ConditionalCustomCursor /> */}
+          {/* Lazy load chatbot - only loads when user scrolls or interacts */}
+          <DeferredPerfectChatbot />
+          {/* </DeferredLenisWrapper> */}
           {/* </LoadingProvider> */}
         </ErrorBoundary>
         <CookieConsent />
