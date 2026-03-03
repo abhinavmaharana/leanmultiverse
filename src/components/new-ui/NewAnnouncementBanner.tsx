@@ -14,7 +14,7 @@ export function NewAnnouncementBanner() {
                 {mounted && nextWebinarDate && (
                     <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 flex-shrink-0" />
-                        <span className="text-sm md:text-base font-semibold tracking-tight whitespace-nowrap">
+                        <span className="text-sm md:text-base font-bold tracking-tight whitespace-nowrap">
                             Next Webinar: {format(nextWebinarDate, 'EEEE, MMM d')} · 8:00 PM IST
                         </span>
                     </div>
