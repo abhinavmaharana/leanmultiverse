@@ -10,6 +10,7 @@ import { validateEmail, validateIndianPhone, validatePhone } from "@/lib/validat
 import { trackMetaEvent } from "@/lib/meta-pixel"
 import { trackGA4Event } from "@/lib/ga4"
 import { getAttributionForEvents } from "@/lib/attribution"
+import { identifyUser, trackEvent } from "@/components/providers/MixpanelProvider"
 
 interface ContactFormModalProps {
   isOpen: boolean
@@ -132,6 +133,16 @@ export default function ContactFormModal({ isOpen, onClose, onSubmit, source = "
       const attribution = getAttributionForEvents()
       trackMetaEvent("Lead", attribution)
       trackGA4Event("generate_lead", attribution)
+      identifyUser(formData.email, {
+        $name: formData.name,
+        $phone: `${formData.countryCode}${formData.phoneNumber}`,
+        country: formData.country,
+        source: source,
+      })
+      trackEvent('Contact Form Submitted', {
+        source: source,
+        country: formData.country,
+      })
       setIsSubmitted(true)
 
       // Call onSubmit callback if provided
