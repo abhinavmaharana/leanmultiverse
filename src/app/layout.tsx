@@ -8,6 +8,8 @@ import ErrorBoundary from "@/components/ErrorBoundary"
 import CookieConsent from "@/components/CookieConsent"
 import AttributionCapture from "@/components/AttributionCapture"
 import ClarityProvider from "@/components/providers/ClarityProvider"
+import StickyBookBar from "@/components/webinar/StickyBookBar"
+import "antd/dist/reset.css";
 import "./globals.css"
 
 // Load Raleway font with optimization - reduced weights for better performance
@@ -217,21 +219,22 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
           </>
         ) : null}
       </head>
-      <body className={`${raleway.variable} font-sans antialiased bg-black`} suppressHydrationWarning>
+      <body className={`${raleway.variable} font-sans antialiased bg-white`} suppressHydrationWarning>
         <ClarityProvider />
         <AttributionCapture />
         <ErrorBoundary>
           {/* LoadingProvider disabled; re-enable when full-page loading screen is desired */}
           {/* <LoadingProvider> */}
-            <DeferredLenisWrapper>
+            {/* <DeferredLenisWrapper> */}
               {children}
-              <ConditionalCustomCursor />
+              {/* <ConditionalCustomCursor /> */}
               {/* Lazy load chatbot - only loads when user scrolls or interacts */}
               <DeferredPerfectChatbot />
-            </DeferredLenisWrapper>
+            {/* </DeferredLenisWrapper> */}
           {/* </LoadingProvider> */}
         </ErrorBoundary>
         <CookieConsent />
+        <StickyBookBar />
       </body>
     </html>
   )

@@ -3,8 +3,13 @@
 
 /* FlowingMenu marquee animation */
 @keyframes marquee {
-  from { transform: translateX(0%); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -13,9 +18,12 @@
 
 /* Gradient text animation */
 @keyframes gradient {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -28,23 +36,27 @@
 
 /* Mobile-specific optimizations */
 @media (max-width: 640px) {
+
   /* Improve touch targets */
-  button, a, [role="button"] {
+  button,
+  a,
+  [role="button"] {
     min-height: 44px;
     min-width: 44px;
   }
-  
+
   /* Better text readability on mobile */
   body {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
-  
+
   /* Prevent horizontal scroll */
-  html, body {
+  html,
+  body {
     overflow-x: hidden;
   }
-  
+
   /* Improve scrolling on iOS */
   .scroll-smooth {
     -webkit-overflow-scrolling: touch;
@@ -53,6 +65,7 @@
 
 /* Tablet optimizations */
 @media (min-width: 641px) and (max-width: 1024px) {
+
   /* Better spacing for tablets */
   .container {
     padding-left: 1.5rem;
@@ -65,8 +78,24 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-raleway); /* 👈 switched to Raleway */
-  --font-mono: var(--font-geist-mono); /* you can keep Geist Mono if you want */
+
+  /* ── New UI amber brand colors ─────────────────────────── */
+  --color-amber-50: #FFFDE7;
+  --color-amber-100: #FFF9C4;
+  --color-amber-200: #FFF59D;
+  --color-amber-300: #FFF176;
+  --color-amber-400: #FFC107;
+  /* Exact New UI Primary */
+  --color-amber-500: #FFB300;
+  /* Exact New UI Hover */
+  --color-amber-600: #FF9800;
+  --color-amber-700: #F57C00;
+  --color-amber-800: #EF6C00;
+  --color-amber-900: #E65100;
+  --font-sans: var(--font-raleway);
+  /* 👈 switched to Raleway */
+  --font-mono: var(--font-geist-mono);
+  /* you can keep Geist Mono if you want */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -190,10 +219,29 @@
   }
 }
 
+@layer components {
+  .btn-primary {
+    @apply bg-[#FFC107] hover:bg-[#FFB300] text-white font-medium px-6 py-3 rounded-lg transition-all duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent border-2 border-[#FFC107] text-[#FFC107] hover:bg-[#FFC107] hover:text-white font-medium px-6 py-3 rounded-lg transition-all duration-200;
+  }
+  
+  .section-container {
+    @apply w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#FFC107] to-[#FF9800] bg-clip-text text-transparent;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply font-sans bg-background text-foreground;
   }

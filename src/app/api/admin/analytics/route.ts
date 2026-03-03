@@ -33,8 +33,8 @@ async function handler(request: NextRequest) {
     const pendingBookings = allBookings.filter((b) => b.payment_status === 'pending').length
     const failedBookings = allBookings.filter((b) => b.payment_status === 'failed').length
 
-    // Calculate revenue (₹99 for webinar, ₹1000 for one-on-one)
-    const webinarPrice = 99 // ₹99 for webinar
+    // Calculate revenue (₹9 for webinar, ₹1000 for one-on-one)
+    const webinarPrice = 9 // ₹9 for webinar
     const oneOnOnePrice = 1000 // ₹1000 for one-on-one
     const paidWebinarCount = (webinarBookings || []).filter((b) => b.payment_status === 'paid').length
     const paidOneOnOneCount = (oneOnOneBookings || []).filter((b) => b.payment_status === 'paid').length

@@ -216,7 +216,7 @@ export default function AdminDashboardPage() {
               </svg>
             </div>
           </div>
-          
+
           <div className="space-y-5">
             {/* Webinar Revenue */}
             <div className="bg-gradient-to-r from-blue-500/10 to-blue-600/10 rounded-xl p-5 border border-blue-500/20 hover:border-blue-500/40 transition-all">
@@ -229,7 +229,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <div>
                     <p className="text-white font-semibold text-base">Webinar Revenue</p>
-                    <p className="text-gray-400 text-sm">{stats?.paidWebinarCount ?? 0} paid bookings × ₹99</p>
+                    <p className="text-gray-400 text-sm">{stats?.paidWebinarCount ?? 0} paid bookings × ₹9</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -304,7 +304,7 @@ export default function AdminDashboardPage() {
               </svg>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/admin/dashboard/bookings">
               <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 h-14 font-semibold rounded-xl shadow-lg shadow-blue-500/20 transition-all group">
@@ -314,7 +314,7 @@ export default function AdminDashboardPage() {
                 All Bookings
               </Button>
             </Link>
-            
+
             <Link href="/admin/dashboard/customers">
               <Button className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white border-0 h-14 font-semibold rounded-xl shadow-lg shadow-purple-500/20 transition-all group">
                 <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +323,7 @@ export default function AdminDashboardPage() {
                 Customers
               </Button>
             </Link>
-            
+
             <Link href="/admin/dashboard/analytics">
               <Button className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white border-0 h-14 font-semibold rounded-xl shadow-lg shadow-green-500/20 transition-all group">
                 <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -332,7 +332,7 @@ export default function AdminDashboardPage() {
                 Analytics
               </Button>
             </Link>
-            
+
             <Link href="/admin/dashboard/payments">
               <Button className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white border-0 h-14 font-semibold rounded-xl shadow-lg shadow-orange-500/20 transition-all group">
                 <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -341,7 +341,7 @@ export default function AdminDashboardPage() {
                 Payment Diagnostics
               </Button>
             </Link>
-            
+
             <Link href="/admin/dashboard/tracker">
               <Button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black border-0 h-14 font-semibold rounded-xl shadow-lg shadow-yellow-500/20 transition-all group">
                 <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -386,7 +386,7 @@ export default function AdminDashboardPage() {
               </div>
             </div>
           </div>
-          
+
           <div className="group bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-xl p-6 hover:border-purple-500/50 transition-all cursor-pointer">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-purple-500/30 to-purple-600/30 rounded-xl flex items-center justify-center border border-purple-400/30 shadow-lg">
