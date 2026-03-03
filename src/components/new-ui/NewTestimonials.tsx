@@ -9,7 +9,7 @@ import { Carousel, Modal } from 'antd'
 export function NewTestimonials() {
     const [slidesToShow, setSlidesToShow] = useState(3)
     const [autoPlay, setAutoPlay] = useState(true)
-    
+
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < 768) {
@@ -18,12 +18,12 @@ export function NewTestimonials() {
                 setSlidesToShow(3)
             }
         }
-        
+
         handleResize()
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])
-    
+
     return (
         <section id="testimonial" className="w-full py-20 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 mb-12">
@@ -38,7 +38,7 @@ export function NewTestimonials() {
                     </div>
                 </div>
             </div>
-            
+
             <div className="w-full px-4">
                 <Carousel
                     dots
@@ -76,57 +76,56 @@ function TestimonialCard({
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [imageLoaded, setImageLoaded] = useState(false)
-    
+
     const openModal = () => {
         onInteract()
         setIsModalOpen(true)
     }
-    
+
     return (
         <>
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition p-5 h-[420px] flex flex-col">
-            <div className="flex justify-center mb-4">
-                <div className="relative w-24 h-24 rounded-full border-2 border-amber-400 overflow-hidden bg-gray-100">
-                {!imageLoaded && testimonial.name.charAt(0)}
-                
-                {testimonial.image && (
-                    <Image
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    fill
-                    loading="lazy"
-                    className={`object-cover object-top transition-opacity duration-300 ${
-                        imageLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
-                    onLoad={() => setImageLoaded(true)}
-                    />
-                )}
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition p-5 h-[420px] flex flex-col">
+                <div className="flex justify-center mb-4">
+                    <div className="relative w-24 h-24 rounded-full border-2 border-amber-400 overflow-hidden bg-gray-100">
+                        {!imageLoaded && testimonial.name.charAt(0)}
+
+                        {testimonial.image && (
+                            <Image
+                                src={testimonial.image}
+                                alt={testimonial.name}
+                                fill
+                                loading="lazy"
+                                className={`object-cover object-top transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+                                    }`}
+                                onLoad={() => setImageLoaded(true)}
+                            />
+                        )}
+                    </div>
                 </div>
-            </div>
-            
-            <div className="text-center mb-2">
-                <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
-                    {testimonial.name}
-                </h4>
-                <p className="text-xs text-gray-500">
-                    {testimonial.role}
-                    <span className="block text-amber-500 font-semibold">
-                        {testimonial.company}
-                    </span>
+
+                <div className="text-center mb-2">
+                    <h4 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+                        {testimonial.name}
+                    </h4>
+                    <p className="text-xs text-gray-500">
+                        {testimonial.role}
+                        <span className="block text-amber-500 font-semibold">
+                            {testimonial.company}
+                        </span>
+                    </p>
+                </div>
+
+                <p className="text-gray-600 text-sm italic text-center line-clamp-4 mb-3">
+                    “{testimonial.quote}”...
                 </p>
-            </div>
-            
-            <p className="text-gray-600 text-sm italic text-center line-clamp-4 mb-3">
-                “{testimonial.quote}”...
-            </p>
-            
-            <button
-                onClick={openModal}
-                className="text-xs text-amber-500 font-semibold hover:underline mb-4"
-            >
-                Read More
-            </button>
-            
+
+                <button
+                    onClick={openModal}
+                    className="text-xs text-amber-500 font-semibold hover:underline mb-4"
+                >
+                    Read More
+                </button>
+
                 {/* FOOTER */}
                 <div className="mt-auto flex flex-col items-center gap-3 pt-3 border-t border-gray-100">
                     <div className="flex gap-1">
@@ -134,7 +133,7 @@ function TestimonialCard({
                             <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                         ))}
                     </div>
-                    
+
                     {testimonial.achievement && (
                         <span className="text-[10px] font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full">
                             {testimonial.achievement}
@@ -142,16 +141,18 @@ function TestimonialCard({
                     )}
                 </div>
             </div>
-        
+
             <Modal
                 open={isModalOpen}
                 footer={null}
                 onCancel={() => setIsModalOpen(false)}
                 centered
                 width={600}
-                bodyStyle={{
-                    maxHeight: '60vh',
-                    overflowY: 'auto',
+                styles={{
+                    body: {
+                        maxHeight: '60vh',
+                        overflowY: 'auto',
+                    },
                 }}
             >
                 <h3 className="text-lg font-semibold mb-3">
