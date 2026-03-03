@@ -67,7 +67,7 @@ export default function Footer() {
               </Link>
             </div>
             <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-              Transforming careers through enterprise agility and digital transformation education. 
+              Transforming careers through enterprise agility and digital transformation education.
               Join 600,000+ professionals who have advanced their careers with us.
             </p>
             <div className="flex flex-col gap-2 text-sm sm:text-base">
@@ -87,14 +87,14 @@ export default function Footer() {
             </div>
             <div className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4">
               {SOCIAL_LINKS.map((social, index) => (
-                <a 
+                <a
                   key={index}
-                  href={social.href} 
+                  href={social.href}
                   className="text-gray-400 hover:text-yellow-400 transition-colors"
                   aria-label={social.name}
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d={social.path}/>
+                    <path d={social.path} />
                   </svg>
                 </a>
               ))}
@@ -117,8 +117,8 @@ export default function Footer() {
                       {link.text}
                     </Link>
                   ) : (
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
                     >
                       {link.text}
@@ -145,8 +145,8 @@ export default function Footer() {
                       {link.text}
                     </Link>
                   ) : (
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
                     >
                       {link.text}
@@ -173,8 +173,8 @@ export default function Footer() {
                       {link.text}
                     </Link>
                   ) : (
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="text-gray-300 hover:text-yellow-400 transition-colors"
                     >
                       {link.text}
@@ -205,4 +205,3 @@ export default function Footer() {
     </footer>
   )
 }
-  

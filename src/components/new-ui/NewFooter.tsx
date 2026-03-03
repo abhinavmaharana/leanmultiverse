@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Linkedin, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
 
 const socialLinks = [
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Youtube, href: '#', label: 'YouTube' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/company/leanmultiverse', label: 'LinkedIn' },
+    { icon: Twitter, href: 'https://twitter.com/leanmultiverse', label: 'Twitter' },
+    { icon: Instagram, href: 'https://www.instagram.com/leanmultiverse', label: 'Instagram' },
+    { icon: Facebook, href: 'https://www.facebook.com/leanmultiverse', label: 'Facebook' },
 ];
 
 export function NewFooter() {
