@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '../ui/Button';
+import BookAiMlWebinarModal from './BookAiMlWebinarModal';
 import { cn } from '@/lib/utils';
 
 const mentors = [
@@ -35,16 +35,6 @@ const mentors = [
     desc: "EXPERT IN BIG DATA ANALYTICS AND PREDICTIVE MODELING FOR SCALE.",
     points: ["BIG DATA PIPELINES", "PREDICTIVE ANALYTICS", "SCALABLE ML"],
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800"
-  },
-  {
-    id: "ARSH",
-    name: "ARSH",
-    role: "AI PRODUCT MANAGER",
-    location: "SAN FRANCISCO, USA",
-    tagline: "PRODUCT LEAD AT OPENAI.",
-    desc: "FOCUSES ON BRINGING AI PRODUCTS FROM CONCEPT TO MARKET DOMINANCE.",
-    points: ["AI PRODUCT STRATEGY", "USER-CENTRIC AI", "MARKET ANALYSIS"],
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=800"
   }
 ];
 
@@ -56,18 +46,18 @@ export const Mentors = () => {
     <section className="bg-black py-24 px-4 md:px-12 relative overflow-hidden min-h-screen flex flex-col items-center">
       {/* 3D Swirling Tubes Background (Image 3) */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-[-20%] w-[80%] h-full pointer-events-none opacity-80">
-          <img 
-            src="https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=2000" 
-            alt="3D Swirl Left" 
-            className="w-full h-full object-contain mix-blend-screen"
+        <div className="absolute top-0 w-[50%] h-full pointer-events-none opacity-80" style={{ left: '-10%' }}>
+          <img
+            src="/mentor-jigar.png"
+            alt="3D Swirl Left"
+            className="w-full h-full object-cover mix-blend-screen"
           />
         </div>
-        <div className="absolute top-0 right-[-20%] w-[80%] h-full pointer-events-none opacity-80 scale-x-[-1]">
-          <img 
-            src="https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&q=80&w=2000" 
-            alt="3D Swirl Right" 
-            className="w-full h-full object-contain mix-blend-screen"
+        <div className="absolute top-0 rotate-180 w-[50%] h-full pointer-events-none opacity-80 scale-x-[-1]" style={{ right: '-10%' }}>
+          <img
+            src="/image.png"
+            alt="3D Swirl Right"
+            className="w-full h-full object-cover mix-blend-screen"
           />
         </div>
         {/* Dark overlay to make text pop */}
@@ -95,7 +85,7 @@ export const Mentors = () => {
                 onClick={() => setActiveTab(m.id)}
                 className={cn(
                   "flex-1 py-5 text-[10px] md:text-xs font-orbitron tracking-[0.2em] transition-all uppercase font-bold border-r border-[#0047FF]/30 last:border-none",
-                  activeTab === m.id ? "text-white bg-[#0047FF]" : "text-white/40 hover:text-white/60 bg-[#1A1A1A]/50"
+                  activeTab === m.id ? "text-white bg-[#0047FF]" : "text-white bg-[#111] hover:bg-[#222]"
                 )}
               >
                 {m.name}
@@ -124,7 +114,7 @@ export const Mentors = () => {
                         {activeMentor.location}
                       </h4>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <p className="text-white/90 font-orbitron text-[11px] md:text-[13px] font-bold uppercase tracking-widest leading-relaxed">
                         {activeMentor.tagline}
@@ -144,14 +134,9 @@ export const Mentors = () => {
                   </motion.div>
                 </AnimatePresence>
               </div>
-              
+
               <div className="mt-auto pt-8 relative z-20">
-                <Button 
-                  showIcon={false}
-                  className="bg-[#0047FF] hover:bg-blue-600 px-10 py-3 rounded-none text-[11px]"
-                >
-                  BOOK AT RS 9
-                </Button>
+                <BookAiMlWebinarModal source="mentors" />
               </div>
             </div>
 

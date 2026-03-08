@@ -1,9 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import BookWebinarModal from './BookWebinarModal'
 
 export default function StickyBookBar() {
+    const pathname = usePathname()
+
+    // Hide on AI/ML page — it has its own sticky bar
+    if (pathname?.startsWith('/ai-ml')) return null
+
     return (
         <>
             {/* Sticky bar */}

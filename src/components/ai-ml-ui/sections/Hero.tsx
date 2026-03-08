@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Logo } from '../ui/Logo';
 import { Button } from '../ui/Button';
+import BookAiMlWebinarModal from './BookAiMlWebinarModal';
 
 export const Hero = () => {
   return (
@@ -33,9 +34,7 @@ export const Hero = () => {
       {/* Navbar */}
       <div className="w-full max-w-[1400px] flex justify-between items-center z-10 relative px-4">
         <Logo />
-        <Button variant="primary" className="bg-[#FF0000] px-6 py-3 h-fit">
-          BOOK AT RS 9
-        </Button>
+        <BookAiMlWebinarModal source="hero" />
       </div>
 
       {/* Main Content */}
@@ -77,9 +76,7 @@ export const Hero = () => {
           <Button variant="outline" className="px-10 py-4 min-w-[200px]">
             BROCHURE
           </Button>
-          <Button variant="primary" className="px-10 py-4 min-w-[200px]">
-            BOOK AT RS 9
-          </Button>
+          <BookAiMlWebinarModal source="hero" />
         </div>
       </div>
 
