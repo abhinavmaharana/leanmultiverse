@@ -184,7 +184,7 @@ export const ModernCertificationRoadmap = () => {
                     <div className={`w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center transition-colors duration-500 ${
                       activeTab === level.id ? level.color + ' text-white' : 'bg-gray-100 text-gray-400 group-hover:bg-gray-200'
                     }`}>
-                      {React.cloneElement(level.icon as React.ReactElement, { className: "w-4 h-4 md:w-5 md:h-5" })}
+                      {React.cloneElement(level.icon as React.ReactElement<{ className?: string }>, { className: "w-4 h-4 md:w-5 md:h-5" })}
                     </div>
                     <div>
                       <span className={`block text-[8px] md:text-[10px] font-black uppercase tracking-widest mb-0.5 ${
@@ -242,7 +242,7 @@ export const ModernCertificationRoadmap = () => {
                       className="bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 group flex items-start gap-3 md:gap-5"
                     >
                       <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 ${activeTab === 'fundamentals' ? 'bg-amber-50 text-amber-500' : activeTab === 'associate' ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-900'} group-hover:bg-amber-400 group-hover:text-white`}>
-                        {React.cloneElement(getCertIcon(cert.code || cert.title), { className: "w-4 h-4 md:w-5 md:h-5" })}
+                        {React.cloneElement(getCertIcon(cert.code || cert.title) as React.ReactElement<{ className?: string }>, { className: "w-4 h-4 md:w-5 md:h-5" })}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2 mb-1">
