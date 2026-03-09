@@ -8,7 +8,7 @@ import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 
 const navLinks = [
     { label: 'Home', href: '#home', badge: null },
-    { label: 'AI-ML Details', href: '/ai-ml', badge: '🔥 Hot' },
+    { label: 'Learn AI/ML', href: '/ai-ml', badge: '🔥 Hot' },
     { label: 'Testimonial', href: '#testimonial', badge: null },
     // { label: 'Services', href: '#services' },
     { label: 'Contact', href: '#contact', badge: null },
