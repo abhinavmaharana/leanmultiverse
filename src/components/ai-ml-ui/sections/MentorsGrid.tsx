@@ -57,7 +57,7 @@ const mentors = [
 ];
 
 export const MentorsGrid = () => {
-  // Duplicate mentors to create seamless loop
+  // Duplicate mentors to create seamless loop for mobile carousel
   const duplicatedMentors = [...mentors, ...mentors, ...mentors, ...mentors];
 
   return (
@@ -66,12 +66,6 @@ export const MentorsGrid = () => {
         @keyframes marquee {
           0% { transform: translateX(0); }
           100% { transform: translateX(calc(-300px * 3 - 2rem * 3)); }
-        }
-        @media (min-width: 768px) {
-          @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-400px * 3 - 2rem * 3)); }
-          }
         }
         .marquee-content {
           display: flex;
@@ -99,65 +93,122 @@ export const MentorsGrid = () => {
         </div>
       </div>
 
-      {/* Auto-scrolling Carousel */}
-      <div className="relative w-full overflow-hidden py-4">
+      {/* Desktop Grid View */}
+      <div className="hidden md:grid grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {mentors.map((m, i) => (
+          <motion.div
+            key={m.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15 }}
+            className="relative group cursor-default"
+          >
+            {/* Image Container with Custom Shape */}
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] mb-8 bg-gray-100 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]">
+              <img
+                src={m.image}
+                alt={m.name}
+                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
+              />
+
+              {/* Overlay on Hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="absolute bottom-8 left-8 right-8 translate-y-10 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+                <p className="text-white text-xs leading-relaxed mb-4 font-medium">
+                  {m.desc}
+                </p>
+                {m.points && (
+                  <ul className="mb-6 space-y-1.5">
+                    {m.points.map((p, idx) => (
+                      <li key={idx} className="text-white/90 font-bold text-[10px] tracking-widest uppercase flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 bg-amber-500 flex-shrink-0" />
+                        <span className="truncate">{p}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="flex items-center gap-4">
+                  <a 
+                    href={m.linkedin} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-blue-600 transition-all border border-white/20"
+                  >
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                  <a href="#" className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-gray-900 transition-all border border-white/20">
+                    <ExternalLink className="w-5 h-5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Info Area */}
+            <div className="px-4">
+              <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1 block">
+                {m.company ? `${m.company}${m.location ? ` · ${m.location}` : ''}` : m.location}
+              </span>
+              <h3 className="text-gray-900 font-black text-2xl uppercase tracking-tight mb-1">
+                {m.name}
+              </h3>
+              <p className="text-gray-400 font-bold text-sm uppercase tracking-tight">
+                {m.role}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Mobile Auto-scrolling Carousel View */}
+      <div className="relative w-full overflow-hidden py-4 md:hidden">
         <div className="marquee-content">
           {duplicatedMentors.map((m, i) => (
             <div
               key={`${m.id}-${i}`}
-              className="relative group cursor-default w-[300px] md:w-[400px] flex-shrink-0"
+              className="relative group cursor-default w-[300px] flex-shrink-0"
             >
               {/* Image Container with Custom Shape */}
-              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] mb-8 bg-gray-100 shadow-xl transition-transform duration-500 md:group-hover:scale-[1.02]">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] mb-8 bg-gray-100 shadow-xl transition-transform duration-500">
                 <img
                   src={m.image}
                   alt={m.name}
-                  className="w-full h-full object-cover transition-all duration-700 md:group-hover:scale-110 grayscale-[0.2] md:group-hover:grayscale-0"
+                  className="w-full h-full object-cover transition-all duration-700 grayscale-[0.2]"
                 />
 
-                {/* Overlay - visible on hover for desktop, always visible details for mobile */}
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 opacity-70 md:hidden" />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 hidden md:block" />
+                {/* Mobile persistent overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-70" />
 
-                <div className="absolute bottom-6 left-6 right-6 md:translate-y-10 md:group-hover:translate-y-0 transition-transform duration-500 md:opacity-0 md:group-hover:opacity-100 opacity-100 translate-y-0">
-                  <p className="text-white text-[10px] md:text-xs leading-relaxed mb-4 font-medium line-clamp-4 md:line-clamp-none">
+                <div className="absolute bottom-6 left-6 right-6 translate-y-0 opacity-100">
+                  <p className="text-white text-[10px] leading-relaxed mb-4 font-medium line-clamp-4">
                     {m.desc}
                   </p>
-                  {m.points && (
-                    <ul className="mb-4 md:mb-6 space-y-1 md:space-y-1.5 hidden sm:block">
-                      {m.points.map((p, idx) => (
-                        <li key={idx} className="text-white/90 font-bold text-[8px] md:text-[10px] tracking-widest uppercase flex items-center gap-2">
-                          <span className="w-1 md:w-1.5 h-1 md:h-1.5 bg-amber-500 flex-shrink-0" />
-                          <span className="truncate">{p}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <div className="flex items-center gap-3 md:gap-4">
+                  <div className="flex items-center gap-3">
                     <a 
                       href={m.linkedin} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-blue-600 transition-all border border-white/20"
+                      className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-blue-600 transition-all border border-white/20"
                     >
-                      <Linkedin className="w-4 h-4 md:w-5 md:h-5" />
+                      <Linkedin className="w-4 h-4" />
                     </a>
-                    <a href="#" className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-gray-900 transition-all border border-white/20">
-                      <ExternalLink className="w-4 h-4 md:w-5 md:h-5" />
+                    <a href="#" className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-gray-900 transition-all border border-white/20">
+                      <ExternalLink className="w-4 h-4" />
                     </a>
                   </div>
                 </div>
               </div>
 
               {/* Info Area */}
-              <div className="px-4">
+              <div className="px-4 text-center">
                 <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1 block">
                   {m.company ? `${m.company}${m.location ? ` · ${m.location}` : ''}` : m.location}
                 </span>
-                <h3 className="text-gray-900 font-black text-xl md:text-2xl uppercase tracking-tight mb-1">
+                <h3 className="text-gray-900 font-black text-xl uppercase tracking-tight mb-1">
                   {m.name}
                 </h3>
-                <p className="text-gray-400 font-bold text-xs md:text-sm uppercase tracking-tight">
+                <p className="text-gray-400 font-bold text-xs uppercase tracking-tight">
                   {m.role}
                 </p>
               </div>
