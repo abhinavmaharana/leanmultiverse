@@ -33,7 +33,7 @@ export const CareerRoles = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-gray-50 py-16 px-4 md:px-12 flex flex-col items-center">
+    <section className="bg-gray-50 py-12 md:py-24 px-4 md:px-12 flex flex-col items-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

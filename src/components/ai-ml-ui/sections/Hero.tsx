@@ -8,7 +8,7 @@ import BookAiMlWebinarModal from './BookAiMlWebinarModal';
 
 export const Hero = () => {
   return (
-    <section className="relative flex flex-col items-center pt-4 pb-10 px-4 md:px-12 text-center overflow-hidden bg-white">
+    <section className="relative flex flex-col items-center pt-4 pb-12 md:pb-20 px-4 md:px-12 text-center overflow-hidden bg-white">
       {/* Light Background Effect */}
       <div className="absolute inset-0 z-0 opacity-30">
         <div 

@@ -33,6 +33,7 @@ const SOCIAL_LINKS = [
 
 const QUICK_LINKS = [
   { href: "#home", text: "Home" },
+  { href: "/ai-ml", text: "AI-ML Details" },
   { href: "#stories", text: "Success Stories" },
   { href: "/services", text: "Services" },
   { href: "#contact", text: "Contact" },

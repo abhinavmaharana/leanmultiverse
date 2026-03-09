@@ -8,6 +8,7 @@ import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 
 const navLinks = [
     { label: 'Home', href: '#home' },
+    { label: 'AI-ML Details', href: '/ai-ml' },
     { label: 'Testimonial', href: '#testimonial' },
     // { label: 'Services', href: '#services' },
     { label: 'Contact', href: '#contact' },

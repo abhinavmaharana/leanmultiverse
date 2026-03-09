@@ -90,6 +90,7 @@ function Navbar() {
       {/* Desktop Nav */}
       <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-white bg-transparent">
         <Link href="#home" className="hover:opacity-80">Home</Link>
+        <Link href="/ai-ml" className="hover:opacity-80">AI-ML Details</Link>
         <Link href="#stories" className="hover:opacity-80">Success Stories</Link>
         <Link href="/services" className="hover:opacity-80">Services</Link>
         <Link href="#contact" className="hover:opacity-80">Contact</Link>
@@ -139,6 +140,13 @@ function Navbar() {
             onClick={() => setOpen(false)}
           >
             Home
+          </Link>
+          <Link
+            href="/ai-ml"
+            className="block py-3 text-white font-semibold hover:text-yellow-400 transition"
+            onClick={() => setOpen(false)}
+          >
+            AI-ML Details
           </Link>
           <Link
             href="#stories"
