@@ -7,11 +7,11 @@ import { Menu, X } from 'lucide-react'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 
 const navLinks = [
-    { label: 'Home', href: '#home' },
-    { label: 'AI-ML Details', href: '/ai-ml' },
-    { label: 'Testimonial', href: '#testimonial' },
+    { label: 'Home', href: '#home', badge: null },
+    { label: 'AI-ML Details', href: '/ai-ml', badge: '🔥 Hot' },
+    { label: 'Testimonial', href: '#testimonial', badge: null },
     // { label: 'Services', href: '#services' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Contact', href: '#contact', badge: null },
 ]
 
 function NewNavbar() {
@@ -66,9 +66,14 @@ function NewNavbar() {
                             <Link
                                 key={link.label}
                                 href={link.href}
-                                className="text-gray-800 hover:text-amber-400 transition-colors duration-200 text-[15.5px] font-bold whitespace-nowrap tracking-wide"
+                                className="relative text-gray-800 hover:text-amber-400 transition-colors duration-200 text-[15.5px] font-bold whitespace-nowrap tracking-wide flex items-center gap-2"
                             >
                                 {link.label}
+                                {link.badge && (
+                                    <span className="inline-flex items-center gap-0.5 bg-gradient-to-r from-orange-400 to-red-500 text-white text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full animate-pulse shadow-sm">
+                                        {link.badge}
+                                    </span>
+                                )}
                             </Link>
                         ))}
                     </div>
@@ -100,10 +105,15 @@ function NewNavbar() {
                         <Link
                             key={link.label}
                             href={link.href}
-                            className="block py-4 text-gray-900 font-black hover:text-amber-400 transition-colors text-xl tracking-tight px-4 rounded-xl hover:bg-white"
+                            className="flex items-center gap-2 py-4 text-gray-900 font-black hover:text-amber-400 transition-colors text-xl tracking-tight px-4 rounded-xl hover:bg-white"
                             onClick={() => setOpen(false)}
                         >
                             {link.label}
+                            {link.badge && (
+                                <span className="inline-flex items-center gap-0.5 bg-gradient-to-r from-orange-400 to-red-500 text-white text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full animate-pulse">
+                                    {link.badge}
+                                </span>
+                            )}
                         </Link>
                     ))}
                     <div className="mt-4 flex flex-col" onClick={() => setOpen(false)}>
