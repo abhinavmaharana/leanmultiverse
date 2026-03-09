@@ -29,14 +29,17 @@ export const metadata: Metadata = {
   keywords: [
     "AI course",
     "machine learning course",
+    "Machine Learning course",
+    "Artificial intelligence training",
     "artificial intelligence training",
     "Microsoft Azure AI certification",
     "AWS machine learning certification",
     "AI engineer",
-    "data scientist",
+    "Data scientist",
     "ML engineer",
     "AI career",
     "deep learning",
+    "Deep learning",
   ],
   openGraph: {
     title: "AI & Machine Learning Course | Learn from Industry Experts",

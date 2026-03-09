@@ -38,8 +38,38 @@ const problems = [
 ];
 
 export const Problem = () => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  // Auto-scroll logic for mobile
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      if (window.innerWidth < 768 && scrollRef.current) {
+        const nextIndex = (activeIndex + 1) % problems.length;
+        const scrollAmount = scrollRef.current.offsetWidth * nextIndex;
+        
+        scrollRef.current.scrollTo({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+        setActiveIndex(nextIndex);
+      }
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [activeIndex]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollPosition = e.currentTarget.scrollLeft;
+    const cardWidth = e.currentTarget.offsetWidth;
+    const newIndex = Math.round(scrollPosition / cardWidth);
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex);
+    }
+  };
+
   return (
-    <section className="bg-white pt-12 pb-24 px-4 md:px-12 flex flex-col items-center">
+    <section className="bg-white pt-12 pb-12 md:pb-24 px-4 md:px-12 flex flex-col items-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -74,33 +104,60 @@ export const Problem = () => {
         Many AI programs promise quick results but fail to teach the skills companies actually expect from engineers. Students often finish these courses with theoretical knowledge but without the practical experience required to work on real AI systems or apply for industry roles.
       </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl">
-        {problems.map((item, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="relative group h-full"
-          >
-            {/* Ambient Background Light (Outside/Behind the card) */}
-            <div className="absolute -inset-4 bg-amber-400/20 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-700 scale-75 group-hover:scale-110" />
-            
-            <div className="relative flex flex-col items-start p-8 rounded-2xl border border-gray-100 bg-white transition-all duration-500 group-hover:border-amber-400 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_-12px_rgba(251,191,36,0.2)] z-10 h-full">
-              <div className="w-14 h-14 bg-gray-900 text-white flex items-center justify-center mb-6 rounded-xl transition-all duration-300 group-hover:bg-amber-400 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)]">
-                {item.icon}
+      <div className="w-full relative px-4 md:px-0 max-w-7xl">
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex md:grid md:grid-cols-3 gap-6 md:gap-8 overflow-x-auto md:overflow-x-visible pb-8 md:pb-0 snap-x snap-mandatory no-scrollbar"
+        >
+          {problems.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="relative group min-w-[85vw] md:min-w-0 h-full snap-center"
+            >
+              {/* Ambient Background Light (Outside/Behind the card) */}
+              <div className="absolute -inset-4 bg-amber-400/20 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-700 scale-75 group-hover:scale-110" />
+              
+              <div className="relative flex flex-col items-start p-6 md:p-8 rounded-2xl border border-gray-100 bg-white transition-all duration-500 group-hover:border-amber-400 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_-12px_rgba(251,191,36,0.2)] z-10 h-full">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-900 text-white flex items-center justify-center mb-6 rounded-xl transition-all duration-300 group-hover:bg-amber-400 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)]">
+                  {item.icon}
+                </div>
+                <h3 className="font-bold text-sm md:text-lg mb-4 text-gray-900 tracking-tight leading-snug uppercase transition-colors duration-300 group-hover:text-amber-600">
+                  {item.title}
+                </h3>
+                <p className="text-gray-500 font-sans text-xs md:text-sm leading-relaxed transition-colors duration-300 group-hover:text-gray-700 flex-1">
+                  {item.desc}
+                </p>
               </div>
-              <h3 className="font-bold text-base md:text-lg mb-4 text-gray-900 tracking-tight leading-snug uppercase transition-colors duration-300 group-hover:text-amber-600">
-                {item.title}
-              </h3>
-              <p className="text-gray-500 font-sans text-xs md:text-sm leading-relaxed transition-colors duration-300 group-hover:text-gray-700 flex-1">
-                {item.desc}
-              </p>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
+        
+        {/* Mobile Scroll Indicator (Dots) */}
+        <div className="flex md:hidden justify-center gap-2 mt-4">
+          {problems.map((_, i) => (
+            <div 
+              key={i} 
+              className={`transition-all duration-300 rounded-full ${activeIndex === i ? 'w-4 bg-amber-400' : 'w-1.5 bg-gray-200'}`} 
+              style={{ height: '6px' }}
+            />
+          ))}
+        </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}} />
     </section>
   );
 };

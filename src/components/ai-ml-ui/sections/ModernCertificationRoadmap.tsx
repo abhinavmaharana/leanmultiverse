@@ -115,7 +115,7 @@ export const ModernCertificationRoadmap = () => {
   const activeCerts = getCerts();
 
   return (
-    <section className="bg-white py-16 px-4 overflow-hidden">
+    <section className="bg-white py-12 md:py-24 px-4 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
