@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import LazySection from "@/components/shared/LazySection";
-import { NewAnnouncementBanner } from "@/components/new-ui/NewAnnouncementBanner";
+import { AiMlAnnouncementBanner } from "@/components/ai-ml-ui/AiMlAnnouncementBanner";
 import NewNavbar from "@/components/new-ui/NewNavbar";
 import { NewFooter } from "@/components/new-ui/NewFooter";
 import { Hero } from "@/components/ai-ml-ui/sections/Hero";
@@ -51,7 +51,7 @@ export default function AIMLPage() {
   return (
     <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
       <div className="flex flex-col">
-        {/* <NewAnnouncementBanner /> */}
+        <AiMlAnnouncementBanner />
         <NewNavbar />
       </div>
 
