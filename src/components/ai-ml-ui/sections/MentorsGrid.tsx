@@ -23,16 +23,17 @@ const mentors = [
   {
     id: "JIGAR",
     name: "Jigar",
-    role: "AI Researcher",
-    company: "Ex-Google AI",
-    location: "Mumbai, India",
-    desc: "Specialized in NLP and LLM evolution with deep roots in academic and industrial research.",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800",
+    role: "Lead Engineer",
+    company: "",
+    location: "Melbourne, Australia",
+    desc: "Lead Engineer with experience in building scalable software systems and applying AI/ML technologies to solve real-world business problems.\n\nExperience includes developing intelligent systems, integrating machine learning into production environments, and leading engineering teams on data-driven solutions.",
+    image: "/mentors/jigar.png",
     color: "blue",
     points: [
-      "NLP Architectures",
-      "LLM Fine-Tuning",
-      "AI Ethics"
+      "AI & Machine Learning Systems",
+      "Intelligent Software Solutions",
+      "Scalable Data-Driven Platforms",
+      "Applied Predictive Models"
     ]
   },
   {
@@ -118,7 +119,7 @@ export const MentorsGrid = () => {
               {/* Info Area */}
               <div className="px-4">
                 <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-1 block">
-                    {m.company} {m.location ? `· ${m.location}` : ''}
+                    {m.company ? `${m.company}${m.location ? ` · ${m.location}` : ''}` : m.location}
                 </span>
                 <h3 className="text-gray-900 font-black text-2xl uppercase tracking-tight mb-1">
                     {m.name}
