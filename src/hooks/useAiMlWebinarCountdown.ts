@@ -11,8 +11,8 @@ export function useAiMlWebinarCountdown() {
   const countdownTarget = useMemo(() => {
     if (availableDates.length === 0) return null
     const d = availableDates[0]
-    // Webinar at 8:00 PM IST (14:30 UTC)
-    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 14, 30, 0))
+    // Webinar at 9:00 PM IST (15:30 UTC)
+    return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 15, 30, 0))
   }, [availableDates])
 
   useEffect(() => {
