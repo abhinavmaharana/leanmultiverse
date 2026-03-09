@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import Razorpay from 'razorpay'
-import { createAiMlEnrollment } from '@/lib/db-helpers'
+import { createAiMlWebinarBooking } from '@/lib/db-helpers'
 import { isValidEmailFormat, isValidIndianPhone, normalizeIndianPhone } from '@/lib/validators'
 import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
 import { withRetry, withTimeout, HIGH_DEMAND_MESSAGE } from '@/lib/http-utils'
@@ -17,12 +17,12 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { user_name, user_email, user_phone, hear_from, utm } = body
+    const { user_name, user_email, user_phone, hear_from, selected_date, selected_time, zoom_registration_link, utm } = body
 
     // Validate required fields
-    if (!user_name || !user_email || !user_phone) {
+    if (!user_name || !user_email || !user_phone || !selected_date || !selected_time) {
       return NextResponse.json(
-        { error: 'Name, email and phone are required' },
+        { error: 'All fields are required' },
         { status: 400 }
       )
     }
@@ -56,6 +56,9 @@ export async function POST(request: NextRequest) {
               user_email,
               user_phone: cleanPhone,
               ...(hear_from && { hear_from: String(hear_from) }),
+              selected_date,
+              selected_time,
+              zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK,
               course_type: 'ai-ml',
               ...(utm && typeof utm === 'object' && Object.keys(utm).length > 0 && utm),
             },
@@ -65,23 +68,42 @@ export async function POST(request: NextRequest) {
     )
 
     // Create enrollment in database
-    let enrollment
+    let booking
     try {
-      enrollment = await createAiMlEnrollment({
+      const orderNotes: Record<string, string> = {
         user_name,
         user_email,
         user_phone: cleanPhone,
+        selected_date,
+        selected_time,
+        course_type: 'ai-ml',
+        zoom_registration_link: zoom_registration_link || process.env.ZOOM_REGISTRATION_LINK || '',
+      }
+      if (hear_from) orderNotes.hear_from = String(hear_from)
+      if (utm && typeof utm === 'object') {
+        for (const [k, v] of Object.entries(utm)) {
+          if (typeof v === 'string' && v.trim()) orderNotes[k] = v
+        }
+      }
+
+      booking = await createAiMlWebinarBooking({
+        user_name,
+        user_email,
+        user_phone: cleanPhone,
+        selected_date,
+        selected_time,
         razorpay_order_id: order.id,
-        amount_paid: 9,
+        zoom_registration_link: zoom_registration_link || undefined,
+        order_notes: orderNotes,
       })
     } catch (dbError) {
       console.error('Database error (continuing with order creation):', dbError)
-      enrollment = null
+      booking = null
     }
 
     return NextResponse.json({
       orderId: order.id,
-      enrollmentId: enrollment?.id || `temp_${order.id}`,
+      bookingId: booking?.id || `temp_${order.id}`,
       amount: order.amount,
       currency: order.currency,
     })

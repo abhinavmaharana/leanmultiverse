@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import Razorpay from 'razorpay'
-import { getAiMlEnrollmentByOrderId, updateAiMlEnrollmentByOrderId, createAiMlEnrollment } from '@/lib/db-helpers'
+import { getAiMlWebinarBookingByOrderId, updateAiMlWebinarBookingByOrderId, createAiMlWebinarBooking } from '@/lib/db-helpers'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -51,49 +51,52 @@ export async function POST(request: NextRequest) {
       console.error('Error capturing AI/ML payment:', error)
     }
 
-    // Get enrollment from database
-    let enrollment = await getAiMlEnrollmentByOrderId(razorpay_order_id)
+    // Get booking from database
+    let booking = await getAiMlWebinarBookingByOrderId(razorpay_order_id)
 
-    // If enrollment doesn't exist, create from Razorpay order notes
-    if (!enrollment) {
+    // If booking doesn't exist, create from Razorpay order notes
+    if (!booking) {
       try {
         const order = await razorpay.orders.fetch(razorpay_order_id)
         const orderNotes = order.notes as Record<string, string> | null
 
-        if (orderNotes?.user_name && orderNotes?.user_email) {
-          enrollment = await createAiMlEnrollment({
+        if (orderNotes?.user_name && orderNotes?.user_email && orderNotes?.selected_date && orderNotes?.selected_time) {
+          booking = await createAiMlWebinarBooking({
             user_name: orderNotes.user_name,
             user_email: orderNotes.user_email,
             user_phone: orderNotes.user_phone,
+            selected_date: orderNotes.selected_date,
+            selected_time: orderNotes.selected_time,
             razorpay_order_id: razorpay_order_id,
-            amount_paid: 9,
+            zoom_registration_link: orderNotes.zoom_registration_link || undefined,
+            order_notes: typeof order.notes === 'object' && order.notes !== null ? order.notes as Record<string, string> : undefined,
           })
-          console.log('Created AI/ML enrollment from Razorpay order notes:', enrollment.id)
+          console.log('Created AI/ML booking from Razorpay order notes:', booking.id)
         } else {
           return NextResponse.json(
-            { error: 'Enrollment not found and cannot be created from order data' },
+            { error: 'Booking not found and cannot be created from order data' },
             { status: 404 }
           )
         }
       } catch (fetchError) {
         console.error('Error fetching order from Razorpay:', fetchError)
         return NextResponse.json(
-          { error: 'Enrollment not found and failed to fetch order data' },
+          { error: 'Booking not found and failed to fetch order data' },
           { status: 404 }
         )
       }
     }
 
-    // Update enrollment with payment details
-    await updateAiMlEnrollmentByOrderId(razorpay_order_id, {
+    // Update booking with payment details
+    await updateAiMlWebinarBookingByOrderId(razorpay_order_id, {
       razorpay_payment_id,
       payment_status: 'paid',
-      email_sent: true,
     })
 
     return NextResponse.json({
       success: true,
-      message: 'Payment verified and AI/ML enrollment confirmed',
+      message: 'Payment verified and AI/ML booking confirmed',
+      bookingId: booking.id,
     })
   } catch (error) {
     console.error('Error verifying AI/ML payment:', error)

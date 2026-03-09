@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { format } from 'date-fns'
+import { getAvailableDatesAiMl, getZoomLinkForDateAiMl, AI_ML_WEBINAR_TIME_SLOTS as TIME_SLOTS } from '@/lib/ai-ml-webinar-config'
 import { trackMetaEvent } from '@/lib/meta-pixel'
 import { getAttributionForApi } from '@/lib/attribution'
 import { useIsMobile } from '@/hooks/useIsMobile'
@@ -22,6 +24,8 @@ const bookingSchema = z.object({
   user_email: z.string().email('Invalid email address'),
   user_phone: z.string().min(10, 'Phone number must be at least 10 digits'),
   hear_from: z.string().min(1, 'Please select where you heard about us'),
+  selected_date: z.string().min(1, 'Please select a date'),
+  selected_time: z.string().min(1, 'Please select a time slot'),
 })
 
 type BookingFormData = z.infer<typeof bookingSchema>
@@ -33,10 +37,12 @@ export default function BookAiMlWebinarContent() {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   const scriptLoadedRef = useRef(false)
   const isMobile = useIsMobile(1023)
+  const availableDates = useMemo(() => getAvailableDatesAiMl(), [])
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
     watch,
   } = useForm<BookingFormData>({
@@ -47,16 +53,33 @@ export default function BookAiMlWebinarContent() {
       user_email: '',
       user_phone: '',
       hear_from: '',
+      selected_date: '',
+      selected_time: TIME_SLOTS[0]?.value ?? '20:00',
     },
   })
 
+  const selectedDate = watch('selected_date')
+  const selectedTime = watch('selected_time')
   const userName = watch('user_name')
   const userEmail = watch('user_email')
   const userPhone = watch('user_phone')
   const hearFrom = watch('hear_from')
-  const isFormReady = userName && userEmail && userPhone && hearFrom && isValid
+  const isFormReady = selectedDate && selectedTime && userName && userEmail && userPhone && hearFrom && isValid
 
   useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    if (availableDates.length > 0 && !selectedDate) {
+      setValue('selected_date', format(availableDates[0], 'yyyy-MM-dd'), { shouldValidate: true })
+    }
+    if (TIME_SLOTS.length >= 1 && !selectedTime) {
+      setValue('selected_time', TIME_SLOTS[0].value, { shouldValidate: true })
+    }
+  }, [availableDates, selectedDate, selectedTime, setValue])
+
+  const handleDateSelect = (dateStr: string) => {
+    setValue('selected_date', dateStr, { shouldValidate: true })
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as typeof window & { Razorpay?: unknown }).Razorpay) {
@@ -95,17 +118,18 @@ export default function BookAiMlWebinarContent() {
     setIsSubmitting(true)
     setError(null)
     try {
+      const zoomLink = getZoomLinkForDateAiMl(data.selected_date)
       const utm = getAttributionForApi()
       const response = await fetch('/api/razorpay/create-ai-ml-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, utm: Object.keys(utm).length > 0 ? utm : undefined }),
+        body: JSON.stringify({ ...data, zoom_registration_link: zoomLink, utm: Object.keys(utm).length > 0 ? utm : undefined }),
       })
       if (!response.ok) {
         const err = await response.json()
         throw new Error(err.error || 'Failed to create booking')
       }
-      const { orderId, enrollmentId } = await response.json()
+      const { orderId, bookingId } = await response.json()
 
       const waitForRazorpay = (): Promise<void> =>
         new Promise((resolve, reject) => {
@@ -162,13 +186,14 @@ export default function BookAiMlWebinarContent() {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
-                enrollment_id: enrollmentId,
+                booking_id: bookingId,
               }),
             })
             if (verifyRes.ok) {
               const url = new URL('/ai-ml/success', window.location.origin)
               url.searchParams.set('payment_id', response.razorpay_payment_id)
               url.searchParams.set('order_id', response.razorpay_order_id)
+              url.searchParams.set('date', data.selected_date)
               window.location.href = url.toString()
             } else {
               const err = await verifyRes.json().catch(() => ({}))
@@ -180,7 +205,7 @@ export default function BookAiMlWebinarContent() {
           }
         },
         prefill: { name: data.user_name, email: data.user_email, contact: data.user_phone },
-        theme: { color: '#0047FF' },
+        theme: { color: '#fbbf24' },
         modal: { ondismiss: () => setIsSubmitting(false) },
       }
       new Razorpay(options).open()
@@ -190,8 +215,9 @@ export default function BookAiMlWebinarContent() {
     }
   }
 
-  const inputClasses = "mt-1 w-full rounded-xl border border-gray-200 bg-white text-gray-900 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+  const inputClasses = "mt-1 w-full rounded-xl border border-gray-200 bg-white text-gray-900 px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
   const labelClasses = "block text-[11px] text-gray-600 font-semibold"
+
 
   /* ───── Mobile layout ───── */
   const mobileForm = (
@@ -213,10 +239,13 @@ export default function BookAiMlWebinarContent() {
             Reserve your webinar seat
           </h2>
           <p className="text-xs text-gray-600 mb-4">
-            AI & ML Webinar · ₹9
+            {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+            <input type="hidden" {...register('selected_date')} />
+            <input type="hidden" {...register('selected_time')} />
+            
             <div>
               <label htmlFor="aiml-mobile-name" className={labelClasses}>Full name</label>
               <input id="aiml-mobile-name" {...register('user_name')} placeholder="Your full name" className={inputClasses} />
@@ -313,7 +342,7 @@ export default function BookAiMlWebinarContent() {
           {!isMobile && (
             <div className="relative bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-[0_22px_55px_rgba(15,23,42,0.14)]">
               <div
-                className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-blue-600 rounded-l-2xl"
+                className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-400 to-yellow-500 rounded-l-2xl"
                 aria-hidden
               />
               <div className="pl-2">
@@ -321,10 +350,13 @@ export default function BookAiMlWebinarContent() {
                   Reserve your webinar seat
                 </h2>
                 <p className="text-xs text-gray-600 mb-4">
-                  AI & ML Webinar · ₹9
+                  {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                  <input type="hidden" {...register('selected_date')} />
+                  <input type="hidden" {...register('selected_time')} />
+                  
                   <div>
                     <label htmlFor="aiml-desk-name" className={labelClasses}>Full name</label>
                     <input id="aiml-desk-name" {...register('user_name')} placeholder="Your full name" className={inputClasses} />
@@ -359,7 +391,7 @@ export default function BookAiMlWebinarContent() {
 
                   {error && <p className="text-red-500 text-xs">{error}</p>}
                   <p className="text-[11px] text-gray-500">
-                    <span className="font-semibold text-blue-600">100% value satisfaction</span> · Secure payment via Razorpay
+                    <span className="font-semibold text-yellow-600">100% value satisfaction</span> · Secure payment via Razorpay
                   </p>
 
                   <button

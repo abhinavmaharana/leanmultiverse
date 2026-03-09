@@ -74,6 +74,36 @@ export interface CreateAiMlEnrollmentData {
   amount_paid?: number
 }
 
+// AI/ML Webinar Bookings
+export interface AiMlWebinarBooking {
+  id: string
+  user_name: string
+  user_email: string
+  user_phone: string
+  selected_date: string
+  selected_time: string
+  razorpay_order_id: string | null
+  razorpay_payment_id: string | null
+  payment_status: 'pending' | 'paid' | 'failed'
+  meet_link: string | null
+  zoom_registration_link?: string | null
+  order_notes?: Record<string, string> | null
+  calendar_invite_sent: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface CreateAiMlWebinarBookingData {
+  user_name: string
+  user_email: string
+  user_phone: string
+  selected_date: string
+  selected_time: string
+  razorpay_order_id?: string
+  zoom_registration_link?: string
+  order_notes?: Record<string, string>
+}
+
 // Generic Course Enrollment types
 export interface CourseEnrollment {
   id: string

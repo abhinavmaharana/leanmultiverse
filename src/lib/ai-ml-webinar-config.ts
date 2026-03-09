@@ -8,20 +8,24 @@ export const AI_ML_WEBINAR_TIME_SLOTS = [
 
 // AI/ML Zoom links by month-day
 const AI_ML_ZOOM_LINKS: Record<string, string> = {
-  '3-14': 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ',
-  '3-21': 'https://us06web.zoom.us/meeting/register/4ZWJwZVSTYSPbpwh5au3BA',
+  '3-13': 'https://us06web.zoom.us/meeting/register/LPqnsJAdQ52TeBIT3iLtHQ',
+  '3-20': 'https://us06web.zoom.us/meeting/register/C4kAMe3XTKmCYQOKo_eAAg',
+  '3-27': 'https://us06web.zoom.us/meeting/register/RnjPqT0sQfyWSJED-LohWQ#/registration',
 }
-const AI_ML_ZOOM_FALLBACK = 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ'
+const AI_ML_ZOOM_FALLBACK = 'https://us06web.zoom.us/meeting/register/LPqnsJAdQ52TeBIT3iLtHQ'
 
 function isWebinarTimePast(dateStr: string): boolean {
   const [year, month, day] = dateStr.split('-').map(Number)
+  // 8:00 PM IST = 14:30 UTC
   const webinarAt = new Date(Date.UTC(year, month - 1, day, 14, 30, 0))
   return webinarAt.getTime() <= Date.now()
 }
 
+// Note: JS Date month is 0-indexed. March is 2.
 const AI_ML_DATES_CONFIG = [
-  { month: 2, day: 14 },
-  { month: 2, day: 21 },
+  { month: 2, day: 13 },
+  { month: 2, day: 20 },
+  { month: 2, day: 27 },
 ]
 
 export function getAvailableDatesAiMl(): Date[] {
