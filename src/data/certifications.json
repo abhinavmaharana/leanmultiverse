@@ -1,0 +1,40 @@
+{
+  "title": "The Industry Map: Microsoft Azure Certification Pathway",
+  "subtitle": "A structured progression from cloud fundamentals to specialized AI and data architecture. Focus specifically on the foundational tier to build your base: AI-900, AZ-900, DP-900.",
+  "tiers": [
+    {
+      "id": "expert",
+      "label": "Expert",
+      "color": "gold",
+      "certifications": [
+        { "title": "Azure Solutions Architect", "code": "AZ-305" },
+        { "title": "Azure DevOps Engineer", "code": "AZ-400" }
+      ]
+    },
+    {
+      "id": "associate",
+      "label": "Associate",
+      "color": "blue",
+      "certifications": [
+        { "title": "Azure Administrator", "code": "AZ-104" },
+        { "title": "Azure Developer", "code": "AZ-204" },
+        { "title": "Azure Security Engineer", "code": "AZ-500" },
+        { "title": "Azure Data Scientist", "code": "DP-100" },
+        { "title": "Microsoft Power BI Data Analyst", "code": "PL-300" },
+        { "title": "Data Engineering on Microsoft Azure", "code": "DP-203" },
+        { "title": "Azure Database Administrator", "code": "DP-300" }
+      ]
+    },
+    {
+      "id": "fundamentals",
+      "label": "Fundamentals",
+      "color": "gold",
+      "highlighted": true,
+      "certifications": [
+        { "title": "Azure AI Fundamental", "code": "AI-900" },
+        { "title": "Azure Fundamental", "code": "AZ-900" },
+        { "title": "Azure Data Fundamental", "code": "DP-900" }
+      ]
+    }
+  ]
+}

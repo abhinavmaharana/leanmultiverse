@@ -1,0 +1,41 @@
+frontend:
+  - any:
+    - 'src/components/**/*'
+    - 'src/app/**/*'
+    - 'src/hooks/**/*'
+    - 'src/lib/**/*'
+    - 'public/**/*'
+
+backend:
+  - any:
+    - 'src/app/api/**/*'
+    - 'src/lib/db.ts'
+    - 'src/lib/db-helpers.ts'
+    - 'supabase/**/*'
+
+documentation:
+  - any:
+    - '*.md'
+    - '.github/ISSUE_TEMPLATE/**/*'
+    - '.github/PULL_REQUEST_TEMPLATE/**/*'
+
+config:
+  - any:
+    - '*.json'
+    - 'next.config.*'
+    - 'tailwind.config.*'
+    - 'postcss.config.*'
+    - '.env*'
+    - '.github/**/*'
+
+styles:
+  - any:
+    - '**/*.css'
+    - '**/*.scss'
+
+dependencies:
+  - any:
+    - 'package.json'
+    - 'package-lock.json'
+    - 'yarn.lock'
+    - 'pnpm-lock.yaml'

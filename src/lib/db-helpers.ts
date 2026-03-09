@@ -1,4 +1,4 @@
-import { supabase, WebinarBooking, CreateBookingData, AiMlEnrollment, CreateAiMlEnrollmentData, CourseEnrollment, CreateCourseEnrollmentData } from './db'
+import { supabase, WebinarBooking, CreateBookingData, AiMlEnrollment, CreateAiMlEnrollmentData, CourseEnrollment, CreateCourseEnrollmentData, AiMlWebinarBooking, CreateAiMlWebinarBookingData } from './db'
 
 export type FreeWebinarBookingData = {
   user_name: string
@@ -238,6 +238,76 @@ export async function createCourseEnrollment(data: CreateCourseEnrollmentData) {
   }
 
   return enrollment as CourseEnrollment
+}
+
+// AI/ML Webinar Bookings
+export async function createAiMlWebinarBooking(data: CreateAiMlWebinarBookingData) {
+  const { data: booking, error } = await supabase
+    .from('ai_ml_webinar_bookings')
+    .insert([data])
+    .select()
+    .single()
+
+  if (error) {
+    const hasOptional = 'zoom_registration_link' in data || 'order_notes' in data
+    if (hasOptional && (error.message?.includes('zoom_registration_link') || error.message?.includes('order_notes'))) {
+      const { zoom_registration_link: _z, order_notes: _o, ...dataWithoutOptional } = data
+      const { data: retryBooking, error: retryError } = await supabase
+        .from('ai_ml_webinar_bookings')
+        .insert([dataWithoutOptional])
+        .select()
+        .single()
+
+      if (retryError) throw new Error(`Failed to create AI/ML webinar booking: ${retryError.message}`)
+      return retryBooking as AiMlWebinarBooking
+    }
+    throw new Error(`Failed to create AI/ML webinar booking: ${error.message}`)
+  }
+
+  return booking as AiMlWebinarBooking
+}
+
+export async function getAiMlWebinarBookingByOrderId(orderId: string) {
+  const { data, error } = await supabase
+    .from('ai_ml_webinar_bookings')
+    .select('*')
+    .eq('razorpay_order_id', orderId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    throw new Error(`Failed to get AI/ML webinar booking: ${error.message}`)
+  }
+
+  return data as AiMlWebinarBooking | null
+}
+
+export async function updateAiMlWebinarBookingByOrderId(orderId: string, updates: Partial<AiMlWebinarBooking>) {
+  const safeUpdates = { ...updates }
+  
+  const { data, error } = await supabase
+    .from('ai_ml_webinar_bookings')
+    .update(safeUpdates)
+    .eq('razorpay_order_id', orderId)
+    .select()
+    .single()
+
+  if (error) {
+    if (error.message?.includes('zoom_registration_link') && safeUpdates.zoom_registration_link) {
+      const { zoom_registration_link: _zoomLink, ...updatesWithoutZoom } = safeUpdates
+      const { data: retryData, error: retryError } = await supabase
+        .from('ai_ml_webinar_bookings')
+        .update(updatesWithoutZoom)
+        .eq('razorpay_order_id', orderId)
+        .select()
+        .single()
+      
+      if (retryError) throw new Error(`Failed to update AI/ML webinar booking: ${retryError.message}`)
+      return retryData as AiMlWebinarBooking
+    }
+    throw new Error(`Failed to update AI/ML webinar booking: ${error.message}`)
+  }
+
+  return data as AiMlWebinarBooking
 }
 
 export async function getCourseEnrollmentById(id: string) {
