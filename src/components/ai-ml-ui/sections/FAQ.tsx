@@ -44,7 +44,7 @@ export const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="bg-white py-24 px-4 md:px-12 flex flex-col items-center">
+    <section className="bg-white py-16 px-4 md:px-12 flex flex-col items-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ export const FAQ = () => {
         <div className="relative w-4 h-4">
           <img src="/IMG_5963.PNG" className="w-full h-full object-contain" alt="icon" style={{ filter: 'invert(19%) sepia(94%) saturate(6144%) hue-rotate(224deg) brightness(101%) contrast(105%)' }} />
         </div>
-        <span className="text-primary-blue font-orbitron text-[10px] tracking-[0.2em] uppercase font-bold">
+        <span className="text-amber-500 font-sans text-[10px] tracking-[0.2em] uppercase font-bold">
           QUESTIONS = ANSWERS
         </span>
       </motion.div>
@@ -64,7 +64,7 @@ export const FAQ = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
-        className="text-primary-dark font-orbitron text-3xl md:text-5xl font-bold mb-8 text-center uppercase tracking-tight"
+        className="text-gray-900 font-black text-3xl md:text-5xl mb-8 text-center uppercase tracking-tight"
       >
         FREQUENT QUESTIONS.
       </motion.h2>
@@ -74,27 +74,27 @@ export const FAQ = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.2 }}
-        className="text-slate-600 font-sans text-xs md:text-sm max-w-3xl text-center mb-20 leading-relaxed px-4"
+        className="text-gray-600 font-sans text-xs md:text-sm max-w-3xl text-center mb-20 leading-relaxed px-4"
       >
         Here are answers to some of the most common questions about the AI and Machine Learning program, including course structure, mentors, certification preparation, and career outcomes. This section is designed to help you understand how the program works and what you can expect from the learning experience.
       </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-0 max-w-7xl w-full border-t border-slate-100">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-0 max-w-7xl w-full border-t border-gray-100">
         {faqs.map((faq, i) => (
-          <div key={i} className="border-b border-slate-100">
+          <div key={i} className="border-b border-gray-100">
             <button
               onClick={() => setOpenIndex(openIndex === i ? null : i)}
               className="w-full flex justify-between items-center py-6 text-left group"
             >
               <span className={cn(
-                "font-sans text-xs md:text-sm font-medium transition-colors",
-                openIndex === i ? "text-primary-blue" : "text-slate-700 group-hover:text-primary-blue"
+                "font-bold text-xs md:text-sm transition-colors",
+                openIndex === i ? "text-amber-500" : "text-gray-700 group-hover:text-amber-500"
               )}>
                 {faq.q}
               </span>
               <div className={cn(
-                "w-8 h-8 border border-slate-200 flex items-center justify-center transition-all",
-                openIndex === i ? "bg-primary-blue border-primary-blue text-white" : "text-slate-400"
+                "w-8 h-8 border border-gray-200 flex items-center justify-center transition-all",
+                openIndex === i ? "bg-amber-400 border-amber-400 text-white" : "text-gray-400"
               )}>
                 <ChevronDown className={cn("w-4 h-4 transition-transform duration-300", openIndex === i ? "rotate-180" : "")} />
               </div>
@@ -108,7 +108,7 @@ export const FAQ = () => {
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <p className="pb-8 text-slate-500 font-sans text-xs md:text-sm leading-relaxed pr-12">
+                  <p className="pb-8 text-gray-500 font-sans text-xs md:text-sm leading-relaxed pr-12">
                     {faq.a}
                   </p>
                 </motion.div>

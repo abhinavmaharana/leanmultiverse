@@ -205,7 +205,7 @@ export default function BookAiMlWebinarContent() {
 
       <div className="relative border border-gray-200 rounded-2xl p-5 mb-6 shadow-[0_18px_40px_rgba(15,23,42,0.08)]">
         <div
-          className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-blue-600 rounded-l-2xl"
+          className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-amber-500 rounded-l-2xl"
           aria-hidden
         />
         <div className="pl-2">
@@ -250,13 +250,13 @@ export default function BookAiMlWebinarContent() {
             </div>
             {error && <p className="text-red-500 text-xs">{error}</p>}
             <p className="text-[11px] text-gray-500">
-              <span className="font-semibold text-blue-600">100% value satisfaction</span> · Secure payment via Razorpay
+              <span className="font-semibold text-amber-600">100% value satisfaction</span> · Secure payment via Razorpay
             </p>
             <button
               type="submit"
               disabled={isSubmitting || !isFormReady}
-              className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold"
-              style={{ background: 'linear-gradient(135deg, #60a5fa, #2563eb)', color: '#fff' }}
+              className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-black uppercase tracking-wider"
+              style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', color: '#fff' }}
             >
               {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
             </button>
@@ -278,7 +278,7 @@ export default function BookAiMlWebinarContent() {
             <span className="book-webinar-hero-line1">
               Master AI & Machine Learning{' '}
             </span>
-            <span className="book-webinar-gold book-webinar-hero-line2" style={{ color: '#2563eb' }}>
+            <span className="book-webinar-gold book-webinar-hero-line2" style={{ color: '#fbbf24' }}>
               From Real Industry Experts.
             </span>
           </h1>
@@ -288,7 +288,7 @@ export default function BookAiMlWebinarContent() {
           <p className="book-webinar-hero-creds">
             AI Engineer | ML Engineer | Data Scientist | AI Product Analyst
           </p>
-          <p className="book-webinar-hero-badge" style={{ background: '#eff6ff', borderColor: '#3b82f6' }}>
+          <p className="book-webinar-hero-badge" style={{ background: '#fffbeb', borderColor: '#fbbf24' }}>
             40%–120% Salary Growth After Training
           </p>
 
@@ -365,8 +365,8 @@ export default function BookAiMlWebinarContent() {
                   <button
                     type="submit"
                     disabled={isSubmitting || !isFormReady}
-                    className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold"
-                    style={{ background: 'linear-gradient(135deg, #60a5fa, #2563eb)', color: '#fff', boxShadow: '0 15px 40px rgba(37, 99, 235, 0.35)' }}
+                    className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-black uppercase tracking-wider"
+                    style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', color: '#fff', boxShadow: '0 15px 40px rgba(245, 158, 11, 0.35)' }}
                   >
                     {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
                   </button>

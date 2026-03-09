@@ -43,49 +43,29 @@ export const Mentors = () => {
   const activeMentor = mentors.find(m => m.id === activeTab) || mentors[0];
 
   return (
-    <section className="bg-black py-24 px-4 md:px-12 relative overflow-hidden min-h-screen flex flex-col items-center">
-      {/* 3D Swirling Tubes Background (Image 3) */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 w-[50%] h-full pointer-events-none opacity-80" style={{ left: '-10%' }}>
-          <img
-            src="/mentor-jigar.png"
-            alt="3D Swirl Left"
-            className="w-full h-full object-cover mix-blend-screen"
-          />
-        </div>
-        <div className="absolute top-0 rotate-180 w-[50%] h-full pointer-events-none opacity-80 scale-x-[-1]" style={{ right: '-10%' }}>
-          <img
-            src="/image.png"
-            alt="3D Swirl Right"
-            className="w-full h-full object-cover mix-blend-screen"
-          />
-        </div>
-        {/* Dark overlay to make text pop */}
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
-
+    <section className="bg-white py-16 px-4 md:px-12 relative overflow-hidden flex flex-col items-center">
       <div className="max-w-[1400px] w-full mx-auto relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-white font-orbitron text-4xl md:text-[56px] font-bold mb-8 uppercase tracking-tight">
+          <h2 className="text-gray-900 font-black text-4xl md:text-[56px] mb-8 uppercase tracking-tight">
             MEET YOUR MENTORS
           </h2>
-          <p className="text-white/80 font-sans text-[11px] md:text-sm max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-600 font-sans text-[11px] md:text-sm max-w-3xl mx-auto leading-relaxed">
             Learn from mentors who have built real systems in top technology companies. <br />
             Our instructors bring industry experience from global tech ecosystems including Australia and India, giving you exposure to how AI products are designed, deployed, and scaled in real companies.
           </p>
         </div>
 
         {/* Tabbed Mentor Box */}
-        <div className="max-w-6xl mx-auto border border-[#0047FF] bg-[#0A0A0A]/90 backdrop-blur-sm overflow-hidden shadow-[0_0_50px_rgba(0,71,255,0.2)]">
+        <div className="max-w-6xl mx-auto border border-gray-100 bg-white overflow-hidden shadow-xl rounded-2xl">
           {/* Tabs Header */}
-          <div className="flex border-b border-[#0047FF]/30">
+          <div className="flex border-b border-gray-100 bg-gray-50">
             {mentors.map((m) => (
               <button
                 key={m.id}
                 onClick={() => setActiveTab(m.id)}
                 className={cn(
-                  "flex-1 py-5 text-[10px] md:text-xs font-orbitron tracking-[0.2em] transition-all uppercase font-bold border-r border-[#0047FF]/30 last:border-none",
-                  activeTab === m.id ? "text-white bg-[#0047FF]" : "text-white bg-[#111] hover:bg-[#222]"
+                  "flex-1 py-5 text-[10px] md:text-xs font-bold tracking-[0.2em] transition-all uppercase border-r border-gray-100 last:border-none",
+                  activeTab === m.id ? "text-white bg-amber-400" : "text-gray-500 bg-gray-50 hover:bg-gray-100"
                 )}
               >
                 {m.name}
@@ -94,7 +74,7 @@ export const Mentors = () => {
           </div>
 
           {/* Content Body */}
-          <div className="flex flex-col md:flex-row min-h-[600px] md:h-[600px]">
+          <div className="flex flex-col md:flex-row min-h-[500px] md:h-[600px]">
             <div className="flex-1 p-8 md:p-12 flex flex-col justify-between overflow-hidden">
               <div className="relative h-full">
                 <AnimatePresence mode="wait" initial={false}>
@@ -107,25 +87,25 @@ export const Mentors = () => {
                     className="space-y-6 absolute inset-0 py-4"
                   >
                     <div>
-                      <h3 className="text-white font-orbitron text-xl md:text-2xl font-bold mb-1 tracking-tight uppercase">
+                      <h3 className="text-gray-900 font-black text-xl md:text-2xl mb-1 tracking-tight uppercase">
                         {activeMentor.role}
                       </h3>
-                      <h4 className="text-[#FF0000] font-orbitron text-lg md:text-2xl font-bold italic tracking-tight uppercase skew-x-[-10deg]">
+                      <h4 className="text-amber-500 font-black text-lg md:text-2xl italic tracking-tight uppercase skew-x-[-10deg]">
                         {activeMentor.location}
                       </h4>
                     </div>
 
                     <div className="space-y-4">
-                      <p className="text-white/90 font-orbitron text-[11px] md:text-[13px] font-bold uppercase tracking-widest leading-relaxed">
+                      <p className="text-gray-800 font-black text-[11px] md:text-[13px] uppercase tracking-widest leading-relaxed">
                         {activeMentor.tagline}
                       </p>
-                      <p className="text-white/60 font-sans text-xs md:text-sm leading-relaxed max-w-lg">
+                      <p className="text-gray-500 font-sans text-xs md:text-sm leading-relaxed max-w-lg">
                         {activeMentor.desc}
                       </p>
                       <ul className="space-y-1.5 pt-4">
                         {activeMentor.points.map((p, i) => (
-                          <li key={i} className="text-white font-orbitron text-[10px] md:text-[11px] tracking-[0.15em] font-bold opacity-90 flex items-start gap-3">
-                            <span className="text-white">•</span>
+                          <li key={i} className="text-gray-700 font-bold text-[10px] md:text-[11px] tracking-[0.15em] flex items-start gap-3">
+                            <span className="text-amber-500">•</span>
                             {p}
                           </li>
                         ))}
@@ -140,7 +120,7 @@ export const Mentors = () => {
               </div>
             </div>
 
-            <div className="flex-1 relative min-h-[300px] md:min-h-full bg-[#111] overflow-hidden">
+            <div className="flex-1 relative min-h-[300px] md:min-h-full bg-gray-100 overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}
@@ -153,7 +133,7 @@ export const Mentors = () => {
                   <img
                     src={activeMentor.image}
                     alt={activeMentor.name}
-                    className="w-full h-full object-cover grayscale-[0.3] contrast-125"
+                    className="w-full h-full object-cover grayscale-[0.2] contrast-110"
                   />
                 </motion.div>
               </AnimatePresence>

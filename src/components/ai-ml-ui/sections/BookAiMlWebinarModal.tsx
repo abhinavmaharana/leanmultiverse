@@ -37,15 +37,18 @@ export default function BookAiMlWebinarModal({ source }: Props) {
       ) : source === 'hero' ? (
         <button
           onClick={showModal}
-          className="inline-flex items-center justify-center transition-all duration-200 font-orbitron uppercase tracking-[0.2em] gap-3 bg-[#FF0000] text-white border-none px-10 py-4 text-[11px] font-bold min-w-[200px]"
+          className="relative overflow-hidden inline-flex items-center justify-center transition-all duration-300 uppercase tracking-[0.1em] gap-3 bg-amber-400 hover:bg-amber-500 text-white border-none px-12 py-5 text-[15px] font-black min-w-[200px] rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:scale-95"
         >
-          <span className="w-3 h-3 border border-white" />
-          BOOK AT RS 9
+          <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent" style={{ animation: 'aiml-shimmer 2s infinite' }} />
+          <span className="relative z-10 flex items-center gap-3">
+             <span className="w-3 h-3 border-2 border-white rounded-full" />
+             BOOK AT RS 9
+          </span>
         </button>
       ) : (
         <button
           onClick={showModal}
-          className="bg-[#0047FF] hover:bg-blue-600 px-10 py-3 text-[11px] inline-flex items-center justify-center transition-all duration-200 font-orbitron uppercase tracking-[0.2em] text-white font-bold"
+          className="bg-amber-400 hover:bg-amber-500 px-10 py-4 text-[13px] inline-flex items-center justify-center transition-all duration-300 uppercase tracking-[0.1em] text-white font-black rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
         >
           BOOK AT RS 9
         </button>

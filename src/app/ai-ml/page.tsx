@@ -1,64 +1,79 @@
-import { Metadata } from 'next'
-import { Orbitron } from 'next/font/google'
-import { Hero } from '@/components/ai-ml-ui/sections/Hero'
-import { Problem } from '@/components/ai-ml-ui/sections/Problem'
-import { Mentors } from '@/components/ai-ml-ui/sections/Mentors'
-import { CareerRoles } from '@/components/ai-ml-ui/sections/CareerRoles'
-import { Certifications } from '@/components/ai-ml-ui/sections/Certifications'
-import { FAQ } from '@/components/ai-ml-ui/sections/FAQ'
-import { Footer } from '@/components/ai-ml-ui/sections/Footer'
-import AiMlStickyBookBar from '@/components/ai-ml-ui/sections/AiMlStickyBookBar'
+import { Metadata } from "next";
+import dynamic from "next/dynamic";
+import LazySection from "@/components/shared/LazySection";
+import { NewAnnouncementBanner } from "@/components/new-ui/NewAnnouncementBanner";
+import NewNavbar from "@/components/new-ui/NewNavbar";
+import { NewFooter } from "@/components/new-ui/NewFooter";
+import { Hero } from "@/components/ai-ml-ui/sections/Hero";
 
-const orbitron = Orbitron({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
-  variable: '--font-orbitron',
-  display: 'swap',
-})
+const NewVideoSection = dynamic(
+  () =>
+    import("@/components/new-ui/NewVideoSection").then((m) => ({
+      default: m.NewVideoSection,
+    })),
+  { loading: () => <div className="h-64 bg-gray-50 animate-pulse" /> },
+);
+
+import { Problem } from "@/components/ai-ml-ui/sections/Problem";
+import { MentorsGrid } from "@/components/ai-ml-ui/sections/MentorsGrid";
+import { CareerRoles } from "@/components/ai-ml-ui/sections/CareerRoles";
+import { ModernCertificationRoadmap } from "@/components/ai-ml-ui/sections/ModernCertificationRoadmap";
+import { AIWorkflowSection } from "@/components/ai-ml-ui/sections/AIWorkflowSection";
+import { FAQ } from "@/components/ai-ml-ui/sections/FAQ";
+import AiMlStickyBookBar from "@/components/ai-ml-ui/sections/AiMlStickyBookBar";
 
 export const metadata: Metadata = {
-  title: 'AI & Machine Learning Course | Learn from Industry Experts',
+  title: "AI & Machine Learning Course | Learn from Industry Experts",
   description:
-    'Master AI and Machine Learning from real industry experts. Training designed to prepare you for globally recognized certifications such as Microsoft Azure AI and AWS Machine Learning.',
+    "Master AI and Machine Learning from real industry experts. Training designed to prepare you for globally recognized certifications such as Microsoft Azure AI and AWS Machine Learning.",
   keywords: [
-    'AI course',
-    'machine learning course',
-    'artificial intelligence training',
-    'Microsoft Azure AI certification',
-    'AWS machine learning certification',
-    'AI engineer',
-    'data scientist',
-    'ML engineer',
-    'AI career',
-    'deep learning',
+    "AI course",
+    "machine learning course",
+    "artificial intelligence training",
+    "Microsoft Azure AI certification",
+    "AWS machine learning certification",
+    "AI engineer",
+    "data scientist",
+    "ML engineer",
+    "AI career",
+    "deep learning",
   ],
   openGraph: {
-    title: 'AI & Machine Learning Course | Learn from Industry Experts',
+    title: "AI & Machine Learning Course | Learn from Industry Experts",
     description:
-      'Master AI and Machine Learning from 0 to 100%. Training designed for globally recognized certifications like Microsoft Azure AI and AWS ML.',
-    type: 'website',
-    url: 'https://leanmultiverse.com/ai-ml',
+      "Master AI and Machine Learning from 0 to 100%. Training designed for globally recognized certifications like Microsoft Azure AI and AWS ML.",
+    type: "website",
+    url: "https://leanmultiverse.com/ai-ml",
   },
-}
+};
 
 export default function AIMLPage() {
   return (
-    <main className={`${orbitron.variable} relative w-full min-h-screen flex flex-col`}>
-      <style>{`
-        .text-primary-blue { color: #0047FF; }
-        .bg-primary-blue { background-color: #0047FF; }
-        .border-primary-blue { border-color: #0047FF; }
-        .text-primary-dark { color: #0A0A1A; }
-        .font-orbitron { font-family: var(--font-orbitron), ui-sans-serif, system-ui, sans-serif; }
-      `}</style>
+    <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
+      <div className="flex flex-col">
+        {/* <NewAnnouncementBanner /> */}
+        <NewNavbar />
+      </div>
+
       <Hero />
+
+      {/* <LazySection id="video" fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
+        <NewVideoSection />
+      </LazySection> */}
+
       <Problem />
-      <Mentors />
+      <MentorsGrid />
+
+      <ModernCertificationRoadmap />
+      <AIWorkflowSection />
       <CareerRoles />
-      <Certifications />
       <FAQ />
-      <Footer />
+
+      <div className="mt-auto">
+        <NewFooter />
+      </div>
+
       <AiMlStickyBookBar />
     </main>
-  )
+  );
 }

@@ -1,0 +1,51 @@
+{
+  "title": "The Industry Map: AWS Certification Pathway",
+  "subtitle": "The broader cloud ecosystem mirrors this structure. Whether AWS or Azure, the industry demands a proven progression from Foundational Practitioner to Machine Learning Specialty.",
+  "categories": [
+    {
+      "id": "foundational",
+      "label": "FOUNDATIONAL",
+      "desc": "6 months of fundamental AWS Cloud and industry knowledge",
+      "color": "foundational",
+      "certs": [
+        { "title": "Cloud Practitioner" },
+        { "title": "AI Practitioner" }
+      ]
+    },
+    {
+      "id": "associate",
+      "label": "ASSOCIATE",
+      "desc": "1 year of experience solving problems and implementing solutions using the AWS Cloud",
+      "color": "associate",
+      "certs": [
+        { "title": "Developer" },
+        { "title": "SysOps Administrator" },
+        { "title": "Machine Learning Engineer", "featured": true },
+        { "title": "Solutions Architect" },
+        { "title": "Data Engineer" }
+      ]
+    },
+    {
+      "id": "professional",
+      "label": "PROFESSIONAL",
+      "desc": "2 years of experience designing, operating, and troubleshooting solutions using the AWS Cloud",
+      "color": "professional",
+      "certs": [
+        { "title": "DevOps Engineer" },
+        { "title": "Solutions Architect" }
+      ]
+    },
+    {
+      "id": "specialty",
+      "label": "SPECIALTY",
+      "desc": "5+ years technical AWS Cloud experience in the Specialty domain as specified in the exam",
+      "color": "specialty",
+      "certs": [
+        { "title": "Security" },
+        { "title": "Advanced Networking" },
+        { "title": "Machine Learning" },
+        { "title": "Data Analytics" }
+      ]
+    }
+  ]
+}

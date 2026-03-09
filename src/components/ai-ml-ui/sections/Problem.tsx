@@ -39,7 +39,7 @@ const problems = [
 
 export const Problem = () => {
   return (
-    <section className="bg-white py-24 px-4 md:px-12 flex flex-col items-center">
+    <section className="bg-white pt-12 pb-24 px-4 md:px-12 flex flex-col items-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -49,7 +49,7 @@ export const Problem = () => {
         <div className="relative w-4 h-4">
           <img src="/IMG_5963.PNG" className="w-full h-full object-contain" alt="icon" style={{ filter: 'invert(19%) sepia(94%) saturate(6144%) hue-rotate(224deg) brightness(101%) contrast(105%)' }} />
         </div>
-        <span className="text-primary-blue font-orbitron text-[10px] tracking-[0.2em] uppercase font-bold">
+        <span className="text-amber-500 font-sans text-[10px] tracking-[0.2em] uppercase font-bold">
           BUILT FOR MODERN PEOPLE
         </span>
       </motion.div>
@@ -59,7 +59,7 @@ export const Problem = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
-        className="text-primary-dark font-orbitron text-3xl md:text-5xl font-bold mb-8 text-center uppercase tracking-tight"
+        className="text-gray-900 font-black text-3xl md:text-5xl mb-8 text-center uppercase tracking-tight"
       >
         THE PROBLEM WITH MOST AI COURSES
       </motion.h2>
@@ -69,12 +69,12 @@ export const Problem = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.2 }}
-        className="text-slate-600 font-sans text-xs md:text-sm max-w-3xl text-center mb-20 leading-relaxed"
+        className="text-gray-600 font-sans text-xs md:text-sm max-w-3xl text-center mb-20 leading-relaxed"
       >
         Many AI programs promise quick results but fail to teach the skills companies actually expect from engineers. Students often finish these courses with theoretical knowledge but without the practical experience required to work on real AI systems or apply for industry roles.
       </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-16 max-w-7xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl">
         {problems.map((item, i) => (
           <motion.div
             key={i}
@@ -82,17 +82,22 @@ export const Problem = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="flex flex-col items-start group"
+            className="relative group h-full"
           >
-            <div className="w-12 h-12 bg-[#1A233A] text-white flex items-center justify-center mb-6">
-              {item.icon}
+            {/* Ambient Background Light (Outside/Behind the card) */}
+            <div className="absolute -inset-4 bg-amber-400/20 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-700 scale-75 group-hover:scale-110" />
+            
+            <div className="relative flex flex-col items-start p-8 rounded-2xl border border-gray-100 bg-white transition-all duration-500 group-hover:border-amber-400 group-hover:-translate-y-2 group-hover:shadow-[0_20px_50px_-12px_rgba(251,191,36,0.2)] z-10 h-full">
+              <div className="w-14 h-14 bg-gray-900 text-white flex items-center justify-center mb-6 rounded-xl transition-all duration-300 group-hover:bg-amber-400 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(251,191,36,0.5)]">
+                {item.icon}
+              </div>
+              <h3 className="font-bold text-base md:text-lg mb-4 text-gray-900 tracking-tight leading-snug uppercase transition-colors duration-300 group-hover:text-amber-600">
+                {item.title}
+              </h3>
+              <p className="text-gray-500 font-sans text-xs md:text-sm leading-relaxed transition-colors duration-300 group-hover:text-gray-700 flex-1">
+                {item.desc}
+              </p>
             </div>
-            <h3 className="font-orbitron text-sm md:text-base font-bold mb-4 text-primary-dark tracking-tight leading-snug">
-              {item.title}
-            </h3>
-            <p className="text-slate-500 font-sans text-xs md:text-sm leading-relaxed">
-              {item.desc}
-            </p>
           </motion.div>
         ))}
       </div>

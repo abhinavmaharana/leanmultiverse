@@ -32,7 +32,7 @@ export const Footer = () => {
           <span className="text-white font-sans text-[10px] md:text-[11px] tracking-[0.3em] uppercase mb-8 block opacity-80">
             GET STARTED
           </span>
-          <h2 className="text-white font-orbitron text-4xl md:text-[64px] font-bold mb-6 uppercase tracking-tight leading-tight">
+          <h2 className="text-white font-black text-4xl md:text-[64px] mb-6 uppercase tracking-tight leading-tight">
             LEARN AI ML <br /> 0 - 100 %
           </h2>
           <p className="text-white/60 font-sans text-[9px] md:text-[10px] tracking-[0.2em] uppercase mb-12">
