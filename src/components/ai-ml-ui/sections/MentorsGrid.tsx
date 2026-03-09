@@ -39,16 +39,17 @@ const mentors = [
   {
     id: "ABHINAV",
     name: "Abhinav",
-    role: "Data Scientist",
-    company: "Grab Lead",
-    location: "Singapore",
-    desc: "Predictive modeling and big data expert helping scale products in high-growth ecosystems.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800",
+    role: "AI/ML Engineer",
+    company: "Razorpay",
+    location: "Bangalore, India",
+    desc: "Razorpay | Google Agentic AI Hackathon Winner\n\nExperience includes building AI-driven systems, developing machine learning solutions, and applying intelligent automation to solve real-world business problems.",
+    image: "/mentors/abhinav.png",
     color: "gray",
     points: [
-      "Predictive Analytics",
-      "Big Data Scaling",
-      "Product ML"
+      "Machine Learning Systems",
+      "Agentic AI Applications",
+      "Intelligent Automation Solutions",
+      "AI-Powered Data Models"
     ]
   }
 ];
