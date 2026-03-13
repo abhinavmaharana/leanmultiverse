@@ -3,8 +3,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect, memo } from 'react'
+import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
+import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
 
 const navLinks = [
     { label: 'Home', href: '#home', badge: null },
@@ -18,6 +20,8 @@ function NewNavbar() {
     const [open, setOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const [mounted, setMounted] = useState(false)
+    const pathname = usePathname()
+    const isAiMlPage = pathname?.startsWith('/ai-ml')
 
     useEffect(() => {
         setMounted(true)
@@ -81,7 +85,11 @@ function NewNavbar() {
 
                 {/* Primary CTA - Aligned to far right */}
                 <div className="hidden md:block">
-                    <BookWebinarModal source="sticky-bar" />
+                    {isAiMlPage ? (
+                        <BookAiMlWebinarModal source="sticky-bar" />
+                    ) : (
+                        <BookWebinarModal source="sticky-bar" />
+                    )}
                 </div>
 
                 {/* Mobile Navigation Toggle */}
@@ -117,7 +125,11 @@ function NewNavbar() {
                         </Link>
                     ))}
                     <div className="mt-4 flex flex-col" onClick={() => setOpen(false)}>
-                        <BookWebinarModal source="new-hero" />
+                        {isAiMlPage ? (
+                            <BookAiMlWebinarModal source="sticky-bar" />
+                        ) : (
+                            <BookWebinarModal source="new-hero" />
+                        )}
                     </div>
                 </div>
             </div>
