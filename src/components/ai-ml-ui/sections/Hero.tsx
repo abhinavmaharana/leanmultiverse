@@ -59,9 +59,7 @@ export const Hero = () => {
 
         {/* Buttons Group */}
         <div className="flex flex-wrap justify-center gap-4">
-          <Button variant="outline" className="px-10 py-4 min-w-[200px] border-gray-200 text-gray-700 hover:bg-gray-50">
-            BROCHURE
-          </Button>
+          {/* Brochure button hidden */}
           <BookAiMlWebinarModal source="hero" />
         </div>
       </div>
