@@ -86,7 +86,7 @@ function AiMlSuccessContent() {
             )}
             <div className="flex justify-between items-center py-2">
                 <span className="text-gray-500">Webinar Time:</span>
-                <span className="text-gray-900 font-semibold">9:00 PM IST</span>
+                <span className="text-gray-900 font-semibold">8:00 PM IST</span>
               </div>
           </div>
         </div>

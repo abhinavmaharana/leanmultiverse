@@ -239,7 +239,7 @@ export default function BookAiMlWebinarContent() {
             Reserve your webinar seat
           </h2>
           <p className="text-xs text-gray-600 mb-4">
-            {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 9:00 PM IST · ₹9
+            {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
@@ -350,7 +350,7 @@ export default function BookAiMlWebinarContent() {
                   Reserve your webinar seat
                 </h2>
                 <p className="text-xs text-gray-600 mb-4">
-                  {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 9:00 PM IST · ₹9
+                  {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
