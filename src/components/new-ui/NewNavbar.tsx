@@ -9,7 +9,7 @@ import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
 
 const navLinks = [
-    { label: 'Home', href: '#home', badge: null },
+    // { label: 'Home', href: '#home', badge: null },
     { label: 'Learn AI/ML', href: '/ai-ml', badge: '🔥 Hot' },
     { label: 'Testimonial', href: '#testimonial', badge: null },
     // { label: 'Services', href: '#services' },
@@ -41,12 +41,12 @@ function NewNavbar() {
             aria-label="Main navigation"
         >
             <div className="max-w-7xl mx-auto flex items-center justify-between">
-                
+
                 {/* Logo & Navigation Section */}
                 <div className="flex items-center">
                     {/* Brand Identity */}
-                    <Link 
-                        href="/" 
+                    <Link
+                        href="/"
                         className="flex items-center gap-3 hover:opacity-80 transition-opacity flex-shrink-0"
                     >
                         <Image
@@ -104,9 +104,8 @@ function NewNavbar() {
 
             {/* Mobile Expanded Menu */}
             <div
-                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-                    open ? 'max-h-[80vh] opacity-100 mt-4' : 'max-h-0 opacity-0 pointer-events-none'
-                }`}
+                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-[80vh] opacity-100 mt-4' : 'max-h-0 opacity-0 pointer-events-none'
+                    }`}
             >
                 <div className="border-t border-gray-100 pt-6 pb-6 flex flex-col gap-3 px-4 bg-gray-50/80 rounded-2xl">
                     {navLinks.map((link) => (
