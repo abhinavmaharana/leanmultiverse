@@ -30,7 +30,7 @@ async function handler(
 
     if (request.method === 'GET') {
       // Get booking
-      const tableName = type === 'one-on-one' ? 'one_on_one_bookings' : 'webinar_bookings'
+      const tableName = 'webinar_bookings'
 
       const { data, error } = await supabase
         .from(tableName)
@@ -54,7 +54,7 @@ async function handler(
       const body = await request.json()
       const updates = updateSchema.parse(body)
 
-      const tableName = type === 'one-on-one' ? 'one_on_one_bookings' : 'webinar_bookings'
+      const tableName = 'webinar_bookings'
 
       const { data, error } = await supabase
         .from(tableName)

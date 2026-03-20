@@ -17,7 +17,6 @@ interface AnalyticsData {
   }
   bookingsByType: {
     webinar: number
-    'one-on-one': number
   }
 }
 
@@ -194,22 +193,6 @@ export default function AnalyticsPage() {
                   className="bg-blue-500 h-3 rounded-full transition-all"
                   style={{
                     width: `${getPercentage(analytics?.bookingsByType.webinar ?? 0, analytics?.totalBookings || 1)}%`,
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-300">One-on-One</span>
-                <span className="text-white font-semibold">
-                  {analytics?.bookingsByType['one-on-one'] ?? 0} ({getPercentage(analytics?.bookingsByType['one-on-one'] ?? 0, analytics?.totalBookings ?? 1)}%)
-                </span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-3">
-                <div
-                  className="bg-purple-500 h-3 rounded-full transition-all"
-                  style={{
-                    width: `${getPercentage(analytics?.bookingsByType['one-on-one'] ?? 0, analytics?.totalBookings || 1)}%`,
                   }}
                 />
               </div>

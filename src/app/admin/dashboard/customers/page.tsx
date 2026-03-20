@@ -11,13 +11,11 @@ interface CustomerPurchase {
   name: string
   phone: string
   webinarCount: number
-  oneOnOneCount: number
   totalSpent: number
   lastPurchaseDate: string
-  purchaseTypes: ('webinar' | 'one-on-one')[]
   bookings: Array<{
     id: string
-    type: 'webinar' | 'one-on-one'
+    type: 'webinar'
     date: string
     time: string
     status: string
@@ -27,9 +25,6 @@ interface CustomerPurchase {
 
 interface CustomerStats {
   totalCustomers: number
-  webinarOnly: number
-  oneOnOneOnly: number
-  bothTypes: number
   totalRevenue: number
 }
 
@@ -73,38 +68,17 @@ export default function CustomersPage() {
     fetchCustomers()
   }
 
-  const getPurchaseTypeBadge = (types: string[]) => {
-    if (types.length === 2) {
-      return (
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-300 border border-purple-500/50">
-          Both
-        </span>
-      )
-    } else if (types.includes('webinar')) {
-      return (
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-400 border border-blue-500/50">
-          Webinar Only
-        </span>
-      )
-    } else {
-      return (
-        <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-400 border border-purple-500/50">
-          One-on-One Only
-        </span>
-      )
-    }
-  }
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-4xl font-bold text-white mb-2">Customer Purchase Dashboard</h1>
-        <p className="text-gray-400">View customers who purchased webinars, one-on-one sessions, or both</p>
+        <p className="text-gray-400">View customer purchase history</p>
       </div>
 
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -117,33 +91,6 @@ export default function CustomersPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6"
-          >
-            <h3 className="text-gray-200 text-sm font-medium mb-2">Webinar Only</h3>
-            <p className="text-3xl font-bold text-white">{stats.webinarOnly}</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6"
-          >
-            <h3 className="text-gray-200 text-sm font-medium mb-2">One-on-One Only</h3>
-            <p className="text-3xl font-bold text-white">{stats.oneOnOneOnly}</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl p-6"
-          >
-            <h3 className="text-gray-200 text-sm font-medium mb-2">Both Types</h3>
-            <p className="text-3xl font-bold text-white">{stats.bothTypes}</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
             className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl p-6"
           >
             <h3 className="text-gray-200 text-sm font-medium mb-2">Total Revenue</h3>
@@ -175,16 +122,12 @@ export default function CustomersPage() {
           </div>
 
           <div>
-            <label className="text-white text-sm mb-2 block">Filter by Purchase Type</label>
+            <label className="text-white text-sm mb-2 block">Purchase Type</label>
             <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="w-full bg-white/10 border-2 border-white/20 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-400"
+              disabled
+              className="w-full bg-white/10 border-2 border-white/20 text-gray-500 rounded-xl px-4 py-3 focus:outline-none"
             >
-              <option value="all">All Customers</option>
               <option value="webinar">Webinar Only</option>
-              <option value="one-on-one">One-on-One Only</option>
-              <option value="both">Both Types</option>
             </select>
           </div>
 
@@ -212,9 +155,7 @@ export default function CustomersPage() {
               <thead className="bg-white/5 border-b border-white/10">
                 <tr>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Customer</th>
-                  <th className="text-left py-4 px-6 text-gray-400 font-medium">Purchase Type</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Webinars</th>
-                  <th className="text-left py-4 px-6 text-gray-400 font-medium">One-on-One</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Total Spent</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Last Purchase</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Actions</th>
@@ -238,9 +179,7 @@ export default function CustomersPage() {
                           <div className="text-gray-500 text-xs">{customer.phone}</div>
                         </div>
                       </td>
-                      <td className="py-4 px-6">{getPurchaseTypeBadge(customer.purchaseTypes)}</td>
                       <td className="py-4 px-6 text-white">{customer.webinarCount}</td>
-                      <td className="py-4 px-6 text-white">{customer.oneOnOneCount}</td>
                       <td className="py-4 px-6 text-white font-semibold">₹{customer.totalSpent}</td>
                       <td className="py-4 px-6 text-gray-300">
                         {new Date(customer.lastPurchaseDate).toLocaleDateString()}
@@ -262,13 +201,9 @@ export default function CustomersPage() {
                                 >
                                   <div className="flex items-center justify-between mb-2">
                                     <span
-                                      className={`px-2 py-1 rounded text-xs font-medium ${
-                                        booking.type === 'webinar'
-                                          ? 'bg-blue-500/20 text-blue-400'
-                                          : 'bg-purple-500/20 text-purple-400'
-                                      }`}
+                                      className="px-2 py-1 rounded text-xs font-medium bg-blue-500/20 text-blue-400"
                                     >
-                                      {booking.type === 'webinar' ? 'Webinar' : 'One-on-One'}
+                                      Webinar
                                     </span>
                                     <span className="text-white font-semibold">₹{booking.amount}</span>
                                   </div>

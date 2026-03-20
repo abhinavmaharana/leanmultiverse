@@ -13,40 +13,23 @@ async function handler(request: NextRequest) {
       console.error('Error fetching webinar bookings:', webinarError)
     }
 
-    // Fetch one-on-one bookings
-    const { data: oneOnOneBookings, error: oneOnOneError } = await supabase
-      .from('one_on_one_bookings')
-      .select('payment_status, created_at')
-
-    if (oneOnOneError) {
-      console.error('Error fetching one-on-one bookings:', oneOnOneError)
-    }
-
-    const allBookings = [
-      ...(webinarBookings || []),
-      ...(oneOnOneBookings || []),
-    ]
-
     // Calculate statistics
-    const totalBookings = allBookings.length
-    const paidBookings = allBookings.filter((b) => b.payment_status === 'paid').length
-    const pendingBookings = allBookings.filter((b) => b.payment_status === 'pending').length
-    const failedBookings = allBookings.filter((b) => b.payment_status === 'failed').length
+    const totalBookings = webinarBookings?.length || 0
+    const paidBookings = (webinarBookings || []).filter((b) => b.payment_status === 'paid').length
+    const pendingBookings = (webinarBookings || []).filter((b) => b.payment_status === 'pending').length
+    const failedBookings = (webinarBookings || []).filter((b) => b.payment_status === 'failed').length
 
-    // Calculate revenue (₹9 for webinar, ₹1000 for one-on-one)
+    // Calculate revenue (₹9 for webinar)
     const webinarPrice = 9 // ₹9 for webinar
-    const oneOnOnePrice = 1000 // ₹1000 for one-on-one
-    const paidWebinarCount = (webinarBookings || []).filter((b) => b.payment_status === 'paid').length
-    const paidOneOnOneCount = (oneOnOneBookings || []).filter((b) => b.payment_status === 'paid').length
+    const paidWebinarCount = paidBookings
     const webinarRevenue = paidWebinarCount * webinarPrice
-    const oneOnOneRevenue = paidOneOnOneCount * oneOnOnePrice
-    const totalRevenue = webinarRevenue + oneOnOneRevenue
+    const totalRevenue = webinarRevenue
 
     // Calculate bookings by date (last 30 days)
     const thirtyDaysAgo = new Date()
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
-    const recentBookings = allBookings.filter((b) => {
+    const recentBookings = (webinarBookings || []).filter((b) => {
       const bookingDate = new Date(b.created_at)
       return bookingDate >= thirtyDaysAgo
     })
@@ -68,7 +51,6 @@ async function handler(request: NextRequest) {
     // Bookings by type
     const bookingsByType = {
       webinar: webinarBookings?.length || 0,
-      'one-on-one': oneOnOneBookings?.length || 0,
     }
 
     return NextResponse.json({
@@ -79,9 +61,7 @@ async function handler(request: NextRequest) {
       failedBookings,
       totalRevenue,
       webinarRevenue,
-      oneOnOneRevenue,
       paidWebinarCount,
-      paidOneOnOneCount,
       bookingsByDate,
       paymentStatusBreakdown,
       bookingsByType,

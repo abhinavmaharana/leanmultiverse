@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input'
 
 interface Booking {
   id: string
-  type: 'webinar' | 'one-on-one'
+  type: 'webinar'
   user_name: string
   user_email: string
   user_phone: string
@@ -124,13 +124,10 @@ export default function BookingsPage() {
           <div>
             <label className="text-white text-sm mb-2 block">Type</label>
             <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className="w-full bg-white/10 border-2 border-white/20 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-yellow-400"
+              disabled
+              className="w-full bg-white/10 border-2 border-white/20 text-gray-500 rounded-xl px-4 py-3 focus:outline-none"
             >
-              <option value="all">All Types</option>
-              <option value="webinar">Webinar</option>
-              <option value="one-on-one">One-on-One</option>
+              <option value="webinar">Webinar Only</option>
             </select>
           </div>
 
@@ -160,7 +157,6 @@ export default function BookingsPage() {
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Name</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Email</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Phone</th>
-                  <th className="text-left py-4 px-6 text-gray-400 font-medium">Type</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Date</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Time</th>
                   <th className="text-left py-4 px-6 text-gray-400 font-medium">Hear from</th>
@@ -180,11 +176,6 @@ export default function BookingsPage() {
                     <td className="py-4 px-6 text-white">{booking.user_name}</td>
                     <td className="py-4 px-6 text-gray-300">{booking.user_email}</td>
                     <td className="py-4 px-6 text-gray-300">{booking.user_phone}</td>
-                    <td className="py-4 px-6">
-                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-400 border border-blue-500/50">
-                        {booking.type}
-                      </span>
-                    </td>
                     <td className="py-4 px-6 text-gray-300">
                       {new Date(booking.selected_date).toLocaleDateString()}
                     </td>

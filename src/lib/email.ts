@@ -2,7 +2,6 @@ import { normalizeDateTime } from './date-utils'
 
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID
 const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID // For webinar bookings
-const EMAILJS_ONE_ON_ONE_TEMPLATE_ID = process.env.EMAILJS_ONE_ON_ONE_TEMPLATE_ID || 'template_4cemnoc' // For one-on-one bookings
 const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY
 const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY
 
@@ -17,7 +16,6 @@ export interface EmailData {
   time: string
   meetLink: string
   calendarInvite: string
-  bookingType?: 'webinar' | 'one-on-one'
 }
 
 export async function sendCalendarInviteEmail(data: EmailData) {
@@ -52,18 +50,12 @@ export async function sendCalendarInviteEmail(data: EmailData) {
 
     const base64Calendar = Buffer.from(data.calendarInvite, 'utf-8').toString('base64')
 
-    const bookingType = data.bookingType || 'webinar'
-    const templateId = bookingType === 'one-on-one' 
-      ? EMAILJS_ONE_ON_ONE_TEMPLATE_ID 
-      : EMAILJS_TEMPLATE_ID
-    const subject = bookingType === 'one-on-one' 
-      ? `Your One-on-One Session Confirmation - ${formattedDate}`
-      : `Your Webinar Booking Confirmation - ${formattedDate}`
+    const templateId = EMAILJS_TEMPLATE_ID
+    const subject = `Your Webinar Booking Confirmation - ${formattedDate}`
     
     console.log('Sending email via EmailJS:', {
       to: data.to,
       subject,
-      bookingType,
       templateId,
     })
 

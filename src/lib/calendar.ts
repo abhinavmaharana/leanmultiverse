@@ -30,21 +30,12 @@ export async function generateCalendarInvite(
     booking.selected_time
   )
 
-  // Duration: 4 hours for webinar, 1 hour for one-on-one
+  // Duration: 4 hours for webinar
   const duration = booking.duration || 4
   const endDate = addHours(startDate, duration)
 
-  const isOneOnOne = duration === 1
-  const eventTitle = booking.title || (isOneOnOne 
-    ? 'One-on-One Session - Lean Multiverse'
-    : 'Lean Multiverse Webinar - Enterprise Agility & Digital Transformation')
-  const eventDescription = booking.description || (isOneOnOne
-    ? `Personalized career guidance session with our expert.
-
-Meeting Link: ${booking.meet_link}
-
-We look forward to speaking with you!`
-    : `Join us for an exclusive webinar on Enterprise Agility and Digital Transformation.
+  const eventTitle = booking.title || 'Lean Multiverse Webinar - Enterprise Agility & Digital Transformation'
+  const eventDescription = booking.description || `Join us for an exclusive webinar on Enterprise Agility and Digital Transformation.
 
 Topics Covered:
 - Building in the Multiverse
@@ -54,16 +45,16 @@ Topics Covered:
 
 Meeting Link: ${booking.meet_link}
 
-We look forward to seeing you there!`)
+We look forward to seeing you there!`
 
   // Create calendar
   const calendar = ical({
     prodId: {
       company: 'Lean Multiverse',
-      product: isOneOnOne ? 'One-on-One Booking' : 'Webinar Booking',
+      product: 'Webinar Booking',
       language: 'EN',
     },
-    name: isOneOnOne ? 'Lean Multiverse One-on-One' : 'Lean Multiverse Webinar',
+    name: 'Lean Multiverse Webinar',
     timezone: 'Asia/Kolkata', // IST
   })
 
@@ -89,11 +80,11 @@ We look forward to seeing you there!`)
     alarms: [
       {
         trigger: 15 * 60, // 15 minutes before
-        description: isOneOnOne ? 'Session starts in 15 minutes' : 'Webinar starts in 15 minutes',
+        description: 'Webinar starts in 15 minutes',
       },
       {
         trigger: 24 * 60 * 60, // 1 day before
-        description: isOneOnOne ? 'Session reminder - Tomorrow' : 'Webinar reminder - Tomorrow',
+        description: 'Webinar reminder - Tomorrow',
       },
     ],
   })

@@ -12,12 +12,9 @@ interface DashboardStats {
   failedBookings: number
   totalRevenue: number
   webinarRevenue: number
-  oneOnOneRevenue: number
   paidWebinarCount: number
-  paidOneOnOneCount: number
   bookingsByType: {
     webinar: number
-    'one-on-one': number
   }
 }
 
@@ -251,38 +248,6 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            {/* One-on-One Revenue */}
-            <div className="bg-gradient-to-r from-purple-500/10 to-purple-600/10 rounded-xl p-5 border border-purple-500/20 hover:border-purple-500/40 transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500/30 to-purple-600/30 rounded-xl flex items-center justify-center border border-purple-400/30">
-                    <svg className="w-6 h-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-white font-semibold text-base">One-on-One Revenue</p>
-                    <p className="text-gray-400 text-sm">{stats?.paidOneOnOneCount ?? 0} paid bookings × ₹1,000</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-xl font-bold text-purple-400">{formatCurrency(stats?.oneOnOneRevenue ?? 0)}</p>
-                  {stats?.totalRevenue && (
-                    <p className="text-gray-500 text-xs mt-1">
-                      {Math.round((stats.oneOnOneRevenue / stats.totalRevenue) * 100)}%
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="mt-4 w-full bg-gray-700/50 rounded-full h-2.5 overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${stats?.totalRevenue ? ((stats.oneOnOneRevenue / stats.totalRevenue) * 100) : 0}%` }}
-                  transition={{ duration: 1, delay: 0.7 }}
-                  className="bg-gradient-to-r from-purple-500 to-purple-600 h-2.5 rounded-full shadow-lg shadow-purple-500/50"
-                ></motion.div>
-              </div>
-            </div>
           </div>
         </motion.div>
 
@@ -364,10 +329,10 @@ export default function AdminDashboardPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-white mb-1">Bookings by Type</h2>
-            <p className="text-gray-400 text-sm">Distribution of webinar vs one-on-one bookings</p>
+            <p className="text-gray-400 text-sm">All webinar bookings distribution</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <div className="group bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-xl p-6 hover:border-blue-500/50 transition-all cursor-pointer">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-14 h-14 bg-gradient-to-br from-blue-500/30 to-blue-600/30 rounded-xl flex items-center justify-center border border-blue-400/30 shadow-lg">
@@ -381,25 +346,6 @@ export default function AdminDashboardPage() {
                 {stats?.totalBookings && (
                   <p className="text-blue-300 text-xs mt-1">
                     {Math.round((stats.bookingsByType.webinar / stats.totalBookings) * 100)}% of total
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="group bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-xl p-6 hover:border-purple-500/50 transition-all cursor-pointer">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500/30 to-purple-600/30 rounded-xl flex items-center justify-center border border-purple-400/30 shadow-lg">
-                <svg className="w-7 h-7 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-gray-300 text-sm font-medium mb-1">One-on-One Bookings</p>
-                <p className="text-3xl sm:text-4xl font-bold text-white">{stats?.bookingsByType?.['one-on-one'] ?? 0}</p>
-                {stats?.totalBookings && (
-                  <p className="text-purple-300 text-xs mt-1">
-                    {Math.round((stats.bookingsByType['one-on-one'] / stats.totalBookings) * 100)}% of total
                   </p>
                 )}
               </div>

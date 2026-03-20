@@ -16,7 +16,6 @@ import {
 interface PaymentStats {
   summary: {
     totalWebinars: number
-    totalOneOnOne: number
   }
   webinarStatusCounts: {
     paid: number
@@ -25,25 +24,10 @@ interface PaymentStats {
     withPaymentId: number
     withOrderId: number
   }
-  oneOnOneStatusCounts: {
-    paid: number
-    pending: number
-    failed: number
-    withPaymentId: number
-    withOrderId: number
-  }
   suspiciousEntries: {
     webinars: number
-    oneOnOne: number
     details: {
       webinars: Array<{
-        id: string
-        user_email: string
-        payment_status: string
-        razorpay_payment_id: string | null
-        razorpay_order_id: string | null
-      }>
-      oneOnOne: Array<{
         id: string
         user_email: string
         payment_status: string
@@ -53,14 +37,6 @@ interface PaymentStats {
     }
   }
   samplePaidWebinars: Array<{
-    id: string
-    user_email: string
-    payment_status: string
-    razorpay_payment_id: string | null
-    razorpay_order_id: string | null
-    created_at: string
-  }>
-  samplePaidOneOnOne: Array<{
     id: string
     user_email: string
     payment_status: string
@@ -102,10 +78,10 @@ export default function PaymentDiagnosticsPage() {
     }
   }
 
-  const totalPaid = (stats?.webinarStatusCounts.paid || 0) + (stats?.oneOnOneStatusCounts.paid || 0)
-  const totalPending = (stats?.webinarStatusCounts.pending || 0) + (stats?.oneOnOneStatusCounts.pending || 0)
-  const totalFailed = (stats?.webinarStatusCounts.failed || 0) + (stats?.oneOnOneStatusCounts.failed || 0)
-  const totalBookings = (stats?.summary.totalWebinars || 0) + (stats?.summary.totalOneOnOne || 0)
+  const totalPaid = stats?.webinarStatusCounts.paid || 0
+  const totalPending = stats?.webinarStatusCounts.pending || 0
+  const totalFailed = stats?.webinarStatusCounts.failed || 0
+  const totalBookings = stats?.summary.totalWebinars || 0
 
   return (
     <div className="w-full">
@@ -206,7 +182,7 @@ export default function PaymentDiagnosticsPage() {
         </div>
 
         {/* Detailed Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8">
           {/* Webinar Breakdown */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -258,60 +234,10 @@ export default function PaymentDiagnosticsPage() {
             </div>
           </motion.div>
 
-          {/* One-on-One Breakdown */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-6"
-          >
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-              <Users className="h-6 w-6 text-purple-400" />
-              One-on-One Bookings
-            </h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-green-900/20 rounded-lg border border-green-700/30">
-                <div className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-400" />
-                  <span className="text-gray-300">Paid</span>
-                </div>
-                <span className="text-xl font-bold text-green-400">
-                  {stats?.oneOnOneStatusCounts.paid ?? 0}
-                </span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-yellow-900/20 rounded-lg border border-yellow-700/30">
-                <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-yellow-400" />
-                  <span className="text-gray-300">Pending</span>
-                </div>
-                <span className="text-xl font-bold text-yellow-400">
-                  {stats?.oneOnOneStatusCounts.pending ?? 0}
-                </span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-red-900/20 rounded-lg border border-red-700/30">
-                <div className="flex items-center gap-3">
-                  <XCircle className="h-5 w-5 text-red-400" />
-                  <span className="text-gray-300">Failed</span>
-                </div>
-                <span className="text-xl font-bold text-red-400">
-                  {stats?.oneOnOneStatusCounts.failed ?? 0}
-                </span>
-              </div>
-              <div className="mt-4 pt-4 border-t border-gray-700">
-                <div className="flex items-center justify-between text-sm text-gray-400">
-                  <span>With Payment ID</span>
-                  <span className="text-white">{stats?.oneOnOneStatusCounts.withPaymentId ?? 0}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm text-gray-400 mt-2">
-                  <span>With Order ID</span>
-                  <span className="text-white">{stats?.oneOnOneStatusCounts.withOrderId ?? 0}</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
 
         {/* Suspicious Entries */}
-        {(stats?.suspiciousEntries.webinars ?? 0) > 0 || (stats?.suspiciousEntries.oneOnOne ?? 0) > 0 ? (
+        {(stats?.suspiciousEntries.webinars ?? 0) > 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -324,7 +250,7 @@ export default function PaymentDiagnosticsPage() {
             <p className="text-gray-400 mb-4">
               These entries have mismatched payment status and payment IDs. They may need manual review.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <p className="text-red-400 font-semibold mb-2">
                   Webinars: {stats?.suspiciousEntries.webinars ?? 0}
@@ -332,28 +258,6 @@ export default function PaymentDiagnosticsPage() {
                 {(stats?.suspiciousEntries.details.webinars.length ?? 0) > 0 && (
                   <div className="space-y-2">
                     {stats?.suspiciousEntries.details.webinars.map((entry) => (
-                      <div
-                        key={entry.id}
-                        className="bg-gray-800/50 p-3 rounded border border-red-700/30 text-sm"
-                      >
-                        <p className="text-gray-300">{entry.user_email}</p>
-                        <p className="text-gray-500 text-xs">
-                          Status: {entry.payment_status} | 
-                          Payment ID: {entry.razorpay_payment_id || 'None'} |
-                          Order ID: {entry.razorpay_order_id || 'None'}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div>
-                <p className="text-red-400 font-semibold mb-2">
-                  One-on-One: {stats?.suspiciousEntries.oneOnOne ?? 0}
-                </p>
-                {(stats?.suspiciousEntries.details.oneOnOne.length ?? 0) > 0 && (
-                  <div className="space-y-2">
-                    {stats?.suspiciousEntries.details.oneOnOne.map((entry) => (
                       <div
                         key={entry.id}
                         className="bg-gray-800/50 p-3 rounded border border-red-700/30 text-sm"
@@ -390,7 +294,7 @@ export default function PaymentDiagnosticsPage() {
         )}
 
         {/* Sample Paid Bookings */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -423,37 +327,6 @@ export default function PaymentDiagnosticsPage() {
             )}
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-lg p-6"
-          >
-            <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-400" />
-              Sample Paid One-on-One (Recent)
-            </h2>
-            {(stats?.samplePaidOneOnOne.length ?? 0) > 0 ? (
-              <div className="space-y-3">
-                {stats?.samplePaidOneOnOne.map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="bg-gray-900/50 p-3 rounded border border-green-700/30"
-                  >
-                    <p className="text-white font-medium">{booking.user_email}</p>
-                    <p className="text-gray-500 text-xs mt-1">
-                      Payment ID: {booking.razorpay_payment_id || 'N/A'}
-                    </p>
-                    <p className="text-gray-500 text-xs">
-                      {new Date(booking.created_at).toLocaleString()}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-400 text-sm">No paid one-on-one bookings found</p>
-            )}
-          </motion.div>
         </div>
 
             {/* Refresh Button */}

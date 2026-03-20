@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 
 interface Booking {
   id: string
-  type: 'webinar' | 'one-on-one'
+  type: 'webinar'
   user_name: string
   user_email: string
   user_phone: string
@@ -29,7 +29,7 @@ export default function BookingDetailPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const bookingId = params.id as string
-  const type = searchParams.get('type') || 'webinar'
+  const type = 'webinar'
 
   const [booking, setBooking] = useState<Booking | null>(null)
   const [loading, setLoading] = useState(true)
@@ -138,10 +138,6 @@ export default function BookingDetailPage() {
             <div>
               <label className="text-gray-400 text-sm">Phone</label>
               <p className="text-white text-lg">{booking.user_phone}</p>
-            </div>
-            <div>
-              <label className="text-gray-400 text-sm">Type</label>
-              <p className="text-white text-lg capitalize">{booking.type}</p>
             </div>
             <div>
               <label className="text-gray-400 text-sm">Date</label>
