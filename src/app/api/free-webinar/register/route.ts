@@ -74,7 +74,6 @@ export async function POST(request: NextRequest) {
         time: booking.selected_time,
         meetLink,
         calendarInvite,
-        bookingType: 'webinar',
       })
       await updateBooking(booking.id, { calendar_invite_sent: true })
     } catch (error) {
