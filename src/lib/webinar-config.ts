@@ -22,6 +22,7 @@ const PAID_ZOOM_LINKS: Record<string, string> = {
   '3-7': 'https://us06web.zoom.us/meeting/register/swqMuabPQQSCOM5eF7j-IA',
   '3-14': 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ',
   '3-21': 'https://us06web.zoom.us/meeting/register/4ZWJwZVSTYSPbpwh5au3BA',
+  '3-28': 'https://us06web.zoom.us/meeting/register/jKl7rE9ZRnezYfqWWQcalw',
 }
 const PAID_ZOOM_FALLBACK = 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
 
@@ -39,6 +40,7 @@ const PAID_DATES_CONFIG = [
   { month: 2, day: 7 },
   { month: 2, day: 14 },
   { month: 2, day: 21 },
+  { month: 2, day: 28 },
 ]
 
 export function getAvailableDatesPaid(): Date[] {
