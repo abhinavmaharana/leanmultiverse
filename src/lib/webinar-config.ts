@@ -23,6 +23,15 @@ const PAID_ZOOM_LINKS: Record<string, string> = {
   '3-14': 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ',
   '3-21': 'https://us06web.zoom.us/meeting/register/4ZWJwZVSTYSPbpwh5au3BA',
   '3-28': 'https://us06web.zoom.us/meeting/register/jKl7rE9ZRnezYfqWWQcalw',
+  '4-4': 'https://us06web.zoom.us/meeting/register/A-1OnVdcTlmy-_Mo-txCrg',
+  '4-11': 'https://us06web.zoom.us/meeting/register/VIAFIP7HSy2-tCz1E83nmQ',
+  '4-18': 'https://us06web.zoom.us/meeting/register/gcl-DLUFQH68VLmmoPcI0w',
+  '4-25': 'https://us06web.zoom.us/meeting/register/3aRPvOHBTeO6QjW1l95NfA',
+  '5-2': 'https://us06web.zoom.us/meeting/register/GYMyojYdSQC1EgBibYXsyA',
+  '5-9': 'https://us06web.zoom.us/meeting/register/MuyEfIJZSIuV81VFYCBdjQ',
+  '5-16': 'https://us06web.zoom.us/meeting/register/Q4PPvtURSW6scC0cqKVMoQ',
+  '5-23': 'https://us06web.zoom.us/meeting/register/hjeELb9IQH6kTPJtywWnPg',
+  '5-30': 'https://us06web.zoom.us/meeting/register/5dkuiX7yRzeXQTTeazJ-8w',
 }
 const PAID_ZOOM_FALLBACK = 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
 
@@ -41,6 +50,15 @@ const PAID_DATES_CONFIG = [
   { month: 2, day: 14 },
   { month: 2, day: 21 },
   { month: 2, day: 28 },
+  { month: 3, day: 4 },
+  { month: 3, day: 11 },
+  { month: 3, day: 18 },
+  { month: 3, day: 25 },
+  { month: 4, day: 2 },
+  { month: 4, day: 9 },
+  { month: 4, day: 16 },
+  { month: 4, day: 23 },
+  { month: 4, day: 30 },
 ]
 
 export function getAvailableDatesPaid(): Date[] {
