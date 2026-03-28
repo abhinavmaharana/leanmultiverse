@@ -10,7 +10,7 @@ import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinar
 
 const navLinks = [
     // { label: 'Home', href: '#home', badge: null },
-    { label: 'Learn AI/ML', href: '/ai-ml', badge: '🔥 Hot' },
+    // { label: 'Learn AI/ML', href: '/ai-ml', badge: '🔥 Hot' },
     { label: 'Testimonial', href: '#testimonial', badge: null },
     // { label: 'Services', href: '#services' },
     { label: 'Contact', href: '#contact', badge: null },
