@@ -5,28 +5,8 @@ import { getBookingByOrderId, updateBookingByOrderId } from '@/lib/db-helpers'
 import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
 import { WebinarBooking } from '@/lib/db'
+import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
 
-// Must match BookWebinarClient – Zoom links by month-day (YYYY-MM-DD → month 1–12, day 1–31)
-const ZOOM_LINKS: Record<string, string> = {
-  '2-7': 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA',
-  '2-14': 'https://us06web.zoom.us/meeting/register/LG0BbP6yQsmLlwwAbJ85xg',
-  '2-21': 'https://us06web.zoom.us/meeting/register/eX9-EdUBSWGcVSOU__voEg',
-  '2-28': 'https://us06web.zoom.us/meeting/register/DbbY6tSjSh6Dq6gsR5eS-w',
-  '3-7': 'https://us06web.zoom.us/meeting/register/swqMuabPQQSCOM5eF7j-IA',
-  '3-14': 'https://us06web.zoom.us/meeting/register/uF8uYW9JST6m289r8mT2yQ',
-  '3-21': 'https://us06web.zoom.us/meeting/register/4ZWJwZVSTYSPbpwh5au3BA',
-}
-const ZOOM_LINK_FALLBACK = 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
-
-function getZoomLinkForDate(dateStr: string): string {
-  try {
-    const [, month, day] = dateStr.split('-').map(Number)
-    const key = `${month}-${day}`
-    return ZOOM_LINKS[key] ?? ZOOM_LINK_FALLBACK
-  } catch {
-    return ZOOM_LINK_FALLBACK
-  }
-}
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -155,10 +135,10 @@ export async function POST(request: NextRequest) {
       zoomRegistrationLink = orderNotes.zoom_registration_link
     } else if (bookingData.selected_date) {
       // Calculate Zoom link based on selected date
-      zoomRegistrationLink = getZoomLinkForDate(bookingData.selected_date)
+      zoomRegistrationLink = getZoomLinkForDatePaid(bookingData.selected_date)
       console.log(`Calculated Zoom link for date ${bookingData.selected_date}: ${zoomRegistrationLink}`)
     } else {
-      zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || ZOOM_LINK_FALLBACK
+      zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
     }
     
     const meetLink = zoomRegistrationLink
