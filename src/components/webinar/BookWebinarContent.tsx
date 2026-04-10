@@ -192,7 +192,7 @@ export default function BookWebinarContent() {
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
-        amount: 900,
+        amount: 49900,
         currency: 'INR',
         name: 'Lean Multiverse',
         description: 'Webinar - Strategic Career Accelerator',
@@ -304,7 +304,7 @@ export default function BookWebinarContent() {
                 {mounted && selectedDate
                   ? format(new Date(selectedDate), 'EEEE, MMM d')
                   : 'Select date'}{' '}
-                · 8:00 PM IST · ₹9
+                · 8:00 PM IST · ₹499
               </p>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                 <input type="hidden" {...register('selected_date')} />
@@ -455,7 +455,7 @@ export default function BookWebinarContent() {
                   >
                     {isSubmitting
                       ? 'Opening payment...'
-                      : 'Reserve my spot at just Rs 9'}
+                      : 'Reserve my spot at just Rs 499'}
                   </button>
               </form>
             </div>
@@ -532,7 +532,7 @@ export default function BookWebinarContent() {
                     {mounted && selectedDate
                       ? format(new Date(selectedDate), 'EEEE, MMM d')
                       : 'Select date'}{' '}
-                    · 8:00 PM IST · ₹9
+                    · 8:00 PM IST · ₹499
                   </p>
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                     <input type="hidden" {...register('selected_date')} />
@@ -683,7 +683,7 @@ export default function BookWebinarContent() {
                     >
                       {isSubmitting
                         ? 'Opening payment...'
-                        : 'Reserve my spot at just Rs 9'}
+                        : 'Reserve my spot at just Rs 499'}
                     </button>
                   </form>
                 </div>
