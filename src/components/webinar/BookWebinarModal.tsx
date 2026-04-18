@@ -1,9 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Modal } from 'antd'
 import { Button } from '@/components/ui/button'
-import BookWebinarContent from './BookWebinarContent'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import './book-webinar.css'
 
@@ -19,14 +16,12 @@ interface Props {
 }
 
 export default function BookWebinarModal({ source }: Props) {
-    const [open, setOpen] = useState(false)
 
     const isMobile = useIsMobile(1023)
 
     const showModal = () => {
-        setOpen(true)
+        window.location.href = "https://learn.leanmultiverse.com/web/checkout/69e242dddf50f711ca7aebed?purchaseNow=true"
     }
-    const handleCancel = () => setOpen(false)
 
     return (
         <>
@@ -74,18 +69,6 @@ export default function BookWebinarModal({ source }: Props) {
                         </Button>
             }
 
-            <Modal
-                open={open}
-                onCancel={handleCancel}
-                footer={null}
-                width={1100}
-                centered
-                destroyOnHidden
-                className='webinar-modal'
-
-            >
-                <BookWebinarContent />
-            </Modal>
         </>
     )
 }

@@ -110,6 +110,10 @@ export default function BookWebinarClient() {
     },
   })
 
+  useEffect(() => {
+    window.location.href = "https://learn.leanmultiverse.com/web/checkout/69e242dddf50f711ca7aebed?purchaseNow=true"
+  }, [])
+
   useEffect(() => { setMounted(true) }, [])
 
 
