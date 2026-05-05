@@ -6,6 +6,7 @@ import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
 import { WebinarBooking } from '@/lib/db'
 import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
+import { sendMetaLeadEvent } from '@/lib/facebook-capi'
 
 
 const razorpay = new Razorpay({
@@ -155,6 +156,16 @@ export async function POST(request: NextRequest) {
       updateData.zoom_registration_link = zoomRegistrationLink
       
       await updateBookingByOrderId(razorpay_order_id, updateData)
+    }
+
+    // Send server-side CRM Lead event to Meta (non-blocking)
+    if (bookingData?.user_email && bookingData?.user_phone) {
+      sendMetaLeadEvent({
+        email: String(bookingData.user_email),
+        phone: String(bookingData.user_phone),
+        lead_id: bookingData.id,
+        event_name: 'Purchase' // or Lead, using Purchase since they paid
+      }).catch(err => console.error('Failed to send Meta CAPI Purchase Event:', err))
     }
 
     // Generate calendar invite

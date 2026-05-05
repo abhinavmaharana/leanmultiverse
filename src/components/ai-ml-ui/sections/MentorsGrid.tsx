@@ -40,10 +40,10 @@ const mentors = [
   {
     id: "ABHINAV",
     name: "Abhinav",
-    role: "AI/ML Engineer",
-    company: "Razorpay",
+    role: "Software Development Engineer - UI",
+    company: "Flipkart",
     location: "Bangalore, India",
-    desc: "Razorpay | Google Agentic AI Hackathon Winner\n\nExperience includes building AI-driven systems, developing machine learning solutions, and applying intelligent automation to solve real-world business problems.",
+    desc: "Flipkart | Ex Razorpay | Google Agentic AI Hackathon Winner\n\nExperience includes building AI-driven systems, developing machine learning solutions, and applying intelligent automation to solve real-world business problems.",
     image: "/mentors/abhinav.png",
     color: "gray",
     linkedin: "https://www.linkedin.com/in/abhinavmaharana/",
@@ -130,9 +130,9 @@ export const MentorsGrid = () => {
                   </ul>
                 )}
                 <div className="flex items-center gap-4">
-                  <a 
-                    href={m.linkedin} 
-                    target="_blank" 
+                  <a
+                    href={m.linkedin}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-blue-600 transition-all border border-white/20"
                   >
@@ -185,9 +185,9 @@ export const MentorsGrid = () => {
                     {m.desc}
                   </p>
                   <div className="flex items-center gap-3">
-                    <a 
-                      href={m.linkedin} 
-                      target="_blank" 
+                    <a
+                      href={m.linkedin}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-blue-600 transition-all border border-white/20"
                     >

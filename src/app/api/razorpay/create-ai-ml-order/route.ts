@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       () =>
         withTimeout(
           razorpay.orders.create({
-            amount: 900, // ₹9
+            amount: 9900, // ₹99
             currency: 'INR',
             receipt: `aiml_webinar_${Date.now()}`,
             notes: {

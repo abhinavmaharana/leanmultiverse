@@ -5,6 +5,7 @@ import { sendCalendarInviteEmail } from '@/lib/email'
 import { getZoomLinkForDateFree } from '@/lib/webinar-config'
 import { isValidEmailFormat, isValidIndianPhone, normalizeIndianPhone } from '@/lib/validators'
 import { checkRateLimit, DEFAULT_LIMIT } from '@/lib/rate-limit'
+import { sendMetaLeadEvent } from '@/lib/facebook-capi'
 
 export async function POST(request: NextRequest) {
   const rateLimitResponse = await checkRateLimit(request, DEFAULT_LIMIT)
@@ -45,6 +46,14 @@ export async function POST(request: NextRequest) {
       selected_time,
       zoom_registration_link,
     })
+
+    // Send server-side CRM Lead event to Meta (non-blocking)
+    sendMetaLeadEvent({
+      email: String(user_email),
+      phone: String(user_phone),
+      lead_id: booking.id,
+      event_name: 'Lead'
+    }).catch(err => console.error('Failed to send Meta CAPI Lead Event:', err))
 
     const meetLink = zoom_registration_link
 

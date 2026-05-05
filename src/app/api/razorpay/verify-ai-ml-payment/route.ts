@@ -5,6 +5,7 @@ import { getAiMlWebinarBookingByOrderId, updateAiMlWebinarBookingByOrderId, crea
 import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
 import { getZoomLinkForDateAiMl } from '@/lib/ai-ml-webinar-config'
+import { sendMetaLeadEvent } from '@/lib/facebook-capi'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -127,6 +128,16 @@ export async function POST(request: NextRequest) {
         meet_link: zoomRegistrationLink,
         zoom_registration_link: zoomRegistrationLink,
       })
+    }
+
+    // Send server-side CRM Lead event to Meta (non-blocking)
+    if (bookingData?.user_email && bookingData?.user_phone) {
+      sendMetaLeadEvent({
+        email: String(bookingData.user_email),
+        phone: String(bookingData.user_phone),
+        lead_id: bookingData.id,
+        event_name: 'Purchase' // or Lead, using Purchase since they paid
+      }).catch(err => console.error('Failed to send Meta CAPI Purchase Event:', err))
     }
 
     // Generate calendar invite (AI/ML specific title & description)
