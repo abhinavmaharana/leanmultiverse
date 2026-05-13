@@ -172,32 +172,30 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         {/* Meta Pixel base code (PageView fires on every page) */}
-        {process.env.NEXT_PUBLIC_META_PIXEL_ID ? (
-          <>
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
+        <>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID || '1699542657689711'}');
 fbq('track', 'PageView');
 `,
-              }}
+            }}
+          />
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style={{ display: 'none' }}
+              src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID || '1699542657689711'}&ev=PageView&noscript=1`}
+              alt=""
             />
-            <noscript>
-              <img
-                height="1"
-                width="1"
-                style={{ display: 'none' }}
-                src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
-                alt=""
-              />
-            </noscript>
-          </>
-        ) : null}
+          </noscript>
+        </>
         {/* Google tag (gtag.js) - GA4; next/script so it loads and verifies reliably */}
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
           <>

@@ -19,7 +19,12 @@ interface Props {
 export default function BookAiMlWebinarModal({ source }: Props) {
   const [open, setOpen] = useState(false)
 
-  const showModal = () => setOpen(true)
+  const showModal = () => {
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'InitiateCheckout');
+    }
+    setOpen(true)
+  }
   const handleCancel = () => setOpen(false)
 
   return (

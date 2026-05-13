@@ -20,7 +20,10 @@ export default function BookWebinarModal({ source }: Props) {
     const isMobile = useIsMobile(1023)
 
     const showModal = () => {
-        window.location.href = "https://learn.leanmultiverse.com/web/checkout/69e242dddf50f711ca7aebed?purchaseNow=true"
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+            (window as any).fbq('track', 'InitiateCheckout');
+        }
+        window.location.href = "https://learn.leanmultiverse.com/web/checkout/69e242dddf50f711ca7aebed?couponcode=PMP100&purchaseNow=true"
     }
 
     return (
