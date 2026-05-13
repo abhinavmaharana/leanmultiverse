@@ -239,7 +239,7 @@ export default function BookAiMlWebinarContent() {
             Reserve your webinar seat
           </h2>
           <p className="text-xs text-gray-600 mb-4">
-            {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹99
+            {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
@@ -287,7 +287,7 @@ export default function BookAiMlWebinarContent() {
               className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-black uppercase tracking-wider"
               style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', color: '#fff' }}
             >
-              {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 99'}
+              {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
             </button>
           </form>
         </div>
@@ -350,7 +350,7 @@ export default function BookAiMlWebinarContent() {
                   Reserve your webinar seat
                 </h2>
                 <p className="text-xs text-gray-600 mb-4">
-                  {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹99
+                  {mounted && selectedDate ? format(new Date(selectedDate), 'EEEE, MMM d') : 'Select date'} · 8:00 PM IST · ₹9
                 </p>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
@@ -400,7 +400,7 @@ export default function BookAiMlWebinarContent() {
                     className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-black uppercase tracking-wider"
                     style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', color: '#fff', boxShadow: '0 15px 40px rgba(245, 158, 11, 0.35)' }}
                   >
-                    {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 99'}
+                    {isSubmitting ? 'Opening payment...' : 'Reserve my spot at just Rs 9'}
                   </button>
                 </form>
               </div>

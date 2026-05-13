@@ -12,7 +12,7 @@ export function AiMlAnnouncementBanner() {
                 
                 <div className="flex items-center gap-2 relative z-10">
                     <span className="text-sm md:text-base font-bold tracking-tight">
-                        🔥 Learn AI in just ₹99. Register Now!
+                        🔥 Learn AI in just ₹9. Register Now!
                     </span>
                 </div>
 
