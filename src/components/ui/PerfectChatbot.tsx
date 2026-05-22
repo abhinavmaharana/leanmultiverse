@@ -11,8 +11,8 @@ const shimmerStyle = `
 }
 `
 
-const PHONE_DISPLAY = '080 6217 7938'
-const PHONE_URI = '+918062177938'
+const PHONE_DISPLAY = '+91 7696627657'
+const PHONE_URI = '+917696627657'
 
 export default function PerfectChatbot() {
   const [isContactFormOpen, setIsContactFormOpen] = useState(false)
@@ -32,7 +32,7 @@ export default function PerfectChatbot() {
     if (pendingAction === 'whatsapp') {
       const message = "Hi! I'm interested in learning more about your courses."
       setTimeout(() => {
-        window.open(`https://wa.me/918062177938?text=${encodeURIComponent(message)}`, '_blank')
+        window.open(`https://wa.me/917696627657?text=${encodeURIComponent(message)}`, '_blank')
       }, 500)
     } else if (pendingAction === 'phone') {
       setTimeout(() => {

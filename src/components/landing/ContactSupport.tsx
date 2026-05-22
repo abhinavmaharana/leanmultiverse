@@ -4,8 +4,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import ContactFormModal from "@/components/ui/ContactFormModal"
 
-const BUSINESS_PHONE_DISPLAY = "080 6217 7938"
-const BUSINESS_PHONE_E164 = "+918062177938"
+const BUSINESS_PHONE_DISPLAY = "+91 7696627657"
+const BUSINESS_PHONE_E164 = "+917696627657"
 
 const contactMethods = [
   {

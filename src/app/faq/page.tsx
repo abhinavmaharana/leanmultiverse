@@ -33,7 +33,7 @@ export default function FAQPage() {
             </section>
             <section>
               <h2 className="text-xl font-semibold text-white mb-2">How can I contact support?</h2>
-              <p className="text-gray-300 leading-relaxed">Call 080 6217 7938, email operations@leanmultiverse.com, or use the Contact section on the website.</p>
+              <p className="text-gray-300 leading-relaxed">Call +91 7696627657, email operations@leanmultiverse.com, or use the Contact section on the website.</p>
             </section>
           </div>
           <p className="mt-12 text-gray-400">

@@ -85,7 +85,7 @@ export default function ChatWidget() {
   }
 
   const handleFormSubmit = () => {
-    const phoneNumber = "918062177938" // Business WhatsApp number
+    const phoneNumber = "917696627657" // Business WhatsApp number
     const message = "Hi! I'm interested in learning more about your courses."
     setTimeout(() => {
       window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank')

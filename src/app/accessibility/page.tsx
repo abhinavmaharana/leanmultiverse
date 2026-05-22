@@ -55,7 +55,7 @@ export default function AccessibilityPage() {
               </p>
               <p className="text-gray-300 leading-relaxed">
                 Email: <a href="mailto:operations@leanmultiverse.com" className="text-yellow-400 hover:underline">operations@leanmultiverse.com</a><br />
-                Phone: <a href="tel:+918062177938" className="text-yellow-400 hover:underline">080 6217 7938</a>
+                Phone: <a href="tel:+917696627657" className="text-yellow-400 hover:underline">+91 7696627657</a>
               </p>
             </section>
           </div>

@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button"
 import { courses, categories, levels, targetAudiences } from "@/data/courses"
 import ContactFormModal from "@/components/ui/ContactFormModal"
 
-const TALK_TO_EXPERT_DISPLAY = "080 6217 7938"
-const TALK_TO_EXPERT_TEL = "+918062177938"
+const TALK_TO_EXPERT_DISPLAY = "+91 7696627657"
+const TALK_TO_EXPERT_TEL = "+917696627657"
 
 // GST helper (keep it local to this component)
 const addGST = (price: number, gstPercent = 18) => {

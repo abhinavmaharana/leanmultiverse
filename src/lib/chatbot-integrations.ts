@@ -185,7 +185,7 @@ export class MockService {
     } else if (userInput.includes('consultation') || userInput.includes('book')) {
       response = "I'd be happy to help you book a consultation with our experts. Let me get some details from you to schedule the best time."
     } else if (userInput.includes('contact') || userInput.includes('support')) {
-      response = "You can reach us via WhatsApp (+91 8062177938), email (operations@leanmultiverse.com), or phone (08062177938). We're available 24/7 for support."
+      response = "You can reach us via WhatsApp (+91 7696627657), email (operations@leanmultiverse.com), or phone (+91 7696627657). We're available 24/7 for support."
     } else if (userInput.includes('case study') || userInput.includes('success')) {
       response = "We've helped 500+ organizations including Netflix, Porsche, NASA, and Philips transform their operations. Would you like to see detailed case studies?"
     }
@@ -254,8 +254,8 @@ Guidelines:
 Company info:
 - Website: leanmultiverse.com
 - Email: operations@leanmultiverse.com
-- Phone: 08062177938
-- WhatsApp: +91 8062177938
+- Phone: +91 7696627657
+- WhatsApp: +91 7696627657
 - Location: India (IST timezone)`
 }
 

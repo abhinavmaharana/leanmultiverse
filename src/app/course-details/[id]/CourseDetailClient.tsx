@@ -82,7 +82,7 @@ export default function CourseDetailClient({ course }: CourseDetailClientProps) 
     // After form submission, redirect to WhatsApp
     const message = `Hi, I'm interested in the ${course.title} course. Can you provide more details about enrollment and pricing?`
     setTimeout(() => {
-      window.open(`https://wa.me/918062177938?text=${encodeURIComponent(message)}`, '_blank')
+      window.open(`https://wa.me/917696627657?text=${encodeURIComponent(message)}`, '_blank')
     }, 500)
   }
 
