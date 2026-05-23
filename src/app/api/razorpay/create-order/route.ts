@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
         bookingData.zoom_registration_link = zoom_registration_link
       }
 
-      booking = await createBooking(bookingData)
+      booking = await withTimeout(createBooking(bookingData), 2000)
     } catch (dbError) {
       console.error('Database error (continuing with order creation):', dbError)
       // Continue even if database save fails - we still have the Razorpay order

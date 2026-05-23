@@ -6,6 +6,7 @@ import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
 import { getZoomLinkForDateAiMl } from '@/lib/ai-ml-webinar-config'
 import { sendMetaLeadEvent } from '@/lib/facebook-capi'
+import { withTimeout } from '@/lib/http-utils'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -57,10 +58,12 @@ export async function POST(request: NextRequest) {
 
     // Get booking from database
     let booking: any = null;
+    let dbDown = false;
     try {
-      booking = await getAiMlWebinarBookingByOrderId(razorpay_order_id)
+      booking = await withTimeout(getAiMlWebinarBookingByOrderId(razorpay_order_id), 2000)
     } catch (e) {
       console.warn("Database error (continuing with verification):", e);
+      dbDown = true;
     }
     let orderNotes: Record<string, string> | null = null
 
@@ -71,21 +74,23 @@ export async function POST(request: NextRequest) {
         orderNotes = order.notes as Record<string, string> | null
 
         if (orderNotes?.user_name && orderNotes?.user_email && orderNotes?.selected_date && orderNotes?.selected_time) {
-          try {
-            booking = await createAiMlWebinarBooking({
-              user_name: orderNotes.user_name,
-              user_email: orderNotes.user_email,
-              user_phone: orderNotes.user_phone,
-              selected_date: orderNotes.selected_date,
-              selected_time: orderNotes.selected_time,
-              razorpay_order_id: razorpay_order_id,
-              zoom_registration_link: orderNotes.zoom_registration_link || undefined,
-              order_notes: typeof order.notes === 'object' && order.notes !== null ? order.notes as Record<string, string> : undefined,
-            })
-            console.log('Created AI/ML booking from Razorpay order notes:', booking.id)
-          } catch (createError) {
-            console.error('Error creating AI/ML booking (will use order notes for email):', createError)
-            booking = null
+          if (!dbDown) {
+            try {
+              booking = await withTimeout(createAiMlWebinarBooking({
+                user_name: orderNotes.user_name,
+                user_email: orderNotes.user_email,
+                user_phone: orderNotes.user_phone,
+                selected_date: orderNotes.selected_date,
+                selected_time: orderNotes.selected_time,
+                razorpay_order_id: razorpay_order_id,
+                zoom_registration_link: orderNotes.zoom_registration_link || undefined,
+                order_notes: typeof order.notes === 'object' && order.notes !== null ? order.notes as Record<string, string> : undefined,
+              }), 2000)
+              console.log('Created AI/ML booking from Razorpay order notes:', booking.id)
+            } catch (createError) {
+              console.error('Error creating AI/ML booking (will use order notes for email):', createError)
+              booking = null
+            }
           }
         } else {
           return NextResponse.json(
@@ -126,14 +131,14 @@ export async function POST(request: NextRequest) {
       getZoomLinkForDateAiMl(bookingData.selected_date)
 
     // Update booking with payment details
-    if (booking) {
+    if (booking && !dbDown) {
       try {
-        await updateAiMlWebinarBookingByOrderId(razorpay_order_id, {
+        await withTimeout(updateAiMlWebinarBookingByOrderId(razorpay_order_id, {
           razorpay_payment_id,
           payment_status: 'paid',
           meet_link: zoomRegistrationLink,
           zoom_registration_link: zoomRegistrationLink,
-        })
+        }), 2000)
       } catch (updateError) {
         console.warn('Database error updating booking (continuing):', updateError)
       }

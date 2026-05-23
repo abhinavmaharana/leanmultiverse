@@ -7,6 +7,7 @@ import { sendCalendarInviteEmail } from '@/lib/email'
 import { WebinarBooking } from '@/lib/db'
 import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
 import { sendMetaLeadEvent } from '@/lib/facebook-capi'
+import { withTimeout } from '@/lib/http-utils'
 
 
 const razorpay = new Razorpay({
@@ -63,10 +64,12 @@ export async function POST(request: NextRequest) {
 
     // Get booking from database
     let booking: any = null;
+    let dbDown = false;
     try {
-      booking = await getBookingByOrderId(razorpay_order_id)
+      booking = await withTimeout(getBookingByOrderId(razorpay_order_id), 2000)
     } catch (e) {
       console.warn("Database error (continuing with verification):", e);
+      dbDown = true;
     }
 
     // If booking doesn't exist, create it from Razorpay order notes
@@ -78,23 +81,24 @@ export async function POST(request: NextRequest) {
         orderNotes = order.notes as Record<string, string> | null
         
         if (orderNotes && orderNotes.user_name && orderNotes.user_email && orderNotes.user_phone && orderNotes.selected_date && orderNotes.selected_time) {
-          const { createBooking } = await import('@/lib/db-helpers')
-          try {
-            booking = await createBooking({
-              user_name: orderNotes.user_name,
-              user_email: orderNotes.user_email,
-              user_phone: orderNotes.user_phone,
-              selected_date: orderNotes.selected_date,
-              selected_time: orderNotes.selected_time,
-              razorpay_order_id: razorpay_order_id,
-              zoom_registration_link: orderNotes.zoom_registration_link || undefined,
-              order_notes: orderNotes,
-            })
-            console.log('Created booking from Razorpay order notes:', booking.id)
-          } catch (createError) {
-            console.error('Error creating booking from order (will use order notes for email):', createError)
-            // Continue with order notes - we can still send the email
-            booking = null
+          if (!dbDown) {
+            const { createBooking } = await import('@/lib/db-helpers')
+            try {
+              booking = await withTimeout(createBooking({
+                user_name: orderNotes.user_name,
+                user_email: orderNotes.user_email,
+                user_phone: orderNotes.user_phone,
+                selected_date: orderNotes.selected_date,
+                selected_time: orderNotes.selected_time,
+                razorpay_order_id: razorpay_order_id,
+                zoom_registration_link: orderNotes.zoom_registration_link || undefined,
+                order_notes: orderNotes,
+              }), 2000)
+              console.log('Created booking from Razorpay order notes:', booking.id)
+            } catch (createError) {
+              console.error('Error creating booking from order (will use order notes for email):', createError)
+              booking = null
+            }
           }
         } else {
           return NextResponse.json(
@@ -150,7 +154,7 @@ export async function POST(request: NextRequest) {
     const meetLink = zoomRegistrationLink
     
     // Update booking with payment details (only if booking exists)
-    if (booking) {
+    if (booking && !dbDown) {
       const updateData: Partial<WebinarBooking & { zoom_registration_link?: string }> = {
         razorpay_payment_id,
         payment_status: 'paid',
@@ -161,7 +165,7 @@ export async function POST(request: NextRequest) {
       updateData.zoom_registration_link = zoomRegistrationLink
       
       try {
-        await updateBookingByOrderId(razorpay_order_id, updateData)
+        await withTimeout(updateBookingByOrderId(razorpay_order_id, updateData), 2000)
       } catch (updateError) {
         console.warn('Database error updating booking (continuing):', updateError)
       }
