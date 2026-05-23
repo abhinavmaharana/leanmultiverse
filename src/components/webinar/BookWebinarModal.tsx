@@ -1,6 +1,9 @@
 'use client'
 
+import { useState } from 'react'
+import { Modal } from 'antd'
 import { Button } from '@/components/ui/button'
+import BookWebinarContent from './BookWebinarContent'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import './book-webinar.css'
 
@@ -16,15 +19,17 @@ interface Props {
 }
 
 export default function BookWebinarModal({ source }: Props) {
-
+    const [open, setOpen] = useState(false)
     const isMobile = useIsMobile(1023)
 
     const showModal = () => {
         if (typeof window !== 'undefined' && (window as any).fbq) {
             (window as any).fbq('track', 'InitiateCheckout');
         }
-        window.location.href = "https://learn.leanmultiverse.com/web/checkout/69e242dddf50f711ca7aebed?couponcode=PMP100&purchaseNow=true"
+        setOpen(true)
     }
+
+    const handleCancel = () => setOpen(false)
 
     return (
         <>
@@ -72,6 +77,17 @@ export default function BookWebinarModal({ source }: Props) {
                         </Button>
             }
 
+            <Modal
+                open={open}
+                onCancel={handleCancel}
+                footer={null}
+                width={1100}
+                centered
+                destroyOnHidden
+                className='webinar-modal'
+            >
+                <BookWebinarContent />
+            </Modal>
         </>
     )
 }

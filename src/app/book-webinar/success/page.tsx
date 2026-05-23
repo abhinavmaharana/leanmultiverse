@@ -1,20 +1,22 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useEffect, Suspense } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import Navbar from '@/components/shared/Navbar'
 import { format } from 'date-fns'
 
-import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
 import { trackMetaEvent } from '@/lib/meta-pixel'
 import { trackGA4Event } from '@/lib/ga4'
 import { getAttributionForEvents } from '@/lib/attribution'
 
+// Replace this with the actual WhatsApp community link
+const WHATSAPP_COMMUNITY_LINK = 'https://chat.whatsapp.com/EGwzsvlQJoS4qjDraMraHG' 
+
 function SuccessContent() {
   const searchParams = useSearchParams()
-  const [zoomLink, setZoomLink] = useState<string | null>(null)
+  const router = useRouter()
 
   const paymentId = searchParams.get('payment_id')
   const orderId = searchParams.get('order_id')
@@ -27,13 +29,14 @@ function SuccessContent() {
     trackMetaEvent('Lead', attribution)
     trackGA4Event('purchase', purchaseParams)
     trackGA4Event('generate_lead', attribution)
+    
+    // Auto redirect to WhatsApp after 10 seconds
+    const redirectTimer = setTimeout(() => {
+      window.location.href = WHATSAPP_COMMUNITY_LINK
+    }, 10000)
+    
+    return () => clearTimeout(redirectTimer)
   }, [])
-
-  useEffect(() => {
-    if (dateStr) {
-      setZoomLink(getZoomLinkForDatePaid(dateStr))
-    }
-  }, [dateStr])
 
   const formattedDate = dateStr ? format(new Date(dateStr), 'MMMM d, yyyy') : null
 
@@ -57,16 +60,16 @@ function SuccessContent() {
             </svg>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-            Payment Received! 🎉
+            Thank You! 🎉
           </h1>
           <p className="text-gray-300 text-lg mb-6">
-            Your payment has been successfully processed and your webinar booking is confirmed.
+            Your payment has been successfully processed. 
           </p>
         </div>
 
         {/* Payment Confirmation Details */}
         <div className="bg-gradient-to-br from-green-500/20 to-green-600/10 backdrop-blur-xl border border-green-400/30 rounded-3xl p-8 mb-6">
-          <h2 className="text-2xl font-semibold mb-6 text-white">Payment Confirmation</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-white">Payment Details</h2>
           <div className="space-y-4 text-left">
             <div className="flex justify-between items-center py-2 border-b border-white/10">
               <span className="text-gray-300">Payment ID:</span>
@@ -91,54 +94,24 @@ function SuccessContent() {
 
         {/* What's Next */}
         <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-white">What&apos;s Next?</h2>
-          <ul className="text-left space-y-3 text-gray-300">
-            <li className="flex items-start">
-              <span className="text-yellow-400 mr-3">✓</span>
-              <span>Check your email for the calendar invite and meeting link</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-yellow-400 mr-3">✓</span>
-              <span>Complete your Zoom registration using the button below</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-yellow-400 mr-3">✓</span>
-              <span>Add the event to your calendar</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-yellow-400 mr-3">✓</span>
-              <span>Join the webinar at your selected date and time</span>
-            </li>
-          </ul>
+          <h2 className="text-2xl font-semibold mb-4 text-white">Next Step</h2>
+          <p className="text-left text-gray-300 mb-6 leading-relaxed">
+            Please join our exclusive WhatsApp community. All webinar links, resources, and updates will be shared directly in the group!
+          </p>
+          <div className="text-sm text-yellow-400/80 text-left mb-4">
+            You will be redirected automatically in 10 seconds...
+          </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {zoomLink ? (
-            <Button asChild className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600 rounded-xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all">
-              <a href={zoomLink} target="_blank" rel="noopener noreferrer">
-                Complete Zoom Registration → <span className="sr-only">(Opens in new tab)</span>
+            <Button asChild className="bg-[#25D366] text-white hover:bg-[#1ebe5a] border-none rounded-xl px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-2xl transition-all">
+              <a href={WHATSAPP_COMMUNITY_LINK} target="_blank" rel="noopener noreferrer">
+                Join WhatsApp Community → <span className="sr-only">(Opens in new tab)</span>
               </a>
             </Button>
-          ) : (
-            <div className="rounded-xl bg-white/10 border border-white/20 px-6 py-4 text-center">
-              <p className="text-gray-300 mb-2">Check your email for the Zoom registration link.</p>
-              <a href="mailto:operations@leanmultiverse.com" className="text-yellow-400 hover:underline text-sm">Contact support if you didn&apos;t receive it</a>
-            </div>
-          )}
-          <Button
-            asChild
-            variant="outline"
-            className="border-white/20 bg-white/10 text-white hover:bg-white/20 rounded-xl px-8 py-6 text-lg font-semibold"
-          >
-            <Link href="/">Back to Home</Link>
-          </Button>
         </div>
 
-        {/* Additional Info */}
-        <p className="text-gray-400 text-sm mt-8">
-          A confirmation email with all the details has been sent to your registered email address.
-        </p>
       </div>
     </main>
   )
@@ -161,4 +134,3 @@ export default function BookingSuccessPage() {
     </>
   )
 }
-

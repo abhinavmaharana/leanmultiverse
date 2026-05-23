@@ -62,7 +62,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Get booking from database
-    let booking = await getBookingByOrderId(razorpay_order_id)
+    let booking: any = null;
+    try {
+      booking = await getBookingByOrderId(razorpay_order_id)
+    } catch (e) {
+      console.warn("Database error (continuing with verification):", e);
+    }
 
     // If booking doesn't exist, create it from Razorpay order notes
     let orderNotes: Record<string, string> | null = null
@@ -155,7 +160,11 @@ export async function POST(request: NextRequest) {
       // Store the Zoom link in the booking for future reference
       updateData.zoom_registration_link = zoomRegistrationLink
       
-      await updateBookingByOrderId(razorpay_order_id, updateData)
+      try {
+        await updateBookingByOrderId(razorpay_order_id, updateData)
+      } catch (updateError) {
+        console.warn('Database error updating booking (continuing):', updateError)
+      }
     }
 
     // Send server-side CRM Lead event to Meta (non-blocking)
@@ -168,59 +177,8 @@ export async function POST(request: NextRequest) {
       }).catch(err => console.error('Failed to send Meta CAPI Purchase Event:', err))
     }
 
-    // Generate calendar invite
-    let calendarInvite: string
-    try {
-      calendarInvite = await generateCalendarInvite({
-        id: bookingData.id,
-        user_name: bookingData.user_name,
-        user_email: bookingData.user_email,
-        selected_date: bookingData.selected_date,
-        selected_time: bookingData.selected_time,
-        meet_link: meetLink,
-      })
-    } catch (error) {
-      console.error('Error generating calendar invite:', error)
-      throw new Error(`Failed to generate calendar invite: ${error instanceof Error ? error.message : 'Unknown error'}`)
-    }
-
-    // Send email with calendar invite
-    try {
-      console.log('Attempting to send email to:', bookingData.user_email)
-      await sendCalendarInviteEmail({
-        to: bookingData.user_email,
-        name: bookingData.user_name,
-        date: bookingData.selected_date,
-        time: bookingData.selected_time,
-        meetLink: meetLink,
-        calendarInvite: calendarInvite,
-      })
-      
-      // Mark calendar invite as sent (only if booking exists)
-      if (booking) {
-        await updateBookingByOrderId(razorpay_order_id, {
-          calendar_invite_sent: true,
-        })
-      }
-      console.log('Email sent successfully and marked as sent in database')
-    } catch (error) {
-      console.error('Error sending email:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-      const errorStack = error instanceof Error ? error.stack : undefined
-      
-      // Log detailed error for debugging
-      console.error('Email sending error details:', {
-        message: errorMessage,
-        stack: errorStack,
-        email: bookingData.user_email,
-        timestamp: new Date().toISOString(),
-      })
-      
-      // Don't fail the payment verification if email fails
-      // Payment is already verified, email can be sent later
-      console.warn('Payment verified but email sending failed. Booking is still confirmed.')
-      console.warn('You can manually send the email later or check Resend dashboard for details.')
-    }
+    // Email sending has been disabled as per requirements.
+    // We only rely on the WhatsApp community redirect on the success page.
 
     return NextResponse.json({
       success: true,

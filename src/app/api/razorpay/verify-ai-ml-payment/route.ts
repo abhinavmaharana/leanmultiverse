@@ -56,7 +56,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Get booking from database
-    let booking = await getAiMlWebinarBookingByOrderId(razorpay_order_id)
+    let booking: any = null;
+    try {
+      booking = await getAiMlWebinarBookingByOrderId(razorpay_order_id)
+    } catch (e) {
+      console.warn("Database error (continuing with verification):", e);
+    }
     let orderNotes: Record<string, string> | null = null
 
     // If booking doesn't exist, create from Razorpay order notes
@@ -122,12 +127,16 @@ export async function POST(request: NextRequest) {
 
     // Update booking with payment details
     if (booking) {
-      await updateAiMlWebinarBookingByOrderId(razorpay_order_id, {
-        razorpay_payment_id,
-        payment_status: 'paid',
-        meet_link: zoomRegistrationLink,
-        zoom_registration_link: zoomRegistrationLink,
-      })
+      try {
+        await updateAiMlWebinarBookingByOrderId(razorpay_order_id, {
+          razorpay_payment_id,
+          payment_status: 'paid',
+          meet_link: zoomRegistrationLink,
+          zoom_registration_link: zoomRegistrationLink,
+        })
+      } catch (updateError) {
+        console.warn('Database error updating booking (continuing):', updateError)
+      }
     }
 
     // Send server-side CRM Lead event to Meta (non-blocking)
