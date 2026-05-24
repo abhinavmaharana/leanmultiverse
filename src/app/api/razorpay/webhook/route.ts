@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { getBookingByOrderId, updateBookingByOrderId } from '@/lib/db-helpers'
 import { generateCalendarInvite } from '@/lib/calendar'
-import { generateMeetLink } from '@/lib/meet-link'
 import { sendCalendarInviteEmail } from '@/lib/email'
-import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
+
+const WHATSAPP_COMMUNITY_LINK = 'https://chat.whatsapp.com/EGwzsvlQJoS4qjDraMraHG'
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,53 +56,34 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true, message: 'Already processed' })
       }
 
-      // Get Zoom registration link from booking, calculate from date, or fallback
-      // Priority: booking -> calculate from date -> generateMeetLink -> env -> default
-      const bookingWithZoom = booking as typeof booking & { zoom_registration_link?: string | null }
-      let meetLink: string
-      
-      if (bookingWithZoom.zoom_registration_link) {
-        meetLink = bookingWithZoom.zoom_registration_link
-      } else if (booking.selected_date) {
-        meetLink = getZoomLinkForDatePaid(booking.selected_date)
-        console.log(`Webhook: Calculated Zoom link for date ${booking.selected_date}: ${meetLink}`)
-      } else {
-        meetLink = await generateMeetLink(booking) ||
-                   process.env.ZOOM_REGISTRATION_LINK ||
-                   getZoomLinkForDatePaid(booking.selected_date || '')
-      }
-
+      // Mark payment as paid in DB
       await updateBookingByOrderId(orderId, {
         razorpay_payment_id: payment.id,
         payment_status: 'paid',
-        meet_link: meetLink,
-        zoom_registration_link: bookingWithZoom.zoom_registration_link || meetLink,
       })
 
-      // Generate calendar invite
-      const calendarInvite = await generateCalendarInvite({
-        id: booking.id,
-        user_name: booking.user_name,
-        user_email: booking.user_email,
-        selected_date: booking.selected_date,
-        selected_time: booking.selected_time,
-        meet_link: meetLink,
-      })
-
-      // Send email with calendar invite
-      await sendCalendarInviteEmail({
-        to: booking.user_email,
-        name: booking.user_name,
-        date: booking.selected_date,
-        time: booking.selected_time,
-        meetLink: meetLink,
-        calendarInvite: calendarInvite,
-      })
-
-      // Mark calendar invite as sent
-      await updateBookingByOrderId(orderId, {
-        calendar_invite_sent: true,
-      })
+      // Send confirmation email via EmailJS with WhatsApp link as the join button
+      try {
+        const calendarInvite = await generateCalendarInvite({
+          id: booking.id,
+          user_name: booking.user_name,
+          user_email: booking.user_email,
+          selected_date: booking.selected_date,
+          selected_time: booking.selected_time,
+          meet_link: WHATSAPP_COMMUNITY_LINK,
+        })
+        await sendCalendarInviteEmail({
+          to: booking.user_email,
+          name: booking.user_name,
+          date: booking.selected_date,
+          time: booking.selected_time,
+          meetLink: WHATSAPP_COMMUNITY_LINK,
+          calendarInvite,
+        })
+        console.log('✅ EmailJS confirmation sent to:', booking.user_email)
+      } catch (emailErr) {
+        console.error('Failed to send EmailJS email (payment still confirmed):', emailErr)
+      }
 
       return NextResponse.json({ success: true })
     }

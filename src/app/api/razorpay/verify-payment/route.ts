@@ -4,10 +4,10 @@ import Razorpay from 'razorpay'
 import { getBookingByOrderId, updateBookingByOrderId } from '@/lib/db-helpers'
 import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
-import { WebinarBooking } from '@/lib/db'
-import { getZoomLinkForDatePaid } from '@/lib/webinar-config'
 import { sendMetaLeadEvent } from '@/lib/facebook-capi'
 import { withTimeout } from '@/lib/http-utils'
+
+const WHATSAPP_COMMUNITY_LINK = 'https://chat.whatsapp.com/EGwzsvlQJoS4qjDraMraHG'
 
 
 const razorpay = new Razorpay({
@@ -17,7 +17,16 @@ const razorpay = new Razorpay({
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    let body: any
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid or empty request body' },
+        { status: 400 }
+      )
+    }
+
     const {
       razorpay_order_id,
       razorpay_payment_id,
@@ -132,40 +141,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Update booking with payment details
-    // Use Zoom registration link (always use the registration link)
-    // Priority: booking -> order notes -> calculate from date -> env -> default
-    let zoomRegistrationLink: string
-    
-    const bookingWithZoom = booking as (WebinarBooking & { zoom_registration_link?: string | null }) | null
-    
-    if (bookingWithZoom?.zoom_registration_link) {
-      zoomRegistrationLink = bookingWithZoom.zoom_registration_link
-    } else if (orderNotes?.zoom_registration_link) {
-      zoomRegistrationLink = orderNotes.zoom_registration_link
-    } else if (bookingData.selected_date) {
-      // Calculate Zoom link based on selected date
-      zoomRegistrationLink = getZoomLinkForDatePaid(bookingData.selected_date)
-      console.log(`Calculated Zoom link for date ${bookingData.selected_date}: ${zoomRegistrationLink}`)
-    } else {
-      zoomRegistrationLink = process.env.ZOOM_REGISTRATION_LINK || 'https://us06web.zoom.us/meeting/register/xSVaZSmIS6-k8D55Xc7ryA'
-    }
-    
-    const meetLink = zoomRegistrationLink
-    
     // Update booking with payment details (only if booking exists)
     if (booking && !dbDown) {
-      const updateData: Partial<WebinarBooking & { zoom_registration_link?: string }> = {
-        razorpay_payment_id,
-        payment_status: 'paid',
-        meet_link: meetLink,
-      }
-      
-      // Store the Zoom link in the booking for future reference
-      updateData.zoom_registration_link = zoomRegistrationLink
-      
       try {
-        await withTimeout(updateBookingByOrderId(razorpay_order_id, updateData), 2000)
+        await withTimeout(updateBookingByOrderId(razorpay_order_id, {
+          razorpay_payment_id,
+          payment_status: 'paid',
+        }), 2000)
       } catch (updateError) {
         console.warn('Database error updating booking (continuing):', updateError)
       }
@@ -181,8 +163,32 @@ export async function POST(request: NextRequest) {
       }).catch(err => console.error('Failed to send Meta CAPI Purchase Event:', err))
     }
 
-    // Email sending has been disabled as per requirements.
-    // We only rely on the WhatsApp community redirect on the success page.
+    // Send confirmation email via EmailJS with WhatsApp link as the join button (non-blocking)
+    if (bookingData?.user_email && bookingData?.user_name && bookingData?.selected_date && bookingData?.selected_time) {
+      ;(async () => {
+        try {
+          const calendarInvite = await generateCalendarInvite({
+            id: bookingData.id,
+            user_name: String(bookingData.user_name),
+            user_email: String(bookingData.user_email),
+            selected_date: String(bookingData.selected_date),
+            selected_time: String(bookingData.selected_time),
+            meet_link: WHATSAPP_COMMUNITY_LINK,
+          })
+          await sendCalendarInviteEmail({
+            to: String(bookingData.user_email),
+            name: String(bookingData.user_name),
+            date: String(bookingData.selected_date),
+            time: String(bookingData.selected_time),
+            meetLink: WHATSAPP_COMMUNITY_LINK,
+            calendarInvite,
+          })
+          console.log('✅ EmailJS confirmation sent to:', bookingData.user_email)
+        } catch (err) {
+          console.error('Failed to send EmailJS confirmation email:', err)
+        }
+      })()
+    }
 
     return NextResponse.json({
       success: true,

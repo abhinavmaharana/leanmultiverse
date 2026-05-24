@@ -4,9 +4,10 @@ import Razorpay from 'razorpay'
 import { getAiMlWebinarBookingByOrderId, updateAiMlWebinarBookingByOrderId, createAiMlWebinarBooking } from '@/lib/db-helpers'
 import { generateCalendarInvite } from '@/lib/calendar'
 import { sendCalendarInviteEmail } from '@/lib/email'
-import { getZoomLinkForDateAiMl } from '@/lib/ai-ml-webinar-config'
 import { sendMetaLeadEvent } from '@/lib/facebook-capi'
 import { withTimeout } from '@/lib/http-utils'
+
+const WHATSAPP_COMMUNITY_LINK = 'https://chat.whatsapp.com/EGwzsvlQJoS4qjDraMraHG'
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID || '',
@@ -124,20 +125,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Determine Zoom registration link for this date
-    const zoomRegistrationLink =
-      (booking as any)?.zoom_registration_link ||
-      orderNotes?.zoom_registration_link ||
-      getZoomLinkForDateAiMl(bookingData.selected_date)
-
     // Update booking with payment details
     if (booking && !dbDown) {
       try {
         await withTimeout(updateAiMlWebinarBookingByOrderId(razorpay_order_id, {
           razorpay_payment_id,
           payment_status: 'paid',
-          meet_link: zoomRegistrationLink,
-          zoom_registration_link: zoomRegistrationLink,
         }), 2000)
       } catch (updateError) {
         console.warn('Database error updating booking (continuing):', updateError)
@@ -154,57 +147,31 @@ export async function POST(request: NextRequest) {
       }).catch(err => console.error('Failed to send Meta CAPI Purchase Event:', err))
     }
 
-    // Generate calendar invite (AI/ML specific title & description)
-    let calendarInvite: string
-    try {
-      calendarInvite = await generateCalendarInvite({
-        id: bookingData.id,
-        user_name: bookingData.user_name,
-        user_email: bookingData.user_email,
-        selected_date: bookingData.selected_date,
-        selected_time: bookingData.selected_time,
-        meet_link: zoomRegistrationLink,
-        title: 'Lean Multiverse — AI/ML Webinar',
-        description: `Join us for an exclusive AI/ML Webinar led by industry experts from Deloitte, Google & more.
-
-Topics Covered:
-- Foundations of AI & Machine Learning
-- Enterprise AI Systems in Production
-- Azure AI & AWS ML Certification Pathways
-- Agentic AI & Intelligent Automation
-
-Zoom Registration Link: ${zoomRegistrationLink}
-
-We look forward to seeing you there!`,
-      })
-    } catch (error) {
-      console.error('Error generating AI/ML calendar invite:', error)
-      throw new Error(`Failed to generate calendar invite: ${error instanceof Error ? error.message : 'Unknown error'}`)
-    }
-
-    // Send confirmation email with calendar invite
-    try {
-      console.log('Sending AI/ML confirmation email to:', bookingData.user_email)
-      await sendCalendarInviteEmail({
-        to: bookingData.user_email,
-        name: bookingData.user_name,
-        date: bookingData.selected_date,
-        time: bookingData.selected_time,
-        meetLink: zoomRegistrationLink,
-        calendarInvite: calendarInvite,
-      })
-
-      // Mark calendar invite as sent
-      if (booking) {
-        await updateAiMlWebinarBookingByOrderId(razorpay_order_id, {
-          calendar_invite_sent: true,
-        })
-      }
-      console.log('AI/ML email sent and marked in database')
-    } catch (error) {
-      // Don't fail the payment verification if email fails
-      console.error('Error sending AI/ML email:', error)
-      console.warn('Payment verified but email sending failed. Booking is still confirmed.')
+    // Send confirmation email via EmailJS with WhatsApp link as the join button (non-blocking)
+    if (bookingData?.user_email && bookingData?.user_name && bookingData?.selected_date && bookingData?.selected_time) {
+      ;(async () => {
+        try {
+          const calendarInvite = await generateCalendarInvite({
+            id: bookingData.id,
+            user_name: String(bookingData.user_name),
+            user_email: String(bookingData.user_email),
+            selected_date: String(bookingData.selected_date),
+            selected_time: String(bookingData.selected_time),
+            meet_link: WHATSAPP_COMMUNITY_LINK,
+          })
+          await sendCalendarInviteEmail({
+            to: String(bookingData.user_email),
+            name: String(bookingData.user_name),
+            date: String(bookingData.selected_date),
+            time: String(bookingData.selected_time),
+            meetLink: WHATSAPP_COMMUNITY_LINK,
+            calendarInvite,
+          })
+          console.log('✅ EmailJS AI/ML confirmation sent to:', bookingData.user_email)
+        } catch (err) {
+          console.error('Failed to send EmailJS AI/ML confirmation email:', err)
+        }
+      })()
     }
 
     return NextResponse.json({
