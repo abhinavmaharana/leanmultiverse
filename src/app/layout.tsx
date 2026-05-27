@@ -196,12 +196,45 @@ fbq('track', 'PageView');
             />
           </noscript>
         </>
-        {/* Google tag (gtag.js) - GA4; next/script so it loads and verifies reliably */}
+      </head>
+      <body className={`${raleway.variable} font-sans antialiased bg-white`} suppressHydrationWarning>
+        {/* Google Tag Manager (noscript) */}
+        {process.env.NEXT_PUBLIC_GTM_ID ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        ) : null}
+
+        {/* Google Tag Manager (GTM) Container */}
+        {process.env.NEXT_PUBLIC_GTM_ID ? (
+          <Script
+            id="gtm-init"
+            strategy="afterInteractive"
+            {...({ fetchpriority: "low" } as any)}
+            dangerouslySetInnerHTML={{
+              __html: `
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+              `,
+            }}
+          />
+        ) : null}
+
+        {/* Google Analytics 4 (gtag.js) */}
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
           <>
             <Script
               id="gtag-init"
-              strategy="beforeInteractive"
+              strategy="afterInteractive"
+              {...({ fetchpriority: "low" } as any)}
               dangerouslySetInnerHTML={{
                 __html: `
 window.dataLayer = window.dataLayer || [];
@@ -214,11 +247,11 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
               strategy="afterInteractive"
+              {...({ fetchpriority: "low" } as any)}
             />
           </>
         ) : null}
-      </head>
-      <body className={`${raleway.variable} font-sans antialiased bg-white`} suppressHydrationWarning>
+
         <ClarityProvider />
         <MixpanelProvider />
         <AttributionCapture />
