@@ -38,6 +38,11 @@ const NewMentorSection = dynamic(() =>
   { loading: () => <div className="h-96 bg-gray-50 animate-pulse" /> }
 )
 
+const NewPlacementSection = dynamic(() =>
+  import('../components/new-ui/NewPlacementSection').then((m) => ({ default: m.NewPlacementSection })),
+  { loading: () => <div className="h-96 bg-white animate-pulse" /> }
+)
+
 const NewTestimonials = dynamic(() =>
   import('../components/new-ui/NewTestimonials').then((m) => ({ default: m.NewTestimonials })),
   { loading: () => <div className="h-96 bg-white animate-pulse" /> }
@@ -112,7 +117,7 @@ export default function LandingPage() {
         <NewAnnouncementBanner />
         <NewNavbar />
       </div>
-      
+
       <NewHero />
 
       {/* Lazy sections — loaded via intersection observer */}
@@ -122,6 +127,10 @@ export default function LandingPage() {
 
       <LazySection id="video" fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
         <NewVideoSection />
+      </LazySection>
+
+      <LazySection id="placement" fallback={<div className="h-[900px] bg-white animate-pulse" />}>
+        <NewPlacementSection />
       </LazySection>
 
       {/* <LazySection id="services" fallback={<div className="h-[800px] bg-white animate-pulse" />}>
@@ -144,7 +153,7 @@ export default function LandingPage() {
         <NewFAQ />
       </LazySection> */}
 
-     
+
 
       <div className="mt-auto">
         <LazySection fallback={<div className="h-48 bg-[#FFC107] animate-pulse" />}>
