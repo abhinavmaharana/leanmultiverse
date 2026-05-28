@@ -252,6 +252,30 @@ gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
           </>
         ) : null}
 
+        {/* Google Ads Conversion Tracking (gtag.js) */}
+        {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ? (
+          <>
+            <Script
+              id="google-ads-init"
+              strategy="afterInteractive"
+              {...({ fetchpriority: "low" } as any)}
+              dangerouslySetInnerHTML={{
+                __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
+`,
+              }}
+            />
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}`}
+              strategy="afterInteractive"
+              {...({ fetchpriority: "low" } as any)}
+            />
+          </>
+        ) : null}
+
         <ClarityProvider />
         <MixpanelProvider />
         <AttributionCapture />
