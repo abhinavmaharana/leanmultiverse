@@ -1,9 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { Modal } from 'antd'
 import { Button } from '@/components/ui/button'
-import BookWebinarContent from './BookWebinarContent'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import './book-webinar.css'
 
@@ -19,17 +16,14 @@ interface Props {
 }
 
 export default function BookWebinarModal({ source }: Props) {
-    const [open, setOpen] = useState(false)
     const isMobile = useIsMobile(1023)
 
-    const showModal = () => {
+    const handleRedirect = () => {
         if (typeof window !== 'undefined' && (window as any).fbq) {
             (window as any).fbq('track', 'InitiateCheckout');
         }
-        setOpen(true)
+        window.location.href = 'https://learn.leanmultiverse.com/web/checkout/69e242dddf50f711ca7aebed';
     }
-
-    const handleCancel = () => setOpen(false)
 
     return (
         <>
@@ -39,7 +33,7 @@ export default function BookWebinarModal({ source }: Props) {
                 <Button
                     className={`relative text-white rounded-full px-8 sm:px-10 py-4 sm:py-5 text-base sm:text-lg font-bold border-2 border-white/30 transition-all duration-300 w-full sm:w-auto ${isMobile ? 'bg-white/15' : 'bg-white/10 backdrop-blur-md hover:bg-white/20 hover:border-white/50 hover:shadow-2xl hover:shadow-white/20'}`}
                     data-cursor-hover
-                    onClick={() => showModal()}
+                    onClick={handleRedirect}
                 >
                     <span className="relative z-10 flex items-center gap-2">
                         <span>Book Webinar</span>
@@ -51,14 +45,14 @@ export default function BookWebinarModal({ source }: Props) {
                 : source === "new-hero" ?
                     <Button
                         className="relative overflow-hidden w-full sm:w-64 bg-amber-400 hover:bg-amber-500 text-white font-black text-base md:text-lg px-8 py-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:scale-95 h-auto"
-                        onClick={() => showModal()}
+                        onClick={handleRedirect}
                     >
                         <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent" style={{ animation: 'shimmer 2s infinite' }} />
                         <span className="relative z-10">Claim Your Spot</span>
                     </Button>
                     : source === "sticky-bar" ?
                         <Button
-                            onClick={() => showModal()}
+                            onClick={handleRedirect}
                             className="relative overflow-hidden bg-amber-400 hover:bg-amber-500 text-white text-[15px] font-black px-10 py-3 rounded-xl transition-all duration-200 shadow-md border border-transparent transform hover:scale-[1.02] h-auto"
                         >
                             <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent" style={{ animation: 'shimmer 2s infinite' }} />
@@ -66,7 +60,7 @@ export default function BookWebinarModal({ source }: Props) {
                         </Button>
                         :
                         <Button
-                            onClick={() => showModal()}
+                            onClick={handleRedirect}
                             className={
                                 isMobile
                                     ? 'w-full rounded-full bg-white/20 border border-white/30 text-white font-semibold py-2 px-5 shadow-md transition'
@@ -77,17 +71,6 @@ export default function BookWebinarModal({ source }: Props) {
                         </Button>
             }
 
-            <Modal
-                open={open}
-                onCancel={handleCancel}
-                footer={null}
-                width={1100}
-                centered
-                destroyOnHidden
-                className='webinar-modal'
-            >
-                <BookWebinarContent />
-            </Modal>
         </>
     )
 }
