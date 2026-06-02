@@ -105,7 +105,7 @@ function Navbar() {
         </Link> */}
         {!isMobile ?
           <BookWebinarModal 
-            source="navbar-web"
+            source="sticky-bar"
           />
         : "" }
 
@@ -175,7 +175,7 @@ function Navbar() {
             </Button>
           </Link> */}
           <BookWebinarModal
-            source="navbar-mob"
+            source="sticky-bar"
           />
         </div>
       </div>
