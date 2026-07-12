@@ -9,9 +9,9 @@ import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
 
 const navLinks = [
-    { label: 'APM', href: '/courses/safe-apm', badge: null },
-    { label: 'POPM', href: '/courses/safe-popm', badge: null },
-    { label: 'Scrum', href: '/courses/scrum', badge: null },
+    { label: 'AI Advanced Product Management', href: '/courses/safe-apm', badge: null },
+    { label: 'AI Product Management', href: '/courses/safe-popm', badge: null },
+    { label: 'AI Scrum', href: '/courses/scrum', badge: null },
     { label: 'Testimonial', href: '/#testimonial', badge: null },
     { label: 'Contact', href: '/#contact', badge: null },
 ]
