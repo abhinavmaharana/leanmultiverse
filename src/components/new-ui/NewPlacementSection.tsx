@@ -88,7 +88,7 @@ export const NewPlacementSection = () => {
 
   return (
     <section className="bg-white py-12 md:py-24 px-4 md:px-12 relative overflow-hidden">
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes placement-marquee {
           0%   { transform: translateX(0); }
           100% { transform: translateX(calc(-300px * 3 - 2rem * 3)); }
@@ -102,7 +102,7 @@ export const NewPlacementSection = () => {
         .placement-marquee-content:hover {
           animation-play-state: paused;
         }
-      `}</style>
+      ` }} />
 
       {/* Section Header */}
       <div className="max-w-7xl mx-auto mb-16">

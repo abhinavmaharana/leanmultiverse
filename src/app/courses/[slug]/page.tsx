@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { careerStarterCourses } from '@/data/careerStarterCourses'
+import { careerStarterCourses, CareerStarterCourse } from '@/data/careerStarterCourses'
 import DynamicCourseClient from './DynamicCourseClient'
 import Navbar from '@/components/shared/Navbar'
 import Footer from '@/components/shared/Footer'
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-function CourseJsonLd({ course }: { course: typeof careerStarterCourses[0] }) {
+function CourseJsonLd({ course }: { course: CareerStarterCourse }) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Course',

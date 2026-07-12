@@ -63,19 +63,28 @@ const PAID_DATES_CONFIG = [
 
 export function getAvailableDatesPaid(): Date[] {
   const dates: Date[] = []
-  const todayIST = getTodayIST()
-  const currentYear = new Date().getFullYear()
-
-  PAID_DATES_CONFIG.forEach(({ month, day }) => {
-    const date = new Date(currentYear, month, day)
-    const dateStr = format(date, 'yyyy-MM-dd')
-    if (dateStr >= todayIST && !isWebinarTimePast(dateStr)) {
-      dates.push(date)
+  const today = new Date()
+  
+  // Find next Saturday
+  const nextSat = new Date(today)
+  nextSat.setDate(today.getDate() + ((6 - today.getDay() + 7) % 7))
+  
+  // If today is Saturday and it's past 8 PM IST (14:30 UTC), go to next Saturday
+  if (today.getDay() === 6) {
+    const isPast = today.getUTCHours() > 14 || (today.getUTCHours() === 14 && today.getUTCMinutes() >= 30)
+    if (isPast) {
+      nextSat.setDate(nextSat.getDate() + 7)
     }
-  })
-
-  dates.sort((a, b) => a.getTime() - b.getTime())
-  return dates.length > 0 ? [dates[0]] : []
+  }
+  
+  // Add the next 4 Saturdays
+  for (let i = 0; i < 4; i++) {
+    const d = new Date(nextSat)
+    d.setDate(nextSat.getDate() + (i * 7))
+    dates.push(d)
+  }
+  
+  return dates
 }
 
 export function getZoomLinkForDatePaid(dateStr: string): string {
