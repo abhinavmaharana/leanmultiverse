@@ -193,7 +193,7 @@ export const scrumData: CourseLandingData = {
   slug: 'scrum',
   title: 'Certified Scrum Training',
   shortTitle: 'Scrum Certification',
-  badge: 'Scrum Alliance',
+  badge: 'Scrum',
   tagline: 'Master the Scrum Framework and become a certified Agile practitioner.',
   valueProposition: 'Learn Scrum from the ground up — roles, events, artifacts, and servant leadership — and earn an industry-recognised Scrum certification.',
   duration: '2 Days',

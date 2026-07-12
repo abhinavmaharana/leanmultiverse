@@ -36,7 +36,7 @@ export default function About() {
         subtitle: "Your Success is Our Mission",
         description: "Join thousands of professionals who've accelerated their success with our proven approach to enterprise agility and digital transformation.",
         features: [
-          "Globally Accredited by PMI, Scrum Alliance, Kanban University",
+          "Globally Accredited by PMI, Scrum, Kanban University",
           "40% higher productivity in 90 days across 50+ countries",
           "Real-world skills that you can apply immediately",
           "Personalized programs with expert coaching and ongoing support"
@@ -73,15 +73,15 @@ export default function About() {
               </p>
             </div>
           </div>
-          
+
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 text-white leading-tight">
             Empowering Boundless
             <br />
             <span className="text-yellow-400">Creation</span>
           </h1>
-          
+
           <p className="text-gray-300 text-xl max-w-4xl mx-auto leading-relaxed">
-            Catalysts for Your Success - Transforming ambitious teams and professionals 
+            Catalysts for Your Success - Transforming ambitious teams and professionals
             into industry leaders with innovative, impactful learning.
           </p>
         </div>
@@ -111,11 +111,10 @@ export default function About() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-8 py-4 rounded-full font-semibold transition-all duration-300 ${
-                  activeTab === tab.id
+                className={`px-8 py-4 rounded-full font-semibold transition-all duration-300 ${activeTab === tab.id
                     ? "bg-yellow-400 text-black shadow-lg shadow-yellow-400/25"
                     : "bg-white/10 text-white hover:bg-white/20 border border-white/20"
-                }`}
+                  }`}
               >
                 {tab.title}
               </button>
@@ -127,15 +126,15 @@ export default function About() {
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 {tabs[activeTab].content.title}
               </h3>
-              
+
               <p className="text-yellow-400 text-lg font-semibold mb-6">
                 {tabs[activeTab].content.subtitle}
               </p>
-              
+
               <p className="text-gray-300 text-lg leading-relaxed mb-8">
                 {tabs[activeTab].content.description}
               </p>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {tabs[activeTab].content.features.map((feature, index) => (
                   <div
@@ -157,13 +156,13 @@ export default function About() {
             <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
               Ready to Transform Your Career?
             </h3>
-            
+
             <p className="text-gray-300 text-lg leading-relaxed mb-8">
-              Join thousands of professionals who&apos;ve already accelerated their success with Lean Multiverse. 
-              Whether you&apos;re an individual looking to advance your career or an organization seeking competitive advantage, 
+              Join thousands of professionals who&apos;ve already accelerated their success with Lean Multiverse.
+              Whether you&apos;re an individual looking to advance your career or an organization seeking competitive advantage,
               we have the expertise, credentials, and commitment to get you there.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#contact" className="px-8 py-4 border border-white/30 text-white font-semibold rounded-full hover:bg-white/10 transition-all duration-300 text-center">
                 Contact Us
@@ -175,4 +174,3 @@ export default function About() {
     </section>
   )
 }
- 
