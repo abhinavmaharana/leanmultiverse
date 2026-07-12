@@ -9,11 +9,11 @@ import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
 
 const navLinks = [
-    // { label: 'Home', href: '#home', badge: null },
-    // { label: 'Learn AI/ML', href: '/ai-ml', badge: '🔥 Hot' },
-    { label: 'Testimonial', href: '#testimonial', badge: null },
-    // { label: 'Services', href: '#services' },
-    { label: 'Contact', href: '#contact', badge: null },
+    { label: 'SAFe® APM', href: '/courses/safe-apm', badge: null },
+    { label: 'SAFe® POPM', href: '/courses/safe-popm', badge: null },
+    { label: 'SAFe® Scrum', href: '/courses/scrum', badge: null },
+    { label: 'Testimonial', href: '/#testimonial', badge: null },
+    { label: 'Contact', href: '/#contact', badge: null },
 ]
 
 function NewNavbar() {

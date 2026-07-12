@@ -61,10 +61,10 @@ export interface CourseLandingData {
 // ─── SAFe POPM ────────────────────────────────────────────────
 export const safePOPMData: CourseLandingData = {
   slug: 'safe-popm',
-  title: 'SAFe® Product Owner / Product Manager (POPM)',
-  shortTitle: 'SAFe® POPM',
+  title: 'AI-Integrated SAFe® Product Owner / Product Manager (POPM)',
+  shortTitle: 'AI-Integrated SAFe® POPM',
   badge: 'SAFe® Certified',
-  tagline: 'Become a Certified Product Owner capable of leading Agile Release Trains.',
+  tagline: 'AI-Integrated SAFe® Product Owner / Product Manager (POPM) helps you to become a Certified Product Owner capable of leading Agile Release Trains.',
   valueProposition: 'Master enterprise-scale Agile product ownership — from backlog to PI Planning — and earn your globally recognised SAFe® POPM certification.',
   duration: '2 Days',
   hours: '15–16 Hours',
@@ -191,10 +191,10 @@ export const safePOPMData: CourseLandingData = {
 // ─── Scrum ───────────────────────────────────────────────────
 export const scrumData: CourseLandingData = {
   slug: 'scrum',
-  title: 'Certified Scrum Training',
-  shortTitle: 'Scrum Certification',
+  title: 'AI-Integrated Certified Scrum Training',
+  shortTitle: 'AI-Integrated Scrum Certification',
   badge: 'Scrum',
-  tagline: 'Master the Scrum Framework and become a certified Agile practitioner.',
+  tagline: 'AI-Integrated Certified Scrum Training helps you to Master the Scrum Framework and become a certified Agile practitioner.',
   valueProposition: 'Learn Scrum from the ground up — roles, events, artifacts, and servant leadership — and earn an industry-recognised Scrum certification.',
   duration: '2 Days',
   hours: '14–16 Hours',
@@ -289,8 +289,8 @@ export const scrumData: CourseLandingData = {
     { title: 'Alumni Network', description: 'Join a growing community of 2,500+ Scrum practitioners.', icon: '🌐' },
   ],
   pricing: {
-    fee: '₹25,000',
-    originalFee: '₹35,000',
+    fee: '₹35,000',
+    originalFee: '₹45,000',
     inclusions: [
       'Complete Scrum Course Materials',
       '2-Day Live Instructor-Led Training',
@@ -321,10 +321,10 @@ export const scrumData: CourseLandingData = {
 // ─── SAFe APM ────────────────────────────────────────────────
 export const safeAPMData: CourseLandingData = {
   slug: 'safe-apm',
-  title: 'SAFe® Agile Product Management (APM)',
-  shortTitle: 'SAFe® APM',
+  title: 'AI-Integrated SAFe® Agile Product Management (APM)',
+  shortTitle: 'AI-Integrated SAFe® APM',
   badge: 'SAFe® Certified',
-  tagline: 'Drive Customer-Centric Product Strategy at Enterprise Scale.',
+  tagline: 'AI-Integrated SAFe® Agile Product Management (APM) helps you to drive Customer-Centric Product Strategy at Enterprise Scale.',
   valueProposition: 'Master Design Thinking, Continuous Exploration, and value stream economics to lead product strategy across large enterprises.',
   duration: '3 Days',
   hours: '~24 Hours',
@@ -419,8 +419,8 @@ export const safeAPMData: CourseLandingData = {
     { title: 'Executive-Level Framing', description: 'Communicate strategy, value, and outcomes in the language of leadership.', icon: '📈' },
   ],
   pricing: {
-    fee: '₹50,000',
-    originalFee: '₹65,000',
+    fee: '₹1,50,000',
+    originalFee: '₹1,80,000',
     inclusions: [
       'Official SAFe® APM Course Materials',
       '3-Day Live Instructor-Led Training',
@@ -431,7 +431,7 @@ export const safeAPMData: CourseLandingData = {
       'Post-Training Coaching Session',
       'Alumni Community Access',
     ],
-    emiNote: 'EMI options available from ₹5,000/month',
+    emiNote: 'EMI options available from ₹15,000/month',
   },
   faqs: [
     { question: 'Who should attend the SAFe® APM course?', answer: 'Product Managers, Senior Product Managers, Portfolio Managers, Business Owners, and UX Professionals who define product direction in enterprise Agile organisations.' },

@@ -32,7 +32,7 @@ const jsonLd = {
   },
   offers: {
     '@type': 'Offer',
-    price: '25000',
+    price: '35000',
     priceCurrency: 'INR',
     availability: 'https://schema.org/InStock',
   },
