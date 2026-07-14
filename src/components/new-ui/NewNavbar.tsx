@@ -65,12 +65,12 @@ function NewNavbar() {
                     </Link>
 
                     {/* Desktop Navigation Links - Fixed spacing to prevent bunching */}
-                    <div className="hidden md:flex items-center ml-16 space-x-12">
+                    <div className="hidden lg:flex items-center lg:ml-6 xl:ml-16 lg:space-x-4 xl:space-x-12">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.label}
                                 href={link.href}
-                                className="relative text-gray-800 hover:text-amber-400 transition-colors duration-200 text-[15.5px] font-bold whitespace-nowrap tracking-wide flex items-center gap-2"
+                                className="relative text-gray-800 hover:text-amber-400 transition-colors duration-200 lg:text-[13px] xl:text-[15.5px] font-bold whitespace-nowrap tracking-wide flex items-center gap-1 xl:gap-2"
                             >
                                 {link.label}
                                 {link.badge && (
@@ -84,7 +84,7 @@ function NewNavbar() {
                 </div>
 
                 {/* Primary CTA - Aligned to far right */}
-                <div className="hidden md:block">
+                <div className="hidden lg:block">
                     {isAiMlPage ? (
                         <BookAiMlWebinarModal source="sticky-bar" />
                     ) : (
@@ -95,7 +95,7 @@ function NewNavbar() {
                 {/* Mobile Navigation Toggle */}
                 <button
                     type="button"
-                    className="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="lg:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                     onClick={() => setOpen((v) => !v)}
                 >
                     {open ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
@@ -104,7 +104,7 @@ function NewNavbar() {
 
             {/* Mobile Expanded Menu */}
             <div
-                className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-[80vh] opacity-100 mt-4' : 'max-h-0 opacity-0 pointer-events-none'
+                className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-[80vh] opacity-100 mt-4' : 'max-h-0 opacity-0 pointer-events-none'
                     }`}
             >
                 <div className="border-t border-gray-100 pt-6 pb-6 flex flex-col gap-3 px-4 bg-gray-50/80 rounded-2xl">
