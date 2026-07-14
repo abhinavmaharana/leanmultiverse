@@ -545,7 +545,7 @@ export interface CareerStarterCourse {
               topics: [
                 'IIBA: ECBA → CCBA → CBAP',
                 'PMI: PMI-PBA',
-                'Agile: CSM, SAFe POPM, SAFe BA'
+                'Agile: CSM, POPM, BA'
               ]
             },
             {
@@ -727,7 +727,7 @@ export interface CareerStarterCourse {
             {
               title: 'Session 1: Top Global Certifications',
               topics: [
-                'Product: CSPO, SAFe POPM, PMI-ACP',
+                'Product: CSPO, POPM, PMI-ACP',
                 'AI: Google AI for PMs, Microsoft AI-900, AWS AI Practitioner',
                 'Coursera AI Product Management by Duke University'
               ]
@@ -798,7 +798,7 @@ export interface CareerStarterCourse {
         title: 'AI Product Manager Certification & Job Accelerator',
         description: 'This ₹2499 course gave you clarity. The advanced program will make you industry-ready AI PM.',
         includes: [
-          'CSPO / SAFe POPM Certification',
+          'CSPO / POPM Certification',
           'AI-900 / AWS AI Practitioner',
           'Real AI Product Case Studies',
           'PRD & Roadmap Workshops',
@@ -913,7 +913,7 @@ export interface CareerStarterCourse {
             {
               title: 'Session 1: Global Certifications',
               topics: [
-                'PM Core: PMP, PRINCE2, PMI-ACP, SAFe Agilist',
+                'PM Core: PMP, PRINCE2, PMI-ACP, Agilist',
                 'AI Layer: Microsoft AI-900, AWS AI Practitioner, Google AI',
                 'Certified AI Project Manager (vendor neutral)'
               ]
@@ -923,7 +923,7 @@ export interface CareerStarterCourse {
               topics: [
                 'Fresher / Coordinator → CAPM + AI-900',
                 'Working Professional → PMP + Agile',
-                'Tech PM → SAFe + AI Fundamentals',
+                'Tech PM → Agile + AI Fundamentals',
                 'Leadership Track → PgMP + AI Strategy'
               ]
             },
@@ -985,7 +985,7 @@ export interface CareerStarterCourse {
         title: 'AI Project Manager Certification & Job Accelerator',
         description: 'This course helped you understand AI Project Management. The advanced program will make you a certified, job-ready AI Project Leader.',
         includes: [
-          'PMP / PMI-ACP / SAFe Agilist',
+          'PMP / PMI-ACP / Agilist',
           'AI-900 / AWS AI Practitioner',
           'Real AI Project Simulations',
           'Mock Interviews',

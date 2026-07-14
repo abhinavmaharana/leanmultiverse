@@ -35,22 +35,22 @@ const quickReplies = [
 
 const courseCards = [
   {
-    title: "SAFe APM",
+    title: "APM",
     description: "Agile Product Manager certification",
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=200&fit=crop",
-    action: "Learn more about SAFe APM"
+    action: "Learn more about APM"
   },
   {
-    title: "Leading SAFe",
-    description: "SAFe Agilist certification for executives",
+    title: "Agile Principles",
+    description: "Agilist certification for executives",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
-    action: "Learn more about Leading SAFe"
+    action: "Learn more about Agile Principles"
   },
   {
-    title: "SAFe POPM",
+    title: "POPM",
     description: "Product Owner/Product Manager certification",
     image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=300&h=200&fit=crop",
-    action: "Learn more about SAFe POPM"
+    action: "Learn more about POPM"
   }
 ]
 
@@ -115,7 +115,7 @@ export default function Chatbot() {
     if (input.includes('course') || input.includes('training')) {
       return {
         id: Date.now().toString(),
-        text: "We offer comprehensive SAFe certifications and enterprise agility training. Here are our top courses:",
+        text: "We offer comprehensive Agile certifications and enterprise agility training. Here are our top courses:",
         sender: 'bot',
         timestamp: new Date(),
         type: 'card',

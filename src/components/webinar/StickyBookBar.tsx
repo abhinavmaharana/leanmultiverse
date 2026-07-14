@@ -9,7 +9,7 @@ export default function StickyBookBar() {
     const pathname = usePathname()
     const { mounted, nextWebinarDate } = useWebinarCountdown()
 
-    // Only show on course pages (e.g., /courses/safe-apm, /courses/scrum)
+    // Only show on course pages (e.g., /courses/apm, /courses/scrum)
     // and hide on AI/ML course just in case
     if (!pathname?.startsWith('/courses') || pathname?.startsWith('/courses/ai-ml')) {
         return null

@@ -468,7 +468,7 @@ export default function BookWebinarClient() {
               </div>
               <p className="text-white font-semibold text-lg">Nitesh Prasad</p>
               <p className="text-gray-400 text-xs mb-2">@CorporateWalaYoutuber</p>
-              <p className="text-gray-300 text-xs mb-2">TOP SPEAKER | Ex-Microsoft | Ex-PwC | SAFe SPC | PMP | CSM | MCT AI</p>
+              <p className="text-gray-300 text-xs mb-2">TOP SPEAKER | Ex-Microsoft | Ex-PwC | PMP | CSM | MCT AI</p>
               <ul className="text-gray-400 text-xs space-y-1 text-left w-full">
                 <li>• 1500+ professionals mentored</li>
                 <li>• 1M+ followers across Instagram</li>

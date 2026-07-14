@@ -179,7 +179,7 @@ export class MockService {
     let response = "I understand you're interested in Lean Multiverse. How can I help you today?"
 
     if (userInput.includes('course') || userInput.includes('training')) {
-      response = "We offer comprehensive SAFe certifications including SAFe APM, Leading SAFe, SAFe POPM, and more. Each course includes hands-on training and certification. Would you like to know about specific courses?"
+      response = "We offer comprehensive Agile certifications including APM, Agile Principles, POPM, and more. Each course includes hands-on training and certification. Would you like to know about specific courses?"
     } else if (userInput.includes('price') || userInput.includes('cost')) {
       response = "Our courses range from ₹15,000 to ₹45,000. We also offer corporate packages and early bird discounts. Would you like detailed pricing information?"
     } else if (userInput.includes('consultation') || userInput.includes('book')) {
@@ -234,10 +234,10 @@ export class ChatbotService {
 
 // Utility functions
 export const createSystemPrompt = (): string => {
-  return `You are a helpful AI assistant for Lean Multiverse, a company specializing in enterprise agility training and SAFe certifications. 
+  return `You are a helpful AI assistant for Lean Multiverse, a company specializing in enterprise agility training and Agile certifications. 
 
 Your role:
-- Help users learn about our courses (SAFe APM, Leading SAFe, SAFe POPM, SAFe Scrum Master, SAFe LPM, SAFe RTE)
+- Help users learn about our courses (APM, Agile Principles, POPM, Scrum Master, LPM, RTE)
 - Provide pricing information (₹15,000 - ₹45,000 range)
 - Help with consultation bookings
 - Share success stories (Netflix, Porsche, NASA, Philips)

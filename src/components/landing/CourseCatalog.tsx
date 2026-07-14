@@ -50,7 +50,7 @@ const courses: Course[] = [
     rating: 4.7,
     learners: 1800,
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop",
-    skills: ["Scrum Master", "Kanban", "SAFe", "Project Leadership"],
+    skills: ["Scrum Master", "Kanban", "Agile Certification", "Project Leadership"],
     university: "Lean Multiverse University",
     description: "Advanced project management techniques for agile environments and digital transformation initiatives."
   },

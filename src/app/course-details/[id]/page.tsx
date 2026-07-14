@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: CourseDetailPageProps): Promi
       course.title,
       course.category,
       ...course.skills,
-      'SAFe',
+      
       'Agile',
       'Lean',
       'Training',

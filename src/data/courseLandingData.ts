@@ -58,14 +58,14 @@ export interface CourseLandingData {
   metaDescription: string
 }
 
-// ─── SAFe POPM ────────────────────────────────────────────────
-export const safePOPMData: CourseLandingData = {
-  slug: 'safe-popm',
-  title: 'AI-Integrated SAFe® Product Owner / Product Manager (POPM)',
-  shortTitle: 'AI-Integrated SAFe® POPM',
-  badge: 'SAFe® Certified',
-  tagline: 'AI-Integrated SAFe® Product Owner / Product Manager (POPM) helps you to become a Certified Product Owner capable of leading Agile Release Trains.',
-  valueProposition: 'Master enterprise-scale Agile product ownership — from backlog to PI Planning — and earn your globally recognised SAFe® POPM certification.',
+// ─── POPM ────────────────────────────────────────────────
+export const popmData: CourseLandingData = {
+  slug: 'popm',
+  title: 'AI-Integrated Product Owner / Product Manager (POPM)',
+  shortTitle: 'AI-Integrated POPM',
+  badge: 'Certified',
+  tagline: 'AI-Integrated Product Owner / Product Manager (POPM) helps you to become a Certified Product Owner capable of leading Agile Release Trains.',
+  valueProposition: 'Master enterprise-scale Agile product ownership — from backlog to PI Planning — and earn your globally recognised POPM certification.',
   duration: '2 Days',
   hours: '15–16 Hours',
   certification: 'Industry recognised POPM Certification',
@@ -79,16 +79,16 @@ export const safePOPMData: CourseLandingData = {
     { label: 'Learners', value: '1,000+' },
   ],
   trustItems: [
-    { label: 'SAFe® Certified', icon: '🏅' },
+    { label: 'Certified', icon: '🏅' },
     { label: 'Enterprise Ready', icon: '🏢' },
     { label: 'Hands-on Workshops', icon: '🛠️' },
     { label: 'Industry Trainers', icon: '👨‍🏫' },
     { label: 'Live Sessions', icon: '🎥' },
   ],
   overview: {
-    what: 'The SAFe® POPM course is a 2-day immersive program designed to prepare Product Owners and Product Managers to thrive in enterprise Agile environments powered by the Scaled Agile Framework (SAFe®).',
+    what: 'The POPM course is a 2-day immersive program designed to prepare Product Owners and Product Managers to thrive in enterprise Agile environments powered by the Scaled Agile Framework ().',
     who: 'Ideal for Product Owners, Product Managers, Business Analysts, Requirements Engineers, and Agile Project Managers who work in or want to join large-scale Agile organisations.',
-    why: 'Enterprise organisations are increasingly adopting SAFe® to scale Agile across multiple teams. A SAFe® POPM certification validates your ability to define product vision, manage backlogs, and collaborate within Agile Release Trains.',
+    why: 'Enterprise organisations are increasingly adopting to scale Agile across multiple teams. A POPM certification validates your ability to define product vision, manage backlogs, and collaborate within Agile Release Trains.',
     outcomes: [
       'Lead Agile Release Trains as a certified Product Owner',
       'Define and communicate a compelling Product Vision',
@@ -110,16 +110,16 @@ export const safePOPMData: CourseLandingData = {
     'Backlog Management',
     'Customer Centricity',
     'Value Stream Mapping',
-    'SAFe® Principles',
+    'Principles',
   ],
   curriculum: [
     {
-      title: 'Module 1 — Introduction to SAFe®',
-      topics: ['What is SAFe® and why enterprises adopt it', 'SAFe® principles and values', 'Roles in SAFe®: PO vs PM vs RTE', 'The Agile Release Train (ART) explained'],
+      title: 'Module 1 — Introduction to',
+      topics: ['What is and why enterprises adopt it', 'principles and values', 'Roles in: PO vs PM vs RTE', 'The Agile Release Train (ART) explained'],
     },
     {
       title: 'Module 2 — Product Vision & Strategy',
-      topics: ['Defining and communicating Product Vision', 'Customer-centric thinking in SAFe®', 'Value Streams and Solution Context', 'Vision → Roadmap → Backlog alignment'],
+      topics: ['Defining and communicating Product Vision', 'Customer-centric thinking in', 'Value Streams and Solution Context', 'Vision → Roadmap → Backlog alignment'],
     },
     {
       title: 'Module 3 — PI Planning',
@@ -139,32 +139,32 @@ export const safePOPMData: CourseLandingData = {
     },
   ],
   careerRoles: ['Product Owner', 'Product Manager', 'Business Analyst', 'Requirements Engineer', 'Agile Project Manager', 'Scrum Master'],
-  certificationTimeline: ['2-Day Live Training', '1–2 Weeks Self-Study', '90-Minute Certification Exam', 'SAFe® POPM Badge'],
+  certificationTimeline: ['2-Day Live Training', '1–2 Weeks Self-Study', '90-Minute Certification Exam', 'POPM Badge'],
   instructor: {
     name: 'Nitesh Prasad',
-    designation: 'SAFe® Practice Consultant | TEDx Speaker',
+    designation: 'Practice Consultant | TEDx Speaker',
     experience: '15+ Years Industry Experience',
-    specialization: 'SAFe®, Agile Transformation, Product Management',
+    specialization: ', Agile Transformation, Product Management',
     photo: '/nitesh-prasad-updated-pic.png',
-    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-safe/',
+    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-agile/',
   },
   whyLeanMultiverse: [
-    { title: 'Enterprise Trainers', description: 'Learn from practitioners who have led SAFe® transformations at Fortune 500 companies.', icon: '🏢' },
+    { title: 'Enterprise Trainers', description: 'Learn from practitioners who have led transformations at Fortune 500 companies.', icon: '🏢' },
     { title: 'Interactive Workshops', description: 'Hands-on exercises and real-world simulations, not just lectures.', icon: '🛠️' },
     { title: 'Certification Support', description: 'Dedicated exam prep materials and mock tests included.', icon: '🎓' },
     { title: 'Real Case Studies', description: 'Work through actual PI Planning scenarios from enterprise environments.', icon: '📊' },
     { title: 'Career Guidance', description: 'Post-certification guidance on roles, resumes, and salary negotiation.', icon: '🚀' },
     { title: 'Small Batch Learning', description: 'Limited cohort sizes ensure personalised attention and better outcomes.', icon: '👥' },
-    { title: 'Industry Best Practices', description: 'Content aligned with the latest SAFe® 6.0 framework updates.', icon: '✅' },
+    { title: 'Industry Best Practices', description: 'Content aligned with the latest 6.0 framework updates.', icon: '✅' },
     { title: 'Lifetime Alumni Access', description: 'Join a network of 1,000+ certified professionals across industries.', icon: '🤝' },
   ],
   pricing: {
     fee: '₹35,000',
     originalFee: '₹45,000',
     inclusions: [
-      'Official SAFe® POPM Course Materials',
+      'Official POPM Course Materials',
       '2-Day Live Instructor-Led Training',
-      'SAFe® Certification Exam Voucher',
+      'Certification Exam Voucher',
       'Hands-on Workshop Exercises',
       'PI Planning Simulation',
       'Certificate of Completion',
@@ -176,16 +176,16 @@ export const safePOPMData: CourseLandingData = {
   faqs: [
     { question: 'Who should attend this course?', answer: 'Product Owners, Product Managers, Business Analysts, Requirements Engineers, and Agile Project Managers who work in or aspire to join enterprise Agile organisations.' },
     { question: 'Are there any prerequisites?', answer: 'No formal prerequisites. A basic familiarity with Agile or Scrum concepts is helpful but not mandatory.' },
-    { question: 'What certification do I receive?', answer: 'Upon passing the online exam, you receive the official SAFe® 6 Product Owner / Product Manager (POPM) certification from Scaled Agile, Inc.' },
+    { question: 'What certification do I receive?', answer: 'Upon passing the online exam, you receive the official 6 Product Owner / Product Manager (POPM) certification from Scaled Agile, Inc.' },
     { question: 'Is the training online or in-person?', answer: 'We offer both live online (virtual) and in-person options. All sessions are instructor-led with real-time interaction.' },
-    { question: 'How long is the exam?', answer: 'The SAFe® POPM certification exam is 90 minutes with 45 multiple-choice questions. A score of 73% or above is required to pass.' },
+    { question: 'How long is the exam?', answer: 'The POPM certification exam is 90 minutes with 45 multiple-choice questions. A score of 73% or above is required to pass.' },
     { question: 'What is the exam format?', answer: 'Online, open-book exam taken through the Scaled Agile community portal after training. You receive 1 attempt included in the course fee.' },
     { question: 'Will I get a recording of the sessions?', answer: 'Yes, all virtual sessions are recorded and available to participants for 30 days post-training.' },
     { question: 'Do you offer corporate group training?', answer: 'Absolutely. We offer customised group training for teams of 5 or more with special pricing. Contact us for details.' },
     { question: 'What is your refund policy?', answer: 'Full refund available up to 7 days before the training date. Please refer to our Refund Policy page for complete details.' },
   ],
-  metaTitle: 'SAFe® POPM Certification Training | Lean Multiverse',
-  metaDescription: 'Get SAFe® Product Owner / Product Manager (POPM) certified in 2 days. Live instructor-led training with hands-on PI Planning workshops. Trusted by enterprise teams.',
+  metaTitle: 'POPM Certification Training | Lean Multiverse',
+  metaDescription: 'Get Product Owner / Product Manager (POPM) certified in 2 days. Live instructor-led training with hands-on PI Planning workshops. Trusted by enterprise teams.',
 }
 
 // ─── Scrum ───────────────────────────────────────────────────
@@ -274,9 +274,9 @@ export const scrumData: CourseLandingData = {
     name: 'Nitesh Prasad',
     designation: 'Certified Scrum Trainer | Agile Coach',
     experience: '15+ Years Industry Experience',
-    specialization: 'Scrum, SAFe®, Agile Coaching, Team Facilitation',
+    specialization: 'Scrum,, Agile Coaching, Team Facilitation',
     photo: '/nitesh-prasad-updated-pic.png',
-    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-safe/',
+    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-agile/',
   },
   whyLeanMultiverse: [
     { title: 'Certified Trainers', description: 'Instructors with real-world Scrum Master and Agile Coach experience at MNCs.', icon: '🏅' },
@@ -318,13 +318,13 @@ export const scrumData: CourseLandingData = {
   metaDescription: 'Get Scrum certified in 2 days with live instructor-led training. Master Sprint Planning, Daily Scrums, Retrospectives, and servant leadership. Globally recognised.',
 }
 
-// ─── SAFe APM ────────────────────────────────────────────────
-export const safeAPMData: CourseLandingData = {
-  slug: 'safe-apm',
-  title: 'AI-Integrated SAFe® Agile Product Management (APM)',
-  shortTitle: 'AI-Integrated SAFe® APM',
-  badge: 'SAFe® Certified',
-  tagline: 'AI-Integrated SAFe® Agile Product Management (APM) helps you to drive Customer-Centric Product Strategy at Enterprise Scale.',
+// ─── APM ────────────────────────────────────────────────
+export const apmData: CourseLandingData = {
+  slug: 'apm',
+  title: 'AI-Integrated Agile Product Management (APM)',
+  shortTitle: 'AI-Integrated APM',
+  badge: 'Certified',
+  tagline: 'AI-Integrated Agile Product Management (APM) helps you to drive Customer-Centric Product Strategy at Enterprise Scale.',
   valueProposition: 'Master Design Thinking, Continuous Exploration, and value stream economics to lead product strategy across large enterprises.',
   duration: '3 Days',
   hours: '~24 Hours',
@@ -339,23 +339,23 @@ export const safeAPMData: CourseLandingData = {
     { label: 'Learners', value: '500+' },
   ],
   trustItems: [
-    { label: 'SAFe® Certified', icon: '🏅' },
+    { label: 'Certified', icon: '🏅' },
     { label: 'Enterprise Strategy', icon: '🏢' },
     { label: 'Design Thinking', icon: '🎨' },
     { label: 'Expert Coaches', icon: '👨‍🏫' },
     { label: 'Live Sessions', icon: '🎥' },
   ],
   overview: {
-    what: 'The SAFe® APM course is a 3-day advanced program for product leaders who want to drive customer-centric product strategy at scale. You will learn Design Thinking, Continuous Exploration, market segmentation, and value stream economics within the SAFe® context.',
+    what: 'The APM course is a 3-day advanced program for product leaders who want to drive customer-centric product strategy at scale. You will learn Design Thinking, Continuous Exploration, market segmentation, and value stream economics within the context.',
     who: 'Designed for Product Managers, Senior Product Managers, Portfolio Managers, Business Owners, and UX Professionals who own or influence product direction in enterprise Agile organisations.',
-    why: 'As enterprises scale Agile, the need for strategic product leadership grows. SAFe® APM goes beyond backlog management — it equips you to align product strategy with business outcomes, drive innovation through hypothesis-driven development, and make economics-informed decisions.',
+    why: 'As enterprises scale Agile, the need for strategic product leadership grows. APM goes beyond backlog management — it equips you to align product strategy with business outcomes, drive innovation through hypothesis-driven development, and make economics-informed decisions.',
     outcomes: [
       'Apply Design Thinking and customer empathy at enterprise scale',
       'Define product strategy, roadmaps, and market positioning',
       'Lead Continuous Exploration and hypothesis-driven development',
       'Understand value stream economics, pricing, and licensing',
       'Collaborate across ARTs to deliver end-to-end customer value',
-      'Earn the SAFe® APM certification from Scaled Agile, Inc.',
+      'Earn the APM certification from Scaled Agile, Inc.',
     ],
   },
   whatYouLearn: [
@@ -383,7 +383,7 @@ export const safeAPMData: CourseLandingData = {
     },
     {
       title: 'Module 3 — Product Strategy & Vision',
-      topics: ['Crafting a compelling product vision', 'Strategy-to-execution alignment in SAFe®', 'Strategic themes and portfolio alignment', 'Product roadmapping for enterprise contexts'],
+      topics: ['Crafting a compelling product vision', 'Strategy-to-execution alignment in', 'Strategic themes and portfolio alignment', 'Product roadmapping for enterprise contexts'],
     },
     {
       title: 'Module 4 — Continuous Exploration',
@@ -391,40 +391,40 @@ export const safeAPMData: CourseLandingData = {
     },
     {
       title: 'Module 5 — Value Stream Economics',
-      topics: ['Understanding value streams in SAFe®', 'Lean economics and cost of delay', 'Pricing models: subscription, freemium, usage-based', 'Licensing strategies for software products'],
+      topics: ['Understanding value streams in', 'Lean economics and cost of delay', 'Pricing models: subscription, freemium, usage-based', 'Licensing strategies for software products'],
     },
     {
       title: 'Module 6 — Certification Preparation',
-      topics: ['APM exam format: 120-minute online exam', 'Key concepts and vocabulary review', 'Sample questions and practice scenarios', 'Career paths after SAFe® APM certification'],
+      topics: ['APM exam format: 120-minute online exam', 'Key concepts and vocabulary review', 'Sample questions and practice scenarios', 'Career paths after APM certification'],
     },
   ],
   careerRoles: ['Product Manager', 'Senior Product Manager', 'Portfolio Manager', 'Business Owner', 'UX Lead', 'Head of Product'],
-  certificationTimeline: ['3-Day Live Training', '1–2 Weeks Self-Study', '120-Minute Certification Exam', 'SAFe® APM Badge'],
+  certificationTimeline: ['3-Day Live Training', '1–2 Weeks Self-Study', '120-Minute Certification Exam', 'APM Badge'],
   instructor: {
     name: 'Nitesh Prasad',
-    designation: 'SAFe® Practice Consultant | Product Strategy Expert',
+    designation: 'Practice Consultant | Product Strategy Expert',
     experience: '15+ Years Industry Experience',
-    specialization: 'SAFe® APM, Design Thinking, Product Strategy, Innovation',
+    specialization: 'APM, Design Thinking, Product Strategy, Innovation',
     photo: '/nitesh-prasad-updated-pic.png',
-    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-safe/',
+    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-agile/',
   },
   whyLeanMultiverse: [
     { title: 'Strategic Focus', description: 'Go beyond features — learn to shape markets, pricing, and innovation pipelines.', icon: '🎯' },
     { title: 'Design Thinking Labs', description: 'Hands-on customer empathy and prototyping exercises built into the curriculum.', icon: '🎨' },
-    { title: 'Certification Included', description: 'SAFe® APM exam voucher and prep materials bundled with the course.', icon: '🎓' },
+    { title: 'Certification Included', description: 'APM exam voucher and prep materials bundled with the course.', icon: '🎓' },
     { title: 'Enterprise Case Studies', description: 'Real examples from Fortune 500 product transformations.', icon: '📊' },
     { title: 'Career Coaching', description: 'Post-certification guidance for senior PM roles and salary advancement.', icon: '🚀' },
     { title: 'Expert Peer Network', description: 'Learn alongside Senior PMs and Business Owners from top companies.', icon: '🤝' },
-    { title: 'SAFe® 6.0 Aligned', description: 'Fully up-to-date with the latest SAFe® framework and APM course content.', icon: '✅' },
+    { title: '6.0 Aligned', description: 'Fully up-to-date with the latest framework and APM course content.', icon: '✅' },
     { title: 'Executive-Level Framing', description: 'Communicate strategy, value, and outcomes in the language of leadership.', icon: '📈' },
   ],
   pricing: {
     fee: '₹1,50,000',
     originalFee: '₹1,80,000',
     inclusions: [
-      'Official SAFe® APM Course Materials',
+      'Official APM Course Materials',
       '3-Day Live Instructor-Led Training',
-      'SAFe® APM Certification Exam Voucher',
+      'APM Certification Exam Voucher',
       'Design Thinking Workshop',
       'Product Strategy Canvas Templates',
       'Certificate of Completion',
@@ -434,22 +434,22 @@ export const safeAPMData: CourseLandingData = {
     emiNote: 'EMI options available from ₹15,000/month',
   },
   faqs: [
-    { question: 'Who should attend the SAFe® APM course?', answer: 'Product Managers, Senior Product Managers, Portfolio Managers, Business Owners, and UX Professionals who define product direction in enterprise Agile organisations.' },
-    { question: 'Is there a prerequisite for this course?', answer: 'Familiarity with Agile or SAFe® basics is recommended. Having prior SAFe® POPM experience is beneficial but not mandatory.' },
-    { question: 'What certification do I receive?', answer: 'Upon passing the 120-minute exam, you earn the official SAFe® 6 Agile Product Manager (APM) certification from Scaled Agile, Inc.' },
+    { question: 'Who should attend the APM course?', answer: 'Product Managers, Senior Product Managers, Portfolio Managers, Business Owners, and UX Professionals who define product direction in enterprise Agile organisations.' },
+    { question: 'Is there a prerequisite for this course?', answer: 'Familiarity with Agile or basics is recommended. Having prior POPM experience is beneficial but not mandatory.' },
+    { question: 'What certification do I receive?', answer: 'Upon passing the 120-minute exam, you earn the official 6 Agile Product Manager (APM) certification from Scaled Agile, Inc.' },
     { question: 'Is the training available online?', answer: 'Yes. We offer live virtual sessions with the same interactive quality as in-person, including design thinking workshops.' },
-    { question: 'How long is the SAFe® APM exam?', answer: 'The exam is 120 minutes with 60 multiple-choice questions. A passing score of 73% or above is required.' },
+    { question: 'How long is the APM exam?', answer: 'The exam is 120 minutes with 60 multiple-choice questions. A passing score of 73% or above is required.' },
     { question: 'Are recordings available post-training?', answer: 'Yes. Recordings of all virtual sessions are accessible for 30 days after the training date.' },
     { question: 'How is APM different from POPM?', answer: 'POPM focuses on backlog and ART-level execution. APM is strategic — covering market research, design thinking, roadmapping, pricing, and innovation at portfolio scale.' },
     { question: 'Do you offer corporate group training for APM?', answer: 'Yes. Customised group training for Senior PM and Leadership teams is available. Contact us for pricing and scheduling.' },
     { question: 'What is the refund policy?', answer: 'Full refund available up to 7 days before the training start date. See our Refund Policy for complete terms.' },
   ],
-  metaTitle: 'SAFe® Agile Product Management (APM) Training | Lean Multiverse',
-  metaDescription: 'Get SAFe® APM certified in 3 days. Master Design Thinking, Continuous Exploration, and Value Stream Economics. Trusted by Senior PMs and Portfolio Managers.',
+  metaTitle: 'Agile Product Management (APM) Training | Lean Multiverse',
+  metaDescription: 'Get APM certified in 3 days. Master Design Thinking, Continuous Exploration, and Value Stream Economics. Trusted by Senior PMs and Portfolio Managers.',
 }
 
 export const allCourseLandingData: Record<string, CourseLandingData> = {
-  'safe-popm': safePOPMData,
+  'popm': popmData,
   'scrum': scrumData,
-  'safe-apm': safeAPMData,
+  'apm': apmData,
 }

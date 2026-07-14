@@ -199,7 +199,7 @@ export default function TrackerPage() {
           </div>
 
           {/* POPM */}
-          <Section id="popm" title="SAFe POPM">
+          <Section id="popm" title="POPM">
             <select {...register("popm_payment")} className={select}>
               <option value="">Payment</option>
               {STATUS.map(s => <option key={s}>{s}</option>)}
@@ -222,7 +222,7 @@ export default function TrackerPage() {
           </Section>
 
           {/* Scrum */}
-          <Section id="scrum" title="SAFe Scrum">
+          <Section id="scrum" title="Scrum">
             <select {...register("scrum_payment")} className={select}>
               <option value="">Payment</option>
               {STATUS.map(s => <option key={s}>{s}</option>)}

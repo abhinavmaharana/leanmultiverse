@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     "lean methodology",
     "scrum master",
     "kanban",
-    "SAFe",
+    
     "organizational change",
     "strategic management",
     "data-driven decisions"

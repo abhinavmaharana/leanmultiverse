@@ -85,21 +85,21 @@ export default function AdvancedChatbot() {
     if (input.includes('course') || input.includes('training') || input.includes('certification')) {
       const courseCards = [
         {
-          title: "SAFe® Agile Product Manager (APM)",
-          description: "Master product management in SAFe environments",
+          title: "Agile Product Manager (APM)",
+          description: "Master product management in Agile environments",
           image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=200&fit=crop",
           action: "Learn More",
           price: "₹25,000"
         },
         {
-          title: "Leading SAFe®",
-          description: "Executive certification for SAFe leadership",
+          title: "Agile Principles",
+          description: "Executive certification for Agile leadership",
           image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop",
           action: "Learn More", 
           price: "₹35,000"
         },
         {
-          title: "SAFe® PO/PM",
+          title: "PO/PM",
           description: "Product Owner and Product Manager certification",
           image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=300&h=200&fit=crop",
           action: "Learn More",
@@ -109,7 +109,7 @@ export default function AdvancedChatbot() {
       
       return {
         id: Date.now().toString(),
-        text: "Here are our top SAFe certifications. Each course includes hands-on training, certification exam, and 1-year membership:",
+        text: "Here are our top Agile certifications. Each course includes hands-on training, certification exam, and 1-year membership:",
         sender: 'bot',
         timestamp: new Date(),
         type: 'card',
