@@ -106,7 +106,14 @@ export const metadata: Metadata = {
   },
 }
 
+import Maintenance from '../components/shared/Maintenance'
+
 export default function LandingPage() {
+  const isMaintenance = true;
+  if (isMaintenance) {
+    return <Maintenance />;
+  }
+
   return (
     // ============================================================
     // NEW UI layout
