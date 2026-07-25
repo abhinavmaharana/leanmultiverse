@@ -232,7 +232,7 @@ export const careerGuidanceData: CourseLandingData = {
   rating: 0,
   reviewCount: 0,
   heroStats: [
-    { label: 'Format', value: '1:1 + Group Sessions' },
+    { label: 'Format', value: '1:1 Sessions' },
     { label: 'Mentor', value: 'Nitesh Prasad' },
     { label: 'Duration', value: 'Coming Soon' },
     { label: 'Pricing', value: 'Coming Soon' },
