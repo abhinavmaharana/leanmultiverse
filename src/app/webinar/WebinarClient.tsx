@@ -77,7 +77,7 @@ function VideoSection() {
         <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-8">Why You Should Join Lean Multiverse</h2>
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl bg-gray-900 border-4 border-white">
           <iframe
-            src="https://www.youtube.com/embed/uKaAyAmbN2Q?si=ReY1tgBf0mBRnK2c"
+            src="https://www.youtube.com/embed/0FOrkRJAy_s?si=DRE3s1kNWodwjvk6"
             title="Why You Should Join Lean Multiverse"
             className="w-full h-full border-0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
