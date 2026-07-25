@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Carousel, Modal } from 'antd'
 import {
   CheckCircle2,
@@ -19,13 +20,16 @@ import {
   ChevronDown,
   Sparkles,
   BadgeCheck,
+  UserPlus,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CourseLandingData } from '@/data/courseLandingData'
+import { CourseLandingData, valuePropositions, platformPromises } from '@/data/courseLandingData'
 import { testimonials } from '@/data/testimonials'
+import { courses } from '@/data/courses'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 
-/* ─── Claim Your Spot CTA ─────────────────────────────────────────────────── */
+/* ─── Subscribe CTA ───────────────────────────────────────────────────────── */
+// Not open for enrollment yet — render as a non-interactive "Coming Soon" badge.
 function ClaimSpotButton({
   className = '',
   size = 'default',
@@ -39,13 +43,12 @@ function ClaimSpotButton({
     large: 'px-12 py-4 text-lg',
   }
   return (
-    <a
-      href="tel:+917696627657"
-      className={`inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-black rounded-full transition-all active:scale-95 shadow-md ${sizeClasses[size]} ${className}`}
+    <span
+      aria-disabled="true"
+      className={`inline-flex items-center justify-center gap-2 bg-gray-100 text-gray-500 font-black rounded-full cursor-not-allowed select-none ${sizeClasses[size]} ${className}`}
     >
-      <Sparkles className="w-4 h-4" />
-      Claim Your Spot
-    </a>
+      Coming Soon
+    </span>
   )
 }
 
@@ -84,13 +87,12 @@ function CourseStickyCTA({ courseName }: { courseName: string }) {
                 <PhoneCall className="w-3.5 h-3.5" />
                 Talk to Expert
               </a>
-              <a
-                href="tel:+917696627657"
-                className="flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-black text-sm md:text-base px-6 md:px-8 py-2.5 md:py-3 rounded-full transition-all active:scale-95 shadow-lg whitespace-nowrap"
+              <span
+                aria-disabled="true"
+                className="flex items-center gap-2 bg-gray-100 text-gray-500 font-black text-sm md:text-base px-6 md:px-8 py-2.5 md:py-3 rounded-full cursor-not-allowed select-none whitespace-nowrap"
               >
-                <Sparkles className="w-4 h-4" />
-                Claim Your Spot
-              </a>
+                Coming Soon
+              </span>
             </div>
           </div>
         </motion.div>
@@ -102,27 +104,65 @@ function CourseStickyCTA({ courseName }: { courseName: string }) {
 /* ─── Hero ────────────────────────────────────────────────────────────────── */
 function CourseHero({ data }: { data: CourseLandingData }) {
   return (
-    <section id="home" className="w-full pt-10 pb-16 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section id="home" className="w-full bg-white overflow-hidden">
+      {/* Photo background block */}
+      <div className="relative w-full min-h-[85vh] md:min-h-[92vh] flex items-center">
+        <Image
+          src={data.instructor.photo}
+          alt={data.instructor.name}
+          fill
+          priority
+          className="object-cover object-top"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
 
-        {/* Badge pill */}
-        <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
-          <BadgeCheck className="w-3.5 h-3.5" />
-          {data.badge} · Official Certification
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="max-w-xl text-center lg:text-left mx-auto lg:mx-0">
+            {/* Badge pill */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+              <BadgeCheck className="w-3.5 h-3.5" />
+              {data.badge}
+            </div>
+
+            {/* Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.1] mb-5">
+              {data.tagline}
+            </h1>
+
+            {/* Sub-headline */}
+            <p className="text-base md:text-lg text-white/80 mb-8 leading-relaxed">
+              {data.valueProposition}
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3 mb-8">
+              <ClaimSpotButton size="large" />
+            </div>
+
+            {/* Feature row */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3">
+              {data.trustItems.slice(0, 3).map((item, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm font-semibold text-white/90">
+                  <span className="text-lg">{item.icon}</span>
+                  {item.label}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black text-gray-900 tracking-tight leading-[1.1] mb-5">
-          {data.tagline}
-        </h1>
+        {/* Instructor name badge */}
+        <div className="absolute bottom-5 right-5 z-10 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2.5 shadow-md">
+          <BadgeCheck className="w-4 h-4 text-amber-600 flex-shrink-0" />
+          <span className="text-xs font-black text-gray-900">{data.instructor.name} · {data.instructor.designation}</span>
+        </div>
+      </div>
 
-        {/* Sub-headline */}
-        <p className="text-base md:text-lg text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed">
-          {data.valueProposition}
-        </p>
-
+      {/* Below: stats, rating, target roles on white */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Stats chips */}
-        <div className="flex flex-wrap justify-center gap-2.5 mb-8">
+        <div className="flex flex-wrap justify-center lg:justify-start gap-2.5">
           {data.heroStats.map((s, i) => (
             <div key={i} className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
               <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">{s.label}</span>
@@ -131,34 +171,22 @@ function CourseHero({ data }: { data: CourseLandingData }) {
           ))}
         </div>
 
-        {/* Stars + trust */}
-        <div className="flex items-center justify-center flex-wrap gap-2 mb-10">
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-            ))}
+        {/* Stars + trust (only once there's real rating data) */}
+        {data.rating > 0 && (
+          <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-4">
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <span className="text-sm font-bold text-gray-700">{data.rating} · {data.reviewCount}+ reviews</span>
           </div>
-          <span className="text-sm font-bold text-gray-700">{data.rating} · {data.reviewCount}+ reviews</span>
-          <span className="hidden sm:inline text-gray-300">·</span>
-          <span className="text-sm text-gray-400">Trusted by Enterprise Teams</span>
-        </div>
-
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
-          <ClaimSpotButton size="large" />
-          <a
-            href="#curriculum"
-            className="flex items-center gap-2 border-2 border-gray-200 text-gray-600 font-semibold text-sm px-7 py-3.5 rounded-full hover:border-amber-400 hover:text-amber-600 transition-all"
-          >
-            View Curriculum
-            <ChevronDown className="w-4 h-4" />
-          </a>
-        </div>
+        )}
 
         {/* Target roles */}
-        <div className="pt-6 border-t border-gray-100">
+        <div className="mt-8 pt-6 border-t border-gray-100 text-center lg:text-left">
           <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">Ideal for</p>
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center lg:justify-start gap-2">
             {data.targetRoles.map((role, i) => (
               <span key={i} className="text-xs bg-gray-100 text-gray-600 font-semibold px-3 py-1.5 rounded-full">
                 {role}
@@ -189,12 +217,226 @@ function TrustStrip({ items }: { items: CourseLandingData['trustItems'] }) {
   )
 }
 
+/* ─── Value Proposition ───────────────────────────────────────────────────── */
+function ValueProposition({ items }: { items: typeof valuePropositions }) {
+  return (
+    <section className="w-full py-20 bg-white border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">Why Lean Multiverse</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            One Program. <span className="text-amber-400">Real Results.</span>
+          </h2>
+          <p className="text-gray-400 max-w-lg mx-auto text-sm">Everything you need to reach your goals, built around real results.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {items.map((item, i) => (
+            <div key={i} className="border border-gray-100 rounded-2xl p-8 bg-gray-50 hover:border-amber-200 transition-colors">
+              <div className="text-4xl mb-4">{item.icon}</div>
+              <h3 className="font-black text-gray-900 text-lg mb-2">{item.title}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Video Section ───────────────────────────────────────────────────────── */
+// Every course dataset now defines `video` (see courseLandingData.ts) using the same
+// real Lean Multiverse intro video shown on the homepage (src/components/new-ui/NewVideoSection.tsx).
+function CourseVideoSection({ video }: { video: CourseLandingData['video'] }) {
+  if (!video) return null
+  const resolved = video
+
+  return (
+    <section className="w-full bg-slate-50 py-16 border-b border-gray-100">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {resolved.title && (
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-8">
+            {resolved.title}
+          </h2>
+        )}
+
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl bg-gray-900 border-4 border-white">
+          {resolved.url ? (
+            <iframe
+              src={resolved.url}
+              title={resolved.title || "Course Video"}
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : resolved.thumbnailUrl ? (
+            <img
+              src={resolved.thumbnailUrl}
+              alt={resolved.title || "Video thumbnail"}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-gray-400">
+              No video provided
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Course Catalog ──────────────────────────────────────────────────────── */
+function CourseCatalogSection() {
+  const featured = courses.filter((c) => c.category !== 'Webinar').slice(0, 6)
+
+  return (
+    <section className="w-full py-20 bg-gray-50 border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">Explore More</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900">Our Course Catalog</h2>
+          </div>
+          <Link href="/courses" className="text-sm font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1 flex-shrink-0">
+            View All Courses <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featured.map((course) => (
+            <Link
+              key={course.id}
+              href={`/course-details/${course.id}`}
+              className="block bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-amber-200 hover:-translate-y-0.5 transition-all"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full uppercase tracking-wide">
+                  {course.category}
+                </span>
+                <span className="flex items-center gap-1 text-xs font-bold text-gray-700">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> {course.rating}
+                </span>
+              </div>
+              <h3 className="font-black text-gray-900 text-base mb-2 line-clamp-2">{course.shortTitle}</h3>
+              <p className="text-gray-500 text-xs mb-4 line-clamp-2">{course.description}</p>
+              <div className="flex items-center justify-between text-xs text-gray-400 font-semibold">
+                <span>{course.duration}</span>
+                <span>{course.level}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Upcoming Instructors Preview ────────────────────────────────────────── */
+function UpcomingInstructorsPreview({ instructor }: { instructor: CourseLandingData['instructor'] }) {
+  return (
+    <section className="w-full py-16 bg-white border-t border-gray-100">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">Meet the Educators</p>
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-10">Learn From Practitioners</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 flex flex-col items-center">
+            <div className="relative w-16 h-16 rounded-full overflow-hidden bg-amber-100 mb-4">
+              <Image src={instructor.photo} alt={instructor.name} fill className="object-cover object-top" />
+            </div>
+            <h3 className="font-black text-gray-900 text-sm">{instructor.name}</h3>
+            <p className="text-xs text-gray-400 mt-1">{instructor.designation}</p>
+          </div>
+          {[1, 2].map((i) => (
+            <div key={i} className="border-2 border-dashed border-gray-200 rounded-2xl p-6 flex flex-col items-center justify-center text-center">
+              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                <UserPlus className="w-6 h-6 text-gray-300" />
+              </div>
+              <h3 className="font-bold text-gray-400 text-sm">New Educator</h3>
+              <p className="text-[11px] text-gray-300 mt-1 uppercase tracking-wide font-bold">Announcing Soon</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Platform Promises ───────────────────────────────────────────────────── */
+function PlatformPromises({ items }: { items: typeof platformPromises }) {
+  return (
+    <section className="w-full py-16 bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {items.map((item, i) => (
+            <div key={i} className="flex items-start gap-4">
+              <div className="text-2xl flex-shrink-0">{item.icon}</div>
+              <div>
+                <h3 className="font-black text-white text-sm mb-1">{item.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  {item.description}{' '}
+                  {item.title.includes('Refund') && (
+                    <Link href="/refund-policy" className="text-amber-400 underline">
+                      View policy
+                    </Link>
+                  )}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+/* ─── Course Categories (derived from real course skills) ─────────────────── */
+function deriveCourseCategories() {
+  const counts = new Map<string, number>()
+  courses.forEach((course) => {
+    course.skills.forEach((skill) => {
+      counts.set(skill, (counts.get(skill) || 0) + 1)
+    })
+  })
+  return Array.from(counts.entries())
+    .map(([label, count]) => ({ label, count }))
+    .filter((c) => c.count > 1)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10)
+}
+
+function CourseCategoriesGrid() {
+  const categories = deriveCourseCategories()
+  return (
+    <section className="w-full py-20 bg-white border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">Browse by Skill</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900">Course Categories</h2>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          {categories.map((cat, i) => (
+            <Link
+              key={i}
+              href="/courses"
+              className="flex flex-col items-center justify-center text-center bg-gray-50 border border-gray-100 rounded-xl px-4 py-6 hover:border-amber-300 hover:bg-amber-50 transition-colors"
+            >
+              <span className="font-bold text-gray-800 text-sm">{cat.label}</span>
+              <span className="text-[11px] text-gray-400 mt-1">{cat.count} courses</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── Course Overview ─────────────────────────────────────────────────────── */
 function CourseOverview({ overview }: { overview: CourseLandingData['overview'] }) {
   const cards = [
     { title: 'What is this course?', content: overview.what, icon: '📖', bg: 'bg-blue-50 border-blue-100' },
     { title: 'Who should attend?', content: overview.who, icon: '👤', bg: 'bg-green-50 border-green-100' },
-    { title: 'Why this certification?', content: overview.why, icon: '🏆', bg: 'bg-amber-50 border-amber-100' },
+    { title: 'Why this program?', content: overview.why, icon: '🏆', bg: 'bg-amber-50 border-amber-100' },
   ]
 
   return (
@@ -283,16 +525,14 @@ function CurriculumAccordion({ modules }: { modules: CourseLandingData['curricul
             return (
               <div
                 key={index}
-                className={`border rounded-2xl overflow-hidden transition-all duration-200 ${
-                  isOpen ? 'border-amber-300 shadow-sm' : 'border-gray-100 bg-white'
-                }`}
+                className={`border rounded-2xl overflow-hidden transition-all duration-200 ${isOpen ? 'border-amber-300 shadow-sm' : 'border-gray-100 bg-white'
+                  }`}
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
-                  className={`w-full py-5 px-6 flex items-center justify-between text-left ${
-                    isOpen ? 'bg-amber-50' : 'bg-white hover:bg-gray-50'
-                  } transition-colors`}
+                  className={`w-full py-5 px-6 flex items-center justify-between text-left ${isOpen ? 'bg-amber-50' : 'bg-white hover:bg-gray-50'
+                    } transition-colors`}
                 >
                   <div className="flex items-center gap-4">
                     <span className="flex-shrink-0 w-9 h-9 rounded-full bg-amber-400 text-gray-900 text-xs font-black flex items-center justify-center shadow-sm">
@@ -338,9 +578,9 @@ function CareerOutcomes({ roles, timeline }: { roles: string[]; timeline: string
     <section className="w-full py-20 bg-gray-50 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">After Certification</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Career Outcomes</h2>
-          <p className="text-gray-400 max-w-lg mx-auto text-sm">Roles you&apos;ll be qualified for and your path to getting there.</p>
+          <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">What to Expect</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Your Transformation</h2>
+          <p className="text-gray-400 max-w-lg mx-auto text-sm">Outcomes you can work toward and your path to getting there.</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -350,7 +590,7 @@ function CareerOutcomes({ roles, timeline }: { roles: string[]; timeline: string
               <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-amber-600" />
               </div>
-              <h3 className="font-black text-gray-900 text-lg">Possible Roles</h3>
+              <h3 className="font-black text-gray-900 text-lg">Possible Outcomes</h3>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {roles.map((role, i) => (
@@ -396,7 +636,7 @@ function CareerOutcomes({ roles, timeline }: { roles: string[]; timeline: string
   )
 }
 
-/* ─── Instructor ──────────────────────────────────────────────────────────── */
+/* ─── Faculty ─────────────────────────────────────────────────────────────── */
 function InstructorSection({ instructor }: { instructor: CourseLandingData['instructor'] }) {
   return (
     <section className="w-full overflow-hidden border-t border-gray-100">
@@ -406,7 +646,7 @@ function InstructorSection({ instructor }: { instructor: CourseLandingData['inst
           <div className="w-3 md:w-10 bg-amber-400 self-stretch flex-shrink-0" />
           <div className="flex-1 flex flex-col justify-center py-16 px-8 md:px-14 bg-white">
             <div className="max-w-lg">
-              <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-3">Your Instructor</p>
+              <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-3">Faculty</p>
               <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
                 Meet {instructor.name}
               </h2>
@@ -418,19 +658,6 @@ function InstructorSection({ instructor }: { instructor: CourseLandingData['inst
                   <span key={i} className="text-xs bg-amber-50 border border-amber-200 text-amber-700 font-semibold px-3 py-1.5 rounded-full">
                     {s}
                   </span>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 mb-8 text-center">
-                {[
-                  { label: 'Community', value: '700K+' },
-                  { label: 'Mentored', value: '1,000+' },
-                  { label: 'Rating', value: '4.9 ★' },
-                ].map((stat, i) => (
-                  <div key={i} className="bg-gray-50 border border-gray-100 rounded-xl py-3 px-2">
-                    <div className="font-black text-gray-900 text-lg">{stat.value}</div>
-                    <div className="text-xs text-gray-400 font-semibold">{stat.label}</div>
-                  </div>
                 ))}
               </div>
 
@@ -468,13 +695,13 @@ function InstructorSection({ instructor }: { instructor: CourseLandingData['inst
   )
 }
 
-/* ─── Why Lean Multiverse ─────────────────────────────────────────────────── */
+/* ─── Subscription Benefits (Why Lean Multiverse) ─────────────────────────── */
 function WhyLeanMultiverse({ items }: { items: CourseLandingData['whyLeanMultiverse'] }) {
   return (
     <section className="w-full py-20 bg-gray-50 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">Our Difference</p>
+          <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">Subscription Benefits</p>
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
             Why <span className="text-amber-400">Lean Multiverse?</span>
           </h2>
@@ -518,7 +745,7 @@ function CourseTestimonials() {
             <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-3">Student Reviews</p>
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900">What Our Students Say</h2>
           </div>
-          <p className="text-gray-400 text-sm max-w-xs">Real stories from professionals who earned their certification with us.</p>
+          <p className="text-gray-400 text-sm max-w-xs">Real stories from people training with us.</p>
         </div>
       </div>
 
@@ -633,7 +860,7 @@ function PricingCard({ pricing, courseName }: { pricing: CourseLandingData['pric
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">Pricing</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Invest in Your Career</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Invest in Yourself</h2>
           <p className="text-gray-400 max-w-lg mx-auto text-sm">Everything you need to succeed — included in one price.</p>
         </div>
 
@@ -710,14 +937,12 @@ function CourseFAQSection({ faqs }: { faqs: CourseLandingData['faqs'] }) {
                 return (
                   <div
                     key={index}
-                    className={`border rounded-2xl overflow-hidden transition-all ${
-                      isOpen ? 'border-amber-300 shadow-sm' : 'border-gray-100 bg-white'
-                    }`}
+                    className={`border rounded-2xl overflow-hidden transition-all ${isOpen ? 'border-amber-300 shadow-sm' : 'border-gray-100 bg-white'
+                      }`}
                   >
                     <button
-                      className={`w-full py-5 px-6 flex items-center justify-between text-left ${
-                        isOpen ? 'bg-amber-50' : 'bg-white hover:bg-gray-50'
-                      } transition-colors`}
+                      className={`w-full py-5 px-6 flex items-center justify-between text-left ${isOpen ? 'bg-amber-50' : 'bg-white hover:bg-gray-50'
+                        } transition-colors`}
                       onClick={() => setOpenIndex(isOpen ? null : index)}
                       aria-expanded={isOpen}
                     >
@@ -751,22 +976,21 @@ function FinalCTA({ courseName }: { courseName: string }) {
       <div className="max-w-3xl mx-auto px-4 text-center">
         <div className="inline-flex items-center gap-2 bg-gray-900/10 text-gray-900 text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full mb-6">
           <Sparkles className="w-3.5 h-3.5" />
-          Limited Seats Available
+          Coming Soon
         </div>
         <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-5 leading-tight">
-          Ready to Get Certified?
+          Ready to Get Started?
         </h2>
         <p className="text-gray-900/70 text-base md:text-lg mb-10 max-w-xl mx-auto">
-          Join enterprise professionals worldwide who have advanced their careers with {courseName}.
+          Join people working toward real results with {courseName}.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="tel:+917696627657"
-            className="w-full sm:w-auto bg-gray-900 hover:bg-gray-800 text-white font-black text-base px-12 py-4 rounded-full transition-all active:scale-95 shadow-md flex items-center justify-center gap-2"
+          <span
+            aria-disabled="true"
+            className="w-full sm:w-auto bg-gray-300 text-gray-600 font-black text-base px-12 py-4 rounded-full cursor-not-allowed select-none flex items-center justify-center gap-2"
           >
-            <Sparkles className="w-4 h-4" />
-            Claim Your Spot
-          </a>
+            Coming Soon
+          </span>
           <a
             href="tel:+917696627657"
             className="w-full sm:w-auto flex items-center justify-center gap-2 border-2 border-gray-900 text-gray-900 font-bold text-base px-8 py-4 rounded-full hover:bg-gray-900 hover:text-amber-400 transition-all"
@@ -785,14 +1009,19 @@ export default function CourseLandingClient({ data }: { data: CourseLandingData 
   return (
     <div className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
       <CourseHero data={data} />
-      <TrustStrip items={data.trustItems} />
+      <CourseVideoSection video={data.video} />
+      {/* <TrustStrip items={data.trustItems} /> */}
+      <ValueProposition items={valuePropositions} />
+      {/* <CourseCatalogSection /> */}
+      {/* <UpcomingInstructorsPreview instructor={data.instructor} /> */}
+      <PlatformPromises items={platformPromises} />
       <CourseOverview overview={data.overview} />
       <WhatYouLearn topics={data.whatYouLearn} />
       <CurriculumAccordion modules={data.curriculum} />
       <CareerOutcomes roles={data.careerRoles} timeline={data.certificationTimeline} />
-      <InstructorSection instructor={data.instructor} />
       <WhyLeanMultiverse items={data.whyLeanMultiverse} />
-      <CourseTestimonials />
+      <InstructorSection instructor={data.instructor} />
+      {/* <CourseCategoriesGrid /> */}
       <PricingCard pricing={data.pricing} courseName={data.shortTitle} />
       <CourseFAQSection faqs={data.faqs} />
       <FinalCTA courseName={data.shortTitle} />

@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import './book-webinar.css'
@@ -17,12 +18,21 @@ interface Props {
 
 export default function BookWebinarModal({ source }: Props) {
     const isMobile = useIsMobile(1023)
+    const router = useRouter()
 
     const handleRedirect = () => {
         if (typeof window !== 'undefined' && (window as any).fbq) {
             (window as any).fbq('track', 'InitiateCheckout');
         }
         window.location.href = 'https://learn.leanmultiverse.com/l/e0ca22a7e0';
+    }
+
+    // "Watch Webinar" always opens our own /webinar page — never the external funnel link.
+    const handleWatchWebinar = () => {
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+            (window as any).fbq('track', 'InitiateCheckout');
+        }
+        router.push('/webinar')
     }
 
     return (
@@ -45,18 +55,18 @@ export default function BookWebinarModal({ source }: Props) {
                 : source === "new-hero" ?
                     <Button
                         className="relative overflow-hidden w-full sm:w-64 bg-amber-400 hover:bg-amber-500 text-white font-black text-base md:text-lg px-8 py-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:scale-95 h-auto"
-                        onClick={handleRedirect}
+                        onClick={handleWatchWebinar}
                     >
                         <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent" style={{ animation: 'shimmer 2s infinite' }} />
-                        <span className="relative z-10">Claim Your Spot</span>
+                        <span className="relative z-10">Watch Webinar</span>
                     </Button>
                     : source === "sticky-bar" ?
                         <Button
-                            onClick={handleRedirect}
+                            onClick={handleWatchWebinar}
                             className="relative overflow-hidden bg-amber-400 hover:bg-amber-500 text-white text-[15px] font-black px-10 py-3 rounded-xl transition-all duration-200 shadow-md border border-transparent transform hover:scale-[1.02] h-auto"
                         >
                             <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent" style={{ animation: 'shimmer 2s infinite' }} />
-                            <span className="relative z-10">Claim Your Spot</span>
+                            <span className="relative z-10">Watch Webinar</span>
                         </Button>
                         :
                         <Button

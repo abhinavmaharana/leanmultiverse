@@ -3,44 +3,37 @@ import { NewAnnouncementBanner } from '@/components/new-ui/NewAnnouncementBanner
 import NewNavbar from '@/components/new-ui/NewNavbar'
 import { NewFooter } from '@/components/new-ui/NewFooter'
 import CourseLandingClient from '@/components/course-landing/CourseLandingClient'
-import { scrumData } from '@/data/courseLandingData'
+import { fitnessData } from '@/data/courseLandingData'
 
 export const metadata: Metadata = {
-  title: scrumData.metaTitle,
-  description: scrumData.metaDescription,
-  keywords: ['Scrum Certification', 'Scrum Master', 'Agile Training', 'Sprint Planning', 'Scrum Framework', 'LeanMultiverse'],
+  title: fitnessData.metaTitle,
+  description: fitnessData.metaDescription,
+  keywords: ['Fitness Coaching', 'Yuvraj Anand', 'Personal Training', 'On-Demand Fitness', 'LeanMultiverse'],
   openGraph: {
-    title: scrumData.metaTitle,
-    description: scrumData.metaDescription,
+    title: fitnessData.metaTitle,
+    description: fitnessData.metaDescription,
     type: 'website',
-    url: 'https://leanmultiverse.com/courses/scrum',
+    url: 'https://leanmultiverse.com/courses/fitness',
   },
   alternates: {
-    canonical: 'https://leanmultiverse.com/courses/scrum',
+    canonical: 'https://leanmultiverse.com/courses/fitness',
   },
 }
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Course',
-  name: scrumData.title,
-  description: scrumData.metaDescription,
+  name: fitnessData.title,
+  description: fitnessData.metaDescription,
   provider: {
     '@type': 'Organization',
     name: 'LeanMultiverse University',
     url: 'https://leanmultiverse.com',
   },
-  offers: {
-    '@type': 'Offer',
-    price: '35000',
-    priceCurrency: 'INR',
-    availability: 'https://schema.org/InStock',
-  },
-  timeRequired: 'P2D',
   courseMode: 'online',
 }
 
-export default function ScrumPage() {
+export default function FitnessPage() {
   return (
     <>
       <script
@@ -50,7 +43,7 @@ export default function ScrumPage() {
       <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
         <NewAnnouncementBanner />
         <NewNavbar />
-        <CourseLandingClient data={scrumData} />
+        <CourseLandingClient data={fitnessData} />
         <NewFooter />
       </main>
     </>

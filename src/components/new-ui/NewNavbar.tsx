@@ -9,12 +9,24 @@ import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
 
 const navLinks = [
-    { label: 'AI Advanced Product Management', href: '/courses/apm', badge: null },
-    { label: 'AI Product Management', href: '/courses/popm', badge: null },
-    { label: 'AI Scrum', href: '/courses/scrum', badge: null },
+    { label: 'Fitness Coaching', href: '/courses/fitness', badge: null },
+    { label: 'Career Guidance', href: '/courses/career-guidance', badge: null },
     { label: 'Testimonial', href: '/#testimonial', badge: null },
     { label: 'Contact', href: '/#contact', badge: null },
 ]
+
+// Course landing pages (e.g. /courses/fitness) aren't open for enrollment yet —
+// show a non-interactive "Coming Soon" badge instead of a working CTA.
+function CourseClaimSpotButton({ full }: { full?: boolean }) {
+    return (
+        <span
+            aria-disabled="true"
+            className={`inline-flex items-center justify-center bg-gray-100 text-gray-500 text-[15px] font-black px-10 py-3 rounded-xl cursor-not-allowed select-none ${full ? 'w-full' : ''}`}
+        >
+            Coming Soon
+        </span>
+    )
+}
 
 function NewNavbar() {
     const [open, setOpen] = useState(false)
@@ -22,6 +34,8 @@ function NewNavbar() {
     const [mounted, setMounted] = useState(false)
     const pathname = usePathname()
     const isAiMlPage = pathname?.startsWith('/ai-ml')
+    // Course landing pages and the webinar page aren't open for enrollment yet.
+    const isComingSoonPage = pathname?.startsWith('/courses/') || pathname === '/webinar'
 
     useEffect(() => {
         setMounted(true)
@@ -83,10 +97,12 @@ function NewNavbar() {
                     </div>
                 </div>
 
-                {/* Primary CTA - Aligned to far right */}
+                {/* Primary CTA - Aligned to far right (different per page context) */}
                 <div className="hidden lg:block">
                     {isAiMlPage ? (
                         <BookAiMlWebinarModal source="sticky-bar" />
+                    ) : isComingSoonPage ? (
+                        <CourseClaimSpotButton />
                     ) : (
                         <BookWebinarModal source="sticky-bar" />
                     )}
@@ -126,6 +142,8 @@ function NewNavbar() {
                     <div className="mt-4 flex flex-col" onClick={() => setOpen(false)}>
                         {isAiMlPage ? (
                             <BookAiMlWebinarModal source="sticky-bar" />
+                        ) : isComingSoonPage ? (
+                            <CourseClaimSpotButton full />
                         ) : (
                             <BookWebinarModal source="new-hero" />
                         )}

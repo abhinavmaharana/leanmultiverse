@@ -35,6 +35,11 @@ export interface CourseLandingData {
   reviewCount: number
   heroStats: { label: string; value: string }[]
   trustItems: { label: string; icon: string }[]
+  video?: {
+    title?: string
+    url?: string
+    thumbnailUrl?: string
+  }
   overview: {
     what: string
     who: string
@@ -58,398 +63,284 @@ export interface CourseLandingData {
   metaDescription: string
 }
 
-// ─── POPM ────────────────────────────────────────────────
-export const popmData: CourseLandingData = {
-  slug: 'popm',
-  title: 'AI-Integrated Product Owner / Product Manager (POPM)',
-  shortTitle: 'AI-Integrated POPM',
-  badge: 'Certified',
-  tagline: 'AI-Integrated Product Owner / Product Manager (POPM) helps you to become a Certified Product Owner capable of leading Agile Release Trains.',
-  valueProposition: 'Master enterprise-scale Agile product ownership — from backlog to PI Planning — and earn your globally recognised POPM certification.',
-  duration: '2 Days',
-  hours: '15–16 Hours',
-  certification: 'Industry recognised POPM Certification',
-  targetRoles: ['Product Owner', 'Product Manager', 'Business Analyst', 'Requirements Engineer', 'Agile Project Manager'],
-  rating: 4.9,
-  reviewCount: 142,
+// ─── Platform-level content (shared across course landing pages) ──────────
+export interface ValuePropItem {
+  icon: string
+  title: string
+  description: string
+}
+
+export const valuePropositions: ValuePropItem[] = [
+  {
+    icon: '🎓',
+    title: 'Expert-Led Coaching',
+    description: 'Personalized, coach-led training built around your goals — not a generic workout plan.',
+  },
+  {
+    icon: '🤝',
+    title: 'On-Demand Library',
+    description: 'Train on your schedule with a growing library of workout videos you can access anytime.',
+  },
+  {
+    icon: '🚀',
+    title: 'Ongoing Support',
+    description: 'Progress check-ins and guidance to keep you accountable throughout your program.',
+  },
+]
+
+export interface PlatformPromiseItem {
+  icon: string
+  title: string
+  description: string
+}
+
+export const platformPromises: PlatformPromiseItem[] = [
+  {
+    icon: '💳',
+    title: 'One-Time Program Fee',
+    description: 'Pay once — no recurring subscription or auto-renewal lock-in.',
+  },
+  {
+    icon: '🔍',
+    title: 'No Hidden Fees',
+    description: 'The price you see at checkout is the price you pay. Every inclusion is listed upfront.',
+  },
+  {
+    icon: '↩️',
+    title: '7-Day Refund Policy',
+    description: 'Full refund available up to 7 days before your program start date.',
+  },
+]
+
+// ─── Fitness ─────────────────────────────────────────────────
+// NOTE: Program duration, pricing, and full curriculum are not yet finalized.
+// Fields below are clearly marked "Coming Soon" rather than invented — update
+// with real details before enrollment opens.
+export const fitnessData: CourseLandingData = {
+  slug: 'fitness',
+  title: 'Personalized Fitness Coaching with Yuvraj Anand',
+  shortTitle: 'Fitness Coaching',
+  badge: 'Fitness Coaching Program',
+  tagline: 'Fitness as a Subscription',
+  valueProposition: 'One membership that adapts to your fitness lifestyle.',
+  duration: 'Coming Soon',
+  hours: 'Coming Soon',
+  certification: 'Details Coming Soon',
+  targetRoles: ['Beginners', 'Busy Professionals', 'Home Workout Enthusiasts', 'Strength & Weight Loss Goals'],
+  rating: 0,
+  reviewCount: 0,
   heroStats: [
-    { label: 'Duration', value: '2 Days' },
-    { label: 'Hours', value: '15–16 Hrs' },
-    { label: 'Certification', value: 'Industry recognised POPM Certification' },
-    { label: 'Learners', value: '1,000+' },
+    { label: 'Format', value: 'On-Demand + Live' },
+    { label: 'Coach', value: 'Yuvraj Anand' },
+    { label: 'Duration', value: 'Coming Soon' },
+    { label: 'Pricing', value: 'Coming Soon' },
   ],
   trustItems: [
-    { label: 'Certified', icon: '🏅' },
-    { label: 'Enterprise Ready', icon: '🏢' },
-    { label: 'Hands-on Workshops', icon: '🛠️' },
-    { label: 'Industry Trainers', icon: '👨‍🏫' },
-    { label: 'Live Sessions', icon: '🎥' },
+    { label: 'On-Demand Access', icon: '📱' },
+    { label: 'Personalized Plans', icon: '🎯' },
+    { label: 'Celebrity Coach', icon: '⭐' },
+    { label: 'Home Workouts', icon: '🏠' },
+    { label: 'Video Library', icon: '🎥' },
   ],
+  video: {
+    title: 'Meet Your Coach — Yuvraj Anand',
+    url: 'https://drive.google.com/file/d/1YmbkSrlH-NjrMSN6Wm4eP5kSPwxoeQsy/preview',
+  },
   overview: {
-    what: 'The POPM course is a 2-day immersive program designed to prepare Product Owners and Product Managers to thrive in enterprise Agile environments powered by the Scaled Agile Framework ().',
-    who: 'Ideal for Product Owners, Product Managers, Business Analysts, Requirements Engineers, and Agile Project Managers who work in or want to join large-scale Agile organisations.',
-    why: 'Enterprise organisations are increasingly adopting to scale Agile across multiple teams. A POPM certification validates your ability to define product vision, manage backlogs, and collaborate within Agile Release Trains.',
+    what: 'A personalized fitness coaching program from celebrity fitness coach Yuvraj Anand, combining coaching guidance with an on-demand video library you can train from anytime. Full program details are being finalized.',
+    who: 'Ideal for beginners, busy professionals, and anyone who wants a structured, coach-guided path to their fitness goals — no matter your starting point.',
+    why: 'Work directly with a celebrity fitness coach and get a fitness library built around your goals, available on your schedule — not a one-size-fits-all plan.',
     outcomes: [
-      'Lead Agile Release Trains as a certified Product Owner',
-      'Define and communicate a compelling Product Vision',
-      'Create and manage Program Backlogs effectively',
-      'Master PI Planning and iteration execution',
-      'Apply WSJF to prioritise business value',
-      'Write high-quality Epics, Features, and User Stories',
+      'Access a personalized, on-demand fitness video library',
+      'Train on your own schedule, wherever you are',
+      'Get guidance from celebrity fitness coach Yuvraj Anand',
+      'Follow a structured path built around your goals',
+      '(Full list of outcomes will be published closer to launch)',
     ],
   },
   whatYouLearn: [
-    'Product Vision',
-    'PI Planning',
-    'Program Backlog',
-    'Epics & Features',
-    'User Stories',
-    'WSJF Prioritisation',
-    'Agile Release Trains',
-    'Iteration Execution',
-    'Backlog Management',
-    'Customer Centricity',
-    'Value Stream Mapping',
-    'Principles',
+    'Personalized Workouts',
+    'On-Demand Video Library',
+    'Strength Training',
+    'Home Workouts',
+    'Nutrition Guidance',
+    'Progress Tracking',
+    'Mobility & Recovery',
+    'Goal Setting',
   ],
   curriculum: [
     {
-      title: 'Module 1 — Introduction to',
-      topics: ['What is and why enterprises adopt it', 'principles and values', 'Roles in: PO vs PM vs RTE', 'The Agile Release Train (ART) explained'],
-    },
-    {
-      title: 'Module 2 — Product Vision & Strategy',
-      topics: ['Defining and communicating Product Vision', 'Customer-centric thinking in', 'Value Streams and Solution Context', 'Vision → Roadmap → Backlog alignment'],
-    },
-    {
-      title: 'Module 3 — PI Planning',
-      topics: ['What is a Program Increment (PI)?', 'PI Planning ceremony structure', 'Team and Program objectives', 'Risks, dependencies, and confidence votes'],
-    },
-    {
-      title: 'Module 4 — Backlog Management',
-      topics: ['Program Backlog vs Team Backlog', 'Writing Epics, Features, and Stories', 'Acceptance criteria and Definition of Done', 'Iteration planning and execution'],
-    },
-    {
-      title: 'Module 5 — WSJF Prioritisation',
-      topics: ['Weighted Shortest Job First (WSJF) formula', 'Cost of Delay components', 'Prioritising the Program Backlog', 'Practical WSJF workshop'],
-    },
-    {
-      title: 'Module 6 — Certification Preparation',
-      topics: ['Exam format and structure (90-minute online)', 'Sample questions and key concepts review', 'Tips for the POPM exam', 'Post-certification career roadmap'],
+      title: 'Full Program Curriculum — Coming Soon',
+      topics: [
+        'Personalized workout breakdown by goal and experience level',
+        'Nutrition and recovery guidance',
+        'Access details for the on-demand video library',
+        'Final curriculum will be published before enrollment opens',
+      ],
     },
   ],
-  careerRoles: ['Product Owner', 'Product Manager', 'Business Analyst', 'Requirements Engineer', 'Agile Project Manager', 'Scrum Master'],
-  certificationTimeline: ['2-Day Live Training', '1–2 Weeks Self-Study', '90-Minute Certification Exam', 'POPM Badge'],
+  careerRoles: ['Improved Strength', 'Fat Loss', 'Better Mobility', 'Higher Energy Levels', 'Sustainable Habits'],
+  certificationTimeline: ['Goal & Fitness Assessment', 'Personalized Plan Delivery', 'On-Demand + Live Training', 'Progress Check-ins'],
+  instructor: {
+    name: 'Yuvraj Anand',
+    designation: 'Celebrity Fitness Coach',
+    experience: 'Personal trainer to celebrities and professionals',
+    specialization: 'Strength Training, Personalized Coaching, On-Demand Fitness',
+    photo: '/yuvraj-anand-coach.jpg',
+  },
+  whyLeanMultiverse: [
+    { title: 'Celebrity Coach', description: 'Train with a coach who has worked with celebrities and professionals.', icon: '⭐' },
+    { title: 'On-Demand Library', description: 'A growing library of workout videos you can access anytime.', icon: '🎥' },
+    { title: 'Personalized Plans', description: 'Programs built around your goals, not a generic template.', icon: '🎯' },
+    { title: 'Flexible Scheduling', description: 'Train on your own time — no fixed class schedule required.', icon: '⏱️' },
+  ],
+  pricing: {
+    fee: 'Coming Soon',
+    inclusions: [
+      'On-demand fitness video library access',
+      'Personalized coaching guidance',
+      'Progress tracking',
+      '(Full inclusions list will be published at launch)',
+    ],
+  },
+  faqs: [
+    { question: 'Who is this program for?', answer: 'Anyone looking for structured, coach-guided fitness training — from beginners to busy professionals — regardless of your starting point.' },
+    { question: 'Who is Yuvraj Anand?', answer: 'Yuvraj Anand is a celebrity fitness coach bringing personalized coaching and an on-demand fitness video library to Lean Multiverse.' },
+    { question: 'When does the program launch?', answer: 'We\'re finalizing program details. Reach out via the form below to be notified as soon as enrollment opens.' },
+    { question: 'How much will it cost?', answer: 'Pricing is being finalized and will be published before enrollment opens.' },
+    { question: 'Will this be on-demand, live, or both?', answer: 'The program combines an on-demand video library with coaching guidance, so you can train on your own schedule.' },
+  ],
+  metaTitle: 'Fitness Coaching with Yuvraj Anand | Lean Multiverse',
+  metaDescription: 'Personalized fitness coaching and an on-demand fitness video library from celebrity fitness coach Yuvraj Anand. Program details coming soon.',
+}
+
+// ─── Career Guidance ─────────────────────────────────────────
+// NOTE: Program duration and pricing are not yet finalized — marked "Coming Soon"
+// rather than invented. Curriculum modules reuse the real Career Blueprint/Compass
+// mini-courses already in src/data/courses.ts.
+export const careerGuidanceData: CourseLandingData = {
+  slug: 'career-guidance',
+  title: 'Career Guidance & Mentorship Program',
+  shortTitle: 'Career Guidance',
+  badge: 'Career Guidance Program',
+  tagline: 'Growth as a Subscription',
+  valueProposition: 'The smartest membership for the smartest people.',
+  duration: 'Coming Soon',
+  hours: 'Coming Soon',
+  certification: 'Details Coming Soon',
+  targetRoles: ['Freshers', 'Career Changers', 'Working Professionals', 'Engineers Moving to Management'],
+  rating: 0,
+  reviewCount: 0,
+  heroStats: [
+    { label: 'Format', value: '1:1 + Group Sessions' },
+    { label: 'Mentor', value: 'Nitesh Prasad' },
+    { label: 'Duration', value: 'Coming Soon' },
+    { label: 'Pricing', value: 'Coming Soon' },
+  ],
+  trustItems: [
+    { label: 'Career Clarity', icon: '🧭' },
+    { label: 'Resume & Interview Prep', icon: '📄' },
+    { label: 'Role Transition Roadmaps', icon: '🗺️' },
+    { label: 'Mentor-Led Sessions', icon: '🎓' },
+    { label: 'Real Case Studies', icon: '📊' },
+  ],
+  video: {
+    title: 'Message From Founder',
+    url: 'https://www.youtube.com/embed/RLuItlkv-dk?si=il9BfXPvYorUrg-L',
+  },
+  overview: {
+    what: 'A personalized career guidance and mentorship program for anyone unsure which career path best aligns with their strengths — whether you\'re starting out, switching fields, or moving from a technical to a management role.',
+    who: 'Ideal for freshers, career changers, working professionals, and engineers or graduates exploring roles like Product Manager, Project Manager, or Business Analyst.',
+    why: 'Choosing the wrong career path costs time and money. This program gives you expert insight into each role, personalized guidance, and a clear view of certification and skill-building pathways before you commit.',
+    outcomes: [
+      'Get clarity on which career path fits your background and strengths',
+      'Understand real entry and transition paths into Product, Project, and BA roles',
+      'Build a personalized roadmap with skills and certification pathways',
+      'Rework your resume and portfolio for your target role',
+      '(Full list of outcomes will be published closer to launch)',
+    ],
+  },
+  whatYouLearn: [
+    'Career Guidance',
+    'Role Overview',
+    'Certification Pathways',
+    'Career Transition',
+    'Resume Building',
+    'Interview Skills',
+    'Career Options',
+    'Skill Mapping',
+  ],
+  curriculum: [
+    {
+      title: 'Engineer-to-Management Career Breakthrough',
+      topics: [
+        'Top non-coding management roles for engineers',
+        'PM, BA, Consultant, Program Manager — explained simply',
+        'How to convert technical experience into leadership experience',
+      ],
+    },
+    {
+      title: 'BBA-to-Management Career Blueprint',
+      topics: [
+        'Top proven career paths after BBA',
+        'PM, BA, HRBP, Marketing Manager, Consultant — explained',
+        'What companies expect from BBA graduates',
+      ],
+    },
+    {
+      title: 'Graduate Career Compass (BA/BSc/BCom)',
+      topics: [
+        'High-growth roles for graduates',
+        'PM, BA, DA, HR, UI/UX, and Operations — explained simply',
+        'What companies actually want from graduates',
+      ],
+    },
+    {
+      title: 'Career Clarity for Confused Freshers',
+      topics: [
+        'High-growth career options for BA/BCom/BSc/BBA graduates',
+        'Real salaries, demand, and growth for each career path',
+        'Roadmap: skills and certifications for each career',
+      ],
+    },
+  ],
+  careerRoles: ['Product Manager', 'Project Manager', 'Business Analyst', 'Program Manager', 'Consultant'],
+  certificationTimeline: ['Career Assessment Call', 'Personalized Roadmap', 'Skill-Building Sessions', 'Resume & Interview Prep'],
   instructor: {
     name: 'Nitesh Prasad',
     designation: 'Practice Consultant | TEDx Speaker',
     experience: '15+ Years Industry Experience',
-    specialization: ', Agile Transformation, Product Management',
-    photo: '/nitesh-prasad-updated-pic.png',
+    specialization: 'Career Mentorship, Agile Transformation, Product Management',
+    photo: '/nitesh-prasad-career-guidance.jpg',
     linkedin: 'https://www.linkedin.com/in/nitesh-prasad-agile/',
   },
   whyLeanMultiverse: [
-    { title: 'Enterprise Trainers', description: 'Learn from practitioners who have led transformations at Fortune 500 companies.', icon: '🏢' },
-    { title: 'Interactive Workshops', description: 'Hands-on exercises and real-world simulations, not just lectures.', icon: '🛠️' },
-    { title: 'Certification Support', description: 'Dedicated exam prep materials and mock tests included.', icon: '🎓' },
-    { title: 'Real Case Studies', description: 'Work through actual PI Planning scenarios from enterprise environments.', icon: '📊' },
-    { title: 'Career Guidance', description: 'Post-certification guidance on roles, resumes, and salary negotiation.', icon: '🚀' },
-    { title: 'Small Batch Learning', description: 'Limited cohort sizes ensure personalised attention and better outcomes.', icon: '👥' },
-    { title: 'Industry Best Practices', description: 'Content aligned with the latest 6.0 framework updates.', icon: '✅' },
-    { title: 'Lifetime Alumni Access', description: 'Join a network of 1,000+ certified professionals across industries.', icon: '🤝' },
+    { title: 'Experienced Mentor', description: 'Guidance from a practice consultant who has mentored 1,000+ professionals.', icon: '🎓' },
+    { title: 'Real Case Studies', description: 'Learn from real transition stories, not generic advice.', icon: '📊' },
+    { title: 'Practical Frameworks', description: 'Frameworks used by professionals at firms like Deloitte and JPMorgan.', icon: '🧠' },
+    { title: 'Alumni Network', description: 'Join a growing community of professionals who\'ve made the transition.', icon: '🤝' },
   ],
   pricing: {
-    fee: '₹35,000',
-    originalFee: '₹45,000',
+    fee: 'Coming Soon',
     inclusions: [
-      'Official POPM Course Materials',
-      '2-Day Live Instructor-Led Training',
-      'Certification Exam Voucher',
-      'Hands-on Workshop Exercises',
-      'PI Planning Simulation',
-      'Certificate of Completion',
-      'Post-Training Support',
-      'Alumni Community Access',
+      'Personalized career assessment',
+      'Role and skills roadmap',
+      'Resume and interview guidance',
+      '(Full inclusions list will be published at launch)',
     ],
-    emiNote: 'EMI options available from ₹3,500/month',
   },
   faqs: [
-    { question: 'Who should attend this course?', answer: 'Product Owners, Product Managers, Business Analysts, Requirements Engineers, and Agile Project Managers who work in or aspire to join enterprise Agile organisations.' },
-    { question: 'Are there any prerequisites?', answer: 'No formal prerequisites. A basic familiarity with Agile or Scrum concepts is helpful but not mandatory.' },
-    { question: 'What certification do I receive?', answer: 'Upon passing the online exam, you receive the official 6 Product Owner / Product Manager (POPM) certification from Scaled Agile, Inc.' },
-    { question: 'Is the training online or in-person?', answer: 'We offer both live online (virtual) and in-person options. All sessions are instructor-led with real-time interaction.' },
-    { question: 'How long is the exam?', answer: 'The POPM certification exam is 90 minutes with 45 multiple-choice questions. A score of 73% or above is required to pass.' },
-    { question: 'What is the exam format?', answer: 'Online, open-book exam taken through the Scaled Agile community portal after training. You receive 1 attempt included in the course fee.' },
-    { question: 'Will I get a recording of the sessions?', answer: 'Yes, all virtual sessions are recorded and available to participants for 30 days post-training.' },
-    { question: 'Do you offer corporate group training?', answer: 'Absolutely. We offer customised group training for teams of 5 or more with special pricing. Contact us for details.' },
-    { question: 'What is your refund policy?', answer: 'Full refund available up to 7 days before the training date. Please refer to our Refund Policy page for complete details.' },
+    { question: 'Who is this program for?', answer: 'Freshers, career changers, and working professionals looking for clarity on which career path — Product, Project, Business Analysis, or management — fits them best.' },
+    { question: 'Who is the mentor?', answer: 'Nitesh Prasad, a Practice Consultant and TEDx speaker who has mentored 1,000+ professionals transitioning into Product, Project, and AI roles.' },
+    { question: 'When does the program launch?', answer: 'We\'re finalizing program details. Reach out via the form below to be notified as soon as enrollment opens.' },
+    { question: 'How much will it cost?', answer: 'Pricing for the full mentorship program is being finalized. Individual career-clarity sessions are already available starting at ₹499 — see our Course Catalog above.' },
+    { question: 'Is this a one-time session or ongoing mentorship?', answer: 'The program combines an initial assessment with ongoing guidance sessions, so you have support throughout your transition — not just a single call.' },
   ],
-  metaTitle: 'POPM Certification Training | Lean Multiverse',
-  metaDescription: 'Get Product Owner / Product Manager (POPM) certified in 2 days. Live instructor-led training with hands-on PI Planning workshops. Trusted by enterprise teams.',
-}
-
-// ─── Scrum ───────────────────────────────────────────────────
-export const scrumData: CourseLandingData = {
-  slug: 'scrum',
-  title: 'AI-Integrated Certified Scrum Training',
-  shortTitle: 'AI-Integrated Scrum Certification',
-  badge: 'Scrum',
-  tagline: 'AI-Integrated Certified Scrum Training helps you to Master the Scrum Framework and become a certified Agile practitioner.',
-  valueProposition: 'Learn Scrum from the ground up — roles, events, artifacts, and servant leadership — and earn an industry-recognised Scrum certification.',
-  duration: '2 Days',
-  hours: '14–16 Hours',
-  certification: 'Industry recognised Scrum Certification',
-  targetRoles: ['Scrum Master', 'Agile Coach', 'Delivery Lead', 'Team Facilitator', 'Product Owner', 'Developer'],
-  rating: 4.9,
-  reviewCount: 218,
-  heroStats: [
-    { label: 'Duration', value: '2 Days' },
-    { label: 'Hours', value: '14–16 Hrs' },
-    { label: 'Certification', value: 'Industry recognised Scrum Certification' },
-    { label: 'Learners', value: '2,500+' },
-  ],
-  trustItems: [
-    { label: 'Scrum Alliance', icon: '🏅' },
-    { label: 'Enterprise Ready', icon: '🏢' },
-    { label: 'Hands-on Sprints', icon: '🛠️' },
-    { label: 'Expert Facilitators', icon: '👨‍🏫' },
-    { label: 'Live Sessions', icon: '🎥' },
-  ],
-  overview: {
-    what: 'A 2-day intensive Scrum training program that covers the complete Scrum Guide — from foundational theory to advanced facilitation techniques. Practical simulations make every concept stick.',
-    who: 'Ideal for Scrum Masters, Agile Coaches, Delivery Leads, Team Facilitators, and anyone transitioning into an Agile team role.',
-    why: 'Scrum is the world\'s most widely adopted Agile framework. A Scrum certification demonstrates your ability to facilitate high-performing teams, run effective ceremonies, and drive continuous improvement.',
-    outcomes: [
-      'Understand and apply the complete Scrum framework',
-      'Facilitate Sprint Planning, Daily Scrums, Reviews, and Retrospectives',
-      'Coach teams with a servant leadership mindset',
-      'Manage and refine the Product Backlog effectively',
-      'Apply empirical process control to complex problems',
-      'Earn an internationally recognised Scrum certification',
-    ],
-  },
-  whatYouLearn: [
-    'Scrum Framework',
-    'Scrum Roles',
-    'Scrum Events',
-    'Sprint Planning',
-    'Daily Scrum',
-    'Sprint Review',
-    'Sprint Retrospective',
-    'Product Backlog',
-    'Sprint Backlog',
-    'Increment & DoD',
-    'Servant Leadership',
-    'Empirical Process Control',
-  ],
-  curriculum: [
-    {
-      title: 'Module 1 — Agile Foundations & Scrum Theory',
-      topics: ['Agile Manifesto and 12 principles', 'Empiricism: transparency, inspection, adaptation', 'Why Scrum? Comparing Agile frameworks', 'Scrum values: commitment, focus, openness, respect, courage'],
-    },
-    {
-      title: 'Module 2 — Scrum Roles',
-      topics: ['The Scrum Master: servant leader and coach', 'The Product Owner: vision, backlog, and prioritisation', 'The Developers: self-managing and cross-functional teams', 'Interactions between roles'],
-    },
-    {
-      title: 'Module 3 — Scrum Events',
-      topics: ['The Sprint as a container for all events', 'Sprint Planning: what and how', 'Daily Scrum: inspect and adapt daily', 'Sprint Review: stakeholder collaboration'],
-    },
-    {
-      title: 'Module 4 — Sprint Retrospective & Continuous Improvement',
-      topics: ['Facilitating effective retrospectives', 'Identifying improvements and action items', 'Working agreements and team health', 'Psychological safety in Agile teams'],
-    },
-    {
-      title: 'Module 5 — Scrum Artifacts',
-      topics: ['Product Backlog and refinement techniques', 'Sprint Backlog and the Sprint Goal', 'Increment and Definition of Done', 'Managing technical debt'],
-    },
-    {
-      title: 'Module 6 — Certification Preparation',
-      topics: ['Exam format and structure review', 'Sample questions and key concept drills', 'Practical scenarios and case studies', 'Post-certification career pathways'],
-    },
-  ],
-  careerRoles: ['Scrum Master', 'Agile Coach', 'Delivery Lead', 'Team Facilitator', 'Product Owner', 'Agile Project Manager'],
-  certificationTimeline: ['2-Day Live Training', 'Certification Exam', 'Scrum Certificate', 'Career Growth'],
-  instructor: {
-    name: 'Nitesh Prasad',
-    designation: 'Certified Scrum Trainer | Agile Coach',
-    experience: '15+ Years Industry Experience',
-    specialization: 'Scrum,, Agile Coaching, Team Facilitation',
-    photo: '/nitesh-prasad-updated-pic.png',
-    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-agile/',
-  },
-  whyLeanMultiverse: [
-    { title: 'Certified Trainers', description: 'Instructors with real-world Scrum Master and Agile Coach experience at MNCs.', icon: '🏅' },
-    { title: 'Immersive Simulations', description: 'Run a full Sprint simulation across both days — not just theory.', icon: '🛠️' },
-    { title: 'Certification Included', description: 'Exam fee and preparation materials are bundled in the course.', icon: '🎓' },
-    { title: 'Real Team Scenarios', description: 'Learn to handle dysfunction, conflict, and impediments through case studies.', icon: '📊' },
-    { title: 'Servant Leadership Focus', description: 'Go beyond mechanics — develop the mindset of a high-impact Scrum Master.', icon: '🤝' },
-    { title: 'Small Cohorts', description: 'Maximum 20 participants per cohort for a high-touch learning experience.', icon: '👥' },
-    { title: 'Latest Scrum Guide', description: 'Training aligned with the Scrum Guide 2020 (most current version).', icon: '✅' },
-    { title: 'Alumni Network', description: 'Join a growing community of 2,500+ Scrum practitioners.', icon: '🌐' },
-  ],
-  pricing: {
-    fee: '₹35,000',
-    originalFee: '₹45,000',
-    inclusions: [
-      'Complete Scrum Course Materials',
-      '2-Day Live Instructor-Led Training',
-      'Certification Exam Voucher',
-      'Sprint Simulation Exercises',
-      'Facilitation Technique Toolkit',
-      'Certificate of Completion',
-      'Post-Training Q&A Support',
-      'Alumni Community Access',
-    ],
-    emiNote: 'EMI options available from ₹2,500/month',
-  },
-  faqs: [
-    { question: 'Who should attend this Scrum course?', answer: 'Scrum Masters, Agile Coaches, Delivery Leads, Team Facilitators, and anyone moving into an Agile team role. No prior experience required.' },
-    { question: 'Do I need any prior Agile knowledge?', answer: 'No prerequisites. This course starts from Agile fundamentals and builds up to advanced Scrum facilitation skills.' },
-    { question: 'What certification will I receive?', answer: 'You will receive an industry-recognised Scrum certification upon successful completion of the exam. Details shared during enrollment.' },
-    { question: 'Is the training available online?', answer: 'Yes. We offer fully live virtual training with the same interactive experience as in-person sessions.' },
-    { question: 'How long is the Scrum certification exam?', answer: 'The exam is typically 60 minutes with multiple-choice questions. Format details vary by certification body.' },
-    { question: 'Will I get session recordings?', answer: 'Yes, all virtual sessions are recorded and accessible for 30 days post-training.' },
-    { question: 'Is this recognised globally?', answer: 'Yes. Scrum certifications are globally recognised and valued across all industries that use Agile delivery.' },
-    { question: 'Can my entire team attend together?', answer: 'Absolutely. Group enrollments of 5+ get special pricing and a customised experience. Contact us to discuss.' },
-    { question: 'What is the refund policy?', answer: 'Full refund up to 7 days before the training date. See our Refund Policy for full details.' },
-  ],
-  metaTitle: 'Scrum Certification Training | Lean Multiverse',
-  metaDescription: 'Get Scrum certified in 2 days with live instructor-led training. Master Sprint Planning, Daily Scrums, Retrospectives, and servant leadership. Globally recognised.',
-}
-
-// ─── APM ────────────────────────────────────────────────
-export const apmData: CourseLandingData = {
-  slug: 'apm',
-  title: 'AI-Integrated Agile Product Management (APM)',
-  shortTitle: 'AI-Integrated APM',
-  badge: 'Certified',
-  tagline: 'AI-Integrated Agile Product Management (APM) helps you to drive Customer-Centric Product Strategy at Enterprise Scale.',
-  valueProposition: 'Master Design Thinking, Continuous Exploration, and value stream economics to lead product strategy across large enterprises.',
-  duration: '3 Days',
-  hours: '~24 Hours',
-  certification: 'Industry recognised APM Certification',
-  targetRoles: ['Product Manager', 'Senior Product Manager', 'Portfolio Manager', 'Business Owner', 'UX Professional'],
-  rating: 4.9,
-  reviewCount: 89,
-  heroStats: [
-    { label: 'Duration', value: '3 Days' },
-    { label: 'Hours', value: '~24 Hrs' },
-    { label: 'Certification', value: 'Industry recognised APM Certification' },
-    { label: 'Learners', value: '500+' },
-  ],
-  trustItems: [
-    { label: 'Certified', icon: '🏅' },
-    { label: 'Enterprise Strategy', icon: '🏢' },
-    { label: 'Design Thinking', icon: '🎨' },
-    { label: 'Expert Coaches', icon: '👨‍🏫' },
-    { label: 'Live Sessions', icon: '🎥' },
-  ],
-  overview: {
-    what: 'The APM course is a 3-day advanced program for product leaders who want to drive customer-centric product strategy at scale. You will learn Design Thinking, Continuous Exploration, market segmentation, and value stream economics within the context.',
-    who: 'Designed for Product Managers, Senior Product Managers, Portfolio Managers, Business Owners, and UX Professionals who own or influence product direction in enterprise Agile organisations.',
-    why: 'As enterprises scale Agile, the need for strategic product leadership grows. APM goes beyond backlog management — it equips you to align product strategy with business outcomes, drive innovation through hypothesis-driven development, and make economics-informed decisions.',
-    outcomes: [
-      'Apply Design Thinking and customer empathy at enterprise scale',
-      'Define product strategy, roadmaps, and market positioning',
-      'Lead Continuous Exploration and hypothesis-driven development',
-      'Understand value stream economics, pricing, and licensing',
-      'Collaborate across ARTs to deliver end-to-end customer value',
-      'Earn the APM certification from Scaled Agile, Inc.',
-    ],
-  },
-  whatYouLearn: [
-    'Design Thinking',
-    'Customer Empathy',
-    'Market Segmentation',
-    'Product Strategy',
-    'Product Roadmaps',
-    'Hypothesis-Driven Dev',
-    'Continuous Exploration',
-    'Value Stream Economics',
-    'Pricing Strategy',
-    'Licensing Models',
-    'Portfolio Alignment',
-    'Innovation Accounting',
-  ],
-  curriculum: [
-    {
-      title: 'Module 1 — Customer Centricity & Design Thinking',
-      topics: ['Human-centred design principles', 'Empathy mapping and customer personas', 'Jobs to be Done (JTBD) framework', 'Problem framing and opportunity identification'],
-    },
-    {
-      title: 'Module 2 — Market Research & Segmentation',
-      topics: ['Market segmentation strategies', 'Competitive analysis techniques', 'Customer discovery and validation', 'Identifying product-market fit signals'],
-    },
-    {
-      title: 'Module 3 — Product Strategy & Vision',
-      topics: ['Crafting a compelling product vision', 'Strategy-to-execution alignment in', 'Strategic themes and portfolio alignment', 'Product roadmapping for enterprise contexts'],
-    },
-    {
-      title: 'Module 4 — Continuous Exploration',
-      topics: ['The Continuous Exploration cycle', 'Hypothesis-driven development (HDD)', 'Build-Measure-Learn in enterprise Agile', 'Connecting customer insights to the Program Backlog'],
-    },
-    {
-      title: 'Module 5 — Value Stream Economics',
-      topics: ['Understanding value streams in', 'Lean economics and cost of delay', 'Pricing models: subscription, freemium, usage-based', 'Licensing strategies for software products'],
-    },
-    {
-      title: 'Module 6 — Certification Preparation',
-      topics: ['APM exam format: 120-minute online exam', 'Key concepts and vocabulary review', 'Sample questions and practice scenarios', 'Career paths after APM certification'],
-    },
-  ],
-  careerRoles: ['Product Manager', 'Senior Product Manager', 'Portfolio Manager', 'Business Owner', 'UX Lead', 'Head of Product'],
-  certificationTimeline: ['3-Day Live Training', '1–2 Weeks Self-Study', '120-Minute Certification Exam', 'APM Badge'],
-  instructor: {
-    name: 'Nitesh Prasad',
-    designation: 'Practice Consultant | Product Strategy Expert',
-    experience: '15+ Years Industry Experience',
-    specialization: 'APM, Design Thinking, Product Strategy, Innovation',
-    photo: '/nitesh-prasad-updated-pic.png',
-    linkedin: 'https://www.linkedin.com/in/nitesh-prasad-agile/',
-  },
-  whyLeanMultiverse: [
-    { title: 'Strategic Focus', description: 'Go beyond features — learn to shape markets, pricing, and innovation pipelines.', icon: '🎯' },
-    { title: 'Design Thinking Labs', description: 'Hands-on customer empathy and prototyping exercises built into the curriculum.', icon: '🎨' },
-    { title: 'Certification Included', description: 'APM exam voucher and prep materials bundled with the course.', icon: '🎓' },
-    { title: 'Enterprise Case Studies', description: 'Real examples from Fortune 500 product transformations.', icon: '📊' },
-    { title: 'Career Coaching', description: 'Post-certification guidance for senior PM roles and salary advancement.', icon: '🚀' },
-    { title: 'Expert Peer Network', description: 'Learn alongside Senior PMs and Business Owners from top companies.', icon: '🤝' },
-    { title: '6.0 Aligned', description: 'Fully up-to-date with the latest framework and APM course content.', icon: '✅' },
-    { title: 'Executive-Level Framing', description: 'Communicate strategy, value, and outcomes in the language of leadership.', icon: '📈' },
-  ],
-  pricing: {
-    fee: '₹1,50,000',
-    originalFee: '₹1,80,000',
-    inclusions: [
-      'Official APM Course Materials',
-      '3-Day Live Instructor-Led Training',
-      'APM Certification Exam Voucher',
-      'Design Thinking Workshop',
-      'Product Strategy Canvas Templates',
-      'Certificate of Completion',
-      'Post-Training Coaching Session',
-      'Alumni Community Access',
-    ],
-    emiNote: 'EMI options available from ₹15,000/month',
-  },
-  faqs: [
-    { question: 'Who should attend the APM course?', answer: 'Product Managers, Senior Product Managers, Portfolio Managers, Business Owners, and UX Professionals who define product direction in enterprise Agile organisations.' },
-    { question: 'Is there a prerequisite for this course?', answer: 'Familiarity with Agile or basics is recommended. Having prior POPM experience is beneficial but not mandatory.' },
-    { question: 'What certification do I receive?', answer: 'Upon passing the 120-minute exam, you earn the official 6 Agile Product Manager (APM) certification from Scaled Agile, Inc.' },
-    { question: 'Is the training available online?', answer: 'Yes. We offer live virtual sessions with the same interactive quality as in-person, including design thinking workshops.' },
-    { question: 'How long is the APM exam?', answer: 'The exam is 120 minutes with 60 multiple-choice questions. A passing score of 73% or above is required.' },
-    { question: 'Are recordings available post-training?', answer: 'Yes. Recordings of all virtual sessions are accessible for 30 days after the training date.' },
-    { question: 'How is APM different from POPM?', answer: 'POPM focuses on backlog and ART-level execution. APM is strategic — covering market research, design thinking, roadmapping, pricing, and innovation at portfolio scale.' },
-    { question: 'Do you offer corporate group training for APM?', answer: 'Yes. Customised group training for Senior PM and Leadership teams is available. Contact us for pricing and scheduling.' },
-    { question: 'What is the refund policy?', answer: 'Full refund available up to 7 days before the training start date. See our Refund Policy for complete terms.' },
-  ],
-  metaTitle: 'Agile Product Management (APM) Training | Lean Multiverse',
-  metaDescription: 'Get APM certified in 3 days. Master Design Thinking, Continuous Exploration, and Value Stream Economics. Trusted by Senior PMs and Portfolio Managers.',
+  metaTitle: 'Career Guidance & Mentorship | Lean Multiverse',
+  metaDescription: 'Personalized career guidance and mentorship from Nitesh Prasad to help you find clarity on your next role in Product, Project, or Business Analysis. Program details coming soon.',
 }
 
 export const allCourseLandingData: Record<string, CourseLandingData> = {
-  'popm': popmData,
-  'scrum': scrumData,
-  'apm': apmData,
+  'fitness': fitnessData,
+  'career-guidance': careerGuidanceData,
 }

@@ -9,7 +9,6 @@ import CookieConsent from "@/components/CookieConsent"
 import AttributionCapture from "@/components/AttributionCapture"
 import ClarityProvider from "@/components/providers/ClarityProvider"
 import MixpanelProvider from "@/components/providers/MixpanelProvider"
-import StickyBookBar from "@/components/webinar/StickyBookBar"
 import "antd/dist/reset.css";
 import "./globals.css"
 
@@ -291,7 +290,6 @@ gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
           {/* </LoadingProvider> */}
         </ErrorBoundary>
         <CookieConsent />
-        <StickyBookBar />
       </body>
     </html>
   )

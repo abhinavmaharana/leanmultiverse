@@ -3,44 +3,37 @@ import { NewAnnouncementBanner } from '@/components/new-ui/NewAnnouncementBanner
 import NewNavbar from '@/components/new-ui/NewNavbar'
 import { NewFooter } from '@/components/new-ui/NewFooter'
 import CourseLandingClient from '@/components/course-landing/CourseLandingClient'
-import { apmData } from '@/data/courseLandingData'
+import { careerGuidanceData } from '@/data/courseLandingData'
 
 export const metadata: Metadata = {
-  title: apmData.metaTitle,
-  description: apmData.metaDescription,
-  keywords: ['APM', 'Agile Product Management', 'Design Thinking', 'Product Strategy', 'APM Certification', 'LeanMultiverse'],
+  title: careerGuidanceData.metaTitle,
+  description: careerGuidanceData.metaDescription,
+  keywords: ['Career Guidance', 'Career Mentorship', 'Product Manager', 'Project Manager', 'Business Analyst', 'LeanMultiverse'],
   openGraph: {
-    title: apmData.metaTitle,
-    description: apmData.metaDescription,
+    title: careerGuidanceData.metaTitle,
+    description: careerGuidanceData.metaDescription,
     type: 'website',
-    url: 'https://leanmultiverse.com/courses/apm',
+    url: 'https://leanmultiverse.com/courses/career-guidance',
   },
   alternates: {
-    canonical: 'https://leanmultiverse.com/courses/apm',
+    canonical: 'https://leanmultiverse.com/courses/career-guidance',
   },
 }
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Course',
-  name: apmData.title,
-  description: apmData.metaDescription,
+  name: careerGuidanceData.title,
+  description: careerGuidanceData.metaDescription,
   provider: {
     '@type': 'Organization',
     name: 'LeanMultiverse University',
     url: 'https://leanmultiverse.com',
   },
-  offers: {
-    '@type': 'Offer',
-    price: '150000',
-    priceCurrency: 'INR',
-    availability: 'https://schema.org/InStock',
-  },
-  timeRequired: 'P3D',
   courseMode: 'online',
 }
 
-export default function APMPage() {
+export default function CareerGuidancePage() {
   return (
     <>
       <script
@@ -50,7 +43,7 @@ export default function APMPage() {
       <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
         <NewAnnouncementBanner />
         <NewNavbar />
-        <CourseLandingClient data={apmData} />
+        <CourseLandingClient data={careerGuidanceData} />
         <NewFooter />
       </main>
     </>
