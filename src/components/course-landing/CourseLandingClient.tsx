@@ -52,6 +52,34 @@ function ClaimSpotButton({
   )
 }
 
+/* ─── Book 1:1 CTA ────────────────────────────────────────────────────────── */
+function Book1on1Button({
+  href,
+  className = '',
+  size = 'default',
+}: {
+  href: string
+  className?: string
+  size?: 'default' | 'large' | 'small'
+}) {
+  const sizeClasses = {
+    small: 'px-6 py-2.5 text-sm',
+    default: 'px-8 py-3.5 text-base',
+    large: 'px-12 py-4 text-lg',
+  }
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-black rounded-full transition-all active:scale-95 shadow-md ${sizeClasses[size]} ${className}`}
+    >
+      <PhoneCall className="w-4 h-4" />
+      Book 1:1
+    </a>
+  )
+}
+
 /* ─── Sticky CTA ──────────────────────────────────────────────────────────── */
 function CourseStickyCTA({ courseName }: { courseName: string }) {
   const [visible, setVisible] = useState(false)
@@ -115,10 +143,6 @@ function CourseHero({ data }: { data: CourseLandingData }) {
           className="object-cover object-top"
           sizes="100vw"
         />
-        {/* Flat tint on mobile (photo shows through evenly behind centered text);
-            left-to-right gradient on desktop (photo shows clearly on the right, text on the left) */}
-        <div className="absolute inset-0 bg-black/70 md:bg-gradient-to-r md:from-black/85 md:via-black/55 md:to-black/10" />
-
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 md:py-16 h-full flex flex-col justify-between md:block md:h-auto">
           <div className="max-w-xl text-center lg:text-left mx-auto lg:mx-0">
             {/* Badge pill */}
@@ -140,6 +164,7 @@ function CourseHero({ data }: { data: CourseLandingData }) {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3">
               <ClaimSpotButton size="large" />
+              <Book1on1Button href={data.bookingLink} size="large" />
             </div>
           </div>
 

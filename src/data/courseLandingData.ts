@@ -27,6 +27,7 @@ export interface CourseLandingData {
   badge: string
   tagline: string
   valueProposition: string
+  bookingLink: string
   duration: string
   hours: string
   certification: string
@@ -123,6 +124,7 @@ export const fitnessData: CourseLandingData = {
   badge: 'Fitness Coaching Program',
   tagline: 'Fitness as a Subscription',
   valueProposition: 'One membership that adapts to your fitness lifestyle.',
+  bookingLink: 'https://learn.leanmultiverse.com/web/lite/events/6a65f4660bb7fcb006317f03',
   duration: '3 Months',
   hours: 'Coming Soon',
   certification: 'Details Coming Soon',
@@ -226,6 +228,7 @@ export const careerGuidanceData: CourseLandingData = {
   badge: 'Career Guidance Program',
   tagline: 'Growth as a Subscription',
   valueProposition: 'The smartest membership for the smartest people.',
+  bookingLink: 'https://learn.leanmultiverse.com/web/lite/events/6a65f301ab7f5882d47d7486',
   duration: '3 Months',
   hours: 'Coming Soon',
   certification: 'Details Coming Soon',

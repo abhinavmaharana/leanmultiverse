@@ -8,6 +8,8 @@ import { testimonials } from '@/data/testimonials'
 // switch JoinNowButton below back to a link.
 const TAGMANGO_LINK = '#'
 
+const BOOK_1ON1_LINK = 'https://learn.leanmultiverse.com/web/lite/events/6a65f301ab7f5882d47d7486'
+
 const VALUE_BULLETS = [
   'Transition to Product / Project roles and leverage your experience for PM careers.',
   'AI skills for managers: ChatGPT, automation and tools used in MNCs.',
@@ -37,6 +39,21 @@ function JoinNowButton({ size = 'default' }: { size?: 'default' | 'large' }) {
   )
 }
 
+function Book1on1Button({ size = 'default' }: { size?: 'default' | 'large' }) {
+  const sizeClasses = size === 'large' ? 'px-12 py-4 text-lg' : 'px-8 py-3.5 text-base'
+  return (
+    <a
+      href={BOOK_1ON1_LINK}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-black rounded-full transition-all active:scale-95 shadow-md ${sizeClasses}`}
+    >
+      <PhoneCall className="w-4 h-4" />
+      Book 1:1
+    </a>
+  )
+}
+
 function Hero() {
   return (
     <section className="w-full pt-10 pb-16 bg-white">
@@ -57,6 +74,7 @@ function Hero() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
           <JoinNowButton size="large" />
+          <Book1on1Button size="large" />
           <a
             href="tel:+917696627657"
             className="flex items-center gap-2 border-2 border-gray-200 text-gray-600 font-semibold text-sm px-7 py-3.5 rounded-full hover:border-amber-400 hover:text-amber-600 transition-all"
