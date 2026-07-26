@@ -97,8 +97,8 @@ export interface PlatformPromiseItem {
 export const platformPromises: PlatformPromiseItem[] = [
   {
     icon: '💳',
-    title: 'One-Time Program Fee',
-    description: 'Pay once — no recurring subscription or auto-renewal lock-in.',
+    title: '₹1,499 for 3 Months',
+    description: 'One payment of ₹1,499 covers your first 3 months of full access.',
   },
   {
     icon: '🔍',
@@ -123,7 +123,7 @@ export const fitnessData: CourseLandingData = {
   badge: 'Fitness Coaching Program',
   tagline: 'Fitness as a Subscription',
   valueProposition: 'One membership that adapts to your fitness lifestyle.',
-  duration: 'Coming Soon',
+  duration: '3 Months',
   hours: 'Coming Soon',
   certification: 'Details Coming Soon',
   targetRoles: ['Beginners', 'Busy Professionals', 'Home Workout Enthusiasts', 'Strength & Weight Loss Goals'],
@@ -132,8 +132,8 @@ export const fitnessData: CourseLandingData = {
   heroStats: [
     { label: 'Format', value: 'On-Demand + Live' },
     { label: 'Coach', value: 'Yuvraj Anand' },
-    { label: 'Duration', value: 'Coming Soon' },
-    { label: 'Pricing', value: 'Coming Soon' },
+    { label: 'Duration', value: '3 Months' },
+    { label: 'Pricing', value: '₹1,499' },
   ],
   trustItems: [
     { label: 'On-Demand Access', icon: '📱' },
@@ -195,19 +195,20 @@ export const fitnessData: CourseLandingData = {
     { title: 'Flexible Scheduling', description: 'Train on your own time — no fixed class schedule required.', icon: '⏱️' },
   ],
   pricing: {
-    fee: 'Coming Soon',
+    fee: '₹1,499',
     inclusions: [
       'On-demand fitness video library access',
       'Personalized coaching guidance',
       'Progress tracking',
       '(Full inclusions list will be published at launch)',
     ],
+    emiNote: 'For 3 months of access',
   },
   faqs: [
     { question: 'Who is this program for?', answer: 'Anyone looking for structured, coach-guided fitness training — from beginners to busy professionals — regardless of your starting point.' },
     { question: 'Who is Yuvraj Anand?', answer: 'Yuvraj Anand is a celebrity fitness coach bringing personalized coaching and an on-demand fitness video library to Lean Multiverse.' },
     { question: 'When does the program launch?', answer: 'We\'re finalizing program details. Reach out via the form below to be notified as soon as enrollment opens.' },
-    { question: 'How much will it cost?', answer: 'Pricing is being finalized and will be published before enrollment opens.' },
+    { question: 'How much will it cost?', answer: '₹1,499 covers your first 3 months of full access.' },
     { question: 'Will this be on-demand, live, or both?', answer: 'The program combines an on-demand video library with coaching guidance, so you can train on your own schedule.' },
   ],
   metaTitle: 'Fitness Coaching with Yuvraj Anand | Lean Multiverse',
@@ -225,7 +226,7 @@ export const careerGuidanceData: CourseLandingData = {
   badge: 'Career Guidance Program',
   tagline: 'Growth as a Subscription',
   valueProposition: 'The smartest membership for the smartest people.',
-  duration: 'Coming Soon',
+  duration: '3 Months',
   hours: 'Coming Soon',
   certification: 'Details Coming Soon',
   targetRoles: ['Freshers', 'Career Changers', 'Working Professionals', 'Engineers Moving to Management'],
@@ -234,8 +235,8 @@ export const careerGuidanceData: CourseLandingData = {
   heroStats: [
     { label: 'Format', value: '1:1 Sessions' },
     { label: 'Mentor', value: 'Nitesh Prasad' },
-    { label: 'Duration', value: 'Coming Soon' },
-    { label: 'Pricing', value: 'Coming Soon' },
+    { label: 'Duration', value: '3 Months' },
+    { label: 'Pricing', value: '₹1,499' },
   ],
   trustItems: [
     { label: 'Career Clarity', icon: '🧭' },
@@ -321,19 +322,20 @@ export const careerGuidanceData: CourseLandingData = {
     { title: 'Alumni Network', description: 'Join a growing community of professionals who\'ve made the transition.', icon: '🤝' },
   ],
   pricing: {
-    fee: 'Coming Soon',
+    fee: '₹1,499',
     inclusions: [
       'Personalized career assessment',
       'Role and skills roadmap',
       'Resume and interview guidance',
       '(Full inclusions list will be published at launch)',
     ],
+    emiNote: 'For 3 months of access',
   },
   faqs: [
     { question: 'Who is this program for?', answer: 'Freshers, career changers, and working professionals looking for clarity on which career path — Product, Project, Business Analysis, or management — fits them best.' },
     { question: 'Who is the mentor?', answer: 'Nitesh Prasad, a Practice Consultant and TEDx speaker who has mentored 1,000+ professionals transitioning into Product, Project, and AI roles.' },
     { question: 'When does the program launch?', answer: 'We\'re finalizing program details. Reach out via the form below to be notified as soon as enrollment opens.' },
-    { question: 'How much will it cost?', answer: 'Pricing for the full mentorship program is being finalized. Individual career-clarity sessions are already available starting at ₹499 — see our Course Catalog above.' },
+    { question: 'How much will it cost?', answer: '₹1,499 covers your first 3 months of full access.' },
     { question: 'Is this a one-time session or ongoing mentorship?', answer: 'The program combines an initial assessment with ongoing guidance sessions, so you have support throughout your transition — not just a single call.' },
   ],
   metaTitle: 'Career Guidance & Mentorship | Lean Multiverse',

@@ -106,7 +106,7 @@ function CourseHero({ data }: { data: CourseLandingData }) {
   return (
     <section id="home" className="w-full bg-white overflow-hidden">
       {/* Photo background block */}
-      <div className="relative w-full min-h-[85vh] md:min-h-[92vh] flex items-center">
+      <div className="relative w-full h-[85vh] md:min-h-[92vh] md:h-auto flex items-stretch md:items-center">
         <Image
           src={data.instructor.photo}
           alt={data.instructor.name}
@@ -115,9 +115,11 @@ function CourseHero({ data }: { data: CourseLandingData }) {
           className="object-cover object-top"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
+        {/* Flat tint on mobile (photo shows through evenly behind centered text);
+            left-to-right gradient on desktop (photo shows clearly on the right, text on the left) */}
+        <div className="absolute inset-0 bg-black/70 md:bg-gradient-to-r md:from-black/85 md:via-black/55 md:to-black/10" />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 md:py-16 h-full flex flex-col justify-between md:block md:h-auto">
           <div className="max-w-xl text-center lg:text-left mx-auto lg:mx-0">
             {/* Badge pill */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
@@ -136,26 +138,28 @@ function CourseHero({ data }: { data: CourseLandingData }) {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3 mb-8">
+            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3">
               <ClaimSpotButton size="large" />
             </div>
+          </div>
 
-            {/* Feature row */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3">
-              {data.trustItems.slice(0, 3).map((item, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm font-semibold text-white/90">
-                  <span className="text-lg">{item.icon}</span>
-                  {item.label}
-                </div>
-              ))}
-            </div>
+          {/* Feature row — pinned to the bottom of the hero on mobile (icon stacked over
+              label, like a typical mobile app-store hero), inline under the CTA on desktop */}
+          <div className="max-w-xl mx-auto lg:mx-0 flex flex-wrap items-start justify-center lg:justify-start gap-6 md:gap-x-6 md:gap-y-3 md:mt-8">
+            {data.trustItems.slice(0, 3).map((item, i) => (
+              <div key={i} className="flex flex-col md:flex-row items-center gap-1.5 md:gap-2 text-xs sm:text-sm font-semibold text-white/90 text-center md:text-left w-24 md:w-auto">
+                <span className="text-2xl md:text-lg">{item.icon}</span>
+                <span>{item.label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Instructor name badge */}
-        <div className="absolute bottom-5 right-5 z-10 flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2.5 shadow-md">
+        {/* Instructor name badge — centered at the bottom to avoid the fixed
+            WhatsApp/chat widgets that sit in the corners on every page */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 max-w-[92%] bg-white/90 backdrop-blur-sm rounded-full px-4 py-2.5 shadow-md">
           <BadgeCheck className="w-4 h-4 text-amber-600 flex-shrink-0" />
-          <span className="text-xs font-black text-gray-900">{data.instructor.name} · {data.instructor.designation}</span>
+          <span className="text-xs font-black text-gray-900 truncate">{data.instructor.name} · {data.instructor.designation}</span>
         </div>
       </div>
 
@@ -874,7 +878,7 @@ function PricingCard({ pricing, courseName }: { pricing: CourseLandingData['pric
                 {pricing.originalFee && (
                   <span className="text-gray-700/60 line-through text-xl font-semibold">{pricing.originalFee}</span>
                 )}
-                <span className="text-gray-900 font-black text-5xl">{pricing.fee}</span>
+                <span className={`text-gray-900 font-black ${pricing.fee === 'Coming Soon' ? 'text-3xl' : 'text-5xl'}`}>{pricing.fee}</span>
               </div>
               {pricing.emiNote && (
                 <p className="text-gray-900/70 text-xs mt-2 relative z-10">{pricing.emiNote}</p>
