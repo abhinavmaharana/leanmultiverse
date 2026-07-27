@@ -49,6 +49,7 @@ export interface CourseLandingData {
   }
   whatYouLearn: string[]
   curriculum: CourseModule[]
+  upcomingCourses?: { title: string; image: string; launchDate: string }[]
   careerRoles: string[]
   certificationTimeline: string[]
   instructor: CourseInstructor
@@ -170,6 +171,7 @@ export const fitnessData: CourseLandingData = {
     'Mobility & Recovery',
     'Goal Setting',
   ],
+  upcomingCourses: [],
   curriculum: [
     {
       title: 'Full Program Curriculum — Coming Soon',
@@ -273,6 +275,11 @@ export const careerGuidanceData: CourseLandingData = {
     'Interview Skills',
     'Career Options',
     'Skill Mapping',
+  ],
+  upcomingCourses: [
+    { title: 'New Course — Get Interview Call Now!!', image: '/upcoming-course-1.png', launchDate: 'Jul 31' },
+    { title: 'New Course — Zero to Product Manager', image: '/upcoming-course-2.png', launchDate: 'Aug 5' },
+    { title: 'New Course — Become Project Manager', image: '/upcoming-course-3.png', launchDate: 'Aug 12' },
   ],
   curriculum: [
     {

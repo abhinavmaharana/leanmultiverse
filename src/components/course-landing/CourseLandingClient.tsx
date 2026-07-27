@@ -272,6 +272,42 @@ function ValueProposition({ items }: { items: typeof valuePropositions }) {
   )
 }
 
+/* ─── Upcoming Courses ────────────────────────────────────────────────────── */
+function UpcomingCourses({ courses }: { courses: CourseLandingData['upcomingCourses'] }) {
+  if (!courses || courses.length === 0) return null
+
+  return (
+    <section className="w-full py-20 bg-gray-50 border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-2">What&apos;s Next</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">Upcoming Courses</h2>
+          <p className="text-gray-400 max-w-lg mx-auto text-sm">New courses launching soon — mark your calendar.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {courses.map((course, i) => (
+            <div key={i} className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div className="relative aspect-video bg-gray-100">
+                <Image src={course.image} alt={course.title} fill className="object-cover" />
+                <div className="absolute top-3 left-3 bg-amber-400 text-gray-900 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
+                  Coming Soon
+                </div>
+              </div>
+              <div className="p-5">
+                <h3 className="font-black text-gray-900 text-sm mb-3">{course.title}</h3>
+                <div className="flex items-center gap-2 text-xs text-gray-500 font-semibold">
+                  <Calendar className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                  Launching {course.launchDate}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── Video Section ───────────────────────────────────────────────────────── */
 // Every course dataset now defines `video` (see courseLandingData.ts) using the same
 // real Lean Multiverse intro video shown on the homepage (src/components/new-ui/NewVideoSection.tsx).
@@ -1041,6 +1077,7 @@ export default function CourseLandingClient({ data }: { data: CourseLandingData 
       <CourseVideoSection video={data.video} />
       {/* <TrustStrip items={data.trustItems} /> */}
       <ValueProposition items={valuePropositions} />
+      <UpcomingCourses courses={data.upcomingCourses} />
       {/* <CourseCatalogSection /> */}
       {/* <UpcomingInstructorsPreview instructor={data.instructor} /> */}
       <PlatformPromises items={platformPromises} />
