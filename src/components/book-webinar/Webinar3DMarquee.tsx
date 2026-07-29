@@ -32,7 +32,7 @@ export function Webinar3DMarquee({ onReserveSpot }: Webinar3DMarqueeProps) {
         their careers.
       </h2>
       <p className="relative z-20 mx-auto max-w-2xl py-6 text-center text-sm text-neutral-300 md:text-base">
-        From AI skills to product management, our live webinars help you stand
+        From AI skills to product management, our webinars help you stand
         out. Limited spots per session.
       </p>
 

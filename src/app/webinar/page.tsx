@@ -5,12 +5,12 @@ import { NewFooter } from '@/components/new-ui/NewFooter'
 import WebinarClient from './WebinarClient'
 
 export const metadata: Metadata = {
-  title: 'Live Webinar: Product, Project & Program Management Career Roadmap | Lean Multiverse',
-  description: 'Join our live webinar on transitioning into Product, Project, and Program Management roles, with AI skills for managers. Every Saturday at 8 PM IST.',
+  title: 'Webinar: Product, Project & Program Management Career Roadmap | Lean Multiverse',
+  description: 'Join our webinar on transitioning into Product, Project, and Program Management roles, with AI skills for managers. Every Saturday at 8 PM IST.',
   keywords: ['Webinar', 'Product Manager', 'Project Manager', 'Program Management', 'Career Roadmap', 'LeanMultiverse'],
   openGraph: {
-    title: 'Live Webinar: Product, Project & Program Management Career Roadmap',
-    description: 'Join our live webinar on transitioning into Product, Project, and Program Management roles, with AI skills for managers.',
+    title: 'Webinar: Product, Project & Program Management Career Roadmap',
+    description: 'Join our webinar on transitioning into Product, Project, and Program Management roles, with AI skills for managers.',
     type: 'website',
     url: 'https://leanmultiverse.com/webinar',
   },

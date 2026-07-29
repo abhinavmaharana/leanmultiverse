@@ -310,7 +310,7 @@ export default function BookWebinarClient() {
           {/* Webinar banner */}
           <div className="bw-mobile-banner rounded-lg px-4 py-2.5 mb-4">
             <p className="text-white text-xs font-medium tracking-wide">
-              LIVE WEBINAR · {availableDates[0] ? format(availableDates[0], 'EEEE, MMM d') : 'Saturday, Feb 28'} · 8:00 PM IST
+              WEBINAR · {availableDates[0] ? format(availableDates[0], 'EEEE, MMM d') : 'Saturday, Feb 28'} · 8:00 PM IST
             </p>
           </div>
 

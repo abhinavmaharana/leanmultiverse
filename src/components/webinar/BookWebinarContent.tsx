@@ -246,7 +246,7 @@ export default function BookWebinarContent() {
             <div className="flex items-center gap-2">
               <span className="inline-flex h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-700">
-                Live webinar
+                Recorded Webinar
               </span>
             </div>
 
@@ -328,11 +328,10 @@ export default function BookWebinarContent() {
                             key={dateStr}
                             type="button"
                             onClick={() => handleDateSelect(dateStr)}
-                            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all border ${
-                              isSelected
+                            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all border ${isSelected
                                 ? 'bg-yellow-400/10 border-yellow-400 text-yellow-700 shadow-sm'
                                 : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
-                            }`}
+                              }`}
                           >
                             {format(d, 'EEE, MMM d')}
                           </button>
@@ -448,15 +447,15 @@ export default function BookWebinarContent() {
                   · Secure payment via Razorpay
                 </p>
 
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || !isFormReady}
-                    className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold"
-                  >
-                    {isSubmitting
-                      ? 'Opening payment...'
-                      : 'Reserve my spot at just Rs 9'}
-                  </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting || !isFormReady}
+                  className="book-webinar-cta book-webinar-cta-primary w-full py-3 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm font-semibold"
+                >
+                  {isSubmitting
+                    ? 'Opening payment...'
+                    : 'Reserve my spot at just Rs 9'}
+                </button>
               </form>
             </div>
           </div>
@@ -556,11 +555,10 @@ export default function BookWebinarContent() {
                                 key={dateStr}
                                 type="button"
                                 onClick={() => handleDateSelect(dateStr)}
-                                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all border ${
-                                  isSelected
+                                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all border ${isSelected
                                     ? 'bg-yellow-400/10 border-yellow-400 text-yellow-700 shadow-sm'
                                     : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
-                                }`}
+                                  }`}
                               >
                                 {format(d, 'EEE, MMM d')}
                               </button>

@@ -60,7 +60,7 @@ function Hero() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
           <Sparkles className="w-3.5 h-3.5" />
-          Live Webinar
+          Recorded Webinar
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black text-gray-900 tracking-tight leading-[1.1] mb-5">
