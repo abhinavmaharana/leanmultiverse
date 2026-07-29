@@ -28,6 +28,7 @@ export interface CourseLandingData {
   tagline: string
   valueProposition: string
   bookingLink: string
+  subscribeLink?: string
   duration: string
   hours: string
   certification: string
@@ -231,6 +232,7 @@ export const careerGuidanceData: CourseLandingData = {
   tagline: 'Growth as a Subscription',
   valueProposition: 'The smartest membership for the smartest people.',
   bookingLink: 'https://learn.leanmultiverse.com/web/lite/events/6a65f301ab7f5882d47d7486',
+  subscribeLink: 'https://learn.leanmultiverse.com/l/8d59f9354e',
   duration: '3 Months',
   hours: 'Coming Soon',
   certification: 'Details Coming Soon',

@@ -29,11 +29,14 @@ import { courses } from '@/data/courses'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 
 /* ─── Subscribe CTA ───────────────────────────────────────────────────────── */
-// Not open for enrollment yet — render as a non-interactive "Coming Soon" badge.
+// If a subscribeLink is set on the course's data, render an active "Subscribe Now"
+// button. Otherwise — not open for enrollment yet — render a "Coming Soon" badge.
 function ClaimSpotButton({
+  href,
   className = '',
   size = 'default',
 }: {
+  href?: string
   className?: string
   size?: 'default' | 'large' | 'small'
 }) {
@@ -41,6 +44,18 @@ function ClaimSpotButton({
     small: 'px-6 py-2.5 text-sm',
     default: 'px-8 py-3.5 text-base',
     large: 'px-12 py-4 text-lg',
+  }
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-black rounded-full transition-all active:scale-95 shadow-md ${sizeClasses[size]} ${className}`}
+      >
+        Subscribe Now
+      </a>
+    )
   }
   return (
     <span
@@ -163,7 +178,7 @@ function CourseHero({ data }: { data: CourseLandingData }) {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-3">
-              <ClaimSpotButton size="large" />
+              <ClaimSpotButton href={data.subscribeLink} size="large" />
               <Book1on1Button href={data.bookingLink} size="large" />
             </div>
           </div>
@@ -572,7 +587,7 @@ function WhatYouLearn({ topics }: { topics: string[] }) {
 }
 
 /* ─── Curriculum Accordion ───────────────────────────────────────────────── */
-function CurriculumAccordion({ modules }: { modules: CourseLandingData['curriculum'] }) {
+function CurriculumAccordion({ modules, subscribeLink }: { modules: CourseLandingData['curriculum']; subscribeLink?: string }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
@@ -630,7 +645,7 @@ function CurriculumAccordion({ modules }: { modules: CourseLandingData['curricul
         </div>
 
         <div className="text-center mt-10">
-          <ClaimSpotButton />
+          <ClaimSpotButton href={subscribeLink} />
         </div>
       </div>
     </section>
@@ -919,7 +934,7 @@ function TestimonialCard({
 }
 
 /* ─── Pricing ─────────────────────────────────────────────────────────────── */
-function PricingCard({ pricing, courseName }: { pricing: CourseLandingData['pricing']; courseName: string }) {
+function PricingCard({ pricing, courseName, subscribeLink }: { pricing: CourseLandingData['pricing']; courseName: string; subscribeLink?: string }) {
   return (
     <section id="enroll" className="w-full py-20 bg-gray-50 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -958,7 +973,7 @@ function PricingCard({ pricing, courseName }: { pricing: CourseLandingData['pric
                 ))}
               </ul>
 
-              <ClaimSpotButton className="w-full justify-center" size="large" />
+              <ClaimSpotButton href={subscribeLink} className="w-full justify-center" size="large" />
               <p className="text-center text-xs text-gray-400 mt-4">
                 Or call us: <a href="tel:+917696627657" className="text-amber-600 font-bold">+91 7696627657</a>
               </p>
@@ -1035,13 +1050,13 @@ function CourseFAQSection({ faqs }: { faqs: CourseLandingData['faqs'] }) {
 }
 
 /* ─── Final CTA ───────────────────────────────────────────────────────────── */
-function FinalCTA({ courseName }: { courseName: string }) {
+function FinalCTA({ courseName, subscribeLink }: { courseName: string; subscribeLink?: string }) {
   return (
     <section className="w-full py-24 bg-amber-400">
       <div className="max-w-3xl mx-auto px-4 text-center">
         <div className="inline-flex items-center gap-2 bg-gray-900/10 text-gray-900 text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full mb-6">
           <Sparkles className="w-3.5 h-3.5" />
-          Coming Soon
+          {subscribeLink ? 'Enrollment Open' : 'Coming Soon'}
         </div>
         <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-5 leading-tight">
           Ready to Get Started?
@@ -1050,12 +1065,23 @@ function FinalCTA({ courseName }: { courseName: string }) {
           Join people working toward real results with {courseName}.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <span
-            aria-disabled="true"
-            className="w-full sm:w-auto bg-gray-300 text-gray-600 font-black text-base px-12 py-4 rounded-full cursor-not-allowed select-none flex items-center justify-center gap-2"
-          >
-            Coming Soon
-          </span>
+          {subscribeLink ? (
+            <a
+              href={subscribeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto bg-gray-900 text-amber-400 font-black text-base px-12 py-4 rounded-full hover:bg-gray-800 transition-all active:scale-95 shadow-md flex items-center justify-center gap-2"
+            >
+              Subscribe Now
+            </a>
+          ) : (
+            <span
+              aria-disabled="true"
+              className="w-full sm:w-auto bg-gray-300 text-gray-600 font-black text-base px-12 py-4 rounded-full cursor-not-allowed select-none flex items-center justify-center gap-2"
+            >
+              Coming Soon
+            </span>
+          )}
           <a
             href="tel:+917696627657"
             className="w-full sm:w-auto flex items-center justify-center gap-2 border-2 border-gray-900 text-gray-900 font-bold text-base px-8 py-4 rounded-full hover:bg-gray-900 hover:text-amber-400 transition-all"
@@ -1083,14 +1109,14 @@ export default function CourseLandingClient({ data }: { data: CourseLandingData 
       <PlatformPromises items={platformPromises} />
       <CourseOverview overview={data.overview} />
       <WhatYouLearn topics={data.whatYouLearn} />
-      <CurriculumAccordion modules={data.curriculum} />
+      <CurriculumAccordion modules={data.curriculum} subscribeLink={data.subscribeLink} />
       <CareerOutcomes roles={data.careerRoles} timeline={data.certificationTimeline} />
       <WhyLeanMultiverse items={data.whyLeanMultiverse} />
       <InstructorSection instructor={data.instructor} />
       {/* <CourseCategoriesGrid /> */}
-      <PricingCard pricing={data.pricing} courseName={data.shortTitle} />
+      <PricingCard pricing={data.pricing} courseName={data.shortTitle} subscribeLink={data.subscribeLink} />
       <CourseFAQSection faqs={data.faqs} />
-      <FinalCTA courseName={data.shortTitle} />
+      <FinalCTA courseName={data.shortTitle} subscribeLink={data.subscribeLink} />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
+import { careerGuidanceData } from '@/data/courseLandingData'
 
 const navLinks = [
     { label: 'Fitness Coaching', href: '/courses/fitness', badge: null },
@@ -28,14 +29,29 @@ function CourseClaimSpotButton({ full }: { full?: boolean }) {
     )
 }
 
+// Career Guidance is open for enrollment — show an active "Subscribe Now" CTA.
+function CareerSubscribeButton({ full }: { full?: boolean }) {
+    return (
+        <a
+            href={careerGuidanceData.subscribeLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center justify-center bg-amber-400 hover:bg-amber-500 text-gray-900 text-[15px] font-black px-10 py-3 rounded-xl transition-all active:scale-95 shadow-sm ${full ? 'w-full' : ''}`}
+        >
+            Subscribe Now
+        </a>
+    )
+}
+
 function NewNavbar() {
     const [open, setOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const [mounted, setMounted] = useState(false)
     const pathname = usePathname()
     const isAiMlPage = pathname?.startsWith('/ai-ml')
+    const isCareerGuidancePage = pathname === '/courses/career-guidance'
     // Course landing pages and the webinar page aren't open for enrollment yet.
-    const isComingSoonPage = pathname?.startsWith('/courses/') || pathname === '/webinar'
+    const isComingSoonPage = (pathname?.startsWith('/courses/') || pathname === '/webinar') && !isCareerGuidancePage
 
     useEffect(() => {
         setMounted(true)
@@ -101,6 +117,8 @@ function NewNavbar() {
                 <div className="hidden lg:block">
                     {isAiMlPage ? (
                         <BookAiMlWebinarModal source="sticky-bar" />
+                    ) : isCareerGuidancePage ? (
+                        <CareerSubscribeButton />
                     ) : isComingSoonPage ? (
                         <CourseClaimSpotButton />
                     ) : (
@@ -142,6 +160,8 @@ function NewNavbar() {
                     <div className="mt-4 flex flex-col" onClick={() => setOpen(false)}>
                         {isAiMlPage ? (
                             <BookAiMlWebinarModal source="sticky-bar" />
+                        ) : isCareerGuidancePage ? (
+                            <CareerSubscribeButton full />
                         ) : isComingSoonPage ? (
                             <CourseClaimSpotButton full />
                         ) : (
