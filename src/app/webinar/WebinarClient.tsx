@@ -4,9 +4,7 @@ import Image from 'next/image'
 import { CheckCircle2, PhoneCall, Sparkles, Star } from 'lucide-react'
 import { testimonials } from '@/data/testimonials'
 
-// TODO(user): once the real Tagmango checkout link is ready, wire it up here and
-// switch JoinNowButton below back to a link.
-const TAGMANGO_LINK = '#'
+const WATCH_NOW_LINK = 'https://learn.leanmultiverse.com/l/83cec5c61c'
 
 const BOOK_1ON1_LINK = 'https://learn.leanmultiverse.com/web/lite/events/6a65f301ab7f5882d47d7486'
 
@@ -30,12 +28,14 @@ const TRUSTED_COMPANIES = [
 function JoinNowButton({ size = 'default' }: { size?: 'default' | 'large' }) {
   const sizeClasses = size === 'large' ? 'px-12 py-4 text-lg' : 'px-8 py-3.5 text-base'
   return (
-    <span
-      aria-disabled="true"
-      className={`inline-flex items-center justify-center gap-2 bg-gray-100 text-gray-500 font-black rounded-full cursor-not-allowed select-none ${sizeClasses}`}
+    <a
+      href={WATCH_NOW_LINK}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-black rounded-full transition-all active:scale-95 shadow-md ${sizeClasses}`}
     >
-      Coming Soon
-    </span>
+      Watch Now
+    </a>
   )
 }
 
