@@ -68,7 +68,7 @@ function Hero() {
         </h1>
 
         <p className="text-base md:text-lg text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed">
-          A live session on transitioning into Product and Project roles, building AI skills for managers, and
+          A recorded session on transitioning into Product and Project roles, building AI skills for managers, and
           positioning your resume for top companies.
         </p>
 
@@ -239,7 +239,7 @@ function FinalCTA() {
       <div className="max-w-3xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-5 leading-tight">Ready to Join?</h2>
         <p className="text-gray-900/70 text-base md:text-lg mb-10 max-w-xl mx-auto">
-          Reserve your spot in the live session.
+          Watch the recorded session anytime.
         </p>
         <JoinNowButton size="large" />
       </div>
