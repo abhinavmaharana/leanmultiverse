@@ -10,8 +10,8 @@ import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinar
 import { careerGuidanceData } from '@/data/courseLandingData'
 
 const navLinks = [
-    { label: 'Fitness Coaching', href: '/courses/fitness', badge: null },
     { label: 'Career Guidance', href: '/courses/career-guidance', badge: null },
+    { label: 'Fitness Coaching', href: '/courses/fitness', badge: null },
     { label: 'Testimonial', href: '/#testimonial', badge: null },
     { label: 'Contact', href: '/#contact', badge: null },
 ]
