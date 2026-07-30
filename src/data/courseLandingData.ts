@@ -50,7 +50,7 @@ export interface CourseLandingData {
   }
   whatYouLearn: string[]
   curriculum: CourseModule[]
-  upcomingCourses?: { title: string; image: string; launchDate: string }[]
+  upcomingCourses?: { title: string; image: string; launchDate: string; live?: boolean }[]
   careerRoles: string[]
   certificationTimeline: string[]
   instructor: CourseInstructor
@@ -279,6 +279,7 @@ export const careerGuidanceData: CourseLandingData = {
     'Skill Mapping',
   ],
   upcomingCourses: [
+    { title: 'Freshers to Director', image: '/freshers-to-director.png', launchDate: 'Live Now', live: true },
     { title: 'New Course — Get Interview Call Now!!', image: '/upcoming-course-1.png', launchDate: 'Jul 31' },
     { title: 'New Course — Zero to Product Manager', image: '/upcoming-course-2.png', launchDate: 'Aug 5' },
     { title: 'New Course — Become Project Manager', image: '/upcoming-course-3.png', launchDate: 'Aug 12' },
