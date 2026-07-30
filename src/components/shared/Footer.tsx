@@ -45,7 +45,6 @@ const PROGRAM_LINKS = [
 ]
 
 const SUPPORT_LINKS = [
-  { href: "tel:+917696627657", text: "Talk to Expert" },
   { href: "mailto:operations@leanmultiverse.com", text: "Email Operations" },
   { href: "/refund-policy", text: "Refund Policy" },
   { href: "/privacy-policy", text: "Privacy Policy" },

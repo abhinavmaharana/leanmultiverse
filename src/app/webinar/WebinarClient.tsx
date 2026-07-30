@@ -75,13 +75,6 @@ function Hero() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
           <JoinNowButton size="large" />
           <Book1on1Button size="large" />
-          <a
-            href="tel:+917696627657"
-            className="flex items-center gap-2 border-2 border-gray-200 text-gray-600 font-semibold text-sm px-7 py-3.5 rounded-full hover:border-amber-400 hover:text-amber-600 transition-all"
-          >
-            <PhoneCall className="w-4 h-4" />
-            Talk to Us First
-          </a>
         </div>
       </div>
     </section>

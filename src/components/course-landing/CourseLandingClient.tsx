@@ -1082,13 +1082,6 @@ function FinalCTA({ courseName, subscribeLink }: { courseName: string; subscribe
               Coming Soon
             </span>
           )}
-          <a
-            href="tel:+917696627657"
-            className="w-full sm:w-auto flex items-center justify-center gap-2 border-2 border-gray-900 text-gray-900 font-bold text-base px-8 py-4 rounded-full hover:bg-gray-900 hover:text-amber-400 transition-all"
-          >
-            <PhoneCall className="w-4 h-4" />
-            Talk to Expert
-          </a>
         </div>
       </div>
     </section>
