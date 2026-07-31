@@ -72,10 +72,11 @@ function Hero() {
           positioning your resume for top companies.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
           <JoinNowButton size="large" />
           <Book1on1Button size="large" />
         </div>
+        <p className="text-gray-400 text-xs mb-10">₹99 inclusive of GST</p>
       </div>
     </section>
   )
@@ -235,6 +236,7 @@ function FinalCTA() {
           Watch the recorded session anytime.
         </p>
         <JoinNowButton size="large" />
+        <p className="text-gray-900/60 text-xs mt-4">₹99 inclusive of GST</p>
       </div>
     </section>
   )
