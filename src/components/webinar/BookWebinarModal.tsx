@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import './book-webinar.css'
@@ -18,7 +17,6 @@ interface Props {
 
 export default function BookWebinarModal({ source }: Props) {
     const isMobile = useIsMobile(1023)
-    const router = useRouter()
 
     const handleRedirect = () => {
         if (typeof window !== 'undefined' && (window as any).fbq) {
@@ -27,12 +25,12 @@ export default function BookWebinarModal({ source }: Props) {
         window.location.href = 'https://learn.leanmultiverse.com/l/e0ca22a7e0';
     }
 
-    // "Watch Webinar" always opens our own /webinar page — never the external funnel link.
+    // "Watch Webinar" opens the live webinar registration link directly.
     const handleWatchWebinar = () => {
         if (typeof window !== 'undefined' && (window as any).fbq) {
             (window as any).fbq('track', 'InitiateCheckout');
         }
-        router.push('/webinar')
+        window.open('https://learn.leanmultiverse.com/l/55879a7c0b', '_blank', 'noopener,noreferrer')
     }
 
     return (

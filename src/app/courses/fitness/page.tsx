@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { NewAnnouncementBanner } from '@/components/new-ui/NewAnnouncementBanner'
 import NewNavbar from '@/components/new-ui/NewNavbar'
 import { NewFooter } from '@/components/new-ui/NewFooter'
@@ -34,6 +35,8 @@ const jsonLd = {
 }
 
 export default function FitnessPage() {
+  notFound()
+
   return (
     <>
       <script

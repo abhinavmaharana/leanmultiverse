@@ -11,7 +11,6 @@ import { careerGuidanceData } from '@/data/courseLandingData'
 
 const navLinks = [
     { label: 'Career Guidance', href: '/courses/career-guidance', badge: null },
-    { label: 'Fitness Coaching', href: '/courses/fitness', badge: null },
     { label: 'Testimonial', href: '/#testimonial', badge: null },
     { label: 'Contact', href: '/#contact', badge: null },
 ]
@@ -43,21 +42,6 @@ function CareerSubscribeButton({ full }: { full?: boolean }) {
     )
 }
 
-// The webinar is open for registration — show an active "Join the Webinar" CTA.
-const WEBINAR_WATCH_LINK = 'https://learn.leanmultiverse.com/l/55879a7c0b'
-function WebinarWatchButton({ full }: { full?: boolean }) {
-    return (
-        <a
-            href={WEBINAR_WATCH_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex items-center justify-center bg-amber-400 hover:bg-amber-500 text-gray-900 text-[15px] font-black px-10 py-3 rounded-xl transition-all active:scale-95 shadow-sm ${full ? 'w-full' : ''}`}
-        >
-            Join the Webinar
-        </a>
-    )
-}
-
 function NewNavbar() {
     const [open, setOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
@@ -65,7 +49,6 @@ function NewNavbar() {
     const pathname = usePathname()
     const isAiMlPage = pathname?.startsWith('/ai-ml')
     const isCareerGuidancePage = pathname === '/courses/career-guidance'
-    const isWebinarPage = pathname === '/webinar'
     // Course landing pages that aren't open for enrollment yet.
     const isComingSoonPage = pathname?.startsWith('/courses/') && !isCareerGuidancePage
 
@@ -135,8 +118,6 @@ function NewNavbar() {
                         <BookAiMlWebinarModal source="sticky-bar" />
                     ) : isCareerGuidancePage ? (
                         <CareerSubscribeButton />
-                    ) : isWebinarPage ? (
-                        <WebinarWatchButton />
                     ) : isComingSoonPage ? (
                         <CourseClaimSpotButton />
                     ) : (
@@ -180,8 +161,6 @@ function NewNavbar() {
                             <BookAiMlWebinarModal source="sticky-bar" />
                         ) : isCareerGuidancePage ? (
                             <CareerSubscribeButton full />
-                        ) : isWebinarPage ? (
-                            <WebinarWatchButton full />
                         ) : isComingSoonPage ? (
                             <CourseClaimSpotButton full />
                         ) : (

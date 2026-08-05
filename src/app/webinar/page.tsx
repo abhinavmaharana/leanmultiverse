@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { NewAnnouncementBanner } from '@/components/new-ui/NewAnnouncementBanner'
 import NewNavbar from '@/components/new-ui/NewNavbar'
 import { NewFooter } from '@/components/new-ui/NewFooter'
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
 }
 
 export default function WebinarPage() {
+  notFound()
+
   return (
     <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
       <NewAnnouncementBanner />
