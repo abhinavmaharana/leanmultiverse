@@ -1,9 +1,23 @@
 'use client'
 
+import { useEffect, useMemo, useState } from 'react'
+import { format } from 'date-fns'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, Calendar, Clock } from 'lucide-react'
+import { getAvailableDatesPaid } from '@/lib/webinar-config'
+
+const AGENDA_ITEMS = [
+    'Transition to Product / Project roles and leverage your experience for PM careers.',
+    'AI skills for managers: ChatGPT, automation and tools used in MNCs.',
+    'Resume and LinkedIn positioning to get interviews at top companies.',
+    'Practical frameworks used by professionals at firms like Deloitte and JPMorgan.',
+]
 
 export function NewHero() {
+    const [mounted, setMounted] = useState(false)
+    useEffect(() => { setMounted(true) }, [])
+    const nextSessionDate = useMemo(() => getAvailableDatesPaid()[0], [])
+
     return (
         <section id="home" className="w-full pt-12 pb-10 bg-white">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -16,6 +30,25 @@ export function NewHero() {
                     <span className="text-amber-400">Director, CEO & AI Expert</span> — <br className="hidden md:block" />
                     Your Leadership Roadmap.
                 </h1>
+
+                {/* Webinar Schedule - date/time is the single most important conversion element for a live session */}
+                <div className="inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-2 bg-amber-50 border border-amber-200 rounded-full px-5 py-2.5 mb-6 text-xs md:text-sm font-bold text-amber-800">
+                    <span className="flex items-center gap-1.5">
+                        <Calendar className="w-4 h-4" />
+                        Every Saturday
+                    </span>
+                    <span className="text-amber-300">•</span>
+                    <span className="flex items-center gap-1.5">
+                        <Clock className="w-4 h-4" />
+                        8:00 PM IST
+                    </span>
+                    {mounted && nextSessionDate && (
+                        <>
+                            <span className="text-amber-300">•</span>
+                            <span>Next session: {format(nextSessionDate, 'EEE, MMM d')}</span>
+                        </>
+                    )}
+                </div>
 
                 {/* Decorative Divider */}
                 <div className="text-gray-200 text-2xl mb-6 select-none leading-none">⸻</div>
@@ -43,6 +76,19 @@ export function NewHero() {
                             <span className="text-xs md:text-sm font-semibold text-gray-700">{text}</span>
                         </div>
                     ))}
+                </div>
+
+                {/* Agenda - what's actually covered in the session */}
+                <div className="max-w-2xl mx-auto mb-10">
+                    <p className="text-xs font-bold text-amber-500 tracking-widest uppercase mb-4">In This Session</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+                        {AGENDA_ITEMS.map((item, i) => (
+                            <div key={i} className="flex items-start gap-2.5 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
+                                <CheckCircle2 className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
+                                <span className="text-xs md:text-sm text-gray-700 font-medium leading-snug">{item}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Primary CTA - Resized for better fit and mobile responsiveness */}
