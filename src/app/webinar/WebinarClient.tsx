@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { CheckCircle2, PhoneCall, Sparkles, Star } from 'lucide-react'
 import { testimonials } from '@/data/testimonials'
 
-const WATCH_NOW_LINK = 'https://learn.leanmultiverse.com/l/83cec5c61c'
+const WATCH_NOW_LINK = 'https://learn.leanmultiverse.com/l/55879a7c0b'
 
 const BOOK_1ON1_LINK = 'https://learn.leanmultiverse.com/web/lite/events/6a65f301ab7f5882d47d7486'
 
@@ -34,7 +34,7 @@ function JoinNowButton({ size = 'default' }: { size?: 'default' | 'large' }) {
       rel="noopener noreferrer"
       className={`inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-black rounded-full transition-all active:scale-95 shadow-md ${sizeClasses}`}
     >
-      Watch Now
+      Join the Webinar
     </a>
   )
 }
@@ -60,7 +60,7 @@ function Hero() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
           <Sparkles className="w-3.5 h-3.5" />
-          Recorded Webinar
+          Live Webinar
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-black text-gray-900 tracking-tight leading-[1.1] mb-5">
@@ -68,7 +68,7 @@ function Hero() {
         </h1>
 
         <p className="text-base md:text-lg text-gray-500 mb-8 max-w-2xl mx-auto leading-relaxed">
-          A recorded session on transitioning into Product and Project roles, building AI skills for managers, and
+          A live session on transitioning into Product and Project roles, building AI skills for managers, and
           positioning your resume for top companies.
         </p>
 
@@ -233,7 +233,7 @@ function FinalCTA() {
       <div className="max-w-3xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-black text-gray-900 mb-5 leading-tight">Ready to Join?</h2>
         <p className="text-gray-900/70 text-base md:text-lg mb-10 max-w-xl mx-auto">
-          Watch the recorded session anytime.
+          Reserve your spot in the live session.
         </p>
         <JoinNowButton size="large" />
         <p className="text-gray-900/60 text-xs mt-4">₹99 inclusive of GST</p>

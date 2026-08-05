@@ -43,8 +43,8 @@ function CareerSubscribeButton({ full }: { full?: boolean }) {
     )
 }
 
-// The webinar recording is live — show an active "Watch Now" CTA.
-const WEBINAR_WATCH_LINK = 'https://learn.leanmultiverse.com/l/83cec5c61c'
+// The webinar is open for registration — show an active "Join the Webinar" CTA.
+const WEBINAR_WATCH_LINK = 'https://learn.leanmultiverse.com/l/55879a7c0b'
 function WebinarWatchButton({ full }: { full?: boolean }) {
     return (
         <a
@@ -53,7 +53,7 @@ function WebinarWatchButton({ full }: { full?: boolean }) {
             rel="noopener noreferrer"
             className={`inline-flex items-center justify-center bg-amber-400 hover:bg-amber-500 text-gray-900 text-[15px] font-black px-10 py-3 rounded-xl transition-all active:scale-95 shadow-sm ${full ? 'w-full' : ''}`}
         >
-            Watch Now
+            Join the Webinar
         </a>
     )
 }
