@@ -81,6 +81,17 @@ const placements = [
     linkedin: "https://www.linkedin.com/in/abhinavmaharana/",
     achievement: "Google AI Hackathon Winner",
   },
+  {
+    id: "RACHIT",
+    name: "Rachit Goyal",
+    role: "Analyst",
+    company: "WNS",
+    logo: "https://logo.clearbit.com/wns.com",
+    location: "",
+    image: "/placements/rachit-goyal.jpeg",
+    linkedin: "https://www.linkedin.com/",
+    achievement: "Placed at WNS as Analyst",
+  },
 ];
 
 export const NewPlacementSection = () => {
