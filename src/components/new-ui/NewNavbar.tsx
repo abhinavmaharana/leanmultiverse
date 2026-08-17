@@ -7,40 +7,11 @@ import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
-import { careerGuidanceData } from '@/data/courseLandingData'
 
 const navLinks = [
-    { label: 'Career Guidance', href: '/courses/career-guidance', badge: null },
     { label: 'Testimonial', href: '/#testimonial', badge: null },
     { label: 'Contact', href: '/#contact', badge: null },
 ]
-
-// Course landing pages (e.g. /courses/fitness) aren't open for enrollment yet —
-// show a non-interactive "Coming Soon" badge instead of a working CTA.
-function CourseClaimSpotButton({ full }: { full?: boolean }) {
-    return (
-        <span
-            aria-disabled="true"
-            className={`inline-flex items-center justify-center bg-gray-100 text-gray-500 text-[15px] font-black px-10 py-3 rounded-xl cursor-not-allowed select-none ${full ? 'w-full' : ''}`}
-        >
-            Coming Soon
-        </span>
-    )
-}
-
-// Career Guidance is open for enrollment — show an active "Subscribe Now" CTA.
-function CareerSubscribeButton({ full }: { full?: boolean }) {
-    return (
-        <a
-            href={careerGuidanceData.subscribeLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-flex items-center justify-center bg-amber-400 hover:bg-amber-500 text-gray-900 text-[15px] font-black px-10 py-3 rounded-xl transition-all active:scale-95 shadow-sm ${full ? 'w-full' : ''}`}
-        >
-            Subscribe Now
-        </a>
-    )
-}
 
 function NewNavbar() {
     const [open, setOpen] = useState(false)
@@ -48,9 +19,6 @@ function NewNavbar() {
     const [mounted, setMounted] = useState(false)
     const pathname = usePathname()
     const isAiMlPage = pathname?.startsWith('/ai-ml')
-    const isCareerGuidancePage = pathname === '/courses/career-guidance'
-    // Course landing pages that aren't open for enrollment yet.
-    const isComingSoonPage = pathname?.startsWith('/courses/') && !isCareerGuidancePage
 
     useEffect(() => {
         setMounted(true)
@@ -116,10 +84,6 @@ function NewNavbar() {
                 <div className="hidden lg:block">
                     {isAiMlPage ? (
                         <BookAiMlWebinarModal source="sticky-bar" />
-                    ) : isCareerGuidancePage ? (
-                        <CareerSubscribeButton />
-                    ) : isComingSoonPage ? (
-                        <CourseClaimSpotButton />
                     ) : (
                         <BookWebinarModal source="sticky-bar" />
                     )}
@@ -159,10 +123,6 @@ function NewNavbar() {
                     <div className="mt-4 flex flex-col" onClick={() => setOpen(false)}>
                         {isAiMlPage ? (
                             <BookAiMlWebinarModal source="sticky-bar" />
-                        ) : isCareerGuidancePage ? (
-                            <CareerSubscribeButton full />
-                        ) : isComingSoonPage ? (
-                            <CourseClaimSpotButton full />
                         ) : (
                             <BookWebinarModal source="new-hero" />
                         )}
