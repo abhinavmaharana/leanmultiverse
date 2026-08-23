@@ -30,7 +30,7 @@ export default function BookWebinarModal({ source }: Props) {
         if (typeof window !== 'undefined' && (window as any).fbq) {
             (window as any).fbq('track', 'InitiateCheckout');
         }
-        window.open('https://learn.leanmultiverse.com/l/7d19fcee17', '_blank', 'noopener,noreferrer')
+        window.open('https://learn.leanmultiverse.com/l/e941b8ecff', '_blank', 'noopener,noreferrer')
     }
 
     return (
