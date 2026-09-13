@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { CheckCircle2, PhoneCall, Sparkles, Star } from 'lucide-react'
 import { testimonials } from '@/data/testimonials'
 
-const WATCH_NOW_LINK = 'https://learn.leanmultiverse.com/l/55879a7c0b'
+const WATCH_NOW_LINK = 'https://learn.leanmultiverse.com/l/de15de8644'
 
 const BOOK_1ON1_LINK = 'https://learn.leanmultiverse.com/web/lite/events/6a65f301ab7f5882d47d7486'
 

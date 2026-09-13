@@ -22,7 +22,7 @@ export default function BookWebinarModal({ source }: Props) {
         if (typeof window !== 'undefined' && (window as any).fbq) {
             (window as any).fbq('track', 'InitiateCheckout');
         }
-        window.location.href = 'https://learn.leanmultiverse.com/l/e0ca22a7e0';
+        window.location.href = 'https://learn.leanmultiverse.com/l/de15de8644';
     }
 
     // "Book Webinar" opens the live webinar registration link directly.
@@ -30,7 +30,7 @@ export default function BookWebinarModal({ source }: Props) {
         if (typeof window !== 'undefined' && (window as any).fbq) {
             (window as any).fbq('track', 'InitiateCheckout');
         }
-        window.open('https://learn.leanmultiverse.com/l/e941b8ecff', '_blank', 'noopener,noreferrer')
+        window.open('https://learn.leanmultiverse.com/l/de15de8644', '_blank', 'noopener,noreferrer')
     }
 
     return (
