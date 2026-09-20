@@ -7,9 +7,9 @@ import LazySection from '../components/shared/LazySection'
 // ============================================================
 
 // Critical path: load immediately (above the fold)
-import { NewAnnouncementBanner } from '../components/new-ui/NewAnnouncementBanner'
+import { NewTopBar } from '../components/new-ui/NewTopBar'
 import NewNavbar from '../components/new-ui/NewNavbar'
-import { NewHero } from '../components/new-ui/NewHero'
+import { NewBootcampHero } from '../components/new-ui/NewBootcampHero'
 import { StickyEnrollBar } from '../components/new-ui/StickyEnrollBar'
 
 // Lazy load heavier new-ui sections via intersection observer
@@ -114,11 +114,11 @@ export default function LandingPage() {
     <main className="relative w-full min-h-screen bg-white text-gray-900 flex flex-col">
       {/* Critical: render immediately */}
       <div className="flex flex-col">
-        <NewAnnouncementBanner />
+        <NewTopBar />
         <NewNavbar />
       </div>
 
-      <NewHero />
+      <NewBootcampHero />
 
       {/* Lazy sections — loaded via intersection observer */}
       <LazySection id="logo-strip" fallback={<div className="h-24 bg-white animate-pulse" />}>

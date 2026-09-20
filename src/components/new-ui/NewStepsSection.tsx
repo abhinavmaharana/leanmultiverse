@@ -6,8 +6,8 @@ import { ChevronDown, CheckCircle2 } from 'lucide-react'
 const steps = [
     {
         number: '01',
-        title: 'Register for Webinar',
-        description: 'Sign up for the webinar and get instant access to exclusive career acceleration resources.',
+        title: 'Register for Bootcamp',
+        description: 'Sign up for the bootcamp and get instant access to exclusive career acceleration resources.',
         moreInfo: 'Upon registration, you\'ll receive a curated "Career Accelerator Kit" via email, including resume templates and a PM readiness checklist.'
     },
     {

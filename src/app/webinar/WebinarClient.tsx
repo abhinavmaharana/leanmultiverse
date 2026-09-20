@@ -3,8 +3,9 @@
 import Image from 'next/image'
 import { CheckCircle2, PhoneCall, Sparkles, Star } from 'lucide-react'
 import { testimonials } from '@/data/testimonials'
+import { WEBINAR_LINK } from '@/config/webinar'
 
-const WATCH_NOW_LINK = 'https://learn.leanmultiverse.com/l/de15de8644'
+const WATCH_NOW_LINK = WEBINAR_LINK
 
 const BOOK_1ON1_LINK = 'https://learn.leanmultiverse.com/web/lite/events/6a65f301ab7f5882d47d7486'
 
