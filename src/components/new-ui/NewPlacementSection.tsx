@@ -92,6 +92,17 @@ const placements = [
     linkedin: "https://www.linkedin.com/",
     achievement: "Placed at WNS as Analyst",
   },
+  {
+    id: "JAY",
+    name: "Jay Malhotra",
+    role: "Manager",
+    company: "Fidelity International",
+    logo: "https://logo.clearbit.com/fidelityinternational.com",
+    location: "",
+    image: "/placements/jay-malhotra.webp",
+    linkedin: "https://www.linkedin.com/",
+    achievement: "Placed at Fidelity International as Manager",
+  },
 ];
 
 export const NewPlacementSection = () => {

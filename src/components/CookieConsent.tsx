@@ -75,7 +75,9 @@ export default function CookieConsent() {
               <button
                 type="button"
                 onClick={() => setStoredConsent('decline')}
-                className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-white hover:bg-white/20 transition text-sm font-medium cursor-pointer touch-manipulation"
+                // Inline colour: the antd reset (`button { color: inherit }`) is unlayered and beats Tailwind's text-white.
+                style={{ color: '#fff' }}
+                className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition text-sm font-medium cursor-pointer touch-manipulation"
               >
                 Decline
               </button>

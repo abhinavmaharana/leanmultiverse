@@ -6,8 +6,8 @@ export function NewVideoSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-xl overflow-hidden shadow-lg aspect-video bg-gray-900">
           <iframe
-            src="https://www.youtube.com/embed/uKaAyAmbN2Q?si=ReY1tgBf0mBRnK2c"
-            title="YouTube video player"
+            src="https://www.youtube.com/embed/WESM2yYrgSY"
+            title="Leadership Transformation"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"

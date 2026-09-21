@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { ChevronDown, Trophy, Users, Award, Star } from 'lucide-react'
 
 const achievements = [
@@ -41,21 +40,24 @@ export function NewMentorSection() {
                     </div>
                 </div>
 
-                {/* Right Side: Image Area */}
+                {/* Right Side: Video */}
                 <div className="flex flex-1 relative min-h-[350px] lg:min-h-auto">
                     {/* Mid Amber Bar - Extremely thin as per image */}
                     <div className="w-1.5 md:w-3 bg-amber-400 self-stretch z-10 flex-shrink-0" />
-                    
-                    {/* Image */}
-                    <div className="flex-1 relative overflow-hidden bg-white">
-                        <Image
-                            src="/tedex.jpeg"
-                            alt="Nitesh Prasad - TEDx Speaker & Mentor"
-                            fill
-                            className="object-cover object-center"
-                            priority
-                            sizes="(max-width: 1024px) 100vw, 50vw"
-                        />
+
+                    <div className="flex-1 flex items-center justify-center bg-white p-4 md:p-10">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg bg-gray-900">
+                            <iframe
+                                src="https://www.youtube.com/embed/uKaAyAmbN2Q?si=ReY1tgBf0mBRnK2c"
+                                title="Transform into management - Nitesh Prasad"
+                                frameBorder="0"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                                className="absolute inset-0 w-full h-full"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

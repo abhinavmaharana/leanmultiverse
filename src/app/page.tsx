@@ -121,12 +121,12 @@ export default function LandingPage() {
       <NewBootcampHero />
 
       {/* Lazy sections — loaded via intersection observer */}
-      <LazySection id="logo-strip" fallback={<div className="h-24 bg-white animate-pulse" />}>
-        <NewLogoStrip />
-      </LazySection>
-
       <LazySection id="video" fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
         <NewVideoSection />
+      </LazySection>
+
+      <LazySection id="logo-strip" fallback={<div className="h-24 bg-white animate-pulse" />}>
+        <NewLogoStrip />
       </LazySection>
 
       <LazySection id="placement" fallback={<div className="h-[900px] bg-white animate-pulse" />}>
@@ -177,6 +177,7 @@ export default function LandingPage() {
         </div>
       </main>
       */}
+      <StickyEnrollBar />
     </main>
   )
 }

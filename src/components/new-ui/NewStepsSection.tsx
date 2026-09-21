@@ -32,7 +32,7 @@ export function NewStepsSection() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-                        A Webinar Worth Your Time. <span className="text-amber-400">Guaranteed.</span>
+                        A Bootcamp Worth Your Time. <span className="text-amber-400">Guaranteed.</span>
                     </h2>
                     <p className="text-gray-600 max-w-xl mx-auto">
                         Follow our proven 3-step framework to transition into high-growth roles.
