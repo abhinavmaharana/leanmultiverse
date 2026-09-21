@@ -4,6 +4,14 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { WEBINAR_LINK } from '@/config/webinar'
 
+// Same shimmer sweep the other Book buttons use (see BookWebinarModal).
+const shimmerStyle = `
+@keyframes shimmer {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  100% { transform: translateX(250%) skewX(-20deg); }
+}
+`
+
 /**
  * StickyEnrollBar - A permanent floating CTA at the bottom of the screen.
  * Gives visitors a one-tap way to book the bootcamp from anywhere on the home page.
@@ -17,7 +25,9 @@ export function StickyEnrollBar() {
     }
 
     return (
-        // Extra right padding on phones keeps the bar clear of the floating WhatsApp button.
+        <>
+        <style dangerouslySetInnerHTML={{ __html: shimmerStyle }} />
+        {/* Extra right padding on phones keeps the bar clear of the floating WhatsApp button. */}
         <div className="fixed bottom-4 md:bottom-8 left-0 right-0 z-[100] pl-4 pr-16 sm:px-4 pointer-events-none">
             <motion.div
                 initial={{ y: 50, opacity: 0 }}
@@ -50,13 +60,16 @@ export function StickyEnrollBar() {
                 <button
                     type="button"
                     onClick={handleBook}
-                    // Inline colour: the antd reset (`button { color: inherit }`) would otherwise override the text colour.
-                    style={{ color: '#111827' }}
-                    className="flex-shrink-0 bg-amber-400 hover:bg-amber-500 font-black text-sm md:text-base px-5 md:px-10 py-3 md:py-4 rounded-full transition-all active:scale-95 shadow-lg whitespace-nowrap cursor-pointer"
+                    // Inline colour/overflow: the antd reset (`button { color: inherit; overflow: visible }`) is unlayered and
+                    // beats the Tailwind classes, which would let the shimmer glare spill outside the button onto the dark bar.
+                    style={{ color: '#111827', overflow: 'hidden' }}
+                    className="relative overflow-hidden flex-shrink-0 bg-amber-400 hover:bg-amber-500 font-black text-sm md:text-base px-5 md:px-10 py-3 md:py-4 rounded-full transition-all duration-200 shadow-lg whitespace-nowrap cursor-pointer transform hover:scale-[1.03] active:scale-95"
                 >
-                    Book Bootcamp
+                    <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent" style={{ animation: 'shimmer 2s infinite' }} />
+                    <span className="relative z-10">Book Bootcamp</span>
                 </button>
             </motion.div>
         </div>
+        </>
     )
 }

@@ -48,8 +48,8 @@ export function NewMentorSection() {
                     <div className="flex-1 flex items-center justify-center bg-white p-4 md:p-10">
                         <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-lg bg-gray-900">
                             <iframe
-                                src="https://www.youtube.com/embed/uKaAyAmbN2Q?si=ReY1tgBf0mBRnK2c"
-                                title="Transform into management - Nitesh Prasad"
+                                src="https://www.youtube.com/embed/Dv3D3SiauX0?si=SfwzKOMUvuFU3zqq"
+                                title="The Hidden Illusion Behind Our Decisions - Nitesh Prasad TEDx"
                                 frameBorder="0"
                                 loading="lazy"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
