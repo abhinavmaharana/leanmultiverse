@@ -1,5 +1,6 @@
 import { Caveat } from 'next/font/google'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
+import Book1on1Button from '@/components/webinar/Book1on1Button'
 import {
     ArrowLeftRight,
     Award,
@@ -206,8 +207,9 @@ export function NewBootcampHero() {
                             </ul>
                             </div>
 
-                            <div className="mt-9 flex flex-col sm:flex-row sm:items-center gap-4">
+                            <div className="mt-9 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4">
                                 <BookWebinarModal source="new-hero" />
+                                <Book1on1Button variant="hero" />
                                 <div className="flex items-center gap-3 rounded-2xl border border-gray-100 px-5 py-3">
                                     <Users className="w-6 h-6 text-amber-500 flex-shrink-0" />
                                     <div>

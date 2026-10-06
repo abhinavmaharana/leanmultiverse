@@ -6,6 +6,7 @@ import { useState, useEffect, memo } from 'react'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
+import Book1on1Button from '@/components/webinar/Book1on1Button'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
 
 const navLinks = [
@@ -81,11 +82,14 @@ function NewNavbar() {
                 </div>
 
                 {/* Primary CTA - Aligned to far right (different per page context) */}
-                <div className="hidden lg:block">
+                <div className="hidden lg:flex items-center gap-3">
                     {isAiMlPage ? (
                         <BookAiMlWebinarModal source="sticky-bar" />
                     ) : (
-                        <BookWebinarModal source="sticky-bar" />
+                        <>
+                            <Book1on1Button variant="nav" />
+                            <BookWebinarModal source="sticky-bar" />
+                        </>
                     )}
                 </div>
 
@@ -120,11 +124,14 @@ function NewNavbar() {
                             )}
                         </Link>
                     ))}
-                    <div className="mt-4 flex flex-col" onClick={() => setOpen(false)}>
+                    <div className="mt-4 flex flex-col gap-3" onClick={() => setOpen(false)}>
                         {isAiMlPage ? (
                             <BookAiMlWebinarModal source="sticky-bar" />
                         ) : (
-                            <BookWebinarModal source="new-hero" />
+                            <>
+                                <BookWebinarModal source="new-hero" />
+                                <Book1on1Button variant="nav-mobile" />
+                            </>
                         )}
                     </div>
                 </div>

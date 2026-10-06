@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { WEBINAR_LINK } from '@/config/webinar'
+import Book1on1Button from '@/components/webinar/Book1on1Button'
 
 // Same shimmer sweep the other Book buttons use (see BookWebinarModal).
 const shimmerStyle = `
@@ -56,7 +57,11 @@ export function StickyEnrollBar() {
                     </div>
                 </div>
 
-                {/* Right: Action Button */}
+                {/* Right: Action Buttons (1:1 hidden on phones — no room next to the WhatsApp button) */}
+                <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                <div className="hidden sm:block">
+                    <Book1on1Button variant="sticky" />
+                </div>
                 <button
                     type="button"
                     onClick={handleBook}
@@ -68,6 +73,7 @@ export function StickyEnrollBar() {
                     <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent" style={{ animation: 'shimmer 2s infinite' }} />
                     <span className="relative z-10">Book Bootcamp</span>
                 </button>
+                </div>
             </motion.div>
         </div>
         </>
