@@ -1,23 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Building2 } from 'lucide-react';
 
-function CompanyBadge({ company, logo, size = 'md' }: { company: string; logo?: string; size?: 'sm' | 'md' }) {
-  const [logoFailed, setLogoFailed] = useState(false);
+function CompanyBadge({ company, size = 'md' }: { company: string; size?: 'sm' | 'md' }) {
   const isSmall = size === 'sm';
   return (
     <div className={`absolute ${isSmall ? 'top-3 left-3' : 'top-4 left-4'} z-20 bg-white rounded-xl shadow-lg ${isSmall ? 'px-2 py-1.5' : 'px-3 py-2'
       } flex items-center gap-2 max-w-[160px]`}>
-      {logo && !logoFailed && (
-        <img
-          src={logo}
-          alt={company}
-          className={`${isSmall ? 'w-5 h-5' : 'w-6 h-6'} object-contain flex-shrink-0 rounded-sm`}
-          onError={() => setLogoFailed(true)}
-        />
-      )}
       <span className={`text-gray-900 font-black ${isSmall ? 'text-[9px]' : 'text-[10px]'} uppercase tracking-wider leading-tight truncate`}>
         {company}
       </span>
@@ -31,9 +22,8 @@ const placements = [
     name: "Tithi Kundu",
     role: "Associate Product Manager",
     company: "InMobi",
-    logo: "https://logo.clearbit.com/inmobi.com",
     location: "Bangalore, India",
-    image: "/placements/tithi.jpg",
+    image: "/placements/tithi.webp",
     linkedin: "https://www.linkedin.com/",
     achievement: "Transitioned from non-tech → APM at InMobi",
   },
@@ -42,9 +32,8 @@ const placements = [
     name: "Nayan Bhagwat",
     role: "Technical Product Coordinator",
     company: "HUBER+SUHNER",
-    logo: "https://logo.clearbit.com/hubersuhner.com",
     location: "Pune, India",
-    image: "/placements/nayan.png",
+    image: "/placements/nayan.webp",
     linkedin: "https://www.linkedin.com/",
     achievement: "Placed after 2-year gap · HUBER+SUHNER",
   },
@@ -53,9 +42,8 @@ const placements = [
     name: "Tanushree",
     role: "Consultant",
     company: "KPMG",
-    logo: "https://logo.clearbit.com/kpmg.com",
     location: "India",
-    image: "/placements/tanushree.png",
+    image: "/placements/tanushree.webp",
     linkedin: "https://www.linkedin.com/",
     achievement: "Placed at KPMG as Consultant",
   },
@@ -64,9 +52,8 @@ const placements = [
     name: "Prabhkirat",
     role: "Lead Consultant",
     company: "Myntra",
-    logo: "https://logo.clearbit.com/myntra.com",
     location: "Bangalore, India",
-    image: "/placements/prabhkirat.png",
+    image: "/placements/prabhkirat.webp",
     linkedin: "https://www.linkedin.com/in/prabhkirat-singh-mehta/",
     achievement: "Placed within 6 weeks of graduation",
   },
@@ -75,9 +62,8 @@ const placements = [
     name: "Abhinav Maharana",
     role: "Software Development Engineer - UI",
     company: "Flipkart",
-    logo: "https://logo.clearbit.com/flipkart.com",
     location: "Bangalore, India",
-    image: "/mentors/abhinav.png",
+    image: "/mentors/abhinav.webp",
     linkedin: "https://www.linkedin.com/in/abhinavmaharana/",
     achievement: "Google AI Hackathon Winner",
   },
@@ -86,9 +72,8 @@ const placements = [
     name: "Rachit Goyal",
     role: "Analyst",
     company: "WNS",
-    logo: "https://logo.clearbit.com/wns.com",
     location: "",
-    image: "/placements/rachit-goyal.jpeg",
+    image: "/placements/rachit-goyal.webp",
     linkedin: "https://www.linkedin.com/",
     achievement: "Placed at WNS as Analyst",
   },
@@ -97,7 +82,6 @@ const placements = [
     name: "Jay Malhotra",
     role: "Manager",
     company: "Fidelity International",
-    logo: "https://logo.clearbit.com/fidelityinternational.com",
     location: "",
     image: "/placements/jay-malhotra.webp",
     linkedin: "https://www.linkedin.com/",
@@ -106,14 +90,15 @@ const placements = [
 ];
 
 export const NewPlacementSection = () => {
-  const duplicated = [...placements, ...placements, ...placements, ...placements];
+  // Two copies are enough: the marquee shifts by exactly one list, so the loop is seamless.
+  const duplicated = [...placements, ...placements];
 
   return (
     <section className="bg-white py-12 md:py-24 px-4 md:px-12 relative overflow-hidden">
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes placement-marquee {
           0%   { transform: translateX(0); }
-          100% { transform: translateX(calc(-300px * 3 - 2rem * 3)); }
+          100% { transform: translateX(calc(-1 * (300px + 2rem) * ${placements.length})); }
         }
         .placement-marquee-content {
           display: flex;
@@ -184,10 +169,12 @@ export const NewPlacementSection = () => {
               <img
                 src={p.image}
                 alt={p.name}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0 relative z-[1]"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
-              <CompanyBadge company={p.company} logo={p.logo} size="md" />
+              <CompanyBadge company={p.company} size="md" />
 
 
               <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-[2]" />
@@ -254,11 +241,13 @@ export const NewPlacementSection = () => {
                 <img
                   src={p.image}
                   alt={p.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover grayscale-[0.2] relative z-[1]"
                   onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
 
-                <CompanyBadge company={p.company} logo={p.logo} size="sm" />
+                <CompanyBadge company={p.company} size="sm" />
 
                 {/* Persistent overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent opacity-70 z-[2]" />

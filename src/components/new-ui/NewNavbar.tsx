@@ -10,6 +10,7 @@ import Book1on1Button from '@/components/webinar/Book1on1Button'
 import BookAiMlWebinarModal from '@/components/ai-ml-ui/sections/BookAiMlWebinarModal'
 
 const navLinks = [
+    { label: 'The Book', href: '/corporate-cheatcode', badge: 'New' },
     { label: 'Testimonial', href: '/#testimonial', badge: null },
     { label: 'Contact', href: '/#contact', badge: null },
 ]

@@ -11,6 +11,7 @@ import { NewTopBar } from '../components/new-ui/NewTopBar'
 import NewNavbar from '../components/new-ui/NewNavbar'
 import { NewBootcampHero } from '../components/new-ui/NewBootcampHero'
 import { StickyEnrollBar } from '../components/new-ui/StickyEnrollBar'
+import { BookPromoPopup } from '../components/new-ui/BookPromoPopup'
 
 // Lazy load heavier new-ui sections via intersection observer
 const NewLogoStrip = dynamic(() =>
@@ -178,6 +179,7 @@ export default function LandingPage() {
       </main>
       */}
       <StickyEnrollBar />
+      <BookPromoPopup />
     </main>
   )
 }

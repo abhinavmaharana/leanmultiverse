@@ -40,7 +40,7 @@ export function StickyEnrollBar() {
                 <div className="flex items-center gap-3 md:gap-4 pl-1 md:pl-2 min-w-0">
                     <div className="relative w-11 h-11 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-amber-400/50 flex-shrink-0">
                         <Image
-                            src="/nitesh-prasad-updated-pic.png"
+                            src="/nitesh-avatar.webp"
                             alt="Nitesh Prasad"
                             fill
                             sizes="56px"

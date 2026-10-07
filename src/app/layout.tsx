@@ -22,6 +22,10 @@ const raleway = Raleway({
   fallback: ['system-ui', 'arial'],
 })
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+const ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
+const GTAG_LOADER_ID = GA_ID || ADS_ID
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://leanmultiverse.com'),
   title: {
@@ -150,15 +154,10 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <head>
         {/* Resource Hints for Performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://upload.wikimedia.org" />
         <link rel="dns-prefetch" href="https://drive.google.com" />
         <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
-
-        {/* Preload LCP hero image for landing */}
-        <link rel="preload" href="/nitesh-prasad-3.png" as="image" />
 
         {/* Icons */}
         <link rel="icon" href="/logofavicon.PNG" type="image/png" />
@@ -227,8 +226,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         ) : null}
 
-        {/* Google Analytics 4 (gtag.js) */}
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
+        {/* Google Analytics 4 + Google Ads share ONE gtag.js (a second copy of the same library was being downloaded) */}
+        {GTAG_LOADER_ID ? (
           <>
             <Script
               id="gtag-init"
@@ -239,36 +238,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+${GA_ID ? `gtag('config', '${GA_ID}');` : ''}
+${ADS_ID ? `gtag('config', '${ADS_ID}');` : ''}
 `,
               }}
             />
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-              {...({ fetchpriority: "low" } as any)}
-            />
-          </>
-        ) : null}
-
-        {/* Google Ads Conversion Tracking (gtag.js) */}
-        {process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ? (
-          <>
-            <Script
-              id="google-ads-init"
-              strategy="afterInteractive"
-              {...({ fetchpriority: "low" } as any)}
-              dangerouslySetInnerHTML={{
-                __html: `
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');
-`,
-              }}
-            />
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_LOADER_ID}`}
               strategy="afterInteractive"
               {...({ fetchpriority: "low" } as any)}
             />

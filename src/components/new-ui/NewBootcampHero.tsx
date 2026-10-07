@@ -1,4 +1,4 @@
-import { Caveat } from 'next/font/google'
+import { caveat } from '@/lib/fonts'
 import BookWebinarModal from '@/components/webinar/BookWebinarModal'
 import Book1on1Button from '@/components/webinar/Book1on1Button'
 import {
@@ -17,7 +17,7 @@ import {
     Users,
 } from 'lucide-react'
 
-const script = Caveat({ subsets: ['latin'], weight: ['500', '600'], display: 'swap' })
+const script = caveat
 
 const FEATURES = [
     { icon: Compass, title: 'Role Clarity', text: 'Understand the right path for you' },

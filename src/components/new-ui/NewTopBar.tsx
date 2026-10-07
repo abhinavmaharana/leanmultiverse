@@ -1,7 +1,7 @@
-import { Caveat } from 'next/font/google'
+import { caveat } from '@/lib/fonts'
 import { Crown } from 'lucide-react'
 
-const script = Caveat({ subsets: ['latin'], weight: ['500'], display: 'swap' })
+const script = caveat
 
 export function NewTopBar() {
     return (
