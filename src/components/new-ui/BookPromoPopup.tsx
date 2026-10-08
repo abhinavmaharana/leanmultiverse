@@ -8,7 +8,8 @@ import { ArrowUpRight, X } from 'lucide-react'
 import { BOOK, DISCOUNT_PERCENT } from '@/config/book'
 
 const STORAGE_KEY = 'book_promo_v1'
-const SHOW_AFTER_MS = 10_000
+const SHOW_AFTER_MS = 3_000
+const MIN_DELAY_AFTER_MOUNT_MS = 800
 const SNOOZE_DAYS = 3
 
 type Stored = { dismissedAt?: number; clicked?: boolean }
@@ -37,7 +38,7 @@ function shouldShow(): boolean {
 }
 
 /**
- * Promotes the book once per visit: after 10s, or on exit intent (desktop), whichever comes first.
+ * Promotes the book once per visit: after 3s, or on exit intent (desktop), whichever comes first.
  * Dismissing snoozes it for 3 days; clicking through hides it for good.
  * The site's antd reset overrides Tailwind colour/weight/margin on links, headings and paragraphs,
  * so those are pinned inline below.
@@ -55,7 +56,10 @@ export function BookPromoPopup() {
 
   useEffect(() => {
     if (!shouldShow()) return
-    const timer = window.setTimeout(show, SHOW_AFTER_MS)
+    // Count from when the page started loading (not from hydration), so slow devices don't wait extra.
+    // A short floor keeps it from appearing in the same instant the page becomes interactive.
+    const delay = Math.max(MIN_DELAY_AFTER_MOUNT_MS, SHOW_AFTER_MS - performance.now())
+    const timer = window.setTimeout(show, delay)
     const onLeave = (e: MouseEvent) => {
       if (e.clientY <= 0 && !e.relatedTarget) show()
     }
