@@ -3,12 +3,12 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { JetBrains_Mono } from 'next/font/google'
 import { motion } from 'framer-motion'
 import { ArrowDown, ArrowUpRight, Instagram, Youtube } from 'lucide-react'
 import { BOOK, CHEATCODES, DISCOUNT_PERCENT, NEVER_TOLD } from '@/config/book'
+import { jetbrainsMono } from '@/lib/fonts'
 
-const mono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '700'], display: 'swap' })
+const mono = jetbrainsMono
 
 /* The site's antd reset (unlayered) overrides Tailwind's margin, font-weight and colour on headings,
    paragraphs and links, so those are pinned inline here. */
@@ -205,13 +205,13 @@ function Hero() {
             />
           </div>
           {[
-            { t: 'Proof > words', cls: 'left-0 top-14 sm:-left-8', d: '0s', r: '-4deg' },
-            { t: 'Loyalty ≠ growth', cls: 'right-0 top-[38%] sm:-right-6', d: '1.2s', r: '3deg' },
-            { t: 'Peace > paycheck', cls: 'left-2 bottom-24 sm:-left-6', d: '2.1s', r: '-2deg' },
+            { t: 'Proof > words', cls: 'xl:-left-20 top-14', d: '0s', r: '-4deg' },
+            { t: 'Loyalty ≠ growth', cls: 'xl:-right-20 top-[38%]', d: '1.2s', r: '3deg' },
+            { t: 'Peace > paycheck', cls: 'xl:-left-20 bottom-24', d: '2.1s', r: '-2deg' },
           ].map((c) => (
             <div
               key={c.t}
-              className={`cc-chip ${mono.className} absolute ${c.cls} rounded-lg border border-[#5EC8F5]/30 bg-[#0E1626]/85 px-3 py-1.5 text-xs text-[#9BD9F5] shadow-lg backdrop-blur`}
+              className={`cc-chip ${mono.className} absolute hidden xl:block ${c.cls} rounded-lg border border-[#5EC8F5]/30 bg-[#0E1626]/85 px-2.5 py-1 text-[10px] text-[#9BD9F5] shadow-lg backdrop-blur`}
               style={{ animationDelay: c.d, ['--r' as string]: c.r }}
             >
               {'{ '}

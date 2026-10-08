@@ -11,12 +11,16 @@ import { NewTopBar } from '../components/new-ui/NewTopBar'
 import NewNavbar from '../components/new-ui/NewNavbar'
 import { NewBootcampHero } from '../components/new-ui/NewBootcampHero'
 import { StickyEnrollBar } from '../components/new-ui/StickyEnrollBar'
-import { BookPromoPopup } from '../components/new-ui/BookPromoPopup'
 
 // Lazy load heavier new-ui sections via intersection observer
 const NewLogoStrip = dynamic(() =>
   import('../components/new-ui/NewLogoStrip').then((m) => ({ default: m.NewLogoStrip })),
   { loading: () => <div className="h-24 bg-white animate-pulse" /> }
+)
+
+const NewBookSection = dynamic(() =>
+  import('../components/new-ui/NewBookSection').then((m) => ({ default: m.NewBookSection })),
+  { loading: () => <div className="h-[560px] bg-[#070B14] animate-pulse" /> }
 )
 
 const NewVideoSection = dynamic(() =>
@@ -134,6 +138,10 @@ export default function LandingPage() {
         <NewPlacementSection />
       </LazySection>
 
+      <LazySection id="book-section" fallback={<div className="h-[560px] bg-[#070B14] animate-pulse" />}>
+        <NewBookSection />
+      </LazySection>
+
       {/* <LazySection id="services" fallback={<div className="h-[800px] bg-white animate-pulse" />}>
         <NewServices />
       </LazySection> */}
@@ -179,7 +187,6 @@ export default function LandingPage() {
       </main>
       */}
       <StickyEnrollBar />
-      <BookPromoPopup />
     </main>
   )
 }
