@@ -4,8 +4,8 @@
     {
       "name": "leanmultiverse-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "-p", "56348"],
-      "port": 56348
+      "runtimeArgs": ["run", "dev", "--", "-p", "57112"],
+      "port": 57112
     }
   ]
 }

@@ -7,39 +7,12 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUpRight, X } from 'lucide-react'
 import { BOOK, DISCOUNT_PERCENT } from '@/config/book'
 
-const STORAGE_KEY = 'book_promo_v1'
 const SHOW_AFTER_MS = 3_000
 const MIN_DELAY_AFTER_MOUNT_MS = 800
-const SNOOZE_DAYS = 3
-
-type Stored = { dismissedAt?: number; clicked?: boolean }
-
-function readStored(): Stored {
-  try {
-    return JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '{}') as Stored
-  } catch {
-    return {}
-  }
-}
-
-function writeStored(patch: Stored) {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...readStored(), ...patch }))
-  } catch {
-    /* storage can be blocked (private mode) — the popup then simply reappears next visit */
-  }
-}
-
-function shouldShow(): boolean {
-  const s = readStored()
-  if (s.clicked) return false
-  if (s.dismissedAt && Date.now() - s.dismissedAt < SNOOZE_DAYS * 24 * 60 * 60 * 1000) return false
-  return true
-}
 
 /**
- * Promotes the book once per visit: after 3s, or on exit intent (desktop), whichever comes first.
- * Dismissing snoozes it for 3 days; clicking through hides it for good.
+ * Promotes the book on EVERY homepage load: after 3s, or on exit intent (desktop), whichever comes first.
+ * It shows once per page load, so closing it does not bring it straight back on the same page.
  * The site's antd reset overrides Tailwind colour/weight/margin on links, headings and paragraphs,
  * so those are pinned inline below.
  */
@@ -49,13 +22,12 @@ export function BookPromoPopup() {
   const closeBtn = useRef<HTMLButtonElement>(null)
 
   const show = useCallback(() => {
-    if (shown.current || !shouldShow()) return
+    if (shown.current) return
     shown.current = true
     setOpen(true)
   }, [])
 
   useEffect(() => {
-    if (!shouldShow()) return
     // Count from when the page started loading (not from hydration), so slow devices don't wait extra.
     // A short floor keeps it from appearing in the same instant the page becomes interactive.
     const delay = Math.max(MIN_DELAY_AFTER_MOUNT_MS, SHOW_AFTER_MS - performance.now())
@@ -70,13 +42,9 @@ export function BookPromoPopup() {
     }
   }, [show])
 
-  const dismiss = useCallback(() => {
-    writeStored({ dismissedAt: Date.now() })
-    setOpen(false)
-  }, [])
+  const dismiss = useCallback(() => setOpen(false), [])
 
   const onBuy = useCallback(() => {
-    writeStored({ clicked: true })
     const w = window as unknown as { fbq?: (...a: unknown[]) => void }
     w.fbq?.('trackCustom', 'BuyBookClick', { placement: 'popup' })
     setOpen(false)
@@ -175,7 +143,6 @@ export function BookPromoPopup() {
                 </a>
                 <Link
                   href="/corporate-cheatcode"
-                  onClick={() => writeStored({ dismissedAt: Date.now() })}
                   style={{ color: 'rgba(255,255,255,0.85)' }}
                   className="inline-flex items-center justify-center rounded-full border border-white/20 px-5 py-3.5 text-base leading-none transition-colors hover:bg-white/10"
                 >
