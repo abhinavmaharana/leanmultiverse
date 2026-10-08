@@ -149,15 +149,6 @@ export function BookPromoPopup() {
                   Learn more
                 </Link>
               </div>
-
-              <button
-                type="button"
-                onClick={dismiss}
-                style={{ color: 'rgba(255,255,255,0.45)' }}
-                className="text-sm underline-offset-4 hover:underline"
-              >
-                Maybe later
-              </button>
             </div>
           </motion.div>
         </motion.div>
