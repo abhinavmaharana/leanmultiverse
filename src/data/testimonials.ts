@@ -56,19 +56,19 @@ export const testimonials: Testimonial[] = [
     instagram: "https://www.instagram.com/adrenaline_vein",
     linkedin: "https://www.linkedin.com/in/saurabh-gurav-165521195"
   },
-  {
-    id: "2",
-    name: "Prabhkirat Singh Mehta",
-    role: "Amazon",
-    company: "",
-    quote: "This Product Management course has been a truly transformative experience, largely because of the exceptional expertise and unwavering commitment of our trainer, Nitesh Prasad, to our growth as product professionals. His depth of knowledge on the subject, combined with the clarity with which he explained even the most complex concepts, made every session insightful and highly practical. What stood out the most was his zeal to help us genuinely upskill – he went far beyond the standard curriculum, investing extra hours, conducting long study sessions, and patiently addressing every doubt so that we did not just pass an exam but became more confident and capable in real-world product roles. I am genuinely grateful for the energy, time, and dedication Nitesh brought to every class, and would highly recommend him as a mentor and instructor to anyone looking to build a strong foundation in Management.",
-    rating: 5,
-    achievement: "Product Management Certified",
-    course: "Product Management Training",
-    image: getDriveImageUrl("https://drive.google.com/open?id=1PUhMdogdS01gnY5g2IeR39ZHlxBlP-GA"),
-    instagram: "https://www.instagram.com/prabhkiratmehta",
-    linkedin: "https://www.linkedin.com/in/prabhkirat-singh-mehta"
-  },
+  // {
+  //   id: "2",
+  //   name: "Prabhkirat Singh Mehta",
+  //   role: "Amazon",
+  //   company: "",
+  //   quote: "This Product Management course has been a truly transformative experience, largely because of the exceptional expertise and unwavering commitment of our trainer, Nitesh Prasad, to our growth as product professionals. His depth of knowledge on the subject, combined with the clarity with which he explained even the most complex concepts, made every session insightful and highly practical. What stood out the most was his zeal to help us genuinely upskill – he went far beyond the standard curriculum, investing extra hours, conducting long study sessions, and patiently addressing every doubt so that we did not just pass an exam but became more confident and capable in real-world product roles. I am genuinely grateful for the energy, time, and dedication Nitesh brought to every class, and would highly recommend him as a mentor and instructor to anyone looking to build a strong foundation in Management.",
+  //   rating: 5,
+  //   achievement: "Product Management Certified",
+  //   course: "Product Management Training",
+  //   image: getDriveImageUrl("https://drive.google.com/open?id=1PUhMdogdS01gnY5g2IeR39ZHlxBlP-GA"),
+  //   instagram: "https://www.instagram.com/prabhkiratmehta",
+  //   linkedin: "https://www.linkedin.com/in/prabhkirat-singh-mehta"
+  // },
   {
     id: "3",
     name: "Pratha Mathur",
