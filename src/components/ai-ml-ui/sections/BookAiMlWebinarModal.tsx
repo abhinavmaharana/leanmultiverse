@@ -18,7 +18,7 @@ export default function BookAiMlWebinarModal({ source }: Props) {
     if (typeof window !== 'undefined' && (window as any).fbq) {
       (window as any).fbq('track', 'InitiateCheckout');
     }
-    window.location.href = 'https://learn.leanmultiverse.com/web/checkout/6a36a495b20b35b28dad8410?purchaseNow=true';
+    window.location.href = 'https://learn.leanmultiverse.com/web/checkout/6aeda4ac228e549919e808ad?purchaseNow=true';
   }
 
   return (

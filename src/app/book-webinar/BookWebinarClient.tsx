@@ -111,7 +111,7 @@ export default function BookWebinarClient() {
   })
 
   useEffect(() => {
-    window.location.href = "https://learn.leanmultiverse.com/web/checkout/6a36a495b20b35b28dad8410"
+    window.location.href = "https://learn.leanmultiverse.com/web/checkout/6aeda4ac228e549919e808ad"
   }, [])
 
   useEffect(() => { setMounted(true) }, [])
